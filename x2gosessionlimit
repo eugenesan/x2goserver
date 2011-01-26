@@ -1,0 +1,77 @@
+#!/usr/bin/perl
+
+use strict;
+use Config::Simple;
+
+my $maxlimit=0;
+my $Config = new Config::Simple(syntax=>'ini');
+$Config->read('/etc/x2go/x2goserver.conf' );
+
+sub getGroupLimit
+{
+    my $group=shift;
+    my $strlimit=$Config->param("limit groups.$group");
+    if($strlimit ne "")
+    {
+            if($strlimit == 0)
+            {
+                    print "0\n";
+                    exit 0;
+            }
+            if($strlimit > $maxlimit)
+            {
+                   $maxlimit=$strlimit;
+            }
+    }
+}
+
+my $uname;
+$uname=getpwuid($<);
+
+my $runningsessions=`x2golistsessions --all-servers`;
+my @sessions=split("\n",$runningsessions);
+my $scount=@sessions;
+
+my $strlimit=$Config->param("limit users.$uname");
+
+if($strlimit ne "")
+{
+    if($strlimit == 0)
+    {
+         print "0\n";
+         exit 0;
+    }
+    if($strlimit <= $scount)
+    {
+        print "LIMIT $strlimit\n";
+        exit 0;
+    }
+    print "$strlimit\n";
+    exit 0;
+}
+
+
+my ($name, $pass, $uid, $pgid, $quota, $comment, $gcos, $dir, $shell, $expire) = getpwnam($uname);
+
+while (my ($name, $passwd, $gid, $members)  = getgrent()) 
+{
+       if( $pgid eq $gid)
+       {
+              getGroupLimit $name;
+       }
+       my @memebers=split(" ",$members);
+       foreach my $member (@memebers) 
+       {
+           if($uname eq $member  )
+           {
+                getGroupLimit $name;
+           }
+       }
+}
+
+if($maxlimit <= $scount)
+{
+        print "LIMIT $maxlimit\n";
+        exit 0;
+}
+print "$maxlimit\n";

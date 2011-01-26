@@ -141,7 +141,7 @@ for(my $i=0;$i<@dirs;$i++)
        if($outp =~ m/INSERT/)
        {
             print "inserted,\nsshfs  -o IdentityFile=$key,UserKnownHostsFile=$key.ident $user\@$host:\"@dirs[$i]\" \"$mntpath\" -p $port\n";
-            if(system("sshfs  -o Cipher=blowfish,IdentityFile=$key,UserKnownHostsFile=$key.ident $user\@$host:\"@dirs[$i]\" \"$mntpath\" -p $port 2>>~/mounts.log")==0)
+            if(system("sshfs  -o ServerAliveInterval=300,Cipher=blowfish,IdentityFile=$key,UserKnownHostsFile=$key.ident $user\@$host:\"@dirs[$i]\" \"$mntpath\" -p $port 2>>~/mounts.log")==0)
             {   
         	print "mount @dirs[$i] ok\n";
 		if(! $printspool)

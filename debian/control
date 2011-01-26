@@ -7,7 +7,7 @@ Standards-Version: 3.7.2
 
 Package: x2goserver
 Architecture: all
-Depends: x2goagent, sudo, lsof, ssh
+Depends: x2goagent, sudo, lsof, openssh-client
 Recommends: sshfs
 Description: x2goserver (daemon and tools)
  x2go is a serverbased computing environment with

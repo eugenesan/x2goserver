@@ -1,3 +1,11 @@
+x2goserver (3.0.1-2) unstable; urgency=low
+
+  * setting dpi for x2goagent in x2gostartagent
+  * session limits for users and groups in /etc/x2go/x2goserver.conf
+  * ssh option ServerAliveInterval=300 in x2gomountdirs
+
+ -- Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>  Mon, 02 Nov 2009 16:30:15 +0100
+
 x2goserver (3.0.1-1) unstable; urgency=low
 
   * Support for sqlite

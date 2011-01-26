@@ -74,7 +74,9 @@ install: build
 	install  x2goterminate-session  $(CURDIR)/debian/x2goserver/usr/bin/
 	install  x2goumount  $(CURDIR)/debian/x2goserver/usr/bin/
 	install  x2goumount_session  $(CURDIR)/debian/x2goserver/usr/bin/
+	install  x2gosessionlimit  $(CURDIR)/debian/x2goserver/usr/bin/
 	cp  sql  $(CURDIR)/debian/x2goserver/etc/x2go/
+	cp  x2goserver.conf  $(CURDIR)/debian/x2goserver/etc/x2go/
 	install  x2gocleansessions  $(CURDIR)/debian/x2goserver/usr/sbin/
 	install  x2gocreatebase.sh  $(CURDIR)/debian/x2goserver/usr/lib/x2go/script
 	install  x2gosqlite.sh  $(CURDIR)/debian/x2goserver/usr/lib/x2go/script
