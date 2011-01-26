@@ -1,3 +1,11 @@
+x2goserver (3.0.0-2) unstable; urgency=low
+
+  * Support for rdesktop sessions
+  * Transform xorg rules to evdev in x2goserver
+  * Changes in keyboard settings
+
+ -- Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>  Fri, 10 Jul 2009 08:26:41 +0200
+
 x2goserver (3.0.0-1) unstable; urgency=low
 
   * Printing support (need x2goprint and cups-x2go)

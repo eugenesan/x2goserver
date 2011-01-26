@@ -15,6 +15,8 @@ X2GO_ROOT=${HOME}/.x2go
 MESSAGE_FILE=$X2GO_ROOT/C-$X2GO_SESSION/cmdoutput
 echo "exec $cmd" >> $MESSAGE_FILE
 
+IMEXIT="false"
+
 if [ "$sndsys" == "esd" ]
 then
   export ESPEAKER=localhost:$4
@@ -70,6 +72,7 @@ fi
 
 if [ "$cmd" == "TERMINAL" ]
 then
+     IMEXIT="true"
      if [ -e "/usr/bin/konsole" ]
      then
          cmd="/usr/bin/konsole"
@@ -86,10 +89,18 @@ then
 fi
 
 EXEC=`which $cmd`
+
+BNAME=`basename $EXEC`
+if [ "$BNAME" == "rdesktop" ]
+then
+     IMEXIT="true"
+fi
+
 if [ "$EXEC" != "" ] && [ -x `which $cmd` ]
 then
   $cmd
-  if [  "$X2GO_SESS_TYPE" == "R" ] #### some applications can quit immediately, we waiting until x2goagent exists
+  #### some applications can quit immediately, we waiting until x2goagent exists
+  if [  "$X2GO_SESS_TYPE" == "R" ] && [ "$IMEXIT" == "false" ]
   then
      while [ -d /proc/$X2GO_AGENT_PID ]
      do
