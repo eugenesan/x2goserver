@@ -43,7 +43,7 @@ if($strlimit ne "")
     }
     if($strlimit <= $scount)
     {
-        print "LIMIT $strlimit\n";
+        print "$strlimit\n";
         exit 0;
     }
     print "$strlimit\n";
@@ -71,7 +71,7 @@ while (my ($name, $passwd, $gid, $members)  = getgrent())
 
 if($maxlimit <= $scount)
 {
-        print "LIMIT $maxlimit\n";
+        print "$maxlimit\n";
         exit 0;
 }
 print "$maxlimit\n";
