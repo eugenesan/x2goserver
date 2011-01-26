@@ -7,8 +7,17 @@ my $dir=<F>;
 my $session=<F>;
 close(F);
 
+$session=~s/\n//;
+
 chomp($dir);
 my $uname=$ENV{'USER'};
+
+my $use_zenity=0;
+
+if($ENV{'GNOME_DESKTOP_SESSION_ID'} ne "")
+{
+     $use_zenity=1;
+}
 
 if(system( "fusermount -u $dir" ) == 0)
 {
@@ -18,5 +27,12 @@ if(system( "fusermount -u $dir" ) == 0)
 }
 else
 {
-    system("x2gomessage --type error --code 0 --text $dir&");
+    if($use_zenity == 0)
+    {
+         system("kdialog --error \"Can't umount:\n $dir\"&");
+    }
+    else
+    {
+         system("zenity --error --text \"Can't umount:\n $dir\"&");
+    }
 }

@@ -34,11 +34,38 @@ sub check_stat
 }
 
 
+sub catch_term
+{
+   unlink("/var/run/x2goserver.pid");
+   exit;
+}
+
 my $uname;
 my $serv=$ENV{'HOSTNAME'};
 
-while(sleep 5)
+my $pid = fork();
+if (not defined $pid) 
 {
+  print "resources not avilable.\n";
+} 
+elsif ($pid != 0) 
+{
+    open (F,">/var/run/x2goserver.pid");
+    print F "$pid\n";
+    close(F);
+}
+elsif ($pid == 0 )
+{
+
+ close(STDIN);
+ close(STDOUT);
+ close(STDERR);
+ 
+ $SIG{TERM}=\&catch_term;
+ 
+ while(sleep 5)
+ {
+  $serv=`hostname`;
   my $outp=`x2golistsessions_sql $serv 2>/dev/null`;
 
   my @outp=split("\n","$outp");
@@ -48,16 +75,16 @@ while(sleep 5)
      my @sinfo=split('\\|',"@outp[$i]");
      if(@sinfo[4]eq 'F')
      {
-	 print "@sinfo[1], is blocked\n";
-	 print "(@sinfo[1])Unmounting all shares\n";	        
-	 system( "su @sinfo[11] -c \"export HOSTNAME && x2goumount_session @sinfo[1]\"");
+	 #print "@sinfo[1], is blocked\n";
+	 #print "(@sinfo[1])Unmounting all shares\n";	        
+	 system( "su @sinfo[11] -c \"export HOSTNAME && x2goumount_session @sinfo[1]\" 2> /dev/null");
      }       
      elsif(! check_pid (@sinfo[0],@sinfo[1],@sinfo[12]))
      {
          system("su @sinfo[11] -c \"sudo x2gopgwrapper changestatus 'F' @sinfo[1] \" > /dev/null");
-	 print "@sinfo[1], pid @sinfo[0] not exist, changing status from @sinfo[4] to F\n";
-	 print "(@sinfo[1])Unmounting all shares\n";	 
-	 system( "su @sinfo[11] -c \"export HOSTNAME && x2goumount_session @sinfo[1]\"");
+	 #print "@sinfo[1], pid @sinfo[0] not exist, changing status from @sinfo[4] to F\n";
+	 #print "(@sinfo[1])Unmounting all shares\n";	 
+	 system( "su @sinfo[11] -c \"export HOSTNAME && x2goumount_session @sinfo[1]\" 2> /dev/null");
      }
      else
      { 
@@ -66,11 +93,12 @@ while(sleep 5)
            if(!check_stat(@sinfo[1],@sinfo[11]))
 	   {
                system("su @sinfo[11] -c  \"sudo x2gopgwrapper changestatus 'S' @sinfo[1] \" > /dev/null");
-	       print "@sinfo[1], is suspended, changing status from @sinfo[4] to S\n";
-	       print "(@sinfo[1])Unmounting all shares\n";	        
-	       system( "su @sinfo[11] -c \"export HOSTNAME && x2goumount_session @sinfo[1]\"");
+	       #print "@sinfo[1], is suspended, changing status from @sinfo[4] to S\n";
+	       #print "(@sinfo[1])Unmounting all shares\n";	        
+	       system( "su @sinfo[11] -c \"export HOSTNAME && x2goumount_session @sinfo[1]\" 2> /dev/null");
            }
        }       
      }
   }
+ }
 }

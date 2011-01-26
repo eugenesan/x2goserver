@@ -1,0 +1,24 @@
+Source: x2goserver
+Section: x11
+Priority: extra
+Maintainer: Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
+Build-Depends: debhelper (>= 5)
+Standards-Version: 3.7.2
+
+Package: x2goserver
+Architecture: all
+Depends: x2goagent, sudo, lsof, ssh
+Recommends: sshfs, postgresql
+Description: x2goserver (daemon and tools)
+ x2go is a serverbased computing environment with
+ - session resuming
+ - low bandwith support
+ - LDAP support
+ - client side mass storage mounting support
+ - audio/arts support
+ - authentification by smartcard and usb-stick
+ - kde control-center modules for administration
+ - kde based tools for just in time messaging and client surveillance
+ .
+ x2goserver contains the main daemon and tools for
+ session administrations (scripts).

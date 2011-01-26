@@ -7,11 +7,11 @@ UNAME=$SUDO_USER
 case "$1" in
 
 getdisplays)
-  echo "select '|'||display||'|' from sessions  where server = '$2';"|psql -t x2go_sessions
+  echo "select '|'||display||'|' from sessions;"|psql -t x2go_sessions
   ;;
 
 getports)
-  echo "select '|'||port||'|' from used_ports  where server = '$2';"|psql -t x2go_sessions
+  echo "select '|'||port||'|' from used_ports;"|psql -t x2go_sessions
   ;;
 
 getservers)
@@ -22,8 +22,16 @@ listsessions)
   echo "select agent_pid, session_id, display, server, status,\
    to_char(init_time,'DD.MM.YY*HH24:MI:SS'),cookie,client,gr_port,\
    sound_port,to_char(last_time,'DD.MM.YY*HH24:MI:SS'),uname,\
-   to_char(now()-init_time,'SSSS') from  sessions  \
+   to_char(now()-init_time,'SSSS'),fs_port from  sessions  \
    where status !='F' and server='$2' and uname='$UNAME' order by status desc;"|psql -t x2go_sessions
+  ;;
+
+listsessions_all)
+  echo "select agent_pid, session_id, display, server, status,\
+   to_char(init_time,'DD.MM.YY*HH24:MI:SS'),cookie,client,gr_port,\
+   sound_port,to_char(last_time,'DD.MM.YY*HH24:MI:SS'),uname,\
+   to_char(now()-init_time,'SSSS'),fs_port  from  sessions  \
+   where status !='F' and uname='$UNAME' order by status desc;"|psql -t x2go_sessions
   ;;
 
 listsessionsroot)
@@ -35,8 +43,74 @@ listsessionsroot)
   echo "select agent_pid, session_id, display, server, status,\
    to_char(init_time,'DD.MM.YY*HH24:MI:SS'),cookie,client,gr_port,\
    sound_port,to_char(last_time,'DD.MM.YY*HH24:MI:SS'),uname,\
-   to_char(now()-init_time,'SSSS') from  sessions  \
+   to_char(now()-init_time,'SSSS'),fs_port  from  sessions  \
    where server='$2'  order by status desc;"|psql -t x2go_sessions
+  ;;
+
+listsessionsroot_all)
+  if [ "$UNAME" != "root" ]
+  then
+    echo "$UNAME, You have not permission to do this job!"
+    exit  
+  fi
+  echo "select agent_pid, session_id, display, server, status,\
+   to_char(init_time,'DD.MM.YY*HH24:MI:SS'),cookie,client,gr_port,\
+   sound_port,to_char(last_time,'DD.MM.YY*HH24:MI:SS'),uname,\
+   to_char(now()-init_time,'SSSS'),fs_port  from  sessions  \
+   order by status desc;"|psql -t x2go_sessions
+  ;;
+
+listsusp)
+  if [ "$UNAME" != "root" ]
+  then
+    echo "$UNAME, You have not permission to do this job!"
+    exit  
+  fi
+  echo "select session_id, display, uname, server,extract( day from now()-last_time)*24*60+extract(hour from now()-last_time)*60+extract(minute from now()-last_time)\
+   from sessions where server='$2' and status='S';"|psql -t x2go_sessions
+  ;;
+
+listallrunning)
+  if [ "$UNAME" != "root" ]
+  then
+    echo "$UNAME, You have not permission to do this job!"
+    exit  
+  fi
+  echo "select agent_pid, session_id, display, server, status,\
+   to_char(init_time,'DD.MM.YY*HH24:MI:SS'),cookie,client,gr_port,\
+   sound_port,to_char(last_time,'DD.MM.YY*HH24:MI:SS'),uname,\
+   to_char(now()-init_time,'SSSS'),fs_port  from  sessions  \
+   where status='R';"|psql -t x2go_sessions
+  ;;
+
+listmails)
+  if [ "$UNAME" != "root" ]
+  then
+    echo "$UNAME, You have not permission to do this job!"
+    exit  
+  fi
+  echo "select user_messages.mess_id,sessions.session_id,\
+      sessions.uname,sessions.display from sessions,user_messages,\
+      messages where sessions.uname=user_messages.uname and sessions.status!='F'\
+      and messages.mess_id=user_messages.mess_id and sessions.server='$2';"|psql -t x2go_sessions
+  ;;
+
+getmail)
+  if [ "$UNAME" != "root" ]
+  then
+    echo "$UNAME, You have not permission to do this job!"
+    exit  
+  fi
+  echo "select message from messages where mess_id='$2';"|psql -t x2go_sessions
+  ;;
+
+rmmail)
+  if [ "$UNAME" != "root" ]
+  then
+    echo "$UNAME, You have not permission to do this job!"
+    exit  
+  fi
+  echo "delete from user_messages where mess_id='$2' and uname='$3';"|psql -t x2go_sessions
   ;;
 
 rmsessionsroot)
@@ -72,7 +146,7 @@ insertsession)
 
 createsession)
   echo "update sessions set status='R',last_time=now(),cookie='$2',agent_pid='$3',\
-   client='$4',gr_port='$5',sound_port='$6' where session_id='$7' and uname='$UNAME';"|psql x2go_sessions
+   client='$4',gr_port='$5',sound_port='$6',fs_port='$7' where session_id='$8' and uname='$UNAME';"|psql x2go_sessions
   ;;
 
 insertport)

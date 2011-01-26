@@ -1,0 +1,7 @@
+#!/bin/bash
+
+
+X2GO_ROOT=${HOME}/.x2go
+MESSAGE_FILE=$X2GO_ROOT/C-$1/cmdoutput
+
+cat $MESSAGE_FILE

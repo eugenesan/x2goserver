@@ -1,19 +1,106 @@
 #!/bin/bash
+
 DISPLAY=":$1"
 X2GO_AGENT_PID=$2
 X2GO_SESSION=$3
-ARTS_SERVER=localhost:$4
 cmd=$5
+sndsys=$6
+X2GO_SESS_TYPE=$7
 export DISPLAY
 export X2GO_AGENT_PID
 export X2GO_SESSION
-export ARTS_SERVER
-$cmd 
+cmd=`echo $cmd |sed 's/X2GO_SPACE_CHAR/ /g'`
 
-kill -9 $X2GO_AGENT_PID
+X2GO_ROOT=${HOME}/.x2go
+MESSAGE_FILE=$X2GO_ROOT/C-$X2GO_SESSION/cmdoutput
+echo "exec $cmd" >> $MESSAGE_FILE
 
+if [ "$sndsys" == "esd" ]
+then
+  export ESPEAKER=localhost:$4
+elif [ "$sndsys" == "arts" ]
+then 
+  export ARTS_SERVER=localhost:$4
+fi
 
+if [ "$cmd" == "WWWBROWSER" ]
+then
+     if [ -e "/usr/bin/firefox" ]
+     then
+         cmd="/usr/bin/firefox"
+     elif  [ -e "/usr/bin/iceweasel" ]
+     then
+         cmd="/usr/bin/iceweasel"
+     elif  [ -e "/usr/bin/abrowser" ]
+     then
+         cmd="/usr/bin/abrowser"
+     elif  [ -e "/usr/bin/konqueror" ]
+     then
+         cmd="/usr/bin/konqueror"
+     elif  [ -e "/usr/bin/galeon" ]
+     then
+         cmd="/usr/bin/galeon"
+     fi
+fi
+
+if [ "$cmd" == "MAILCLIENT" ]
+then
+     if [ -e "/usr/bin/thunderbird" ]
+     then
+         cmd="/usr/bin/thunderbird"
+     elif  [ -e "/usr/bin/icedove" ]
+     then
+         cmd="/usr/bin/icedove"
+     elif  [ -e "/usr/bin/kmail" ]
+     then
+         cmd="/usr/bin/kmail"
+     elif  [ -e "/usr/bin/evolution" ]
+     then
+         cmd="/usr/bin/evolution"
+     fi
+fi
+
+if [ "$cmd" == "OFFICE" ]
+then
+     if [ -e "/usr/bin/ooffice" ]
+     then
+         cmd="/usr/bin/ooffice"
+     fi
+fi
+
+if [ "$cmd" == "TERMINAL" ]
+then
+     if [ -e "/usr/bin/konsole" ]
+     then
+         cmd="/usr/bin/konsole"
+     elif  [ -e "/usr/bin/gnome-terminal" ]
+     then
+         cmd="/usr/bin/gnome-terminal"
+     elif  [ -e "/usr/bin/rxvt" ]
+     then
+         cmd="/usr/bin/rxvt"
+     elif  [ -e "/usr/bin/xterm" ]
+     then
+         cmd="/usr/bin/xterm"
+     fi
+fi
+
+EXEC=`which $cmd`
+if [ "$EXEC" != "" ] && [ -x `which $cmd` ]
+then
+  $cmd
+  if [  "$X2GO_SESS_TYPE" == "R" ] #### some applications can quit immediately, we waiting until x2goagent exists
+  then
+     while [ -d /proc/$X2GO_AGENT_PID ]
+     do
+         sleep 1
+     done
+  fi
+else
+   echo "X2GORUNCOMMAND ERR NOEXEC:$cmd" > $MESSAGE_FILE
+fi 
+
+kill -TERM  $X2GO_AGENT_PID
 sudo x2gopgwrapper changestatus 'F' $X2GO_SESSION  > /dev/null
-
 export HOSTNAME
 x2goumount_session $X2GO_SESSION

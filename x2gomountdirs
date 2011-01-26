@@ -5,9 +5,44 @@ my $type=shift;
 my $session=shift;
 my $user=shift;
 my $key=shift;
-my $dirlist=shift;
+my @dl;
+my $i=0;
+@dl[$i]=shift;
+while(@dl[$i])
+{
+    $i++;
+    @dl[$i]=shift;
+}
+my $dirlist=join(" ",@dl);
+chop($dirlist);
+my $reverse=0;
+my $port="22";
+print "dirs:$dirlist\n";
+if($dirlist =~ m/__REVERSESSH_PORT__/)
+{
+    @dl=split("__REVERSESSH_PORT__","$dirlist");
+    $dirlist=@dl[0];
+    $port=@dl[1];
+    $reverse=1;
+}
 
-my $host=(split(" ",$ENV{'SSH_CLIENT'}))[0];
+if($dirlist =~ m/__SSH_PORT__/)
+{
+   @dl=split("__SSH_PORT__","$dirlist");
+   $dirlist=@dl[0];
+   $port=@dl[1];
+}
+
+print "ssh port:$port\n";
+my $host;
+if($reverse == 0)
+{
+   $host=(split(" ",$ENV{'SSH_CLIENT'}))[0];
+}
+else
+{
+  $host='127.0.0.1';
+}
 print "Host:$host\n";
 print "User:$user\n";
 
@@ -27,47 +62,116 @@ open (F,">$key.ident");
 print F "$host $rsa_identity";
 close(F);
 
-#my $mdir="/tmp/$ENV{'USER'}_media";
-my $mdir="$ENV{'HOME'}/media";
-mkdir($mdir);
+
+my $mdir="/tmp/$ENV{'USER'}_media";
+my $ldir="$ENV{'HOME'}/media";
+my $spooldir_lnk="$ENV{'HOME'}/.x2go/C-$session/spool";
+my $spooldir="/tmp/spool_$ENV{'USER'}";
+
+if(! -e $mdir)
+{
+   mkdir($mdir);
+}
+chmod(0700,$mdir);
+
+if(! -e $spooldir)
+{
+   mkdir($spooldir);
+}
+chmod(0700,$spooldir);
+
+$spooldir="$spooldir/$session";
+if(! -e $spooldir)
+{
+   mkdir($spooldir);
+}
+chmod(0700,$spooldir);
+
+if( -d $ldir)
+{
+    rmdir($ldir);
+}
+
+if( ! -l $ldir)
+{
+   system ("ln -s $mdir $ldir");
+}
+
+if( -d $spooldir_lnk)
+{
+    rmdir($spooldir_lnk);
+}
+
+if( ! -l $spooldir_lnk)
+{
+   system ("ln -s $spooldir $spooldir_lnk");
+}
 
 my $uname=$ENV{'USER'};
 
 my @dirs=split(':',$dirlist);
 for(my $i=0;$i<@dirs;$i++)
 {
-       my $p=@dirs[$i];
-       if($type ne "dir")
+       my $printspool=0;
+       my $mntpath;
+       if(@dirs[$i]=~m/__PRINT_SPOOL_/)
        {
-           $p=~s/\/ramdrive\/mnt\///;
+            @dirs[$i]=~s/__PRINT_SPOOL_//;
+            $printspool=1;
+            $mntpath=$spooldir;
        }
-       $p=~s/\//_/g;
-       mkdir("$mdir/$p");
-       my $mntpath="$mdir/$p";
+       else
+       {
+            my $p=@dirs[$i];
+            if($type ne "dir")
+            {
+                $p=~s/\/ramdrive\/mnt\///;
+            }
+            $p=~s/\//_/g;
+            $p=~s/ /_/g;
+            $p=~s/_cygdrive_//g;
+            $p=~s/~//g;
+            mkdir("$mdir/$p");
+            $mntpath="$mdir/$p";
+       }
+
+       print "starting:sudo x2gopgwrapper insertmount $session \"$mntpath\" $host\n";
        my $outp=`sudo x2gopgwrapper insertmount $session \"$mntpath\" $host`;
+       print "result: $outp";
        if($outp =~ m/INSERT/)
        {
-            print "inserted, sshfs  -o IdentityFile=$key,UserKnownHostsFile=$key.ident $user\@$host:@dirs[$i] $mdir/$p\n";
-            if(system("sshfs  -o IdentityFile=$key,UserKnownHostsFile=$key.ident $user\@$host:@dirs[$i] $mdir/$p")==0)
+            print "inserted,\nsshfs  -o IdentityFile=$key,UserKnownHostsFile=$key.ident $user\@$host:\"@dirs[$i]\" \"$mntpath\" -p $port\n";
+            if(system("sshfs  -o Cipher=blowfish,IdentityFile=$key,UserKnownHostsFile=$key.ident $user\@$host:\"@dirs[$i]\" \"$mntpath\" -p $port 2>>~/mounts.log")==0)
             {   
         	print "mount @dirs[$i] ok\n";
-        	my $fname="$ENV{'HOME'}/Desktop";
-		$p=@dirs[$i];
-        	$p=~s/\//%2f/g;
-		$fname="$fname/$p";
-		if($type eq "dir")
+		if(! $printspool)
 		{
-	    	    $fname="$fname(sshfs-disk)";
+        	    my $fname="$ENV{'HOME'}/Desktop";
+		    my $p=@dirs[$i];
+        	    $p=~s/\/cygdrive\///g;
+            	    $p=~s/\//_/g;
+		    $fname="$fname/$p";
+		    if($type eq "dir")
+		    {
+	    		$fname="$fname(sshfs-disk)";
+		    }
+		    else
+		    {
+			if($fname =~ m/CDROM/)
+			{
+	    	    	    $fname="$fname(sshfs-cdrom)";
+			}
+			else
+			{
+	    	    	    $fname="$fname(sshfs-removable)";
+			}
+			$fname=~s/_ramdrive_mnt_//;
+		    }
+		    print "fname: $fname\n";
+		    open(F,">$fname");
+		    print F "$mntpath\n$session\n\n\0";
+		    close(F);
 		}
-		else
-		{
-	    	    $fname="$fname(sshfs-removable)";
-		    $fname=~s/%2framdrive%2fmnt%2f//;
-		}
-		print "fname: $fname\n";
-		open(F,">$fname");
-		print F "$mntpath\n$session";
-		close(F);
     	    }
     	    else
     	    {

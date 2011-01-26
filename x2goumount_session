@@ -32,6 +32,13 @@ open (F,"</etc/mtab") or die "Can't open /etc/mtab for reading";
 my @mounts=<F>;
 close(F);
 
+my $use_zenity=0;
+
+if($ENV{'GNOME_DESKTOP_SESSION_ID'} ne "")
+{
+     $use_zenity=1;
+}
+
 
 for($i=0;$i<@outp;$i++)
 {
@@ -70,12 +77,19 @@ break:
        else
        {
                  $ENV{'DISPLAY'}=":$display";
-                 system("x2gomessage --type error --code 0 --text @line[1]&");
+                 if($use_zenity == 0)
+		 {
+        	    system("kdialog --error \"@line[1]\"&");
+		 }
+		 else
+		 {
+                    system("zenity --error --text \"@line[1]\"&");
+		 }
        }
     }
     if(! $found)
     {
-	$remote=~s/\//%2f/g;
+	$remote=~s/\//_/g;
 	$remote=(split(":","$remote"))[1];
 	$remote="$ENV{'HOME'}/Desktop/$remote";
 	if( -e "$remote(sshfs-disk)")
@@ -88,7 +102,11 @@ break:
 	{
 	   unlink("$remote(sshfs-removable)");
 	}
-        print "$session \"@line[1]\"\n"; 
+	if( -e "$remote(sshfs-cdrom)")
+	{
+	   unlink("$remote(sshfs-cdrom)");
+	}
+        #print "$session \"@line[1]\"\n"; 
 	system("sudo x2gopgwrapper deletemount $session \"@line[1]\"> /dev/null");
         rmdir (@line[1]);
     }

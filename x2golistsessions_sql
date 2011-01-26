@@ -1,7 +1,15 @@
 #!/usr/bin/perl
 use strict;
 my $serv=shift;
-my $outp=`sudo x2gopgwrapper listsessionsroot $serv`;
+my $outp;
+if($serv eq "--all-servers")
+{
+ $outp=`sudo x2gopgwrapper listsessionsroot_all`;
+}
+else
+{
+ $outp=`sudo x2gopgwrapper listsessionsroot $serv`;
+}
 $outp =~ s/ //g;
 $outp =~ s/\*/ /g;
 

@@ -1,0 +1,10 @@
+#!/usr/bin/perl
+
+shift;
+shift;
+shift;
+
+my $capt=shift;
+my @words=split(" ",$capt);
+
+system("/usr/bin/x2gosuspend-session @words[2] > /dev/null");

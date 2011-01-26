@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 X2GO_PORT=49 #First port for X2GO=50
 SSH_PORT=30000 #First ssh port 30001
@@ -13,9 +13,25 @@ X2GO_TYPE=$4
 X2GO_KBD_LAYOUT=$5
 X2GO_KBD_TYPE=$6
 X2GO_SET_KBD=$7
-
+X2GO_STYPE=$8
+X2GO_CMD=$9
 X2GO_RESIZE=0
 X2GO_FULLSCREEN=0
+
+
+export NX_CLIENT=/usr/bin/x2gosuspend-agent
+
+COLORDEPTH=`echo "$X2GO_TYPE"|awk '{split($0,a,"-depth_"); print a[2]}'`
+
+SESSION_TYPE="D"
+
+if [ "$X2GO_STYPE" == "R" ]
+then
+  SESSION_TYPE="R"
+elif  [ "$X2GO_STYPE" == "S" ]
+then
+  SESSION_TYPE="S"
+fi
 
 if [ "$X2GO_CLIENT" == "" ]
 then
@@ -31,16 +47,24 @@ do
  X2GO_PORT=$(($X2GO_PORT + 1))
  X2GO_PORT=`echo "for(\\$i=$X2GO_PORT;\\$br ne \"true\";\\$i++){ if(\"$USED_DISPLAYS\" =~ m/\\|\\$i\\|/){\\$br=\"false\";}else{\\$br=\"true\";print \\$i;}}"|perl`
 
- 
-SESSION_NAME=${USER}-${X2GO_PORT}-`date +"%s"`
-OUTPUT=`sudo x2gopgwrapper insertsession $X2GO_PORT $HOSTNAME $SESSION_NAME`
+ if  [ -e "/tmp/.X${X2GO_PORT}-lock" ] || [ -e "/tmp/.X11-unix/X${X2GO_PORT}" ] 
+ then
+    OUTPUT="XXX"
+ else
+   SESSION_NAME=${USER}-${X2GO_PORT}-`date +"%s"`
+   if [ "$COLORDEPTH" != "" ]
+   then
+       SESSION_NAME="$SESSION_NAME"_st${SESSION_TYPE}${X2GO_CMD}_dp${COLORDEPTH}
+   fi
+   OUTPUT=`sudo x2gopgwrapper insertsession $X2GO_PORT $HOSTNAME $SESSION_NAME`
+ fi 
 done
 
 
 USED_PORTS=`sudo x2gopgwrapper getports $HOSTNAME`
 
 
-while [ "$GR_PORT" == "" ] || [ "$SOUND_PORT" == "" ]
+while [ "$GR_PORT" == "" ] || [ "$SOUND_PORT" == "" ] || [ "$FS_PORT" == "" ]
 do
   OUTPUT=""
   while [ "`echo \"$OUTPUT\" | awk '{print $1,$3}'`" != "INSERT 1" ]
@@ -65,8 +89,11 @@ do
   if [ "$GR_PORT" == "" ]
   then
      GR_PORT=$SSH_PORT
-  else
+  elif [ "$SOUND_PORT" == "" ]
+  then
      SOUND_PORT=$SSH_PORT
+  else
+     FS_PORT=$SSH_PORT
   fi
 done
 
@@ -131,15 +158,13 @@ SAVED_DISPLAY=$DISPLAY
 DISPLAY=nx/nx,options=${SESSION_DIR}/options:${X2GO_PORT} 
 export DISPLAY
 
-DEFAULT_FONT_PATH=$(echo $(grep -v '^ *#' /etc/X11/xorg.conf | grep FontPath  | awk '{print $2}' | sed -r "s/^[\"']|[\"']$//g") | sed 's/ /,/g')
 
-
-LD_LIBRARY_PATH=$X2GO_LIB x2goagent  -geometry ${X2GO_GEOMETRY} -name "X2GO-${SESSION_NAME}" -fp $DEFAULT_FONT_PATH  ${NX_AGENT} 2>${SESSION_DIR}/session.log &
+LD_LIBRARY_PATH=$X2GO_LIB x2goagent  -$SESSION_TYPE -geometry ${X2GO_GEOMETRY} -name "X2GO-${SESSION_NAME}"  ${NX_AGENT} 2>${SESSION_DIR}/session.log &
 
 X2GO_AGENT_PID=$!
 
 X2GO_SND_PORT=1024
-sudo x2gopgwrapper createsession $X2GO_COOKIE $X2GO_AGENT_PID $X2GO_CLIENT $GR_PORT $SOUND_PORT $SESSION_NAME > /dev/null
+sudo x2gopgwrapper createsession $X2GO_COOKIE $X2GO_AGENT_PID $X2GO_CLIENT $GR_PORT $SOUND_PORT $FS_PORT $SESSION_NAME > /dev/null
 
 echo $X2GO_PORT
 echo $X2GO_COOKIE
@@ -147,3 +172,4 @@ echo $X2GO_AGENT_PID
 echo $SESSION_NAME
 echo $GR_PORT
 echo $SOUND_PORT
+echo $FS_PORT

@@ -1,0 +1,37 @@
+install sudo,fuse,sshfs
+
+use visudo and add string in sudoers:
+%users ALL=(ALL) NOPASSWD: /usr/bin/x2gopgwrapper
+
+if you  want to allow only users from group x2gousers use X2GO system, 
+#add group "x2gousers"
+and change in sudoers  %users to %x2gousers
+
+INSTALL server scripts:
+
+mkdir /etc/x2go
+cp sql /etc/x2go/
+copy x2go* in any directory in $PATH
+daemon x2gocleansessions - clean all finished sessions, enable it by system start
+
+IF YOU WANT TO USE LOCAL DATABASE:
+you need to install postgresql
+
+echo -n local > /etc/x2go/sql
+
+use x2gocreatebase.sh to create database for x2go
+
+IF YOU WANT TO USE REMOTE DATABASE:
+echo -n "sqlserver address" > /etc/x2go/sql
+
+you need to creata DSA key for ssh connection with database server
+mkdirhier /root/.x2go/ssh/.pg/
+ssh-keygen -t dsa -f /root/.x2go/ssh/.pg/id_dsa
+press "Enter" for empty passphrase
+
+copy public part "/root/.x2go/ssh/.pg/id_dsa.pub" on computer with running sql server
+(for example with scp)
+and add it to ~postgres/.ssh/authorized_keys
+cat id_dsa.pub >> ~postgres/.ssh/authorized_keys
+
+
