@@ -1,3 +1,9 @@
+x2goserver (3.0.1-5) unstable; urgency=high
+
+  * force mcookie auth for x2goagent
+
+ -- Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>  Mon, 14 Dec 2009 20:58:42 +0100
+
 x2goserver (3.0.1-4) unstable; urgency=low
 
   * Fix x2gosessionslimit
