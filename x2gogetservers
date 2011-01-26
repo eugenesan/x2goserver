@@ -1,0 +1,6 @@
+#!/usr/bin/perl
+use strict;
+
+my $outp=`sudo x2gopgwrapper getservers`;
+$outp=~s/\|//g;
+print "$outp";

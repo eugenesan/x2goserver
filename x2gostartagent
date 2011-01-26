@@ -1,0 +1,149 @@
+#!/bin/sh
+
+X2GO_PORT=49 #First port for X2GO=50
+SSH_PORT=30000 #First ssh port 30001
+
+X2GO_ROOT=${HOME}/.x2go
+REMOTE=localhost
+X2GO_CLIENT=`echo $SSH_CLIENT | awk '{print $1}'`
+X2GO_GEOMETRY=$1
+X2GO_LINK=$2
+X2GO_PACK=$3
+X2GO_TYPE=$4
+X2GO_KBD_LAYOUT=$5
+X2GO_KBD_TYPE=$6
+X2GO_SET_KBD=$7
+
+X2GO_RESIZE=0
+X2GO_FULLSCREEN=0
+
+if [ "$X2GO_CLIENT" == "" ]
+then
+   X2GO_CLIENT=$HOSTNAME
+fi
+
+
+USED_DISPLAYS=`sudo x2gopgwrapper getdisplays $HOSTNAME`
+
+
+while [ "`echo \"$OUTPUT\" | awk '{print $1,$3}'`" != "INSERT 1" ]
+do
+ X2GO_PORT=$(($X2GO_PORT + 1))
+ X2GO_PORT=`echo "for(\\$i=$X2GO_PORT;\\$br ne \"true\";\\$i++){ if(\"$USED_DISPLAYS\" =~ m/\\|\\$i\\|/){\\$br=\"false\";}else{\\$br=\"true\";print \\$i;}}"|perl`
+
+ 
+SESSION_NAME=${USER}-${X2GO_PORT}-`date +"%s"`
+OUTPUT=`sudo x2gopgwrapper insertsession $X2GO_PORT $HOSTNAME $SESSION_NAME`
+done
+
+
+USED_PORTS=`sudo x2gopgwrapper getports $HOSTNAME`
+
+
+while [ "$GR_PORT" == "" ] || [ "$SOUND_PORT" == "" ]
+do
+  OUTPUT=""
+  while [ "`echo \"$OUTPUT\" | awk '{print $1,$3}'`" != "INSERT 1" ]
+  do
+    SSH_PORT=$(($SSH_PORT + 1))
+
+    ##check if port in /etc/services
+
+    SSH_PORT=`echo "for(\\$i=$SSH_PORT;\\$br ne \"true\";\\$i++){ if(\"$USED_PORTS\" =~ m/\\|\\$i\\|/){\\$br=\"false\";}else{\\$br=\"true\";print \\$i;}}"|perl`
+
+    SERV=`grep $SSH_PORT /etc/services`
+    if [ "$SERV" == "" ]
+    then
+      CR=`echo "use IO::Socket; \\$sock = new IO::Socket::INET ( LocalAddr => 'localhost',LocalPort => \"$SSH_PORT\",\
+                                  Proto => 'tcp',Listen => 1,Reuse =>1 ) or die ;print \"OK\";close(\\$sock);"|perl 2>/dev/null`
+      if [ "$CR" == "OK" ]
+      then
+         OUTPUT=`sudo x2gopgwrapper insertport $HOSTNAME $SESSION_NAME $SSH_PORT`
+      fi
+    fi
+  done
+  if [ "$GR_PORT" == "" ]
+  then
+     GR_PORT=$SSH_PORT
+  else
+     SOUND_PORT=$SSH_PORT
+  fi
+done
+
+
+
+if [ "$X2GO_GEOMETRY" == "" ]
+then
+    X2GO_GEOMETRY=fullscreen
+fi
+
+if [ "$X2GO_GEOMETRY" == "fullscreen" ]
+then
+    X2GO_RESIZE=1
+    X2GO_FULLSCREEN=1
+fi
+
+SESSION_DIR=${X2GO_ROOT}/C-${SESSION_NAME}
+
+if [ ! -d $X2GO_ROOT ]
+then
+    mkdir $X2GO_ROOT
+fi
+
+if [ ! -d $X2GO_ROOT/ssh ]
+then
+    mkdir $X2GO_ROOT/ssh
+fi
+
+if [ ! -d $SESSION_DIR ]
+then
+    mkdir $SESSION_DIR
+fi
+
+X2GO_COOKIE=`mcookie`
+
+
+LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${X2GO_LIB}"
+export LD_LIBRARY_PATH
+
+PATH="${PATH}:${X2GO_BIN}/"
+export PATH
+
+
+xauth add ${HOSTNAME}/unix:${X2GO_PORT} MIT-MAGIC-COOKIE-1 ${X2GO_COOKIE}
+xauth add ${HOSTNAME}:${X2GO_PORT} MIT-MAGIC-COOKIE-1 ${X2GO_COOKIE}
+
+
+X2GO_HOST=nx/nx,link=${X2GO_LINK},pack=${X2GO_PACK},limit=0,root=${SESSION_DIR},cache=8M,images=32M,type=${X2GO_TYPE},\
+id=${SESSION_NAME},\
+cookie=$X2GO_COOKIE,errors=${SESSION_DIR}/session.log,keyboard=${X2GO_KBD_LAYOUT},kbtype=${X2GO_KBD_TYPE},\
+keybd=${X2GO_SET_KBD},\
+geometry=${X2GO_GEOMETRY},resize=${X2GO_RESIZE},fullscreen=${X2GO_FULLSCREEN},accept=${REMOTE},listen=${GR_PORT}
+
+
+echo "${X2GO_HOST}:${X2GO_PORT}" >${SESSION_DIR}/options
+
+NX_AGENT=:${X2GO_PORT}
+
+
+SAVED_DISPLAY=$DISPLAY
+
+DISPLAY=nx/nx,options=${SESSION_DIR}/options:${X2GO_PORT} 
+export DISPLAY
+
+DEFAULT_FONT_PATH=$(echo $(grep -v '^ *#' /etc/X11/xorg.conf | grep FontPath  | awk '{print $2}' | sed -r "s/^[\"']|[\"']$//g") | sed 's/ /,/g')
+
+
+LD_LIBRARY_PATH=$X2GO_LIB x2goagent  -geometry ${X2GO_GEOMETRY} -name "X2GO-${SESSION_NAME}" -fp $DEFAULT_FONT_PATH  ${NX_AGENT} 2>${SESSION_DIR}/session.log &
+
+X2GO_AGENT_PID=$!
+
+X2GO_SND_PORT=1024
+sudo x2gopgwrapper createsession $X2GO_COOKIE $X2GO_AGENT_PID $X2GO_CLIENT $GR_PORT $SOUND_PORT $SESSION_NAME > /dev/null
+
+echo $X2GO_PORT
+echo $X2GO_COOKIE
+echo $X2GO_AGENT_PID
+echo $SESSION_NAME
+echo $GR_PORT
+echo $SOUND_PORT

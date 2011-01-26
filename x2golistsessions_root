@@ -1,0 +1,70 @@
+#!/usr/bin/perl
+use strict;
+
+sub check_pid
+{
+   my $pid=shift;
+   my $sess=shift;
+   my $sec=shift;
+   if($sec < 30)
+   {
+      return 1;
+   }
+   open (F,"</proc/$pid/cmdline") or return 0;
+   my $text=<F>;
+   close (F);
+   if($text =~ m/$sess/)
+   {
+      return 1;
+   }
+   return 0;
+}
+
+sub check_stat
+{
+   my $sess=shift;
+   my $user=shift;
+   my $log="~$user/.x2go/C-$sess/session.log";
+   my $text=`tail -1 $log`;
+   if($text =~ m/Session suspended/)
+   {
+       return 0;
+   }
+   return 1;
+}
+
+
+my $uname;
+my $serv=$ENV{'HOSTNAME'};
+my $outp=`x2golistsessions_sql $serv 2>/dev/null`;
+
+print $serv;
+
+my @outp=split("\n","$outp");
+
+for(my $i=0;$i<@outp;$i++)
+{
+     my @sinfo=split('\\|',"@outp[$i]");
+     if(@sinfo[4]eq 'F')
+     {
+           print "@outp[$i]\n";
+     }       
+     elsif(! check_pid (@sinfo[0],@sinfo[1],@sinfo[12]))
+     {
+         system("su - @sinfo[11] -c \"sudo x2gopgwrapper changestatus 'F' @sinfo[1] \" > /dev/null");
+         @outp[$i] =~ s/\|R\|/\|F\|/;
+         @outp[$i] =~ s/\|S\|/\|F\|/;
+     }
+     else
+     { 
+       if(@sinfo[4]eq 'R')
+       {
+           if(!check_stat(@sinfo[1],@sinfo[11]))
+	   {
+               system("su - @sinfo[11] -c \"sudo x2gopgwrapper changestatus 'S' @sinfo[1]\" > /dev/null");
+               @outp[$i] =~ s/\|R\|/\|S\|/;
+           }
+       }       
+       print "@outp[$i]\n";
+     }
+}

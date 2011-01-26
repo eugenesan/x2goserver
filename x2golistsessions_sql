@@ -1,0 +1,19 @@
+#!/usr/bin/perl
+use strict;
+my $serv=shift;
+my $outp=`sudo x2gopgwrapper listsessionsroot $serv`;
+$outp =~ s/ //g;
+$outp =~ s/\*/ /g;
+
+
+my @array=split("\n",$outp);
+my $i;
+for ( $i=0;$i<@array;$i++) 
+{
+       my @ln=split('\|',@array[$i]);
+       if(@ln[4] eq "F")
+       {
+          system("sudo x2gopgwrapper rmsessionsroot @ln[1]");
+       }
+       print "@array[$i]\n";
+}

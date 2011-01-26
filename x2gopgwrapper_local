@@ -1,0 +1,101 @@
+#!/bin/su postgres  
+cd ~
+#use only with sudo !!
+
+UNAME=$SUDO_USER
+
+case "$1" in
+
+getdisplays)
+  echo "select '|'||display||'|' from sessions  where server = '$2';"|psql -t x2go_sessions
+  ;;
+
+getports)
+  echo "select '|'||port||'|' from used_ports  where server = '$2';"|psql -t x2go_sessions
+  ;;
+
+getservers)
+  echo "select server,count(*) from sessions where status != 'F' group by server;"|psql -t x2go_sessions
+  ;;
+
+listsessions)
+  echo "select agent_pid, session_id, display, server, status,\
+   to_char(init_time,'DD.MM.YY*HH24:MI:SS'),cookie,client,gr_port,\
+   sound_port,to_char(last_time,'DD.MM.YY*HH24:MI:SS'),uname,\
+   to_char(now()-init_time,'SSSS') from  sessions  \
+   where status !='F' and server='$2' and uname='$UNAME' order by status desc;"|psql -t x2go_sessions
+  ;;
+
+listsessionsroot)
+  if [ "$UNAME" != "root" ]
+  then
+    echo "$UNAME, You have not permission to do this job!"
+    exit  
+  fi
+  echo "select agent_pid, session_id, display, server, status,\
+   to_char(init_time,'DD.MM.YY*HH24:MI:SS'),cookie,client,gr_port,\
+   sound_port,to_char(last_time,'DD.MM.YY*HH24:MI:SS'),uname,\
+   to_char(now()-init_time,'SSSS') from  sessions  \
+   where server='$2'  order by status desc;"|psql -t x2go_sessions
+  ;;
+
+rmsessionsroot)
+  if [ "$UNAME" != "root" ]
+  then
+    echo "$UNAME, You have not permission to do this job!"
+    exit  
+  fi
+  echo "delete from  sessions  \
+   where session_id='$2';"|psql -t x2go_sessions
+  ;;
+
+getagent)
+  echo "select agent_pid from sessions  where session_id = '$2';"|psql -t x2go_sessions
+  ;;
+
+getdisplay)
+  echo "select display from sessions  where session_id = '$2';"|psql -t x2go_sessions
+  ;;
+
+changestatus)
+  echo "update sessions set last_time=now(),status='$2' where session_id = '$3' and uname='$UNAME';"|psql -t x2go_sessions
+  ;;
+
+resume)
+  echo "update sessions set last_time=now(),status='R',client='$2' where session_id = '$3' and uname='$UNAME';"|psql -t x2go_sessions
+  ;;
+
+insertsession)
+  echo "insert into sessions (display,server,uname,session_id) values \
+  ('$2','$3','$UNAME','$4');"|psql x2go_sessions
+  ;;
+
+createsession)
+  echo "update sessions set status='R',last_time=now(),cookie='$2',agent_pid='$3',\
+   client='$4',gr_port='$5',sound_port='$6' where session_id='$7' and uname='$UNAME';"|psql x2go_sessions
+  ;;
+
+insertport)
+  echo "insert into used_ports (server,session_id,port) values \
+  ('$2','$3','$4');"|psql x2go_sessions
+  ;;
+
+insertmount)
+  echo "insert into mounts (session_id,path,client) values \
+  ('$2','$3','$4');"|psql x2go_sessions
+  ;;
+
+deletemount)
+  echo "delete from mounts where session_id='$2' and path='$3';"|psql x2go_sessions
+  ;;
+
+getmounts)
+  echo "select client,path from mounts where session_id = '$2';"|psql -t x2go_sessions
+  ;;
+
+*)
+  echo "$1: wrong argument"
+  ;;
+
+esac
+

@@ -1,0 +1,22 @@
+#!/usr/bin/perl
+use strict;
+
+my $fname=shift;
+open(F,"<$fname") or die "can't open $fname";
+my $dir=<F>;
+my $session=<F>;
+close(F);
+
+chomp($dir);
+my $uname=$ENV{'USER'};
+
+if(system( "fusermount -u $dir" ) == 0)
+{
+     unlink($fname);
+     system("sudo x2gopgwrapper deletemount $session \"$dir\"");
+     rmdir ($dir);
+}
+else
+{
+    system("x2gomessage --type error --code 0 --text $dir&");
+}

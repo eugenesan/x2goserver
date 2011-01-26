@@ -1,0 +1,9 @@
+#!/usr/bin/perl
+use strict;
+my $proc=shift;
+
+my @outp=split(",","$proc");
+for(my $i=0;$i<@outp;$i++)
+{
+    system("kill @outp[$i]");
+}

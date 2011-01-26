@@ -1,0 +1,74 @@
+#!/bin/sh
+SESSION_NAME=$1
+X2GO_GEOMETRY=$2
+X2GO_LINK=$3
+X2GO_PACK=$4
+X2GO_KBD_LAYOUT=$5
+X2GO_KBD_TYPE=$6
+X2GO_SET_KBD=$7
+
+
+
+X2GO_AGENT_PID=`sudo x2gopgwrapper getagent $SESSION_NAME` 
+X2GO_AGENT_PID=`echo "$X2GO_AGENT_PID"| awk {'print $1'}`
+
+
+
+X2GO_ROOT=${HOME}/.x2go
+X2GO_RESIZE=0
+X2GO_FULLSCREEN=0
+
+if [ "$X2GO_GEOMETRY" == "" ]
+then
+    X2GO_GEOMETRY=fullscreen
+fi
+
+if [ "$X2GO_GEOMETRY" == "fullscreen" ]
+then
+    X2GO_RESIZE=1
+    X2GO_FULLSCREEN=1
+fi
+
+SESSION_DIR=${X2GO_ROOT}/C-${SESSION_NAME}
+OPTIONS=`cat ${SESSION_DIR}/options`
+
+GSTR=`echo "$OPTIONS" | awk -F, {'print $15'}`
+RSTR=`echo "$OPTIONS" | awk -F, {'print $16'}`
+FSTR=`echo "$OPTIONS" | awk -F, {'print $17'}`
+LSTR=`echo "$OPTIONS" | awk -F, {'print $2'}`
+PSTR=`echo "$OPTIONS" | awk -F, {'print $3'}`
+KLSTR=`echo "$OPTIONS" | awk -F, {'print $12'}`
+KTSTR=`echo "$OPTIONS" | awk -F, {'print $13'}`
+KSSTR=`echo "$OPTIONS" | awk -F, {'print $14'}`
+
+
+KTSTR=`echo $KTSTR | sed "s/\//\\\\\\\\\//"`
+X2GO_KBD_TYPE=`echo $X2GO_KBD_TYPE | sed "s/\//\\\\\\\\\//"`
+
+
+NEWOPTIONS=`echo "$OPTIONS" | sed  -e  "s/$LSTR/link=$X2GO_LINK/"\
+ -e "s/$PSTR/pack=$X2GO_PACK/"\
+ -e "s/$KLSTR/keyboard=$X2GO_KBD_LAYOUT/"\
+ -e "s/$KTSTR/kbtype=$X2GO_KBD_TYPE/"\
+ -e "s/$KSSTR/keybd=$X2GO_SET_KBD/"\
+ -e "s/$GSTR/geometry=$X2GO_GEOMETRY/"\
+ -e "s/$RSTR/resize=$X2GO_RESIZE/"\
+ -e "s/$FSTR/fullscreen=$X2GO_FULLSCREEN/"`
+
+
+#echo -e "old options:$OPTIONS\n\nnew options:$NEWOPTIONS"
+
+
+X2GO_CLIENT=`echo $SSH_CLIENT | awk '{print $1}'`
+if [ "$X2GO_CLIENT" == "" ]
+then
+   X2GO_CLIENT=$HOSTNAME
+fi
+
+echo "$NEWOPTIONS" >${SESSION_DIR}/options
+
+
+sudo x2gopgwrapper resume  $X2GO_CLIENT $SESSION_NAME  > /dev/null
+
+
+kill -HUP $X2GO_AGENT_PID
