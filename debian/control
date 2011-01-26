@@ -7,7 +7,7 @@ Standards-Version: 3.7.2
 
 Package: x2goserver
 Architecture: all
-Depends: x2goagent, sudo, lsof, openssh-client, openssh-server, libconfig-simple-perl
+Depends: x2goagent, sudo, lsof, openssh-client, openssh-server, libconfig-simple-perl, makepasswd, libdbd-pg-perl, libdbd-sqlite3-perl
 Recommends: sshfs
 Description: x2goserver (daemon and tools)
  x2go is a serverbased computing environment with

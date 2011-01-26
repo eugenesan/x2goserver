@@ -5,4 +5,7 @@ use strict;
 use lib "/usr/lib/x2go";
 use x2godbwrapper; 
 
-print join("\n", db_getservers);
+my $client=shift or die;
+my $sid=shift or die;
+
+db_resume($client, $sid);

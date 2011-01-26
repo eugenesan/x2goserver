@@ -10,9 +10,7 @@ X2GO_SET_KBD=$7
 
 
 
-X2GO_AGENT_PID=`sudo x2gopgwrapper getagent $SESSION_NAME` 
-X2GO_AGENT_PID=`echo "$X2GO_AGENT_PID"| awk {'print $1'}`
-
+X2GO_AGENT_PID=`x2gogetagent $SESSION_NAME`
 
 
 X2GO_ROOT=${HOME}/.x2go
@@ -68,8 +66,6 @@ fi
 
 echo "$NEWOPTIONS" >${SESSION_DIR}/options
 
-
-sudo x2gopgwrapper resume  $X2GO_CLIENT $SESSION_NAME  > /dev/null
-
+x2goresume  $X2GO_CLIENT $SESSION_NAME  > /dev/null
 
 kill -HUP $X2GO_AGENT_PID

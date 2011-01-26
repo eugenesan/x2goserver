@@ -1,0 +1,17 @@
+#!/usr/bin/perl
+use strict;
+
+
+use lib "/usr/lib/x2go";
+use x2godbwrapper; 
+
+
+my $cookie=shift or die;
+my $pid=shift or die;
+my $client=shift or die;
+my $gr_port=shift or die;
+my $snd_port=shift or die;
+my $fs_port=shift or die;
+my $sid=shift or die;
+
+db_createsession($cookie,$pid,$client,$gr_port, $snd_port, $fs_port, $sid);

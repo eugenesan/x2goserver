@@ -1,6 +1,9 @@
 #!/usr/bin/perl
 use strict;
 
+use lib "/usr/lib/x2go";
+use x2godbwrapper; 
+
 my $fname=shift;
 open(F,"<$fname") or die "can't open $fname";
 my $dir=<F>;
@@ -22,7 +25,7 @@ if($ENV{'GNOME_DESKTOP_SESSION_ID'} ne "")
 if(system( "fusermount -u $dir" ) == 0)
 {
      unlink($fname);
-     system("sudo x2gopgwrapper deletemount $session \"$dir\"");
+     db_deletemount( $session, $dir);
      rmdir ($dir);
 }
 else

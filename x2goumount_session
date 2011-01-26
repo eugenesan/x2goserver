@@ -2,6 +2,10 @@
 use Sys::Hostname;
 use strict;
 
+use lib "/usr/lib/x2go";
+use x2godbwrapper; 
+
+
 my $session=shift;
 my $only_path=shift;
 
@@ -18,14 +22,12 @@ if($only_path)
 }
 
 
-my $outp=`sudo x2gopgwrapper getdisplay $session`;
+my $display=db_getdisplay($session);
 
-$outp=~s/ //g;
 
-my $display=$outp;
+print "DISPLAY=$display\n";
 
-$outp=`sudo x2gopgwrapper getmounts $session`;
-my @outp=split("\n","$outp");
+my @outp=db_getmounts($session);
 my $i;
 
 
@@ -108,7 +110,7 @@ break:
 	   unlink("$remote(sshfs-cdrom)");
 	}
         #print "$session \"@line[1]\"\n"; 
-	system("sudo x2gopgwrapper deletemount $session \"@line[1]\"> /dev/null");
+	db_deletemount ($session, @line[1]);
         rmdir (@line[1]);
     }
 cont:    

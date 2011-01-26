@@ -66,16 +66,13 @@ Press Enter to continue
          addgroup --system x2gousers
     fi
     
-    SUDOCONF=`cat /etc/sudoers | grep x2gopgwrapper | grep x2gousers`
-    if [ "$SUDOCONF" == "" ]
-    then
-          echo "
-#### X2GO section
-%x2gousers ALL=(ALL) NOPASSWD: /usr/bin/x2gopgwrapper
-" >> /etc/sudoers       
+    X2GOUSR=`getent passwd | grep x2gouser`
+    
+    if [ "$X2GOUSR" == "" ]
+    then 
+         useradd -r -d /var/db/x2go/ x2gouser
     fi
-
-    echo "Attention: If you want to allow users to log into the x2go system, you'll need to add them to the \"x2gousers\" group"
+    
     ;;
 
     abort-upgrade)

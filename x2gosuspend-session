@@ -3,17 +3,14 @@
 SESSION_NAME=$1
 
 
-X2GO_AGENT_PID=`sudo x2gopgwrapper getagent $SESSION_NAME` 
-echo "agent: $X2GO_AGENT_PID"
+X2GO_AGENT_PID=`x2gogetagent $SESSION_NAME` 
 X2GO_AGENT_PID=`echo "$X2GO_AGENT_PID"| awk {'print $1'}`
-
-echo "agent: $X2GO_AGENT_PID"
 
 
 #workaround for knotify
 killall -HUP knotify
 
-sudo x2gopgwrapper changestatus 'S' $SESSION_NAME  > /dev/null
+x2gochangestatus 'S' $SESSION_NAME  > /dev/null
 
 
 kill -HUP $X2GO_AGENT_PID

@@ -1,16 +1,17 @@
 #!/usr/bin/perl
 use strict;
+
+
+use lib "/usr/lib/x2go";
+use x2godbwrapper; 
+
+
 my $uname=shift;
 my $id=shift;
 my $tbl="mounts";
-my $outp=`sudo x2gopgwrapper getmounts '$id'`;
-#print $outp;
-$outp =~ s/ //g;
-
-my @outp=split("\n","$outp");
+my @outp=dbsys_getmounts( $id);
 for(my $i=0;$i<@outp;$i++)
 {
     my $path=(split("\\|",@outp[$i]))[1];
-#    print $path;
     print `su $uname -c "lsof 2>/dev/null | grep $path"`;
 }

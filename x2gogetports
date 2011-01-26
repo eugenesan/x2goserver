@@ -5,4 +5,5 @@ use strict;
 use lib "/usr/lib/x2go";
 use x2godbwrapper; 
 
-print join("\n", db_getservers);
+my $host=shift or die;
+print join("\n", db_getports($host));

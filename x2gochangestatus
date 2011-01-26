@@ -1,0 +1,11 @@
+#!/usr/bin/perl
+use strict;
+
+
+use lib "/usr/lib/x2go";
+use x2godbwrapper; 
+
+my $status=shift or die;
+my $sid=shift or die;
+
+db_changestatus($status, $sid);

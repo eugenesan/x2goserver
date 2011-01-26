@@ -1,6 +1,9 @@
 #!/usr/bin/perl
 use strict;
 
+use lib "/usr/lib/x2go";
+use x2godbwrapper; 
+
 my $type=shift;
 my $session=shift;
 my $user=shift;
@@ -170,10 +173,7 @@ for(my $i=0;$i<@dirs;$i++)
             $mntpath="$mdir/$p";
        }
 
-       print "starting:sudo x2gopgwrapper insertmount $session \"$mntpath\" $host\n";
-       my $outp=`sudo x2gopgwrapper insertmount $session \"$mntpath\" $host`;
-       print "result: $outp";
-       if($outp =~ m/INSERT/)
+       if(db_insertmount( $session, $mntpath, $host))
        {
              my $code_conv=$ENV{'X2GO_ICONV'};
              if($code_conv ne "")
@@ -229,7 +229,7 @@ for(my $i=0;$i<@dirs;$i++)
     	    else
     	    {
                print "mount @dirs[$i] failed\n";
-               `sudo x2gopgwrapper deletemount $session \"$mntpath\"`;
+               db_deletemount( $session, $mntpath);
 	       rmdir($mntpath);
     	    }
        }

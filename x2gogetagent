@@ -1,8 +1,8 @@
 #!/usr/bin/perl
 use strict;
 
-
 use lib "/usr/lib/x2go";
 use x2godbwrapper; 
 
-print join("\n", db_getservers);
+my $sid=shift or die;
+print db_getagent $sid;

@@ -3,6 +3,10 @@ use Sys::Hostname;
 use strict;
 
 
+use lib "/usr/lib/x2go";
+use x2godbwrapper; 
+
+
 sub check_stat
 {
    my $sess=shift;
@@ -20,18 +24,17 @@ if( ! $serv)
 {
    $serv=hostname;
 }
-my $uname=$ENV{'USER'};
-my $outp;
+
+my @outp;
 if($serv eq "--all-servers")
 {
- $outp=`sudo x2gopgwrapper listsessions_all`;
+ @outp=db_listsessions_all();
 }
 else
 {
- $outp=`sudo x2gopgwrapper listsessions $serv`;
+ @outp=db_listsessions($serv);
 }
 
-my @outp=split("\n","$outp");
 for(my $i=0;$i<@outp;$i++)
 {
      @outp[$i] =~ s/ //g;
@@ -47,7 +50,7 @@ for(my $i=0;$i<@outp;$i++)
        {
            if(!check_stat(@sinfo[1]))
 	   {
-               system("sudo x2gopgwrapper changestatus 'S' @sinfo[1] > /dev/null");
+               db_changestatus( 'S', @sinfo[1] );
 	       @outp[$i] =~ s/\|R\|/\|S\|/;
                system( "x2goumount_session @sinfo[1]");
 

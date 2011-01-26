@@ -1,0 +1,13 @@
+#!/usr/bin/perl
+use strict;
+
+
+use lib "/usr/lib/x2go";
+use x2godbwrapper; 
+
+my $display=shift or die;
+my $server=shift or die;
+my $sid=shift or die;
+
+db_insertsession($display, $server, $sid);
+print "inserted";

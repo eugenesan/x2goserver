@@ -1,3 +1,10 @@
+x2goserver (3.0.99-1) unstable; urgency=low
+
+  * not use sudo with postgresql, wrappers in perl instead of bash
+  * use unprivileged user x2gouser with sqlite
+
+ -- Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>  Tue, 25 Jan 2011 17:09:01 +0100
+
 x2goserver (3.0.1-9) unstable; urgency=low
 
   * changes in x2gomountdir to use with plasmoid

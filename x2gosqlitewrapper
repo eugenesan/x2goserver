@@ -1,0 +1,321 @@
+#!/usr/bin/perl
+use strict;
+
+use DBI;          
+use POSIX;                                                                                                                             
+
+my $realuser=$ENV{SUDO_USER};
+my ($uname, $pass, $uid, $pgid, $quota, $comment, $gcos, $homedir, $shell, $expire) = getpwuid(getuid());
+
+if($uname ne "x2gouser")
+{
+  die "Use \"sudo -u x2gouser\" to run this programm";
+}
+
+my $cmd=shift or die "command not specified";
+
+
+my $user="x2gouser";
+my  ($name, $pass, $uid, $pgid, $quota, $comment, $gcos, $dir, $shell, $expire) = getpwnam($user);
+my $dbfile="$dir/x2go_sessions";
+my $dbfile="/var/db/x2go/x2go_sessions";
+      
+my $dbh=DBI->connect("dbi:SQLite:dbname=$dbfile","","",{AutoCommit => 1}) or die $_;
+
+
+if($cmd eq  "rmsessionsroot")
+{
+  checkroot();
+       my $sid=shift or die "argument \"session_id\" missed";
+       my $sth=$dbh->prepare("delete from sessions  where session_id='$sid'");
+       $sth->execute()or die;
+       $sth->finish();
+}
+
+elsif($cmd eq  "listsessionsroot")
+{
+  checkroot();
+       my $server=shift or die "argument \"server\" missed";
+       my @strings;	       
+	       my $sth=$dbh->prepare("select agent_pid, session_id, display, server, status,
+                                      substr(strftime('%d.%m.%Y*%H:%M:%S',init_time),0,6)||substr(strftime('%d.%m.%Y*%H:%M:%S',init_time),9,11),
+                                      cookie,client,gr_port,sound_port,
+                                      substr(strftime('%d.%m.%Y*%H:%M:%S',last_time),0,6)||substr(strftime('%d.%m.%Y*%H:%M:%S',last_time),9,11),
+                                      uname,
+                                      strftime('%s','now','localtime') - strftime('%s',init_time),fs_port from  sessions 
+                                      where server='$server'  order by status desc");
+               $sth->execute()or die;
+               my @data;
+	       my $i=0;
+               while (@data = $sth->fetchrow_array) 
+               {
+		   @strings[$i++]=join('|',@data);
+               }
+	       $sth->finish();
+	       print join("\n",@strings);
+}
+
+elsif($cmd eq  "listsessionsroot_all")
+{
+  checkroot();
+       my @strings;	       
+	       my $sth=$dbh->prepare("select agent_pid, session_id, display, server, status,
+                                      substr(strftime('%d.%m.%Y*%H:%M:%S',init_time),0,6)||substr(strftime('%d.%m.%Y*%H:%M:%S',init_time),9,11),
+                                      cookie,client,gr_port,sound_port,
+                                      substr(strftime('%d.%m.%Y*%H:%M:%S',last_time),0,6)||substr(strftime('%d.%m.%Y*%H:%M:%S',last_time),9,11),
+                                      uname,
+                                      strftime('%s','now','localtime') - strftime('%s',init_time),fs_port from  sessions 
+                                      order by status desc");
+               $sth->execute()or die;
+               my @data;
+	       my $i=0;
+               while (@data = $sth->fetchrow_array) 
+               {
+		   @strings[$i++]=join('|',@data);
+               }
+	       $sth->finish();
+	       print join("\n",@strings);
+}
+
+	     
+elsif($cmd eq  "getmounts")
+{
+       my $sid=shift or die "argument \"session_id\" missed";
+       my @strings;
+	       my $sth=$dbh->prepare("select client, path from mounts where session_id='$sid'");
+               $sth->execute()or die;
+               my @data;
+	       my $i=0;
+               while (@data = $sth->fetchrow_array) 
+               {
+		   @strings[$i++]=join("|",@data);
+               }
+	       $sth->finish();
+	       $dbh->disconnect();
+	       print join("\n",@strings);
+}
+
+elsif($cmd eq  "deletemount")
+{
+       my $sid=shift or die "argument \"session_id\" missed";
+       my $path=shift or die "argument \"path\" missed";
+       my $sth=$dbh->prepare("delete from mounts where session_id='$sid' and path='$path'");
+       $sth->execute();
+       $sth->finish();
+}
+
+elsif($cmd eq  "insertmount")
+{
+       my $sid=shift or die "argument \"session_id\" missed";
+       my $path=shift or die "argument \"path\" missed";
+       my $client=shift or die "argument \"client\" missed";
+       my $sth=$dbh->prepare("insert into mounts (session_id,path,client) values  ('$sid','$path','$client')");
+       $sth->execute();
+       if(!$sth->err())
+       {
+	 print "ok";
+       }
+       $sth->finish();
+}
+
+elsif($cmd eq  "insertsession")
+{
+	my $display=shift or die "argument \"display\" missed";
+	my $server=shift or die "argument \"server\" missed";
+        my $sid=shift or die "argument \"session_id\" missed";
+        my $sth=$dbh->prepare("insert into sessions (display,server,uname,session_id, init_time, last_time) values 
+                              ('$display','$server','$realuser','$sid', datetime('now','localtime'), datetime('now','localtime'))");
+        $sth->execute()or die $_;
+        $sth->finish();
+        print "ok";
+}
+
+elsif($cmd eq  "createsession")
+{
+       my $cookie=shift or die"argument \"cookie\" missed";
+       my $pid=shift or die"argument \"pid\" missed";
+       my $client=shift or die"argument \"client\" missed";
+       my $gr_port=shift or die"argument \"gr_port\" missed";
+       my $snd_port=shift or die"argument \"snd_port\" missed";
+       my $fs_port=shift or die"argument \"fs_port\" missed";
+       my $sid=shift or die "argument \"session_id\" missed";
+       my $sth=$dbh->prepare("update sessions set status='R',last_time=datetime('now','localtime'),cookie='$cookie',agent_pid='$pid',
+                             client='$client',gr_port='$gr_port',sound_port='$snd_port',fs_port='$fs_port' where session_id='$sid' and uname='$realuser'");
+       $sth->execute()or die;
+       $sth->finish();
+       print "ok";
+}
+
+elsif($cmd eq  "insertport")
+{
+	my $server=shift or die "argument \"server\" missed";
+	my $sid=shift or die "argument \"session_id\" missed";
+	my $sshport=shift or die "argument \"port\" missed";
+        my $sth=$dbh->prepare("insert into used_ports (server,session_id,port) values  ('$server','$sid','$sshport')");
+        $sth->execute()or die;
+        $sth->finish();
+
+}
+
+	     
+elsif($cmd eq  "resume")
+{
+       my $client=shift or die "argument \"client\" missed";
+       my $sid=shift or die "argument \"session_id\" missed";       
+	       my $sth=$dbh->prepare("update sessions set last_time=datetime('now','localtime'),status='R',
+                                      client='$client' where session_id = '$sid' and uname='$realuser'");
+               $sth->execute()or die;
+	       $sth->finish();
+}
+
+elsif($cmd eq  "changestatus")
+{
+       my $status=shift or die "argument \"status\" missed";
+       my $sid=shift or die "argument \"session_id\" missed";       
+	       my $sth=$dbh->prepare("update sessions set last_time=datetime('now','localtime'),
+                             status='$status' where session_id = '$sid' and uname='$realuser'");
+               $sth->execute()or die;
+	       $sth->finish();
+}
+
+elsif($cmd eq  "getdisplays")
+{
+       #ignore $server
+       my @strings;
+	       my $sth=$dbh->prepare("select display from sessions");
+               $sth->execute()or die;
+               my @data;
+	       my $i=0;
+               while (@data = $sth->fetchrow_array) 
+               {
+		   @strings[$i++]='|'.@data[0].'|';
+               }
+	       $sth->finish();
+	       print join("\n",@strings);
+}
+
+elsif($cmd eq  "getports")
+{
+       #ignore $server
+       my $server=shift or die "argument \"server\" missed";         
+       my @strings;
+	       my $sth=$dbh->prepare("select port from used_ports");
+               $sth->execute()or die;
+               my @data;
+	       my $i=0;
+               while (@data = $sth->fetchrow_array) 
+               {
+		   @strings[$i++]='|'.@data[0].'|';
+               }
+	       $sth->finish();
+	       print join("\n",@strings);
+}
+
+elsif($cmd eq  "getservers")
+{
+       my @strings;
+	       my $sth=$dbh->prepare("select server,count(*) from sessions where status != 'F' group by server");
+               $sth->execute()or die;
+               my @data;
+	       my $i=0;
+               while (@data = $sth->fetchrow_array) 
+               {
+		   @strings[$i++]=@data[0];
+               }
+	       $sth->finish();
+	       print join("\n",@strings);
+}
+
+elsif($cmd eq  "getagent")
+{
+       my $sid=shift or die "argument \"session_id\" missed";
+       my $agent;
+	       my $sth=$dbh->prepare("select agent_pid from sessions
+				      where session_id ='$sid'");
+               $sth->execute()or die;
+               my @data;
+	       my $i=0;
+               if(@data = $sth->fetchrow_array) 
+               {
+		   $agent=@data[0];
+               }
+               $sth->finish();
+       print $agent;
+}
+
+elsif($cmd eq  "getdisplay")
+{
+       my $sid=shift or die "argument \"session_id\" missed";
+       my $display;
+	       my $sth=$dbh->prepare("select display from sessions
+				      where session_id ='$sid'");
+               $sth->execute()or die;
+               my @data;
+	       my $i=0;
+               if(@data = $sth->fetchrow_array) 
+               {
+		   $display=@data[0];
+               }
+               $sth->finish();
+       print $display;
+}
+
+elsif($cmd eq  "listsessions")
+{
+       my $server=shift or die "argument \"server\" missed";
+	       my @strings;
+	       my $sth=$dbh->prepare("select agent_pid, session_id, display, server, status,
+                                      substr(strftime('%d.%m.%Y*%H:%M:%S',init_time),0,6)||substr(strftime('%d.%m.%Y*%H:%M:%S',init_time),9,11),
+                                      cookie,client,gr_port,sound_port,
+                                      substr(strftime('%d.%m.%Y*%H:%M:%S',last_time),0,6)||substr(strftime('%d.%m.%Y*%H:%M:%S',last_time),9,11),
+                                      uname,
+                                      strftime('%s','now','localtime') - strftime('%s',init_time),fs_port from  sessions 
+                                      where status !='F' and server='$server' and uname='$realuser' 
+                                      and  (  session_id not like '%XSHAD%')  order by status desc");
+               $sth->execute()or die;
+               my @data;
+	       my $i=0;
+               while (@data = $sth->fetchrow_array) 
+               {
+		   @strings[$i++]=join('|',@data);
+               }
+	       $sth->finish();
+	       print join("\n",@strings);
+}
+
+elsif($cmd eq  "listsessions_all")
+{
+	       my @strings;
+	       my $sth=$dbh->prepare("select agent_pid, session_id, display, server, status,
+                                      substr(strftime('%d.%m.%Y*%H:%M:%S',init_time),0,6)||substr(strftime('%d.%m.%Y*%H:%M:%S',init_time),9,11),
+                                      cookie,client,gr_port,sound_port,
+                                      substr(strftime('%d.%m.%Y*%H:%M:%S',last_time),0,6)||substr(strftime('%d.%m.%Y*%H:%M:%S',last_time),9,11),
+                                      uname,
+                                      strftime('%s','now','localtime') - strftime('%s',init_time),fs_port from  sessions 
+                                      where status !='F' and uname='$realuser' and  (  session_id not like '%XSHAD%')  order by status desc");
+               $sth->execute()or die;
+               my @data;
+	       my $i=0;
+               while (@data = $sth->fetchrow_array) 
+               {
+		   @strings[$i++]=join('|',@data);
+               }
+	       $sth->finish();
+	       print join("\n",@strings);
+}
+else
+{
+      print "unknown command $cmd\n";
+}
+
+$dbh->disconnect();
+
+
+
+sub checkroot
+{
+  if ($realuser ne "root")
+  {
+    die "$realuser, you can not do this job";
+  }
+}

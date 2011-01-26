@@ -1,0 +1,14 @@
+#!/usr/bin/perl
+use strict;
+
+
+use lib "/usr/lib/x2go";
+use x2godbwrapper; 
+
+my $server=shift or die;
+my $sid=shift or die;
+my $port=shift or die;
+
+db_insertport($server,$sid,$port);
+print "inserted";
+
