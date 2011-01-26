@@ -1,4 +1,5 @@
 #!/usr/bin/perl
+use Sys::Hostname;
 use strict;
 
 
@@ -21,7 +22,7 @@ my $uname;
 my $serv=shift;
 if( ! $serv)
 {
-   $serv=$ENV{'HOSTNAME'};
+   $serv=hostname;
 }
 
 my $outp=`x2golistsessions_sql $serv 2>/dev/null`;

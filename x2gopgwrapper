@@ -3,6 +3,9 @@ SQLHOST=`cat /etc/x2go/sql`
 if [ "$SQLHOST" ==  "local" ]
 then
   x2gopgwrapper_local $@ 2> /dev/null
+elif [ "$SQLHOST" ==  "sqlite" ]
+then
+  x2gopgwrapper_sqlite $@ 2> /dev/null
 else
   x2gopgwrapper_net $SQLHOST $@
 fi

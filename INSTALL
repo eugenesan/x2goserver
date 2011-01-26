@@ -34,4 +34,5 @@ copy public part "/root/.x2go/ssh/.pg/id_dsa.pub" on computer with running sql s
 and add it to ~postgres/.ssh/authorized_keys
 cat id_dsa.pub >> ~postgres/.ssh/authorized_keys
 
-
+IF YOU WANT TO USE SQLITE
+echo -n sqlite > /etc/x2go/sql

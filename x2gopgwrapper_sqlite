@@ -1,0 +1,201 @@
+#!/bin/bash
+#use only with sudo !!
+
+UNAME=$SUDO_USER
+
+DATABASE=/var/db/x2go/x2go_sessions
+
+
+case "$1" in
+
+getdisplays)
+  echo "select '|'||display||'|' from sessions;"|sqlite $DATABASE
+  ;;
+
+getports)
+  echo "select '|'||port||'|' from used_ports;"|sqlite $DATABASE
+  ;;
+
+getservers)
+  echo "select server,count(*) from sessions where status != 'F' group by server;"|sqlite $DATABASE
+  ;;
+
+listsessions)
+  echo "select agent_pid, session_id, display, server, status,\
+   substr(strftime('%d.%m.%Y*%H:%M:%S',init_time),0,6)||substr(strftime('%d.%m.%Y*%H:%M:%S',init_time),9,11),\
+   cookie,client,gr_port,sound_port,\
+   substr(strftime('%d.%m.%Y*%H:%M:%S',last_time),0,6)||substr(strftime('%d.%m.%Y*%H:%M:%S',last_time),9,11),\
+   uname,\
+   strftime('%s','now','localtime') - strftime('%s',init_time),fs_port from  sessions  \
+   where status !='F' and server='$2' and uname='$UNAME' order by status desc;"|sqlite $DATABASE
+  ;;
+
+listsessions_all)
+  echo "select agent_pid, session_id, display, server, status,\
+   substr(strftime('%d.%m.%Y*%H:%M:%S',init_time),0,6)||substr(strftime('%d.%m.%Y*%H:%M:%S',init_time),9,11),\
+   cookie,client,gr_port,sound_port,\
+   substr(strftime('%d.%m.%Y*%H:%M:%S',last_time),0,6)||substr(strftime('%d.%m.%Y*%H:%M:%S',last_time),9,11),\
+   uname,\
+   strftime('%s','now','localtime') - strftime('%s',init_time),fs_port from  sessions  \
+   where status !='F' and uname='$UNAME' order by status desc;"|sqlite $DATABASE
+  ;;
+
+listsessionsroot)
+  if [ "$UNAME" != "root" ]
+  then
+    echo "$UNAME, You have not permission to do this job!"
+    exit  
+  fi
+  echo "select agent_pid, session_id, display, server, status,\
+   substr(strftime('%d.%m.%Y*%H:%M:%S',init_time),0,6)||substr(strftime('%d.%m.%Y*%H:%M:%S',init_time),9,11),\
+   cookie,client,gr_port,sound_port,\
+   substr(strftime('%d.%m.%Y*%H:%M:%S',last_time),0,6)||substr(strftime('%d.%m.%Y*%H:%M:%S',last_time),9,11),\
+   uname,\
+   strftime('%s','now','localtime') - strftime('%s',init_time),fs_port from  sessions  \
+   where server='$2'  order by status desc;"|sqlite $DATABASE
+  ;;
+
+listsessionsroot_all)
+  if [ "$UNAME" != "root" ]
+  then
+    echo "$UNAME, You have not permission to do this job!"
+    exit  
+  fi
+  echo "select agent_pid, session_id, display, server, status,\
+   substr(strftime('%d.%m.%Y*%H:%M:%S',init_time),0,6)||substr(strftime('%d.%m.%Y*%H:%M:%S',init_time),9,11),\
+   cookie,client,gr_port,sound_port,\
+   substr(strftime('%d.%m.%Y*%H:%M:%S',last_time),0,6)||substr(strftime('%d.%m.%Y*%H:%M:%S',last_time),9,11),\
+   uname,\
+   strftime('%s','now','localtime') - strftime('%s',init_time),fs_port from  sessions  \
+   order by status desc;"|sqlite $DATABASE
+  ;;
+
+listsusp)
+  if [ "$UNAME" != "root" ]
+  then
+    echo "$UNAME, You have not permission to do this job!"
+    exit  
+  fi
+  echo "select session_id, display, uname, server,round((strftime('%s','now','localtime') - strftime('%s',last_time))/60)\
+   from sessions where server='$2' and status='S';"|sqlite $DATABASE
+  ;;
+
+listallrunning)
+  if [ "$UNAME" != "root" ]
+  then
+    echo "$UNAME, You have not permission to do this job!"
+    exit  
+  fi
+  echo "select agent_pid, session_id, display, server, status,\
+   substr(strftime('%d.%m.%Y*%H:%M:%S',init_time),0,6)||substr(strftime('%d.%m.%Y*%H:%M:%S',init_time),9,11),\
+   cookie,client,gr_port,sound_port,\
+   substr(strftime('%d.%m.%Y*%H:%M:%S',last_time),0,6)||substr(strftime('%d.%m.%Y*%H:%M:%S',last_time),9,11),\
+   uname,\
+   strftime('%s','now','localtime') - strftime('%s',init_time),fs_port from  sessions  \
+   where status='R';"|sqlite $DATABASE
+  ;;
+
+listmails)
+  if [ "$UNAME" != "root" ]
+  then
+    echo "$UNAME, You have not permission to do this job!"
+    exit  
+  fi
+  echo "select user_messages.mess_id,sessions.session_id,\
+      sessions.uname,sessions.display from sessions,user_messages,\
+      messages where sessions.uname=user_messages.uname and sessions.status!='F'\
+      and messages.mess_id=user_messages.mess_id and sessions.server='$2';"|sqlite $DATABASE
+  ;;
+
+getmail)
+  if [ "$UNAME" != "root" ]
+  then
+    echo "$UNAME, You have not permission to do this job!"
+    exit  
+  fi
+  echo "select message from messages where mess_id='$2';"|sqlite $DATABASE
+  ;;
+
+rmmail)
+  if [ "$UNAME" != "root" ]
+  then
+    echo "$UNAME, You have not permission to do this job!"
+    exit  
+  fi
+  echo "delete from user_messages where mess_id='$2' and uname='$3';"|sqlite $DATABASE
+  ;;
+
+rmsessionsroot)
+  if [ "$UNAME" != "root" ]
+  then
+    echo "$UNAME, You have not permission to do this job!"
+    exit  
+  fi
+  echo "delete from  sessions  \
+   where session_id='$2';"|sqlite $DATABASE
+  echo "delete from  used_ports  \
+   where session_id='$2';"|sqlite $DATABASE
+  ;;
+
+getagent)
+  echo "select agent_pid from sessions  where session_id = '$2';"|sqlite $DATABASE
+  ;;
+
+getdisplay)
+  echo "select display from sessions  where session_id = '$2';"|sqlite $DATABASE
+  ;;
+
+changestatus)
+  echo "update sessions set last_time=datetime('now','localtime'),status='$2' where session_id = '$3' and uname='$UNAME';"|sqlite $DATABASE
+  ;;
+
+resume)
+  echo "update sessions set last_time=datetime('now','localtime'),status='R',client='$2' where session_id = '$3' and uname='$UNAME';"|sqlite $DATABASE
+  ;;
+
+insertsession)
+  OUTP=`echo "insert into sessions (display,server,uname,session_id, init_time, last_time) values \
+  ('$2','$3','$UNAME','$4', datetime('now','localtime'), datetime('now','localtime'));"|sqlite $DATABASE`
+  if [ "$OUTP" == "" ]
+  then
+    echo "INSERT 0 1"
+  fi
+  ;;
+
+createsession)
+  echo "update sessions set status='R',last_time=datetime('now','localtime'),cookie='$2',agent_pid='$3',\
+   client='$4',gr_port='$5',sound_port='$6',fs_port='$7' where session_id='$8' and uname='$UNAME';"|sqlite $DATABASE
+  ;;
+
+insertport)
+   OUTP=`echo "insert into used_ports (server,session_id,port) values \
+  ('$2','$3','$4');"|sqlite $DATABASE`
+  if [ "$OUTP" == "" ]
+  then
+    echo "INSERT 0 1"
+  fi
+  ;;
+
+insertmount)
+   OUTP=`echo "insert into mounts (session_id,path,client) values \
+  ('$2','$3','$4');"|sqlite $DATABASE`
+  if [ "$OUTP" == "" ]
+  then
+    echo "INSERT 0 1"
+  fi
+  ;;
+
+deletemount)
+  echo "delete from mounts where session_id='$2' and path='$3';"|sqlite $DATABASE
+  ;;
+
+getmounts)
+  echo "select client,path from mounts where session_id = '$2';"|sqlite $DATABASE
+  ;;
+
+*)
+  echo "$1: wrong argument"
+  ;;
+
+esac
+

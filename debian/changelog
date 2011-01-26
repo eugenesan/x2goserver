@@ -1,3 +1,10 @@
+x2goserver (3.0.1-1) unstable; urgency=low
+
+  * Support for sqlite
+  * fixed problem with HOSTNAME variable in perl scripts when users shell is zsh. Thank Ralf Schulze
+
+ -- Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>  Thu, 16 Jul 2009 10:56:23 +0200
+
 x2goserver (3.0.0-2) unstable; urgency=low
 
   * Support for rdesktop sessions

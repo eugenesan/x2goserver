@@ -62,6 +62,7 @@ install: build
 	install  x2gomountdirs  $(CURDIR)/debian/x2goserver/usr/bin/
 	install  x2gopgwrapper  $(CURDIR)/debian/x2goserver/usr/bin/
 	install  x2gopgwrapper_local  $(CURDIR)/debian/x2goserver/usr/bin/
+	install  x2gopgwrapper_sqlite  $(CURDIR)/debian/x2goserver/usr/bin/
 	install  x2gopgwrapper_net  $(CURDIR)/debian/x2goserver/usr/bin/
 	install  x2goresume-session  $(CURDIR)/debian/x2goserver/usr/bin/
 	install  x2goruncommand  $(CURDIR)/debian/x2goserver/usr/bin/
@@ -76,6 +77,7 @@ install: build
 	cp  sql  $(CURDIR)/debian/x2goserver/etc/x2go/
 	install  x2gocleansessions  $(CURDIR)/debian/x2goserver/usr/sbin/
 	install  x2gocreatebase.sh  $(CURDIR)/debian/x2goserver/usr/lib/x2go/script
+	install  x2gosqlite.sh  $(CURDIR)/debian/x2goserver/usr/lib/x2go/script
 
 
 

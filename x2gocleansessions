@@ -1,4 +1,5 @@
 #!/usr/bin/perl
+use Sys::Hostname;
 use strict;
 
 sub check_pid
@@ -41,8 +42,8 @@ sub catch_term
 }
 
 my $uname;
-my $serv=$ENV{'HOSTNAME'};
-
+#my $serv=$ENV{'HOSTNAME'};
+my $serv = hostname;
 my $pid = fork();
 if (not defined $pid) 
 {
