@@ -18,6 +18,38 @@ X2GO_CMD=$9
 X2GO_RESIZE=0
 X2GO_FULLSCREEN=0
 
+if [ "$X2GO_STYPE" == "S" ]
+then
+    
+    SHADOW_MODE=`echo "$X2GO_CMD"|awk '{split($0,a,"XSHAD"); print a[1]}'`
+    SHADOW_USER=`echo "$X2GO_CMD"|awk '{split($0,a,"XSHAD"); print a[2]}'`
+    SHADOW_DESKTOP=`echo "$X2GO_CMD"|awk '{split($0,a,"XSHAD"); print a[3]}'`
+    
+    echo "suser $SHADOW_USER user $USER " >> /tmp/uagent
+    
+    if [ "$SHADOW_USER" != "$USER" ]
+    then
+	OUTPUT=`sudo x2gopgwrapper startshadowagent $X2GO_CLIENT $@`
+	if [ "$OUTPUT" == "DEN" ]
+	then
+            echo "ACCESS DENIED"
+            exit -1
+	fi
+	X2GO_COOKIE=`echo $OUTPUT | awk '{print $2}'`
+	X2GO_PORT=`echo $OUTPUT | awk '{print $1}'`
+	xauth add ${HOSTNAME}/unix:${X2GO_PORT} MIT-MAGIC-COOKIE-1 ${X2GO_COOKIE}
+        xauth add ${HOSTNAME}:${X2GO_PORT} MIT-MAGIC-COOKIE-1 ${X2GO_COOKIE}
+
+        echo $X2GO_PORT
+        echo $X2GO_COOKIE        
+        echo $OUTPUT | awk '{print $3}'
+        echo $OUTPUT | awk '{print $4}'
+        echo $OUTPUT | awk '{print $5}'
+        echo $OUTPUT | awk '{print $6}'
+        echo $OUTPUT | awk '{print $7}'
+    exit
+    fi
+fi
 
 LIMIT=`x2gosessionlimit`
 LWORD=`echo $LIMIT | awk '{print $1}'`
@@ -64,6 +96,7 @@ do
    if [ "$COLORDEPTH" != "" ]
    then
        SESSION_NAME="$SESSION_NAME"_st${SESSION_TYPE}${X2GO_CMD}_dp${COLORDEPTH}
+       SESSION_NAME=`echo "$SESSION_NAME" | sed  -e  "s/:/PP/g"`
    fi
    OUTPUT=`sudo x2gopgwrapper insertsession $X2GO_PORT $HOSTNAME $SESSION_NAME`
  fi 
@@ -117,6 +150,12 @@ if [ "$X2GO_GEOMETRY" == "fullscreen" ]
 then
     X2GO_RESIZE=1
     X2GO_FULLSCREEN=1
+fi
+if [ "$X2GO_STYPE" == "S" ]
+then
+    X2GO_GEOMETRY=`DISPLAY=$SHADOW_DESKTOP xwininfo -root | grep geometry`
+    X2GO_GEOMETRY=`echo "$X2GO_GEOMETRY" | sed  -e  "s/ //g"`
+    X2GO_GEOMETRY=`echo "$X2GO_GEOMETRY" | sed  -e  "s/-geometry//"`
 fi
 
 SESSION_DIR=${X2GO_ROOT}/C-${SESSION_NAME}
@@ -184,8 +223,22 @@ else
      X2GODPIOPTION_="-dpi $X2GODPI"
 fi
 
-LD_LIBRARY_PATH=$X2GO_LIB x2goagent $X2GODPIOPTION_  -$SESSION_TYPE -auth ~/.Xauthority -geometry ${X2GO_GEOMETRY} -name "X2GO-${SESSION_NAME}"  ${NX_AGENT} 2>${SESSION_DIR}/session.log &
+if [ "$X2GOXDMCP" == "" ]
+then
+    XDMCPOPT=""
+else
+    XDMCPOPT="-query $X2GOXDMCP"
+fi
 
+if  [ "$X2GO_STYPE" == "S" ]
+then
+   LD_LIBRARY_PATH=$X2GO_LIB x2goagent $X2GODPIOPTION_  -$SESSION_TYPE -auth ~/.Xauthority \
+   -S -shadow $SHADOW_DESKTOP -shadowmode $SHADOW_MODE \
+   -geometry ${X2GO_GEOMETRY} -name "X2GO-${SESSION_NAME}"  ${NX_AGENT} 2>${SESSION_DIR}/session.log &
+else
+   LD_LIBRARY_PATH=$X2GO_LIB x2goagent $X2GODPIOPTION_ $XDMCPOPT  -$SESSION_TYPE -auth ~/.Xauthority \
+   -geometry ${X2GO_GEOMETRY} -name "X2GO-${SESSION_NAME}"  ${NX_AGENT} 2>${SESSION_DIR}/session.log &
+fi
 
 X2GO_AGENT_PID=$!
 

@@ -25,7 +25,7 @@ listsessions)
    to_char(init_time,'DD.MM.YY*HH24:MI:SS'),cookie,client,gr_port,\
    sound_port,to_char(last_time,'DD.MM.YY*HH24:MI:SS'),uname,\
    to_char(now()-init_time,'SSSS'),fs_port from  sessions  \
-   where status !='F' and server='$3' and uname='$UNAME' order by status desc;\"|psql -t x2go_sessions"
+   where status !='F' and server='$3' and uname='$UNAME' and  (  session_id not like '%XSHAD%') order by status desc;\"|psql -t x2go_sessions"
   ;;
 
 listsessions_all)
@@ -33,7 +33,7 @@ listsessions_all)
    to_char(init_time,'DD.MM.YY*HH24:MI:SS'),cookie,client,gr_port,\
    sound_port,to_char(last_time,'DD.MM.YY*HH24:MI:SS'),uname,\
    to_char(now()-init_time,'SSSS'),fs_port  from  sessions  \
-   where status !='F' and uname='$UNAME' order by status desc;\"|psql -t x2go_sessions"
+   where status !='F' and uname='$UNAME' and  (  session_id not like '%XSHAD%') order by status desc;\"|psql -t x2go_sessions"
   ;;
 
 listsessionsroot)

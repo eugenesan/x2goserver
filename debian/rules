@@ -57,6 +57,7 @@ install: build
 	install  x2gocmdexitmessage  $(CURDIR)/debian/x2goserver/usr/bin/
 	install  x2gogetservers  $(CURDIR)/debian/x2goserver/usr/bin/
 	install  x2golistsessions  $(CURDIR)/debian/x2goserver/usr/bin/
+	install  x2golistdesktops  $(CURDIR)/debian/x2goserver/usr/bin/
 	install  x2golistsessions_root  $(CURDIR)/debian/x2goserver/usr/bin/
 	install  x2golistsessions_sql  $(CURDIR)/debian/x2goserver/usr/bin/
 	install  x2gomountdirs  $(CURDIR)/debian/x2goserver/usr/bin/

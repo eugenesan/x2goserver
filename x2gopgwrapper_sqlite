@@ -27,7 +27,7 @@ listsessions)
    substr(strftime('%d.%m.%Y*%H:%M:%S',last_time),0,6)||substr(strftime('%d.%m.%Y*%H:%M:%S',last_time),9,11),\
    uname,\
    strftime('%s','now','localtime') - strftime('%s',init_time),fs_port from  sessions  \
-   where status !='F' and server='$2' and uname='$UNAME' order by status desc;"|sqlite $DATABASE
+   where status !='F' and server='$2' and uname='$UNAME' and  (  session_id not like '%XSHAD%')  order by status desc;"|sqlite $DATABASE
   ;;
 
 listsessions_all)
@@ -37,7 +37,7 @@ listsessions_all)
    substr(strftime('%d.%m.%Y*%H:%M:%S',last_time),0,6)||substr(strftime('%d.%m.%Y*%H:%M:%S',last_time),9,11),\
    uname,\
    strftime('%s','now','localtime') - strftime('%s',init_time),fs_port from  sessions  \
-   where status !='F' and uname='$UNAME' order by status desc;"|sqlite $DATABASE
+   where status !='F' and uname='$UNAME' and  (  session_id not like '%XSHAD%') order by status desc;"|sqlite $DATABASE
   ;;
 
 listsessionsroot)

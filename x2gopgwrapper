@@ -1,4 +1,30 @@
 #!/bin/bash
+
+if [ "$1" == "startshadowagent" ]
+then
+    
+    CLIENT=$2
+    
+    SHADOW_SET=${11}
+    
+    SHADOW_MODE=`echo "$SHADOW_SET"|awk '{split($0,a,"XSHAD"); print a[1]}'`
+    SHADOW_USER=`echo "$SHADOW_SET"|awk '{split($0,a,"XSHAD"); print a[2]}'`
+    SHADOW_DESKTOP=`echo "$SHADOW_SET"|awk '{split($0,a,"XSHAD"); print a[3]}'`
+
+    ANSWER=`su $SHADOW_USER -c "DISPLAY=$SHADOW_DESKTOP x2godesktopsharing client ACCESS $SUDO_USER $CLIENT"`
+    
+    if [ "$ANSWER" != "GRANT" ]
+    then
+        echo "DEN"
+        exit 
+    fi
+    OUTPUT=`su $SHADOW_USER -c "SSH_CLIENT=$CLIENT x2gostartagent $3 $4 $5 $6 $7 $8 $9 ${10} ${11}"`
+    echo $OUTPUT
+    PID=`echo $OUTPUT | awk '{print $3}'`
+    ANSWER=`su $SHADOW_USER -c "DISPLAY=$SHADOW_DESKTOP x2godesktopsharing client AGENT $PID $SUDO_USER $CLIENT"`
+    exit
+fi
+
 SQLHOST=`cat /etc/x2go/sql`
 if [ "$SQLHOST" ==  "local" ]
 then

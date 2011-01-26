@@ -62,6 +62,8 @@ open (F,">$key.ident");
 print F "$host $rsa_identity";
 close(F);
 
+chmod(0600,"$key");
+chmod(0600,"$key.ident");
 
 my $mdir="/tmp/$ENV{'USER'}_media";
 my $ldir="$ENV{'HOME'}/media";
@@ -73,6 +75,26 @@ if(! -e $mdir)
    mkdir($mdir);
 }
 chmod(0700,$mdir);
+
+if(! -e "$mdir/disk")
+{
+   mkdir("$mdir/disk");
+}
+chmod(0700,"$mdir/disk");
+
+if(! -e "$mdir/cd")
+{
+   mkdir("$mdir/cd");
+}
+chmod(0700,"$mdir/cd");
+
+if(! -e "$mdir/rm")
+{
+   mkdir("$mdir/rm");
+}
+chmod(0700,"$mdir/rm");
+
+my $plasmstamp=$mdir."/".$session.".plasmoid";
 
 if(! -e $spooldir)
 {
@@ -126,6 +148,19 @@ for(my $i=0;$i<@dirs;$i++)
             if($type ne "dir")
             {
                 $p=~s/\/ramdrive\/mnt\///;
+                if($p =~ m/CDROM/)
+		{
+            	    $mdir=$mdir."/cd";
+		}
+		else
+		{
+            	    $mdir=$mdir."/rm";
+		}
+
+            }
+            else
+            {
+                $mdir=$mdir."/disk";
             }
             $p=~s/\//_/g;
             $p=~s/ /_/g;
@@ -140,11 +175,29 @@ for(my $i=0;$i<@dirs;$i++)
        print "result: $outp";
        if($outp =~ m/INSERT/)
        {
-            print "inserted,\nsshfs  -o IdentityFile=$key,UserKnownHostsFile=$key.ident $user\@$host:\"@dirs[$i]\" \"$mntpath\" -p $port\n";
-            if(system("sshfs  -o ServerAliveInterval=300,Cipher=blowfish,IdentityFile=$key,UserKnownHostsFile=$key.ident $user\@$host:\"@dirs[$i]\" \"$mntpath\" -p $port 2>>~/mounts.log")==0)
+             my $code_conv=$ENV{'X2GO_ICONV'};
+             if($code_conv ne "")
+             {
+                 $code_conv="-o $code_conv";
+             }
+            print "inserted,\nsshfs $code_conv -o IdentityFile=$key,UserKnownHostsFile=$key.ident $user\@$host:\"@dirs[$i]\" \"$mntpath\" -p $port\n";
+            if(system("sshfs  $code_conv -o ServerAliveInterval=300,Cipher=blowfish,IdentityFile=$key,UserKnownHostsFile=$key.ident $user\@$host:\"@dirs[$i]\" \"$mntpath\" -p $port 2>>~/mounts.log")==0)
             {   
         	print "mount @dirs[$i] ok\n";
-		if(! $printspool)
+        	
+	        # check if kde4 plasmoid running
+        	my $useplasmoid=0;
+        	if( -e $plasmstamp )
+        	{
+        	      open(STMP,"<$plasmstamp");
+        	      my $stamp=<STMP>;
+        	      close (STMP);
+        	      if(abs($stamp-time())<15)
+        	      {
+        	            $useplasmoid=1;
+        	      }
+        	}
+		if(! $printspool && ! $useplasmoid)
 		{
         	    my $fname="$ENV{'HOME'}/Desktop";
 		    my $p=@dirs[$i];
