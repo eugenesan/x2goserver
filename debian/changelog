@@ -1,3 +1,9 @@
+x2goserver (3.0.99-2) unstable; urgency=low
+
+  * menu=0 option in x2gostartagent, to avoid crash in single app mode
+
+ -- Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>  Thu, 27 Jan 2011 18:38:17 +0100
+
 x2goserver (3.0.99-1) unstable; urgency=low
 
   * not use sudo with postgresql, wrappers in perl instead of bash
