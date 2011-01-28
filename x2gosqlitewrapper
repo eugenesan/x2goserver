@@ -18,7 +18,6 @@ my $cmd=shift or die "command not specified";
 my $user="x2gouser";
 my  ($name, $pass, $uid, $pgid, $quota, $comment, $gcos, $dir, $shell, $expire) = getpwnam($user);
 my $dbfile="$dir/x2go_sessions";
-my $dbfile="/var/db/x2go/x2go_sessions";
       
 my $dbh=DBI->connect("dbi:SQLite:dbname=$dbfile","","",{AutoCommit => 1}) or die $_;
 
