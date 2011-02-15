@@ -42,14 +42,7 @@ elsif($cmd eq  "listsessionsroot")
 	                       strftime('%s','now','localtime') - strftime('%s',init_time),fs_port from  sessions
 	                       where server='$server'  order by status desc");
 	$sth->execute() or die;
-	my @data;
-	my $i=0;
-	while (@data = $sth->fetchrow_array)
-	{
-		@strings[$i++]=join('|',@data);
-	}
-	$sth->finish();
-	print join("\n",@strings);
+	fetchrow_printall_array($sth);
 }
 
 elsif($cmd eq  "listsessionsroot_all")
@@ -64,14 +57,7 @@ elsif($cmd eq  "listsessionsroot_all")
 	                       strftime('%s','now','localtime') - strftime('%s',init_time),fs_port from  sessions
 	                       order by status desc");
 	$sth->execute()or die;
-	my @data;
-	my $i=0;
-	while (@data = $sth->fetchrow_array)
-	{
-		@strings[$i++]=join('|',@data);
-	}
-	$sth->finish();
-	print join("\n",@strings);
+	fetchrow_printall_array($sth);
 }
 
 elsif($cmd eq  "getmounts")
@@ -80,15 +66,7 @@ elsif($cmd eq  "getmounts")
 	my @strings;
 	my $sth=$dbh->prepare("select client, path from mounts where session_id='$sid'");
 	$sth->execute()or die;
-	my @data;
-	my $i=0;
-	while (@data = $sth->fetchrow_array)
-	{
-		@strings[$i++]=join("|",@data);
-	}
-	$sth->finish();
-	$dbh->disconnect();
-	print join("\n",@strings);
+	fetchrow_printall_array($sth);
 }
 
 elsif($cmd eq  "deletemount")
@@ -269,14 +247,7 @@ elsif($cmd eq  "listsessions")
 	                       where status !='F' and server='$server' and uname='$realuser'
 	                       and  (  session_id not like '%XSHAD%')  order by status desc");
 	$sth->execute()or die;
-	my @data;
-	my $i=0;
-	while (@data = $sth->fetchrow_array)
-	{
-		@strings[$i++]=join('|',@data);
-	}
-	$sth->finish();
-	print join("\n",@strings);
+	fetchrow_printall_array($sth);
 }
 
 elsif($cmd eq  "listsessions_all")
@@ -290,14 +261,7 @@ elsif($cmd eq  "listsessions_all")
 	                       strftime('%s','now','localtime') - strftime('%s',init_time),fs_port from  sessions 
 	                       where status !='F' and uname='$realuser' and  (  session_id not like '%XSHAD%')  order by status desc");
 	$sth->execute()or die;
-	my @data;
-	my $i=0;
-	while (@data = $sth->fetchrow_array)
-	{
-		@strings[$i++]=join('|',@data);
-	}
-	$sth->finish();
-	print join("\n",@strings);
+	fetchrow_printall_array($sth);
 }
 else
 {
@@ -312,4 +276,18 @@ sub checkroot
 	{
 		die "$realuser, you can not do this job";
 	}
+}
+
+sub fetchrow_printall_array
+{
+	# print all arrays separated by the pipe symbol
+	local $, = '|';
+
+	my $sth = shift;
+	my @data;
+	while (@data = $sth->fetchrow_array())
+	{
+		print @data, "\n";
+	}
+	$sth->finish();
 }
