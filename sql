@@ -1,5 +1,5 @@
 #postgres or sqlite
-backend=postgres
+backend=sqlite
 
 [postgres]
 host=localhost

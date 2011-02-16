@@ -1,31 +1,28 @@
 #!/usr/bin/perl
+
 use strict;
 
 use DBI;
 use POSIX;
 
-my $realuser=$ENV{SUDO_USER};
-my ($uname, $pass, $uid, $pgid, $quota, $comment, $gcos, $homedir, $shell, $expire) = getpwuid(getuid());
-
-if($uname ne "x2gouser")
+if ($< eq $>)
 {
-	die "Use \"sudo -u x2gouser\" to run this programm";
+    die "Please install this program as SUID x2gouser!\n";
 }
 
-my $cmd=shift or die "command not specified";
-
-my $user="x2gouser";
-my ($name, $pass, $uid, $pgid, $quota, $comment, $gcos, $dir, $shell, $expire) = getpwnam($user);
-my $dbfile="$dir/x2go_sessions";
-
+my $realuser=$<;
+my ($uname, $pass, $uid, $pgid, $quota, $comment, $gcos, $homedir, $shell, $expire) = getpwuid(getuid());
+my $dbfile="/var/lib/x2go/x2go_sessions";
 my $dbh=DBI->connect("dbi:SQLite:dbname=$dbfile","","",{AutoCommit => 1}) or die $_;
+
+my $cmd=shift or die "command not specified";
 
 if($cmd eq  "rmsessionsroot")
 {
 	checkroot();
 	my $sid=shift or die "argument \"session_id\" missed";
 	my $sth=$dbh->prepare("delete from sessions  where session_id=?");
-	$sth->execute($id)or die;
+	$sth->execute($sid)or die;
 	$sth->finish();
 }
 
@@ -115,7 +112,7 @@ elsif($cmd eq  "createsession")
 	my $sid=shift or die "argument \"session_id\" missed";
 	my $sth=$dbh->prepare("update sessions set status='R',last_time=datetime('now','localtime'),cookie=?,agent_pid=?,
 	                       client=?,gr_port=?,sound_port=?,fs_port=? where session_id=? and uname=?");
-	$sth->execute($cookie, $pid, $client, $gr_port, $snd_port, $fs_port, $sid, $realuid)or die;
+	$sth->execute($cookie, $pid, $client, $gr_port, $snd_port, $fs_port, $sid, $realuser)or die;
 	$sth->finish();
 	print "ok";
 }

@@ -80,7 +80,7 @@ sub dbsys_rmsessionsroot
        }
        if($backend eq 'sqlite')
        {
-	   `sudo -u x2gouser x2gosqlitewrapper rmsessionsroot $sid`;
+	   `x2gosqlitewrapper rmsessionsroot $sid`;
        }
 }
 
@@ -110,7 +110,7 @@ sub dbsys_listsessionsroot
        }
        if($backend eq 'sqlite')
        {
-	   return split("\n",`sudo -u x2gouser x2gosqlitewrapper listsessionsroot $server`);
+	   return split("\n",`x2gosqlitewrapper listsessionsroot $server`);
        }
 }
 
@@ -139,7 +139,7 @@ sub dbsys_listsessionsroot_all
        }
        if($backend eq 'sqlite')
        {
-	   return split("\n",`sudo -u x2gouser x2gosqlitewrapper listsessionsroot_all`);
+	   return split("\n",`x2gosqlitewrapper listsessionsroot_all`);
        }
 }
 
@@ -165,7 +165,7 @@ sub dbsys_getmounts
        }
        if($backend eq 'sqlite')
        {
-	   return split("\n",`sudo -u x2gouser x2gosqlitewrapper getmounts $sid`);
+	   return split("\n",`x2gosqlitewrapper getmounts $sid`);
        }
 
 }
@@ -191,7 +191,7 @@ sub db_getmounts
        }
        if($backend eq 'sqlite')
        {
-	   return split("\n",`sudo -u x2gouser x2gosqlitewrapper getmounts $sid`);
+	   return split("\n",`x2gosqlitewrapper getmounts $sid`);
        }
 }
 	     
@@ -209,7 +209,7 @@ sub db_deletemount
        }
        if($backend eq 'sqlite')
        {
-	   `sudo -u x2gouser x2gosqlitewrapper deletemount $sid \"$path\"`;
+	   `x2gosqlitewrapper deletemount $sid \"$path\"`;
        }
 
 }
@@ -234,7 +234,7 @@ sub db_insertmount
        }
        if($backend eq 'sqlite')
        {
-	   if( `sudo -u x2gouser x2gosqlitewrapper insertmount $sid \"$path\" $client` eq "ok")
+	   if( `x2gosqlitewrapper insertmount $sid \"$path\" $client` eq "ok")
 	   {
 	     $res_ok=1;
 	   }
@@ -258,7 +258,7 @@ sub db_insertsession
        }
        if($backend eq 'sqlite')
        {
-	   my $err=`sudo -u x2gouser x2gosqlitewrapper insertsession $display $server $sid`;
+	   my $err=`x2gosqlitewrapper insertsession $display $server $sid`;
 	   if($err ne "ok")
 	   {
 	     die "$err: x2gosqlitewrapper insertsession $display $server $sid";
@@ -288,7 +288,7 @@ sub db_createsession
        }
        if($backend eq 'sqlite')
        {
-	   my $err= `sudo -u x2gouser x2gosqlitewrapper createsession $cookie $pid $client $gr_port $snd_port $fs_port $sid`;
+	   my $err= `x2gosqlitewrapper createsession $cookie $pid $client $gr_port $snd_port $fs_port $sid`;
 	   if($err ne "ok")
 	   {
 	     die $err;
@@ -312,7 +312,7 @@ sub db_insertport
        }
        if($backend eq 'sqlite')
        {
-	   `sudo -u x2gouser x2gosqlitewrapper insertport $server $sid $sshport`;
+	   `x2gosqlitewrapper insertport $server $sid $sshport`;
        }
 
 }
@@ -332,7 +332,7 @@ sub db_resume
        }
        if($backend eq 'sqlite')
        {
-	   `sudo -u x2gouser x2gosqlitewrapper resume $client $sid`;
+	   `x2gosqlitewrapper resume $client $sid`;
        }
 
 }
@@ -351,7 +351,7 @@ sub db_changestatus
        }
        if($backend eq 'sqlite')
        {
-	   `sudo -u x2gouser x2gosqlitewrapper changestatus $status $sid`;
+	   `x2gosqlitewrapper changestatus $status $sid`;
        }
 
 }
@@ -378,7 +378,7 @@ sub db_getdisplays
        }
        if($backend eq 'sqlite')
        {
-	   return split("\n",`sudo -u x2gouser x2gosqlitewrapper getdisplays $server`);
+	   return split("\n",`x2gosqlitewrapper getdisplays $server`);
        }
 
 }
@@ -405,7 +405,7 @@ sub db_getports
        }
        if($backend eq 'sqlite')
        {
-	   return split("\n",`sudo -u x2gouser x2gosqlitewrapper getports $server`);
+	   return split("\n",`x2gosqlitewrapper getports $server`);
        }
 
 }
@@ -431,7 +431,7 @@ sub db_getservers
        }
               if($backend eq 'sqlite')
        {
-	   return split("\n",`sudo -u x2gouser x2gosqlitewrapper getservers`);
+	   return split("\n",`x2gosqlitewrapper getservers`);
        }
 
 }
@@ -458,7 +458,7 @@ sub db_getagent
        }
        if($backend eq 'sqlite')
        {
-	   $agent=`sudo -u x2gouser x2gosqlitewrapper getagent $sid`;
+	   $agent=`x2gosqlitewrapper getagent $sid`;
        }
        return $agent;
 }
@@ -485,7 +485,7 @@ sub db_getdisplay
        }
        if($backend eq 'sqlite')
        {
-	   $display=`sudo -u x2gouser x2gosqlitewrapper getdisplay $sid`;
+	   $display=`x2gosqlitewrapper getdisplay $sid`;
        }
        return $display;
 }
@@ -516,7 +516,7 @@ sub db_listsessions
        }
        if($backend eq 'sqlite')
        {
-	   return split("\n",`sudo -u x2gouser x2gosqlitewrapper listsessions $server`);
+	   return split("\n",`x2gosqlitewrapper listsessions $server`);
        }
 
 }
@@ -547,7 +547,7 @@ sub db_listsessions_all
        }
        if($backend eq 'sqlite')
        {
-	   return split("\n",`sudo -u x2gouser x2gosqlitewrapper listsessions_all`);
+	   return split("\n",`x2gosqlitewrapper listsessions_all`);
        }
 
 }
