@@ -138,6 +138,11 @@ if($Config->param("backend") eq 'sqlite')
 
     my $host=$Config->param("postgres.host");
     my $port=$Config->param("postgres.port");
+    my $sslmode=$Config->param("postgres.ssl");
+    if(!$sslmode)
+    {
+         $sslmode="prefer";
+    }
     my $dbadmin=$Config->param("postgres.dbadmin");
     my $x2goadmin="x2godbuser";
     my $x2goadminpass=`makepasswd`;
@@ -165,10 +170,10 @@ if($Config->param("backend") eq 'sqlite')
     my $dbh;
     if($createdb)
     {
-	  $dbh=DBI->connect("dbi:Pg:;host=$host;port=$port;", "$dbadmin", "$dbadminpass",{AutoCommit => 1}) or die $_;
+	  $dbh=DBI->connect("dbi:Pg:dbname=postgres;host=$host;port=$port;sslmode=$sslmode", "$dbadmin", "$dbadminpass",{AutoCommit => 1}) or die $_;
 	  create_database();
 	  $dbh->disconnect();
-	  $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;", "$dbadmin", "$dbadminpass",{AutoCommit => 1}) or die $_;
+	  $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbadmin", "$dbadminpass",{AutoCommit => 1}) or die $_;
 	  create_tables();
 	  $dbh->disconnect();      
 	  exit(0);
@@ -176,13 +181,13 @@ if($Config->param("backend") eq 'sqlite')
 
     if($listusers)
     {
-	  $dbh=DBI->connect("dbi:Pg:;host=$host;port=$port;", "$dbadmin", "$dbadminpass",{AutoCommit => 1}) or die $_;
+	  $dbh=DBI->connect("dbi:Pg:dbname=postgres;host=$host;port=$port;sslmode=$sslmode", "$dbadmin", "$dbadminpass",{AutoCommit => 1}) or die $_;
 	  list_users();
 	  $dbh->disconnect();
 	  exit(0);
     }
 
-    $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;", "$dbadmin", "$dbadminpass",{AutoCommit => 1}) or die $_;
+    $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbadmin", "$dbadminpass",{AutoCommit => 1}) or die $_;
     if($adduser)
     {
 	add_user($adduser);

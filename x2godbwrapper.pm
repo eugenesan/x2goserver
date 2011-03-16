@@ -6,9 +6,6 @@ use DBI;
 
 use POSIX;
 
-use lib "/usr/lib/x2go";
-use x2godbwrapper; 
-
 my ($uname, $pass, $uid, $pgid, $quota, $comment, $gcos, $homedir, $shell, $expire) = getpwuid(getuid());
 
 my $Config = new Config::Simple(syntax=>'ini');
@@ -20,7 +17,7 @@ my $port;
 my $db="x2go_sessions";
 my $dbpass;
 my $dbuser;
-
+my $sslmode;
 
 if($backend ne 'postgres' && $backend ne 'sqlite')
 {
@@ -50,7 +47,11 @@ if($backend eq 'postgres')
     $dbuser="x2gouser_$uname";
     $passfile="$homedir/.x2go/sqlpass";
   }
-
+  $sslmode=$Config->param("postgres.ssl");
+  if(!$sslmode)
+  {
+         $sslmode="prefer";
+  }
   open (FL,"< $passfile") or die "Can't read password file $passfile<br><b>Use x2godbadmin on server to configure database access for user $uname</b><br>";
   $dbpass=<FL>;
   close(FL);
@@ -73,7 +74,8 @@ sub dbsys_rmsessionsroot
        my $sid=shift or die "argument \"session_id\" missed";
        if($backend eq 'postgres')
        {
-	       my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
+	       my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", 
+	       "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 	       
 	       my $sth=$dbh->prepare("delete from sessions  where session_id='$sid'");
                $sth->execute()or die;
@@ -90,7 +92,8 @@ sub dbsys_listsessionsroot
        if($backend eq 'postgres')
        {
        my @strings;
-	       my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
+	       my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", 
+	       "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 	       
 	       my $sth=$dbh->prepare("select agent_pid, session_id, display, server, status,
 				     to_char(init_time,'DD.MM.YY*HH24:MI:SS'),cookie,client,gr_port,
@@ -119,7 +122,7 @@ sub dbsys_listsessionsroot_all
        if($backend eq 'postgres')
        {
        my @strings;
-	       my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
+	       my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 	       
 	       my $sth=$dbh->prepare("select agent_pid, session_id, display, server, status,
 				     to_char(init_time,'DD.MM.YY*HH24:MI:SS'),cookie,client,gr_port,
@@ -150,7 +153,7 @@ sub dbsys_getmounts
        if($backend eq 'postgres')
        {
        my @strings;
-	       my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
+	       my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 	       my $sth=$dbh->prepare("select client, path from mounts where session_id='$sid'");
                $sth->execute()or die;
                my @data;
@@ -176,7 +179,7 @@ sub db_getmounts
        if($backend eq 'postgres')
        {
        my @strings;
-	       my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
+	       my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 	       my $sth=$dbh->prepare("select client, path from mounts_view where session_id='$sid'");
                $sth->execute()or die;
                my @data;
@@ -201,7 +204,7 @@ sub db_deletemount
        my $path=shift or die "argument \"path\" missed";
        if($backend eq 'postgres')
        {
-	       my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;	       
+	       my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;	       
 	       my $sth=$dbh->prepare("delete from mounts_view where session_id='$sid' and path='$path'");
                $sth->execute();
                $sth->finish();
@@ -222,7 +225,7 @@ sub db_insertmount
        my $res_ok=1;
        if($backend eq 'postgres')
        {
-	       my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;	       
+	       my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;	       
 	       my $sth=$dbh->prepare("insert into mounts (session_id,path,client) values  ('$sid','$path','$client')");
                $sth->execute();
 	       if(!$sth->err())
@@ -250,7 +253,7 @@ sub db_insertsession
         my $sid=shift or die "argument \"session_id\" missed";
        if($backend eq 'postgres')
        {
-	       my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;	       
+	       my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;	       
 	       my $sth=$dbh->prepare("insert into sessions (display,server,uname,session_id) values ('$display','$server','$uname','$sid')");
                $sth->execute()or die $_;
                $sth->finish();
@@ -278,7 +281,7 @@ sub db_createsession
        my $sid=shift or die "argument \"session_id\" missed";
        if($backend eq 'postgres')
        {
-	       my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;	       
+	       my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;	       
 	       my $sth=$dbh->prepare("update sessions_view set status='R',last_time=now(),
 				     cookie='$cookie',agent_pid='$pid',client='$client',gr_port='$gr_port',
 				     sound_port='$snd_port',fs_port='$fs_port' where session_id='$sid'");
@@ -304,7 +307,7 @@ sub db_insertport
 	my $sshport=shift or die "argument \"port\" missed";
        if($backend eq 'postgres')
        {
-	       my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;	       
+	       my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;	       
 	       my $sth=$dbh->prepare("insert into used_ports (server,session_id,port) values  ('$server','$sid','$sshport')");
                $sth->execute()or die;
 	       $sth->finish();
@@ -324,7 +327,7 @@ sub db_resume
        my $sid=shift or die "argument \"session_id\" missed";       
        if($backend eq 'postgres')
        {
-	       my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;	       
+	       my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;	       
 	       my $sth=$dbh->prepare("update sessions_view set last_time=now(),status='R',client='$client' where session_id = '$sid'");
                $sth->execute()or die;
 	       $sth->finish();
@@ -343,7 +346,7 @@ sub db_changestatus
        my $sid=shift or die "argument \"session_id\" missed";       
        if($backend eq 'postgres')
        {
-	       my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;	       
+	       my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;	       
 	       my $sth=$dbh->prepare("update sessions_view set last_time=now(),status='$status' where session_id = '$sid'");
                $sth->execute()or die;
 	       $sth->finish();
@@ -363,7 +366,7 @@ sub db_getdisplays
        if($backend eq 'postgres')
        {
        my @strings;
-	       my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
+	       my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 	       my $sth=$dbh->prepare("select display from servers_view");
                $sth->execute()or die;
                my @data;
@@ -390,7 +393,7 @@ sub db_getports
        if($backend eq 'postgres')
        {
        my @strings;
-	       my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
+	       my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 	       my $sth=$dbh->prepare("select port from ports_view");
                $sth->execute()or die;
                my @data;
@@ -415,7 +418,7 @@ sub db_getservers
        if($backend eq 'postgres')
        {
        my @strings;
-	       my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
+	       my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 	       
 	       my $sth=$dbh->prepare("select server,count(*) from servers_view where status != 'F' group by server");
                $sth->execute()or die;
@@ -442,7 +445,7 @@ sub db_getagent
        my $agent;
        if($backend eq 'postgres')
        {
-	       my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
+	       my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 	       
 	       my $sth=$dbh->prepare("select agent_pid from sessions_view
 				      where session_id ='$sid'");
@@ -469,7 +472,7 @@ sub db_getdisplay
        my $display;
        if($backend eq 'postgres')
        {
-	       my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
+	       my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 	       
 	       my $sth=$dbh->prepare("select display from sessions_view
 				      where session_id ='$sid'");
@@ -495,7 +498,7 @@ sub db_listsessions
        if($backend eq 'postgres')
        {
 	       my @strings;
-	       my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
+	       my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 	       
 	       my $sth=$dbh->prepare("select agent_pid, session_id, display, server, status,
 				     to_char(init_time,'DD.MM.YY*HH24:MI:SS'), cookie, client, gr_port,
@@ -526,7 +529,7 @@ sub db_listsessions_all
        if($backend eq 'postgres')
        {
 	       my @strings;
-	       my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
+	       my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 	       
 	       my $sth=$dbh->prepare("select agent_pid, session_id, display, server, status,
 				     to_char(init_time,'DD.MM.YY*HH24:MI:SS'), cookie, client, gr_port,
