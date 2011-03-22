@@ -2,7 +2,7 @@
 use strict;
 
 use lib "/usr/lib/x2go";
-use x2godbwrapper; 
+use x2godbwrapper;
 
 my $type=shift;
 my $session=shift;
@@ -152,13 +152,13 @@ for(my $i=0;$i<@dirs;$i++)
             {
                 $p=~s/\/ramdrive\/mnt\///;
                 if($p =~ m/CDROM/)
-		{
-            	    $mdir=$mdir."/cd";
-		}
-		else
-		{
-            	    $mdir=$mdir."/rm";
-		}
+                {
+                    $mdir=$mdir."/cd";
+                }
+                else
+                {
+                    $mdir=$mdir."/rm";
+                }
 
             }
             else
@@ -182,56 +182,56 @@ for(my $i=0;$i<@dirs;$i++)
              }
             print "inserted,\nsshfs $code_conv -o IdentityFile=$key,UserKnownHostsFile=$key.ident $user\@$host:\"@dirs[$i]\" \"$mntpath\" -p $port\n";
             if(system("sshfs  $code_conv -o ServerAliveInterval=300,Cipher=blowfish,IdentityFile=$key,UserKnownHostsFile=$key.ident $user\@$host:\"@dirs[$i]\" \"$mntpath\" -p $port 2>>~/mounts.log")==0)
-            {   
-        	print "mount @dirs[$i] ok\n";
-        	
-	        # check if kde4 plasmoid running
-        	my $useplasmoid=0;
-        	if( -e $plasmstamp )
-        	{
-        	      open(STMP,"<$plasmstamp");
-        	      my $stamp=<STMP>;
-        	      close (STMP);
-        	      if(abs($stamp-time())<15)
-        	      {
-        	            $useplasmoid=1;
-        	      }
-        	}
-		if(! $printspool && ! $useplasmoid)
-		{
-        	    my $fname="$ENV{'HOME'}/Desktop";
-		    my $p=@dirs[$i];
-        	    $p=~s/\/cygdrive\///g;
-            	    $p=~s/\//_/g;
-		    $fname="$fname/$p";
-		    if($type eq "dir")
-		    {
-	    		$fname="$fname(sshfs-disk)";
-		    }
-		    else
-		    {
-			if($fname =~ m/CDROM/)
-			{
-	    	    	    $fname="$fname(sshfs-cdrom)";
-			}
-			else
-			{
-	    	    	    $fname="$fname(sshfs-removable)";
-			}
-			$fname=~s/_ramdrive_mnt_//;
-		    }
-		    print "fname: $fname\n";
-		    open(F,">$fname");
-		    print F "$mntpath\n$session\n\n\0";
-		    close(F);
-		}
-    	    }
-    	    else
-    	    {
+            {
+                print "mount @dirs[$i] ok\n";
+
+                # check if kde4 plasmoid running
+                my $useplasmoid=0;
+                if( -e $plasmstamp )
+                {
+                    open(STMP,"<$plasmstamp");
+                    my $stamp=<STMP>;
+                    close (STMP);
+                    if(abs($stamp-time())<15)
+                    {
+                        $useplasmoid=1;
+                    }
+                }
+                if(! $printspool && ! $useplasmoid)
+                {
+                    my $fname="$ENV{'HOME'}/Desktop";
+                    my $p=@dirs[$i];
+                    $p=~s/\/cygdrive\///g;
+                    $p=~s/\//_/g;
+                    $fname="$fname/$p";
+                    if($type eq "dir")
+                    {
+                        $fname="$fname(sshfs-disk)";
+                    }
+                    else
+                    {
+                        if($fname =~ m/CDROM/)
+                        {
+                            $fname="$fname(sshfs-cdrom)";
+                        }
+                        else
+                        {
+                            $fname="$fname(sshfs-removable)";
+                        }
+                        $fname=~s/_ramdrive_mnt_//;
+                    }
+                    print "fname: $fname\n";
+                    open(F,">$fname");
+                    print F "$mntpath\n$session\n\n\0";
+                    close(F);
+                }
+            }
+            else
+            {
                print "mount @dirs[$i] failed\n";
                db_deletemount( $session, $mntpath);
-	       rmdir($mntpath);
-    	    }
+               rmdir($mntpath);
+            }
        }
        else
        {
