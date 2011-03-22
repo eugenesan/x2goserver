@@ -1,0 +1,53 @@
+#!/usr/bin/perl
+
+use File::Basename;
+use File::Copy;
+use strict;
+
+if (scalar(@ARGV) ==1)
+{
+     system ("su @ARGV[0] -c \"x2golistsessions --all-servers\" ");
+}
+elsif (scalar(@ARGV) != 4)
+{
+    print STDERR "ERROR: Usage:\nx2goprint user session file titleFile\nx2goprint user\n";
+    exit 1;
+}
+
+my ($user, $session, $file, $titleFile)=@ARGV;
+
+my ($tm,$tm,$uid,$gid,$tm,$tm,$tm,$homedir)=getpwnam("x2goprint");
+my $printdir=$homedir;
+
+my $title;
+if( -e "$printdir/$titleFile")
+{
+     open (TITLE,"<$printdir/$titleFile");
+     $title=<TITLE>;
+     close (TITLE);
+     unlink("$printdir/$titleFile");
+}
+
+
+($tm,$tm,$uid,$gid,$tm,$tm,$tm,$homedir)=getpwnam($user);
+
+my $spooldir="/tmp/spool_$user/$session";
+
+my $mounts=`sudo x2gopgwrapper getmounts $session`;
+if( $mounts=~m/$spooldir/)
+{
+     move ("$printdir/$file", "$homedir/.x2go/C-$session/$file") or die "$!: Can't rename $file to $homedir/.x2go/C-$session/$file";
+     chown $uid, $gid, "$homedir/.x2go/C-$session/$file";
+     system ("su $user -c \"mv $homedir/.x2go/C-$session/$file $spooldir\"");
+
+     open (RFILE,">$homedir/.x2go/C-$session/$file.ready");
+     print RFILE "$file\n$title";
+     close (RFILE);
+
+     chown $uid, $gid, "$homedir/.x2go/C-$session/$file.ready";
+     system ("su $user -c \"mv $homedir/.x2go/C-$session/$file.ready $spooldir\"");
+}
+else
+{
+     unlink("$printdir/$file");
+}
