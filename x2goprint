@@ -2,7 +2,11 @@
 
 use File::Basename;
 use File::Copy;
+use File::Path;
 use strict;
+
+use lib "/usr/lib/x2go";
+use x2godbwrapper;
 
 if (scalar(@ARGV) ==1)
 {
@@ -31,21 +35,26 @@ if( -e "$printdir/$titleFile")
 
 ($tm,$tm,$uid,$gid,$tm,$tm,$tm,$homedir)=getpwnam($user);
 
-my $spooldir="/tmp/spool_$user/$session";
+my $spoolbase="/tmp/spool_$user";
+my $spooldir="$spoolbase/$session";
+my $spooltmp="$spoolbase/tmp";
+mkpath($spooltmp);
+chown $uid, $gid, "$spooltmp";
+chmod 0700, "$spooltmp";
 
-my $mounts=`sudo x2gopgwrapper getmounts $session`;
+my ($mounts)=db_getmounts($session);
 if( $mounts=~m/$spooldir/)
 {
-     move ("$printdir/$file", "$homedir/.x2go/C-$session/$file") or die "$!: Can't rename $file to $homedir/.x2go/C-$session/$file";
-     chown $uid, $gid, "$homedir/.x2go/C-$session/$file";
-     system ("su $user -c \"mv $homedir/.x2go/C-$session/$file $spooldir\"");
+     move("$printdir/$file", "$spooltmp") or die "$!: Can't move $file to $spooltmp/";
+     chown $uid, $gid, "$spooltmp/$file";
+     system("su $user -c \"mv $spooltmp/$file $spooldir\"");
 
-     open (RFILE,">$homedir/.x2go/C-$session/$file.ready");
+     open (RFILE,">$spooltmp/$file.ready");
      print RFILE "$file\n$title";
      close (RFILE);
 
-     chown $uid, $gid, "$homedir/.x2go/C-$session/$file.ready";
-     system ("su $user -c \"mv $homedir/.x2go/C-$session/$file.ready $spooldir\"");
+     chown $uid, $gid, "$spooltmp/$file.ready";
+     system ("su $user -c \"mv $spooltmp/$file.ready $spooldir\"");
 }
 else
 {
