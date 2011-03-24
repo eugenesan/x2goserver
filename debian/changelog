@@ -1,3 +1,9 @@
+x2goserver (3.0.99-3) unstable; urgency=low
+
+  * fixed wrong path to dbfile, thanks Moritz Struebe <Moritz.Struebe@informatik.uni-erlangen.de>
+
+ -- Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>  Mon, 31 Jan 2011 18:38:13 +0100
+
 x2goserver (3.0.99-2) unstable; urgency=low
 
   * menu=0 option in x2gostartagent, to avoid crash in single app mode

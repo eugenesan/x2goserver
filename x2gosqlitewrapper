@@ -7,12 +7,13 @@ use POSIX;
 
 if ($< eq $>)
 {
-    die "Please install this program as SUID x2gouser!\n";
+	die "Please install this program as SUID x2gouser!\n";
 }
 
 my $realuser=$<;
-my ($uname, $pass, $uid, $pgid, $quota, $comment, $gcos, $homedir, $shell, $expire) = getpwuid(getuid());
-my $dbfile="/var/lib/x2go/x2go_sessions";
+my ($uname, $pass, $uid, $pgid, $quota, $comment, $gcos, $homedir, $shell, $expire) = getpwuid($>);
+my $dbfile="$homedir/x2go_sessions";
+
 my $dbh=DBI->connect("dbi:SQLite:dbname=$dbfile","","",{AutoCommit => 1}) or die $_;
 
 my $cmd=shift or die "command not specified";
