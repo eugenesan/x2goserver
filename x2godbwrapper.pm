@@ -426,7 +426,7 @@ sub db_getservers
 	       my $i=0;
                while (@data = $sth->fetchrow_array) 
                {
-		   @strings[$i++]=@data[0];
+		   @strings[$i++]=@data[0]." ".@data[1];
                }
 	       $sth->finish();
 	       $dbh->disconnect();
