@@ -12,6 +12,7 @@ x2golistdesktops      /usr/bin/
 x2golistsessions_root /usr/bin/
 x2golistsessions_sql  /usr/bin/
 x2gomountdirs         /usr/bin/
+x2goprint             /usr/bin/
 x2goresume            /usr/bin/
 x2goresume-session    /usr/bin/
 x2goruncommand        /usr/bin/
