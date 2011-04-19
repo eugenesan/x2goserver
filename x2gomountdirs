@@ -72,8 +72,8 @@ my $mdir="/tmp/$ENV{'USER'}_media";
 my $ldir="$ENV{'HOME'}/media";
 my $spooldir_lnk="$ENV{'HOME'}/.x2go/C-$session/spool";
 my $spooldir="/tmp/spool_$ENV{'USER'}";
-my $dropboxdir_lnk="$ENV{'HOME'}/.x2go/C-$session/dropbox";
-my $dropboxdir="/tmp/dropbox_$ENV{'USER'}";
+my $mimeboxdir_lnk="$ENV{'HOME'}/.x2go/C-$session/mimebox";
+my $mimeboxdir="/tmp/mimebox_$ENV{'USER'}";
 
 if(! -e $mdir)
 {
@@ -114,18 +114,18 @@ if(! -e $spooldir)
 }
 chmod(0700,$spooldir);
 
-if(! -e $dropboxdir)
+if(! -e $mimeboxdir)
 {
-   mkdir($dropboxdir);
+   mkdir($mimeboxdir);
 }
-chmod(0700,$dropboxdir);
+chmod(0700,$mimeboxdir);
 
-$dropboxdir="$dropboxdir/$session";
-if(! -e $dropboxdir)
+$mimeboxdir="$mimeboxdir/$session";
+if(! -e $mimeboxdir)
 {
-   mkdir($dropboxdir);
+   mkdir($mimeboxdir);
 }
-chmod(0700,$dropboxdir);
+chmod(0700,$mimeboxdir);
 
 if( -d $ldir)
 {
@@ -147,14 +147,14 @@ if( ! -l $spooldir_lnk)
    system ("ln -s $spooldir $spooldir_lnk");
 }
 
-if( -d $dropboxdir_lnk)
+if( -d $mimeboxdir_lnk)
 {
-    rmdir($dropboxdir_lnk);
+    rmdir($mimeboxdir_lnk);
 }
 
-if( ! -l $dropboxdir_lnk)
+if( ! -l $mimeboxdir_lnk)
 {
-   system ("ln -s $dropboxdir $dropboxdir_lnk");
+   system ("ln -s $mimeboxdir $mimeboxdir_lnk");
 }
 
 my $uname=$ENV{'USER'};
@@ -163,7 +163,7 @@ my @dirs=split(':',$dirlist);
 for(my $i=0;$i<@dirs;$i++)
 {
        my $printspool=0;
-       my $dropboxspool=0;
+       my $mimeboxspool=0;
        my $mntpath;
        if(@dirs[$i]=~m/__PRINT_SPOOL_/)
        {
@@ -171,11 +171,11 @@ for(my $i=0;$i<@dirs;$i++)
             $printspool=1;
             $mntpath=$spooldir;
        }
-       elsif(@dirs[$i]=~m/__DROPBOX_SPOOL_/)
+       elsif(@dirs[$i]=~m/__MIMEBOX_SPOOL_/)
        {
-            @dirs[$i]=~s/__DROPBOX_SPOOL_//;
-            $dropboxspool=1;
-            $mntpath=$dropboxdir;
+            @dirs[$i]=~s/__MIMEBOX_SPOOL_//;
+            $mimeboxspool=1;
+            $mntpath=$mimeboxdir;
        }
        else
        {
@@ -229,7 +229,7 @@ for(my $i=0;$i<@dirs;$i++)
                         $useplasmoid=1;
                     }
                 }
-                if(! $printspool && ! $dropboxspool && ! $useplasmoid)
+                if(! $printspool && ! $mimeboxspool && ! $useplasmoid)
                 {
                     my $fname="$ENV{'HOME'}/Desktop";
                     my $p=@dirs[$i];
