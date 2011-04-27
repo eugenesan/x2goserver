@@ -2,24 +2,34 @@ Source: x2goserver
 Section: x11
 Priority: extra
 Maintainer: Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
-Build-Depends: debhelper (>= 5)
-Standards-Version: 3.7.2
+Build-Depends: 
+ debhelper (>= 7)
+Standards-Version: 3.9.1
 
 Package: x2goserver
 Architecture: all
-Depends: x2goagent, perl-suid, lsof, openssh-client, openssh-server, libconfig-simple-perl, makepasswd, libdbd-pg-perl, libdbd-sqlite3-perl, adduser
-Recommends: sshfs
+Depends: 
+ x2goagent,
+ perl-suid,
+ lsof,
+ openssh-client,
+ openssh-server,
+ libconfig-simple-perl,
+ makepasswd,
+ libdbd-pg-perl,
+ libdbd-sqlite3-perl,
+ adduser
+Recommends: 
+ sshfs
 Breaks: x2goserver-one
 Description: x2goserver (daemon and tools)
- x2go is a serverbased computing environment with
+ X2go is a serverbased computing environment with
  - session resuming
  - low bandwith support
  - LDAP support
  - client side mass storage mounting support
- - audio/arts support
- - authentication by smartcard and usb-stick
- - KDE control-center modules for administration
- - KDE based tools for just in time messaging and client surveillance
+ - audio support
+ - authentication by smartcard and USB stick
  .
  x2goserver contains the main daemon and tools for
- session administrations (scripts).
+ session administrations.
