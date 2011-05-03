@@ -19,7 +19,7 @@ Depends:
  libconfig-simple-perl,
  makepasswd,
  libdbd-pg-perl,
- libdbd-sqliteB3-perl,
+ libdbd-sqlite3-perl,
  adduser,
  xbase-clients
 Recommends:
