@@ -19,11 +19,15 @@ Depends:
  libconfig-simple-perl,
  makepasswd,
  libdbd-pg-perl,
- libdbd-sqlite3-perl,
+ libdbd-sqliteB3-perl,
  adduser,
  xbase-clients
 Recommends:
  sshfs
+Replaces:
+ x2goserver-one,
+ x2goserver-home,
+ x2goprint
 Breaks: x2goserver-one
 Description: x2goserver (daemon and tools)
  X2go is a serverbased computing environment with
