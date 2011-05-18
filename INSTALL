@@ -35,7 +35,7 @@ Create a simple init script that starts $PREFIX/sbin/x2gocleansessions on system
 
 Alternatively, you can add a single line to /etc/rc.local:
 
-/usr/local/sbin/x2gocleansessions
+/usr/local/sbin/x2gocleansessions &
 
 
 5.) OPTIONAL: PostgreSQL setup
