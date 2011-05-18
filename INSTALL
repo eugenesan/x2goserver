@@ -28,7 +28,17 @@ Configure ownership, permissions and setuid user bit of x2gosqlitewrapper:
  $ chmod 6755 /usr/bin/x2gosqlitewrapper
 
 
-4.) OPTIONAL: PostgreSQL setup
+4.) INIT SCRIPT
+---------------
+Create a simple init script that starts $PREFIX/sbin/x2gocleansessions on system start
+(runlevel 2-3-4-5). 
+
+Alternatively, you can add a single line to /etc/rc.local:
+
+/usr/local/sbin/x2gocleansessions
+
+
+5.) OPTIONAL: PostgreSQL setup
 ------------------------------
 This last step is optional and is only needed for a setup of x2goserver
 with PostgreSQL as database backend...
