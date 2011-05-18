@@ -48,4 +48,5 @@ uninstall_config:
 	$(RM_FILE) $(DESTDIR)$(ETCDIR)/x2goserver.conf
 	$(RM_FILE) $(DESTDIR)$(ETCDIR)/x2gosql/sql
 	$(RM_DIR)  $(DESTDIR)$(ETCDIR)
+	$(RM_DIR)  $(DESTDIR)$(ETCDIR)/x2gosql/passwords
 	$(RM_DIR)  $(DESTDIR)$(ETCDIR)/x2gosql
