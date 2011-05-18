@@ -15,10 +15,14 @@ case "$1" in
 	echo "Cleaning up stale x2go sessions."
 	/usr/sbin/x2gocleansessions
 	;;
-  stop|reload|force-reload|restart)
+  stop)
 	# nothing to do
 	killall x2gocleansessions
 	;;
+  reload|force-reload|restart)
+	killall x2gocleansessions
+	echo "Cleaning up stale x2go sessions."
+	/usr/sbin/x2gocleansessions
   *)
 	N=/etc/init.d/x2goserver
 	# echo "Usage: $N {start|stop|restart|reload|force-reload}" >&2
