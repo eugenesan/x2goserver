@@ -231,7 +231,7 @@ x2goserver (2.0.1-2) unstable; urgency=low
 
 x2goserver (2.0.1-1) unstable; urgency=low
 
-  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+  * Initial release
 
  -- Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>  Thu,  8 Feb 2007 15:21:30 +0100
 

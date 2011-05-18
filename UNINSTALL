@@ -1,0 +1,26 @@
+TARBALL UNINSTALL OF x2goserver
+===============================
+
+1.) Remove SQLite database
+--------------------------
+ $ rm -vf /var/lib/x2go/x2go_sessions
+
+
+2.) Remove PostgreSQL passwords
+-------------------------------
+ $ rm -vf /etc/x2go/x2gosql/passwords/pgadmin
+
+
+3.) Remove x2gouser and groups from the system
+----------------------------------------------
+
+ $ deluser x2gouser
+ $ delgroup x2gousers
+
+
+4.) Run Makefile's uninstall
+----------------------------
+
+ $ cd /path/to/extracted/x2goserver/tarball
+ $ make uninstall
+

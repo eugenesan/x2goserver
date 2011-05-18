@@ -1,28 +1,6 @@
 #!/usr/bin/make -f
 
-clean:
-	dh_testdir
-	dh_testroot
-	dh_clean 
+%:
+	dh $@
 
-build:
-	dh_prep
-
-# We have nothing to do by default.
-binary-indep: build
-binary-arch: build
-	dh_testdir
-	dh_testroot
-	dh_installdirs
-	dh_install
-	dh_installchangelogs 
-	dh_installdocs
-	dh_compress
-	dh_fixperms
-	dh_installdeb
-	dh_shlibdeps
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
-
-binary: binary-indep binary-arch
+override_dh_auto_install:

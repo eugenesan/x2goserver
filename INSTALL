@@ -1,0 +1,43 @@
+TARBALL INSTALLATION OF x2goserver
+==================================
+
+1.) INSTALL x2goserver FILES
+-----------------------------
+Extract tarball and run 
+
+ $ make install
+
+in base folder of the extracted tarball. 
+
+
+2.) USER + GROUP for X2go
+-------------------------
+Set up x2gouser account and its group if they do not exist
+already:
+
+ $ addgroup --system x2gousers
+ $ adduser --system --no-create-home \
+           --disabled-password --disabled-login \
+           --shell /bin/false --group --home /var/lib/x2go x2gouser
+
+3.) SUID USER
+-------------
+Configure ownership, permissions and setuid user bit of x2gosqlitewrapper:
+
+ $ chown x2gouser:x2gousers /usr/bin/x2gosqlitewrapper
+ $ chmod 6755 /usr/bin/x2gosqlitewrapper
+
+
+4.) OPTIONAL: PostgreSQL setup
+------------------------------
+This last step is optional and is only needed for a setup of x2goserver
+with PostgreSQL as database backend...
+
+When using PostgreSQL the following steps are necessary:
+
+ $ chmod 700 /etc/x2go/x2gosql/passwords
+ $ touch /etc/x2go/x2gosql/passwords/pgadmin
+ $ chmod 600 /etc/x2go/x2gosql/passwords/pgadmin
+ $ x2godbadmin --createdb
+
+
