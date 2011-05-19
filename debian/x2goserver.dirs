@@ -1,5 +1,4 @@
 etc/x2go
 etc/x2go/x2gosql
 etc/x2go/x2gosql/passwords
-usr/lib/x2go/script
 var/lib/x2go
