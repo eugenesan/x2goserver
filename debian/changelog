@@ -5,6 +5,8 @@ x2goserver (3.0.99.5-0~x2go1) unstable; urgency=low
   * fixes installation conflicts with x2goserver-one, x2goserver-home
     and x2goprint
   * change of version numbering scheme
+  * re-organization of folder structure
+  * adds several man pages
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 03 May 2011 10:42:02 +0200
 
