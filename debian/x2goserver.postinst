@@ -41,7 +41,7 @@ case "$1" in
     fi
 
     if [ ! -f /var/lib/x2go/x2go_sessions ]; then
-        /usr/lib/x2go/script/x2godbadmin --createdb
+        /usr/sbin/x2godbadmin --createdb
     fi
 
     dpkg-statoverride --add --update x2gouser x2gousers 6755 /usr/bin/x2gosqlitewrapper || true
