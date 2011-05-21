@@ -16,11 +16,12 @@ case "$1" in
 	/usr/sbin/x2gocleansessions
 	;;
   stop)
-	# nothing to do
-	killall x2gocleansessions
+	# kill x2gocleansessions, ignore on failure
+	killall x2gocleansessions || true
 	;;
   reload|force-reload|restart)
-	killall x2gocleansessions
+	# kill x2gocleansessions, ignore on failure
+	killall x2gocleansessions || true
 	echo "Cleaning up stale x2go sessions."
 	/usr/sbin/x2gocleansessions
 	;;
