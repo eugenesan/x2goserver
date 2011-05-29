@@ -16,6 +16,7 @@ ETCDIR=/etc/x2go
 BINDIR=$(PREFIX)/bin
 SBINDIR=$(PREFIX)/sbin
 LIBDIR=$(PREFIX)/lib/x2go
+MANDIR=$(PREFIX)/share/man
 SHAREDIR=$(PREFIX)/share/x2go
 
 BIN_SCRIPTS=$(shell cd bin && ls)
@@ -24,23 +25,37 @@ LIB_FILES=$(shell cd lib && ls)
 
 all:
 
-install:
-	$(INSTALL_DIR) $(DESTDIR)$(ETCDIR)
-	$(INSTALL_DIR) $(DESTDIR)$(ETCDIR)/x2gosql
-	$(INSTALL_DIR) $(DESTDIR)$(ETCDIR)/x2gosql/passwords
+build:
+
+install: install_scripts install_config install_man install_version
+
+install_scripts:
 	$(INSTALL_DIR) $(DESTDIR)$(BINDIR)
 	$(INSTALL_DIR) $(DESTDIR)$(SBINDIR)
 	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)
-	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)
-	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)/versions
 	$(INSTALL_PROGRAM) bin/*                $(DESTDIR)$(BINDIR)/
 	$(INSTALL_PROGRAM) sbin/*               $(DESTDIR)$(SBINDIR)/
 	$(INSTALL_FILE) lib/*                   $(DESTDIR)$(LIBDIR)/
+
+install_config:
+	$(INSTALL_DIR) $(DESTDIR)$(ETCDIR)
+	$(INSTALL_DIR) $(DESTDIR)$(ETCDIR)/x2gosql
+	$(INSTALL_DIR) $(DESTDIR)$(ETCDIR)/x2gosql/passwords
 	$(INSTALL_FILE) etc/x2goserver.conf     $(DESTDIR)$(ETCDIR)/
 	$(INSTALL_FILE) etc/x2gosql/sql         $(DESTDIR)$(ETCDIR)/x2gosql
-	$(INSTALL_FILE) VERSION                 $(DESTDIR)$(SHAREDIR)/versions/VERSION.x2goserver
 
-uninstall: uninstall_scripts uninstall_config uninstall_version
+install_man:
+	$(INSTALL_DIR) $(DESTDIR)$(MANDIR)
+	$(INSTALL_DIR) $(DESTDIR)$(MANDIR)/man8
+	$(INSTALL_FILE) man/man8/*.8           $(DESTDIR)$(MANDIR)/man8
+	gzip -f $(DESTDIR)$(MANDIR)/man8/x2go*.8
+
+install_version:
+	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)
+	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)/versions
+	$(INSTALL_FILE) VERSION.x2goserver     $(DESTDIR)$(SHAREDIR)/versions/VERSION.x2goserver
+
+uninstall: uninstall_scripts uninstall_config uninstall_man uninstall_version
 
 uninstall_scripts:
 	for file in $(BIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(BINDIR)/$$file; done
@@ -54,6 +69,11 @@ uninstall_config:
 	$(RM_DIR)  $(DESTDIR)$(ETCDIR)
 	$(RM_DIR)  $(DESTDIR)$(ETCDIR)/x2gosql/passwords
 	$(RM_DIR)  $(DESTDIR)$(ETCDIR)/x2gosql
+
+uninstall_man:
+	for file in $(BIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(MANDIR)/man8/$$file.8.gz; done
+	for file in $(SBIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(MANDIR)/man8/$$file.8.gz; done
+	$(RM_DIR)  $(DESTDIR)$(MANDIR)
 
 uninstall_version:
 	$(RM_FILE) $(DESTDIR)$(SHAREDIR)/versions/VERSION.x2goserver
