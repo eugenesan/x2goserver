@@ -3,3 +3,4 @@ sbin/x2go*     /usr/sbin/
 etc/x2gosql/sql         /etc/x2go/x2gosql/
 etc/x2goserver.conf     /etc/x2go/
 lib/x2godbwrapper.pm    /usr/lib/x2go/
+VERSION.x2goserver      /usr/share/x2go/versions/

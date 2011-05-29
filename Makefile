@@ -16,6 +16,7 @@ ETCDIR=/etc/x2go
 BINDIR=$(PREFIX)/bin
 SBINDIR=$(PREFIX)/sbin
 LIBDIR=$(PREFIX)/lib/x2go
+SHAREDIR=$(PREFIX)/share/x2go
 
 BIN_SCRIPTS=$(shell cd bin && ls)
 SBIN_SCRIPTS=$(shell cd sbin && ls)
@@ -30,13 +31,16 @@ install:
 	$(INSTALL_DIR) $(DESTDIR)$(BINDIR)
 	$(INSTALL_DIR) $(DESTDIR)$(SBINDIR)
 	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)
+	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)
+	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)/versions
 	$(INSTALL_PROGRAM) bin/*                $(DESTDIR)$(BINDIR)/
 	$(INSTALL_PROGRAM) sbin/*               $(DESTDIR)$(SBINDIR)/
 	$(INSTALL_FILE) lib/*                   $(DESTDIR)$(LIBDIR)/
 	$(INSTALL_FILE) etc/x2goserver.conf     $(DESTDIR)$(ETCDIR)/
 	$(INSTALL_FILE) etc/x2gosql/sql         $(DESTDIR)$(ETCDIR)/x2gosql
+	$(INSTALL_FILE) VERSION                 $(DESTDIR)$(SHAREDIR)/versions/VERSION.x2goserver
 
-uninstall: uninstall_scripts uninstall_config
+uninstall: uninstall_scripts uninstall_config uninstall_version
 
 uninstall_scripts:
 	for file in $(BIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(BINDIR)/$$file; done
@@ -50,3 +54,7 @@ uninstall_config:
 	$(RM_DIR)  $(DESTDIR)$(ETCDIR)
 	$(RM_DIR)  $(DESTDIR)$(ETCDIR)/x2gosql/passwords
 	$(RM_DIR)  $(DESTDIR)$(ETCDIR)/x2gosql
+
+uninstall_version:
+	$(RM_FILE) $(DESTDIR)$(SHAREDIR)/versions/VERSION.x2goserver
+	$(RM_DIR)  $(DESTDIR)$(SHAREDIR)/versions

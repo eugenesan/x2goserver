@@ -1,4 +1,6 @@
 etc/x2go
 etc/x2go/x2gosql
 etc/x2go/x2gosql/passwords
+usr/share/x2go
+usr/share/x2go/versions
 var/lib/x2go
