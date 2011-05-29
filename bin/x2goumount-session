@@ -1,0 +1,139 @@
+#!/usr/bin/perl
+
+# Copyright (C) 2007-2011 X2go Project - http://wiki.x2go.org
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the
+# Free Software Foundation, Inc.,
+# 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
+#
+# Copyright (C) 2007-2011  Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
+# Copyright (C) 2007-2011  Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
+
+use Sys::Hostname;
+use strict;
+
+use lib "/usr/lib/x2go";
+use x2godbwrapper; 
+
+
+my $session=shift;
+my $only_path=shift;
+
+
+my $uname=$ENV{'USER'};
+my $serv=hostname;
+
+if($only_path)
+{
+    $only_path=~s/\/ramdrive\/mnt\///;
+    $only_path=~ s/\//_/g;
+    my $end="_media";
+    $only_path="$ENV{'HOME'}/media/$only_path";
+}
+
+
+my $display=db_getdisplay($session);
+
+
+print "DISPLAY=$display\n";
+
+my @outp=db_getmounts($session);
+my $i;
+
+
+open (F,"</etc/mtab") or die "Can't open /etc/mtab for reading";
+my @mounts=<F>;
+close(F);
+
+my $use_zenity=0;
+
+if($ENV{'GNOME_DESKTOP_SESSION_ID'} ne "")
+{
+     $use_zenity=1;
+}
+
+
+for($i=0;$i<@outp;$i++)
+{
+    @outp[$i]=~s/ //g;
+    chomp(@outp[$i]);
+    chomp(@outp[$i]);
+    chomp(@outp[$i]);    
+    my @line=split('\|',"@outp[$i]");
+    my $path="@line[0]:@line[1]";
+    if($only_path)
+    {
+         if (@line[1] ne $only_path)
+	 {
+	       goto cont;
+	 }
+    }
+    my $j;
+    my $found=0;
+    my $remote;
+    for($j;$j<@mounts;$j++)
+    {
+          if(@mounts[$j]=~m/sshfs/ && @mounts[$j]=~m/@line[0]/ && @mounts[$j]=~m/@line[1]/ )
+	  {
+	      $found=1;
+	      $remote=(split(" ",@mounts[$j]))[0];
+              goto break;
+	  }
+    }
+break:
+    if($found) 
+    {
+       if(system( "fusermount -u @line[1]" ) == 0)
+       {       
+	    $found=0;
+       }
+       else
+       {
+                 $ENV{'DISPLAY'}=":$display";
+                 if($use_zenity == 0)
+		 {
+        	    system("kdialog --error \"@line[1]\"&");
+		 }
+		 else
+		 {
+                    system("zenity --error --text \"@line[1]\"&");
+		 }
+       }
+    }
+    if(! $found)
+    {
+	$remote=~s/\//_/g;
+	$remote=(split(":","$remote"))[1];
+	$remote="$ENV{'HOME'}/Desktop/$remote";
+	if( -e "$remote(sshfs-disk)")
+	{
+	   unlink("$remote(sshfs-disk)");
+	}
+	
+	$remote=~s/%2framdrive%2fmnt%2f//;
+	if( -e "$remote(sshfs-removable)")
+	{
+	   unlink("$remote(sshfs-removable)");
+	}
+	if( -e "$remote(sshfs-cdrom)")
+	{
+	   unlink("$remote(sshfs-cdrom)");
+	}
+        #print "$session \"@line[1]\"\n"; 
+	db_deletemount ($session, @line[1]);
+        rmdir (@line[1]);
+    }
+cont:    
+}
+
