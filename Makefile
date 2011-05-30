@@ -23,9 +23,20 @@ BIN_SCRIPTS=$(shell cd bin && ls)
 SBIN_SCRIPTS=$(shell cd sbin && ls)
 LIB_FILES=$(shell cd lib && ls)
 
-all:
+man_pages = `cd man && find * -type f`
 
-build:
+MAN2HTML_BIN  = man2html
+MAN2HTML_SRC  = man
+MAN2HTML_DEST = .build_man2html/html
+
+all: build
+
+build: build_man2html
+
+build_man2html:
+	mkdir -p $(MAN2HTML_DEST)
+	for man_page in $(man_pages); do mkdir -p `dirname $(MAN2HTML_DEST)/$$man_page`; done
+	for man_page in $(man_pages); do $(MAN2HTML_BIN) -r $(MAN2HTML_SRC)/$$man_page > $(MAN2HTML_DEST)/$$man_page.html; done
 
 install: install_scripts install_config install_man install_version
 
