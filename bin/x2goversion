@@ -27,21 +27,21 @@ get_version() {
 }
 
 if [ -n "$1" ]; then
-        X2GO_COMPONENT="$1"
-        X2GO_COMPONENT_VERFILE="${X2GO_VERSIONS_BASEPATH}/VERSION.${X2GO_COMPONENT}"
+	X2GO_COMPONENT="$1"
+	X2GO_COMPONENT_VERFILE="${X2GO_VERSIONS_BASEPATH}/VERSION.${X2GO_COMPONENT}"
 
-        if [ -f "${X2GO_COMPONENT_VERFILE}" ]; then
-                echo "$(get_version ${X2GO_COMPONENT_VERFILE})"
-        else
-                echo "Version information for X2go component '$X2GO_COMPONENT' is not available." >&1
-        fi
+	if [ -f "${X2GO_COMPONENT_VERFILE}" ]; then
+		echo "$(get_version ${X2GO_COMPONENT_VERFILE})"
+	else
+		echo "Version information for X2go component '$X2GO_COMPONENT' is not available." >&1
+	fi
 else
-        cd ${X2GO_VERSIONS_BASEPATH}
-        for compfile in `ls ${X2GO_VERSIONS_BASEPATH}`; do 
-                X2GO_COMPONENT="$(echo $compfile | cut -d"." -f2)"
-                X2GO_COMPONENT_VERSION="$(get_version $compfile)"
-                echo "${X2GO_COMPONENT}: ${X2GO_COMPONENT_VERSION}"
-        done
-        cd - >/dev/null
+	cd ${X2GO_VERSIONS_BASEPATH}
+	for compfile in `ls ${X2GO_VERSIONS_BASEPATH}`; do 
+		X2GO_COMPONENT="$(echo $compfile | cut -d"." -f2)"
+		X2GO_COMPONENT_VERSION="$(get_version $compfile)"
+		echo "${X2GO_COMPONENT}: ${X2GO_COMPONENT_VERSION}"
+	done
+	cd - >/dev/null
 fi
 
