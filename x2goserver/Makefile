@@ -31,7 +31,9 @@ MAN2HTML_DEST = .build_man2html/html
 
 all: clean build
 
-build: build_man2html
+build: build-indep
+
+build-indep: build_man2html
 
 build_man2html:
 	mkdir -p $(MAN2HTML_DEST)
