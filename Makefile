@@ -6,18 +6,18 @@ build: build-indep
 
 clean:
 	cd x2goserver && make $@
-	cd x2goserver-extras && make $@
+	cd x2goserver-extensions && make $@
 
 build-indep:
 	cd x2goserver && make $@
-	cd x2goserver-extras && make $@
+	cd x2goserver-extensions && make $@
 
 install:
 	cd x2goserver && make $@
-	cd x2goserver-extras && make $@
+	cd x2goserver-extensions && make $@
 
 uninstall:
 	cd x2goserver && make $@
-	cd x2goserver-extras && make $@
+	cd x2goserver-extensions && make $@
 
 

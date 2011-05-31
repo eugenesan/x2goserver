@@ -1,11 +1,5 @@
 Upstream Authors:
 
-x2goserver:
- Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
- Heinz-M. Graesing <heinz-m.graesing@obviously-nice.de>
-
-x2goserver-extras
- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
  Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
  Heinz-M. Graesing <heinz-m.graesing@obviously-nice.de>
 
@@ -26,14 +20,17 @@ along with this program; if not, write to the
 Free Software Foundation, Inc.,
 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
 
-Copyright (C) 2007-2011  Oleksandr Shneyder (x2goserver, x2goserver-extras)
+Copyright (C) 2007-2011  Oleksandr Shneyder
 oleksandr.shneyder@obviously-nice.de
 
-Copyright (C) 2007-2011  Heinz-Markus Graesing (x2goserver, x2goserver-extras)
+Copyright (C) 2007-2011  Heinz-Markus Graesing
 heinz-m.graesing@obviously-nice.de
 
-Copyright (C) 2011  Mike Gabriel (x2goserver-extras)
-mike.gabriel@das-netzwerkteam.de
+Upstream contributors to x2goserver-extensions:
+
+Mike Gabriel <mike.gabriel@das-netzwerkteam.de>:
+    * x2goversion
+    * x2gosetkeyboard
 
 On Debian systems, the complete text of the GNU General
 Public License can be found in `/usr/share/common-licenses/GPL'.

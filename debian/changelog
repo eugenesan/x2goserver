@@ -1,9 +1,9 @@
 x2goserver (3.0.99.5-0~x2go2) unstable; urgency=low
 
-  * splitting up x2goserver package into x2goserver and x2goserver-extras
-    (x2goserver provides full functionality to legacy x2goclient, 
-    x2goserver-extras is a container for add-on tools/scripts needed for 
-    other client implementations like Python X2go.
+  * splitting up x2goserver package into x2goserver and x2goserver-extensions
+    (x2goserver provides full functionality to legacy x2goclient,
+    x2goserver-extensions is a container/namespace for add-on tools/scripts needed
+    for other client implementations like Python X2go.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 31 May 2011 10:57:15 +0200
 

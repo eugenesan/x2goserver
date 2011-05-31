@@ -35,7 +35,7 @@ Recommends:
  x11-xkb-utils,
  x11-xserver-utils,
  xinit,
- x2goserver-extras (= ${source:Version})
+ x2goserver-extensions (= ${source:Version})
 Replaces:
  x2goserver-one,
  x2goserver-home,
@@ -52,17 +52,21 @@ Description: X2go server daemon scripts
  This package contains the main daemon and tools for
  X2go server-side session administrations.
  .
- The set of tools and scripts in this package are
- sufficient for running the X2go project's legacy
- x2goclient on the client-side.
+ The x2goserver package provides full functionality
+ for running the X2go project's legacy X2go client
+ (x2goclient) on the client-side.
+ .
+ However, if you intend using other client implementations 
+ of X2go make sure that you also have X2go server
+ extensions package (x2goserver-extensions) installed.
 
-Package: x2goserver-extras
+Package: x2goserver-extensions
 Architecture: all
 Depends:
  ${misc:Depends},
  x2goserver (= ${source:Version}),
  x11-xkb-utils
-Description: X2go server daemon scripts
+Description: X2go server daemon scripts (extensions)
  X2go is a serverbased computing environment with
     - session resuming
     - low bandwith support
@@ -71,5 +75,10 @@ Description: X2go server daemon scripts
     - audio support
     - authentication by smartcard and USB stick
  .
- This package contains the main daemon and tools for
- X2go server-side session administrations.
+ The X2go server extension namespace offers contributors
+ to add script functionality to X2go that is not
+ needed/ignored by the legacy X2go client (x2goclient).
+ .
+ Make sure you have this package installed on your server
+ if you want non-legacy X2go clients to be able to
+ access your server without lack of features.
