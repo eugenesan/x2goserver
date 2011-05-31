@@ -5,7 +5,7 @@ Maintainer: Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
 Uploaders:
  Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
 Build-Depends: 
- debhelper (>= 7.0.50)
+ debhelper (>= 7.0.50~)
 Standards-Version: 3.9.2
 Homepage: http://code.x2go.org/releases/source/x2goserver
 Vcs-Git: git://code.x2go.org/x2goserver.git
@@ -34,11 +34,34 @@ Recommends:
  x11-xfs-utils,
  x11-xkb-utils,
  x11-xserver-utils,
- xinit
+ xinit,
+ x2goserver-extras (= ${source:Version})
 Replaces:
  x2goserver-one,
  x2goserver-home,
  x2goprint
+Description: X2go server daemon scripts
+ X2go is a serverbased computing environment with
+    - session resuming
+    - low bandwith support
+    - LDAP support
+    - client side mass storage mounting support
+    - audio support
+    - authentication by smartcard and USB stick
+ .
+ This package contains the main daemon and tools for
+ X2go server-side session administrations.
+ .
+ The set of tools and scripts in this package are
+ sufficient for running the X2go project's legacy
+ x2goclient on the client-side.
+
+Package: x2goserver-extras
+Architecture: all
+Depends:
+ ${misc:Depends},
+ x2goserver (= ${source:Version}),
+ x11-xkb-utils
 Description: X2go server daemon scripts
  X2go is a serverbased computing environment with
     - session resuming

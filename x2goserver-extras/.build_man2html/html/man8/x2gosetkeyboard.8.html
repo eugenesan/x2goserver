@@ -1,31 +1,42 @@
 Content-type: text/html
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML><HEAD><TITLE>Man page of x2gomountdirs</TITLE>
+<HTML><HEAD><TITLE>Man page of x2gosetkeyboard</TITLE>
 </HEAD><BODY>
-<H1>x2gomountdirs</H1>
-Section: X2go Server Tool (8)<BR>Updated: 18 May 2011<BR><A HREF="#index">Index</A>
+<H1>x2gosetkeyboard</H1>
+Section: X2go Server Tool (8)<BR>Updated: 30 May 2011<BR><A HREF="#index">Index</A>
 <A HREF="../index.html">Return to Main Contents</A><HR>
 
 <A NAME="lbAB">&nbsp;</A>
 <H2>NAME</H2>
 
-x2gomountdirs - X2go Server Script
+x2gosetkeyboard - Allow server-side Keyboard Setting Updates issued by X2go Client
 <A NAME="lbAC">&nbsp;</A>
 <H2>SYNOPSIS</H2>
 
 
 
 
-<B>x2gomountdirs</B>
+<B>x2gosetkeyboard</B>
 <P>
 <A NAME="lbAD">&nbsp;</A>
 <H2>DESCRIPTION</H2>
 
-<B>x2gomountdirs</B> is one of many scripts belonging to X2go Server.
+<B>x2gosetkeyboard</B> looks for a 'keyboard' file in the X2go session directory and introspects
+the X2go session keyboard settings requested from the client side.
+<P>
+
+If no 'keyboard' file is present in the X2go session directory, nothing happens (i.e. no error
+will be raised).
 <P>
 
 <A NAME="lbAE">&nbsp;</A>
+<H2>FILES</H2>
+
+${HOME}/.x2go/C-${X2GO_SESSION}/keyboard
+<P>
+
+<A NAME="lbAF">&nbsp;</A>
 <H2>AUTHOR</H2>
 
 This manual has been written by Mike Gabriel &lt;<A HREF="mailto:mike.gabriel@das-netzwerkteam.de">mike.gabriel@das-netzwerkteam.de</A>&gt; for the X2go project
@@ -38,12 +49,13 @@ This manual has been written by Mike Gabriel &lt;<A HREF="mailto:mike.gabriel@da
 <DT><A HREF="#lbAB">NAME</A><DD>
 <DT><A HREF="#lbAC">SYNOPSIS</A><DD>
 <DT><A HREF="#lbAD">DESCRIPTION</A><DD>
-<DT><A HREF="#lbAE">AUTHOR</A><DD>
+<DT><A HREF="#lbAE">FILES</A><DD>
+<DT><A HREF="#lbAF">AUTHOR</A><DD>
 </DL>
 <HR>
 This document was created by
 <A HREF="/cgi-bin/man/man2html">man2html</A>,
 using the manual pages.<BR>
-Time: 13:56:46 GMT, May 30, 2011
+Time: 09:22:50 GMT, May 31, 2011
 </BODY>
 </HTML>

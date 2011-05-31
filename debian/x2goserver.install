@@ -1,6 +1,6 @@
-bin/x2go*      /usr/bin/
-sbin/x2go*     /usr/sbin/
-etc/x2gosql/sql         /etc/x2go/x2gosql/
-etc/x2goserver.conf     /etc/x2go/
-lib/x2godbwrapper.pm    /usr/lib/x2go/
-VERSION.x2goserver      /usr/share/x2go/versions/
+x2goserver/bin/x2go*      /usr/bin/
+x2goserver/sbin/x2go*     /usr/sbin/
+x2goserver/etc/x2gosql/sql         /etc/x2go/x2gosql/
+x2goserver/etc/x2goserver.conf     /etc/x2go/
+x2goserver/lib/x2godbwrapper.pm    /usr/lib/x2go/
+x2goserver/VERSION.x2goserver      /usr/share/x2go/versions/
