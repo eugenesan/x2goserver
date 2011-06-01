@@ -5,7 +5,8 @@ Maintainer: Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
 Uploaders:
  Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
 Build-Depends: 
- debhelper (>= 7.0.50~)
+ debhelper (>= 7.0.50~),
+ man2html
 Standards-Version: 3.9.2
 Homepage: http://code.x2go.org/releases/source/x2goserver
 Vcs-Git: git://code.x2go.org/x2goserver.git
