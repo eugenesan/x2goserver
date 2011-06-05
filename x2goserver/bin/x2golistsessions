@@ -72,7 +72,7 @@ for(my $i=0;$i<@outp;$i++)
 	   {
                db_changestatus( 'S', @sinfo[1] );
 	       @outp[$i] =~ s/\|R\|/\|S\|/;
-               system( "x2goumount_session @sinfo[1]");
+               system( "x2goumount-session @sinfo[1]");
 
 	   }
        }       

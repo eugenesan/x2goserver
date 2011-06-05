@@ -99,14 +99,14 @@ elsif ($pid == 0 )
      {
 	 #print "@sinfo[1], is blocked\n";
 	 #print "(@sinfo[1])Unmounting all shares\n";	        
-	 system( "su @sinfo[11] -c \"export HOSTNAME && x2goumount_session @sinfo[1]\" 2> /dev/null");
+	 system( "su @sinfo[11] -c \"export HOSTNAME && x2goumount-session @sinfo[1]\" 2> /dev/null");
      }       
      elsif(! check_pid (@sinfo[0],@sinfo[1],@sinfo[12]))
      {
          system("su @sinfo[11] -c \"x2gochangestatus 'F' @sinfo[1] \" > /dev/null");
 	 #print "@sinfo[1], pid @sinfo[0] not exist, changing status from @sinfo[4] to F\n";
 	 #print "(@sinfo[1])Unmounting all shares\n";	 
-	 system( "su @sinfo[11] -c \"export HOSTNAME && x2goumount_session @sinfo[1]\" 2> /dev/null");
+	 system( "su @sinfo[11] -c \"export HOSTNAME && x2goumount-session @sinfo[1]\" 2> /dev/null");
      }
      else
      { 
@@ -117,7 +117,7 @@ elsif ($pid == 0 )
                system("su @sinfo[11] -c  \"x2gochangestatus 'S' @sinfo[1] \" > /dev/null");
 	       #print "@sinfo[1], is suspended, changing status from @sinfo[4] to S\n";
 	       #print "(@sinfo[1])Unmounting all shares\n";	        
-	       system( "su @sinfo[11] -c \"export HOSTNAME && x2goumount_session @sinfo[1]\" 2> /dev/null");
+	       system( "su @sinfo[11] -c \"export HOSTNAME && x2goumount-session @sinfo[1]\" 2> /dev/null");
            }
        }       
      }

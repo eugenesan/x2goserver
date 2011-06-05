@@ -134,4 +134,4 @@ fi
 kill -TERM  $X2GO_AGENT_PID
 x2gochangestatus 'F' $X2GO_SESSION  > /dev/null
 export HOSTNAME
-x2goumount_session $X2GO_SESSION
+x2goumount-session $X2GO_SESSION

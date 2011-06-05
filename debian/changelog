@@ -1,7 +1,8 @@
 x2goserver (3.0.99.5-0~x2go3) UNRELEASED; urgency=low
 
   [Mike Gabriel]
-  * no changes so far
+  * Rename x2goumount_session calls to x2goumount-session calls in x2goserver
+    internal scripts.
 
   [Martin Oehler]
   * Removes old debug code fragment, fixes x2golistsessions parsing.

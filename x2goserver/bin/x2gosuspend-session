@@ -40,4 +40,4 @@ x2gochangestatus 'S' $SESSION_NAME  > /dev/null
 kill -HUP $X2GO_AGENT_PID
 
 export HOSTNAME 
-x2goumount_session $SESSION_NAME
+x2goumount-session $SESSION_NAME
