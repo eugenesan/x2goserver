@@ -45,9 +45,6 @@ if($only_path)
 
 my $display=db_getdisplay($session);
 
-
-print "DISPLAY=$display\n";
-
 my @outp=db_getmounts($session);
 my $i;
 

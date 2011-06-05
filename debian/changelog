@@ -1,3 +1,13 @@
+x2goserver (3.0.99.5-0~x2go3) UNRELEASED; urgency=low
+
+  [Mike Gabriel]
+  * no changes so far
+
+  [Martin Oehler]
+  * Removes old debug code fragment, fixes x2golistsessions parsing.
+
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Sun, 05 Jun 2011 20:44:32 +0200
+
 x2goserver (3.0.99.5-0~x2go2) unstable; urgency=low
 
   * splitting up x2goserver package into x2goserver and x2goserver-extensions
