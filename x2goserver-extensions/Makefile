@@ -71,7 +71,7 @@ install_man:
 install_version:
 	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)
 	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)/versions
-	$(INSTALL_FILE) VERSION.x2goserver-extras     $(DESTDIR)$(SHAREDIR)/versions/VERSION.x2goserver-extras
+	$(INSTALL_FILE) VERSION.x2goserver-extensions     $(DESTDIR)$(SHAREDIR)/versions/VERSION.x2goserver-extensions
 
 uninstall: uninstall_scripts uninstall_config uninstall_man uninstall_version
 
