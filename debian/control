@@ -37,7 +37,7 @@ Recommends:
  x11-xserver-utils,
  xinit,
  x2goserver-extensions (= ${source:Version})
-Replaces:
+Conflicts:
  x2goserver-one,
  x2goserver-home,
  x2goprint
