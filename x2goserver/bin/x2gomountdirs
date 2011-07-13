@@ -232,8 +232,8 @@ for (my $i=0;$i<@dirs;$i++)
 		{
 			$code_conv="-o $code_conv";
 		}
-		print "inserted,\nsshfs $code_conv -o IdentityFile=$key,UserKnownHostsFile=$key.ident $user\@$host:\"@dirs[$i]\" \"$mntpath\" -p $port\n";
-		if (system("sshfs  $code_conv -o ServerAliveInterval=300,Cipher=blowfish,IdentityFile=$key,UserKnownHostsFile=$key.ident $user\@$host:\"@dirs[$i]\" \"$mntpath\" -p $port 2>>~/mounts.log")==0)
+		print "inserted,\nsshfs $code_conv -o IdentityFile=$key,UserKnownHostsFile=$key.ident \"$user\"\@$host:\"@dirs[$i]\" \"$mntpath\" -p $port\n";
+		if (system("sshfs  $code_conv -o ServerAliveInterval=300,Cipher=blowfish,IdentityFile=$key,UserKnownHostsFile=$key.ident \"$user\"\@$host:\"@dirs[$i]\" \"$mntpath\" -p $port 2>>~/mounts.log")==0)
 		{
 			print "mount @dirs[$i] ok\n";
 			# check if kde4 plasmoid running
