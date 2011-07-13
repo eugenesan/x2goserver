@@ -17,15 +17,30 @@ x2gostartagent - X2go Server Script
 
 
 
-<B>x2gostartagent</B>
+x2gostartagent &lt;geometry&gt; &lt;link-quality&gt; &lt;nx-pack-meth&gt; &lt;cache-type+dpi&gt; &lt;kblayout&gt; &lt;kbtype&gt; &lt;setkbd&gt; &lt;session-type&gt; &lt;command&gt;
 <P>
 <A NAME="lbAD">&nbsp;</A>
 <H2>DESCRIPTION</H2>
 
-<B>x2gostartagent</B> is one of many scripts belonging to X2go Server.
+<B>x2gostartagent</B> is a script that coordinates the startup process of new X2go sessions. 
+It expects quite a list of parameters, all of which are obligatory.
+<A NAME="lbAE">&nbsp;</A>
+<H2>RETURN VALUES</H2>
+
+A list of parameters will be returned after a successful session startup. Each value will be presented on
+a new line:
+<P>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;<B>&lt;X-display-number&gt;</B>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;<B>&lt;session-cookie-hash&gt;</B>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;<B>&lt;x2goagent-pid&gt;</B>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;<B>&lt;session-name&gt;</B>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;<B>&lt;graphics-port&gt;</B>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;<B>&lt;sound-port&gt;</B>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;<B>&lt;sshfs-port&gt;</B>
+<P>
 <P>
 
-<A NAME="lbAE">&nbsp;</A>
+<A NAME="lbAF">&nbsp;</A>
 <H2>AUTHOR</H2>
 
 This manual has been written by Mike Gabriel &lt;<A HREF="mailto:mike.gabriel@das-netzwerkteam.de">mike.gabriel@das-netzwerkteam.de</A>&gt; for the X2go project
@@ -38,12 +53,13 @@ This manual has been written by Mike Gabriel &lt;<A HREF="mailto:mike.gabriel@da
 <DT><A HREF="#lbAB">NAME</A><DD>
 <DT><A HREF="#lbAC">SYNOPSIS</A><DD>
 <DT><A HREF="#lbAD">DESCRIPTION</A><DD>
-<DT><A HREF="#lbAE">AUTHOR</A><DD>
+<DT><A HREF="#lbAE">RETURN VALUES</A><DD>
+<DT><A HREF="#lbAF">AUTHOR</A><DD>
 </DL>
 <HR>
 This document was created by
 <A HREF="/cgi-bin/man/man2html">man2html</A>,
 using the manual pages.<BR>
-Time: 10:13:24 GMT, May 31, 2011
+Time: 07:17:02 GMT, July 13, 2011
 </BODY>
 </HTML>
