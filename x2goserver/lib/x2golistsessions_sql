@@ -25,25 +25,23 @@ use strict;
 use lib "/usr/lib/x2go";
 use x2godbwrapper; 
 
-
-
 my $serv=shift;
 my @array;
 if($serv eq "--all-servers")
 {
-    @array=dbsys_listsessionsroot_all();
+	@array=dbsys_listsessionsroot_all();
 }
 else
 {
-    @array=dbsys_listsessionsroot ($serv);
+	@array=dbsys_listsessionsroot ($serv);
 }
 my $i;
 for ( $i=0;$i<@array;$i++) 
 {
-       my @ln=split('\|',@array[$i]);
-       if(@ln[4] eq "F")
-       {
-          dbsys_rmsessionsroot( @ln[1]);
-       }
-       print "@array[$i]\n";
+	my @ln=split('\|',@array[$i]);
+	if (@ln[4] eq "F")
+	{
+		dbsys_rmsessionsroot( @ln[1]);
+	}
+	print "@array[$i]\n";
 }

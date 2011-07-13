@@ -6,6 +6,7 @@ x2goserver (3.0.99.5-0~x2go3) UNRELEASED; urgency=low
   * React to bug #627990, prefer man2html-base over man2html.
   * Re-arranged script files in /bin and /lib directories, this is
     still compensated by dh_install and dh_link and needs more work.
+  * Tab'ified all script files, proper indentation, coding style.
 
   [Martin Oehler]
   * Removes old debug code fragment, fixes x2golistsessions parsing.

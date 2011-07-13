@@ -26,16 +26,16 @@ use Sys::Hostname;
 my $serv=shift;
 if( ! $serv)
 {
-   $serv=hostname;
+	$serv=hostname;
 }
 
 my $rsess=`x2golistsessions x2goserver |grep _stR`;
 my @rsess=split("\n","$rsess");
 my @rdisplays;
-for(my $i=0;$i<@rsess;$i++)
+for (my $i=0;$i<@rsess;$i++)
 {
-     my @sinfo=split("\\|",@rsess[$i]);
-     @rdisplays[$i]=@sinfo[2];
+	my @sinfo=split("\\|",@rsess[$i]);
+	@rdisplays[$i]=@sinfo[2];
 }
 
 my $rdisp=join("I",@rdisplays);
@@ -46,19 +46,19 @@ my $outp=`ls -1 /tmp/.X11-unix/`;
 my @outp=split("\n","$outp");
 for(my $i=0;$i<@outp;$i++)
 {
-     my $display=@outp[$i];
-     $display=~s/X/:/;
-     my $checkdisp=$display;
-     $checkdisp=~s/:/I/;
-     $checkdisp="${checkdisp}I";
-     if (!( $rdisp =~ m/$checkdisp/ ))
-     {
-          my $inf=`xwininfo -root -display $display 2> /dev/null`;
-          if ( $inf=~ m/geometry/)
-          {
-              print "$uname\@$display\n";
-          }
-     }
+	my $display=@outp[$i];
+	$display=~s/X/:/;
+	my $checkdisp=$display;
+	$checkdisp=~s/:/I/;
+	$checkdisp="${checkdisp}I";
+	if (!( $rdisp =~ m/$checkdisp/ ))
+	{
+		my $inf=`xwininfo -root -display $display 2> /dev/null`;
+		if ( $inf=~ m/geometry/)
+		{
+			print "$uname\@$display\n";
+		}
+	}
 }
 
 $outp=`ls -1 /tmp/ | grep x2godesktopsharing_`;
@@ -66,9 +66,9 @@ $outp=`ls -1 /tmp/ | grep x2godesktopsharing_`;
 
 for(my $i=0;$i<@outp;$i++)
 {
-    my @ln=split("\@",@outp[$i]);
-    if( @ln[1] ne $uname )
-    {
-           print "@ln[1]\@@ln[2]\n";
-    }
+	my @ln=split("\@",@outp[$i]);
+	if ( @ln[1] ne $uname )
+	{
+		print "@ln[1]\@@ln[2]\n";
+	}
 }

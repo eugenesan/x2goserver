@@ -34,12 +34,12 @@ my $only_path=shift;
 my $uname=$ENV{'USER'};
 my $serv=hostname;
 
-if($only_path)
+if ($only_path)
 {
-    $only_path=~s/\/ramdrive\/mnt\///;
-    $only_path=~ s/\//_/g;
-    my $end="_media";
-    $only_path="$ENV{'HOME'}/media/$only_path";
+	$only_path=~s/\/ramdrive\/mnt\///;
+	$only_path=~ s/\//_/g;
+	my $end="_media";
+	$only_path="$ENV{'HOME'}/media/$only_path";
 }
 
 
@@ -55,82 +55,80 @@ close(F);
 
 my $use_zenity=0;
 
-if($ENV{'GNOME_DESKTOP_SESSION_ID'} ne "")
+if ($ENV{'GNOME_DESKTOP_SESSION_ID'} ne "")
 {
-     $use_zenity=1;
+	$use_zenity=1;
 }
 
 
-for($i=0;$i<@outp;$i++)
+for ($i=0;$i<@outp;$i++)
 {
-    @outp[$i]=~s/ //g;
-    chomp(@outp[$i]);
-    chomp(@outp[$i]);
-    chomp(@outp[$i]);    
-    my @line=split('\|',"@outp[$i]");
-    my $path="@line[0]:@line[1]";
-    if($only_path)
-    {
-         if (@line[1] ne $only_path)
-	 {
-	       goto cont;
-	 }
-    }
-    my $j;
-    my $found=0;
-    my $remote;
-    for($j;$j<@mounts;$j++)
-    {
-          if(@mounts[$j]=~m/sshfs/ && @mounts[$j]=~m/@line[0]/ && @mounts[$j]=~m/@line[1]/ )
-	  {
-	      $found=1;
-	      $remote=(split(" ",@mounts[$j]))[0];
-              goto break;
-	  }
-    }
+	@outp[$i]=~s/ //g;
+	chomp(@outp[$i]);
+	chomp(@outp[$i]);
+	chomp(@outp[$i]);    
+	my @line=split('\|',"@outp[$i]");
+	my $path="@line[0]:@line[1]";
+	if ($only_path)
+	{
+		if (@line[1] ne $only_path)
+		{
+			goto cont;
+		}
+	}
+	my $j;
+	my $found=0;
+	my $remote;
+	for ($j;$j<@mounts;$j++)
+	{
+		if (@mounts[$j]=~m/sshfs/ && @mounts[$j]=~m/@line[0]/ && @mounts[$j]=~m/@line[1]/ )
+		{
+			$found=1;
+			$remote=(split(" ",@mounts[$j]))[0];
+			goto break;
+		}
+	}
 break:
-    if($found) 
-    {
-       if(system( "fusermount -u @line[1]" ) == 0)
-       {       
-	    $found=0;
-       }
-       else
-       {
-                 $ENV{'DISPLAY'}=":$display";
-                 if($use_zenity == 0)
-		 {
-        	    system("kdialog --error \"@line[1]\"&");
-		 }
-		 else
-		 {
-                    system("zenity --error --text \"@line[1]\"&");
-		 }
-       }
-    }
-    if(! $found)
-    {
-	$remote=~s/\//_/g;
-	$remote=(split(":","$remote"))[1];
-	$remote="$ENV{'HOME'}/Desktop/$remote";
-	if( -e "$remote(sshfs-disk)")
+	if ($found)
 	{
-	   unlink("$remote(sshfs-disk)");
+		if (system( "fusermount -u @line[1]" ) == 0)
+		{
+			$found=0;
+		}
+		else
+		{
+			$ENV{'DISPLAY'}=":$display";
+			if ($use_zenity == 0)
+			{
+				system("kdialog --error \"@line[1]\"&");
+			}
+			else
+			{
+				system("zenity --error --text \"@line[1]\"&");
+			}
+		}
 	}
-	
-	$remote=~s/%2framdrive%2fmnt%2f//;
-	if( -e "$remote(sshfs-removable)")
+	if (! $found)
 	{
-	   unlink("$remote(sshfs-removable)");
+		$remote=~s/\//_/g;
+		$remote=(split(":","$remote"))[1];
+		$remote="$ENV{'HOME'}/Desktop/$remote";
+		if ( -e "$remote(sshfs-disk)")
+		{
+		   unlink("$remote(sshfs-disk)");
+		}
+		$remote=~s/%2framdrive%2fmnt%2f//;
+		if ( -e "$remote(sshfs-removable)")
+		{
+			unlink("$remote(sshfs-removable)");
+		}
+		if ( -e "$remote(sshfs-cdrom)")
+		{
+			unlink("$remote(sshfs-cdrom)");
+		}
+		db_deletemount ($session, @line[1]);
+		rmdir (@line[1]);
 	}
-	if( -e "$remote(sshfs-cdrom)")
-	{
-	   unlink("$remote(sshfs-cdrom)");
-	}
-        #print "$session \"@line[1]\"\n"; 
-	db_deletemount ($session, @line[1]);
-        rmdir (@line[1]);
-    }
-cont:    
+cont:
 }
 

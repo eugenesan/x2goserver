@@ -38,47 +38,43 @@ X2GO_CMD=$9
 X2GO_RESIZE=0
 X2GO_FULLSCREEN=0
 
-if [ "$X2GO_STYPE" == "S" ]
-then
-    
-    SHADOW_MODE=`echo "$X2GO_CMD"|awk '{split($0,a,"XSHAD"); print a[1]}'`
-    SHADOW_USER=`echo "$X2GO_CMD"|awk '{split($0,a,"XSHAD"); print a[2]}'`
-    SHADOW_DESKTOP=`echo "$X2GO_CMD"|awk '{split($0,a,"XSHAD"); print a[3]}'`
-    
-    echo "suser $SHADOW_USER user $USER " >> /tmp/uagent
-    
-    if [ "$SHADOW_USER" != "$USER" ]
-    then
-        
-        OUTPUT=`x2godesktopsharing client $X2GO_CLIENT $@`
-        if [ "$OUTPUT" == "DENY" ]
-	then
-            echo "ACCESS DENIED" 1>&2
-            exit -1
-	fi
-	X2GO_COOKIE=`echo $OUTPUT | awk '{print $2}'`
-	X2GO_PORT=`echo $OUTPUT | awk '{print $1}'`
-	xauth add ${HOSTNAME}/unix:${X2GO_PORT} MIT-MAGIC-COOKIE-1 ${X2GO_COOKIE}
-        xauth add ${HOSTNAME}:${X2GO_PORT} MIT-MAGIC-COOKIE-1 ${X2GO_COOKIE}
+if [ "$X2GO_STYPE" == "S" ]; then
 
-        echo $X2GO_PORT
-        echo $X2GO_COOKIE        
-        echo $OUTPUT | awk '{print $3}'
-        echo $OUTPUT | awk '{print $4}'
-        echo $OUTPUT | awk '{print $5}'
-        echo $OUTPUT | awk '{print $6}'
-        echo $OUTPUT | awk '{print $7}'
-    exit
-    fi
+	SHADOW_MODE=`echo "$X2GO_CMD"|awk '{split($0,a,"XSHAD"); print a[1]}'`
+	SHADOW_USER=`echo "$X2GO_CMD"|awk '{split($0,a,"XSHAD"); print a[2]}'`
+	SHADOW_DESKTOP=`echo "$X2GO_CMD"|awk '{split($0,a,"XSHAD"); print a[3]}'`
+
+	echo "suser $SHADOW_USER user $USER " >> /tmp/uagent
+
+	if [ "$SHADOW_USER" != "$USER" ]; then
+
+		OUTPUT=`x2godesktopsharing client $X2GO_CLIENT $@`
+		if [ "$OUTPUT" == "DENY" ]; then
+			echo "ACCESS DENIED" 1>&2
+			exit -1
+		fi
+		X2GO_COOKIE=`echo $OUTPUT | awk '{print $2}'`
+		X2GO_PORT=`echo $OUTPUT | awk '{print $1}'`
+		xauth add ${HOSTNAME}/unix:${X2GO_PORT} MIT-MAGIC-COOKIE-1 ${X2GO_COOKIE}
+		xauth add ${HOSTNAME}:${X2GO_PORT} MIT-MAGIC-COOKIE-1 ${X2GO_COOKIE}
+
+		echo $X2GO_PORT
+		echo $X2GO_COOKIE        
+		echo $OUTPUT | awk '{print $3}'
+		echo $OUTPUT | awk '{print $4}'
+		echo $OUTPUT | awk '{print $5}'
+		echo $OUTPUT | awk '{print $6}'
+		echo $OUTPUT | awk '{print $7}'
+		exit 0
+	fi
 fi
 
 LIMIT=`x2gosessionlimit`
 LWORD=`echo $LIMIT | awk '{print $1}'`
 
-if [ "$LWORD" == "LIMIT" ]
-then
-   echo  $LIMIT 1>&2
-   exit -1
+if [ "$LWORD" == "LIMIT" ]; then
+	echo  $LIMIT 1>&2
+	exit -1
 fi
 
 export NX_CLIENT=/usr/bin/x2gosuspend-agent
@@ -87,113 +83,93 @@ COLORDEPTH=`echo "$X2GO_TYPE"|awk '{split($0,a,"-depth_"); print a[2]}'`
 
 SESSION_TYPE="D"
 
-if [ "$X2GO_STYPE" == "R" ]
-then
-  SESSION_TYPE="R"
-elif  [ "$X2GO_STYPE" == "S" ]
-then
-  SESSION_TYPE="S"
+if [ "$X2GO_STYPE" == "R" ]; then
+	SESSION_TYPE="R"
+elif  [ "$X2GO_STYPE" == "S" ]; then
+	SESSION_TYPE="S"
 fi
 
-if [ "$X2GO_CLIENT" == "" ]
-then
-   X2GO_CLIENT=$HOSTNAME
+if [ "$X2GO_CLIENT" == "" ]; then
+	X2GO_CLIENT=$HOSTNAME
 fi
-
 
 USED_DISPLAYS=`x2gogetdisplays $HOSTNAME`
 
 
-while [ "$OUTPUT"  != "inserted" ]
-do
- X2GO_PORT=$(($X2GO_PORT + 1))
- X2GO_PORT=`echo "for(\\$i=$X2GO_PORT;\\$br ne \"true\";\\$i++){ if(\"$USED_DISPLAYS\" =~ m/\\|\\$i\\|/){\\$br=\"false\";}else{\\$br=\"true\";print \\$i;}}"|perl`
+while [ "$OUTPUT"  != "inserted" ]; do
+	X2GO_PORT=$(($X2GO_PORT + 1))
+	X2GO_PORT=`echo "for(\\$i=$X2GO_PORT;\\$br ne \"true\";\\$i++){ if(\"$USED_DISPLAYS\" =~ m/\\|\\$i\\|/){\\$br=\"false\";}else{\\$br=\"true\";print \\$i;}}"|perl`
 
- if  [ -e "/tmp/.X${X2GO_PORT}-lock" ] || [ -e "/tmp/.X11-unix/X${X2GO_PORT}" ] 
- then
-    OUTPUT="XXX"
- else
-   SESSION_NAME=${USER}-${X2GO_PORT}-`date +"%s"`
-   if [ "$COLORDEPTH" != "" ]
-   then
-       SESSION_NAME="$SESSION_NAME"_st${SESSION_TYPE}${X2GO_CMD}_dp${COLORDEPTH}
-       SESSION_NAME=`echo "$SESSION_NAME" | sed  -e  "s/:/PP/g"`
-   fi
-   OUTPUT=`x2goinsertsession $X2GO_PORT $HOSTNAME $SESSION_NAME`
- fi 
+	if  [ -e "/tmp/.X${X2GO_PORT}-lock" ] || [ -e "/tmp/.X11-unix/X${X2GO_PORT}" ]; then
+		OUTPUT="XXX"
+	else
+		SESSION_NAME=${USER}-${X2GO_PORT}-`date +"%s"`
+		if [ "$COLORDEPTH" != "" ]; then
+			SESSION_NAME="$SESSION_NAME"_st${SESSION_TYPE}${X2GO_CMD}_dp${COLORDEPTH}
+			SESSION_NAME=`echo "$SESSION_NAME" | sed  -e  "s/:/PP/g"`
+		fi
+		OUTPUT=`x2goinsertsession $X2GO_PORT $HOSTNAME $SESSION_NAME`
+	fi 
 done
 
 
 USED_PORTS=`x2gogetports $HOSTNAME`
 
 
-while [ "$GR_PORT" == "" ] || [ "$SOUND_PORT" == "" ] || [ "$FS_PORT" == "" ]
-do
-  OUTPUT=""
-  while [ "$OUTPUT"  != "inserted" ]
-  do
-    SSH_PORT=$(($SSH_PORT + 1))
+while [ "$GR_PORT" == "" ] || [ "$SOUND_PORT" == "" ] || [ "$FS_PORT" == "" ]; do
+	OUTPUT=""
+	while [ "$OUTPUT"  != "inserted" ]; do
+		SSH_PORT=$(($SSH_PORT + 1))
 
-    ##check if port in /etc/services
+		#check if port in /etc/services
+		SSH_PORT=`echo "for(\\$i=$SSH_PORT;\\$br ne \"true\";\\$i++){ if(\"$USED_PORTS\" =~ m/\\|\\$i\\|/){\\$br=\"false\";}else{\\$br=\"true\";print \\$i;}}"|perl`
 
-    SSH_PORT=`echo "for(\\$i=$SSH_PORT;\\$br ne \"true\";\\$i++){ if(\"$USED_PORTS\" =~ m/\\|\\$i\\|/){\\$br=\"false\";}else{\\$br=\"true\";print \\$i;}}"|perl`
-
-    SERV=`grep $SSH_PORT /etc/services`
-    if [ "$SERV" == "" ]
-    then
-      CR=`echo "use IO::Socket; \\$sock = new IO::Socket::INET ( LocalAddr => 'localhost',LocalPort => \"$SSH_PORT\",\
+		SERV=`grep $SSH_PORT /etc/services`
+		if [ "$SERV" == "" ]; then
+			CR=`echo "use IO::Socket; \\$sock = new IO::Socket::INET ( LocalAddr => 'localhost',LocalPort => \"$SSH_PORT\",\
                                   Proto => 'tcp',Listen => 1,Reuse =>1 ) or die ;print \"OK\";close(\\$sock);"|perl 2>/dev/null`
-      if [ "$CR" == "OK" ]
-      then
-         OUTPUT=`x2goinsertport $HOSTNAME $SESSION_NAME $SSH_PORT`
-      fi
-    fi
-  done
-  if [ "$GR_PORT" == "" ]
-  then
-     GR_PORT=$SSH_PORT
-  elif [ "$SOUND_PORT" == "" ]
-  then
-     SOUND_PORT=$SSH_PORT
-  else
-     FS_PORT=$SSH_PORT
-  fi
+			if [ "$CR" == "OK" ]; then
+				OUTPUT=`x2goinsertport $HOSTNAME $SESSION_NAME $SSH_PORT`
+			fi
+		fi
+	done
+	if [ "$GR_PORT" == "" ]; then
+		GR_PORT=$SSH_PORT
+	elif [ "$SOUND_PORT" == "" ]; then
+		SOUND_PORT=$SSH_PORT
+	else
+		FS_PORT=$SSH_PORT
+	fi
 done
 
 
-
-if [ "$X2GO_GEOMETRY" == "" ]
-then
-    X2GO_GEOMETRY=fullscreen
+if [ "$X2GO_GEOMETRY" == "" ]; then
+	X2GO_GEOMETRY=fullscreen
 fi
 
-if [ "$X2GO_GEOMETRY" == "fullscreen" ]
-then
-    X2GO_RESIZE=1
-    X2GO_FULLSCREEN=1
+if [ "$X2GO_GEOMETRY" == "fullscreen" ]; then
+	X2GO_RESIZE=1
+	X2GO_FULLSCREEN=1
 fi
-if [ "$X2GO_STYPE" == "S" ]
-then
-    X2GO_GEOMETRY=`DISPLAY=$SHADOW_DESKTOP xwininfo -root | grep geometry`
-    X2GO_GEOMETRY=`echo "$X2GO_GEOMETRY" | sed  -e  "s/ //g"`
-    X2GO_GEOMETRY=`echo "$X2GO_GEOMETRY" | sed  -e  "s/-geometry//"`
+
+if [ "$X2GO_STYPE" == "S" ]; then
+	X2GO_GEOMETRY=`DISPLAY=$SHADOW_DESKTOP xwininfo -root | grep geometry`
+	X2GO_GEOMETRY=`echo "$X2GO_GEOMETRY" | sed  -e  "s/ //g"`
+	X2GO_GEOMETRY=`echo "$X2GO_GEOMETRY" | sed  -e  "s/-geometry//"`
 fi
 
 SESSION_DIR=${X2GO_ROOT}/C-${SESSION_NAME}
 
-if [ ! -d $X2GO_ROOT ]
-then
-    mkdir $X2GO_ROOT
+if [ ! -d $X2GO_ROOT ]; then
+	mkdir $X2GO_ROOT
 fi
 
-if [ ! -d $X2GO_ROOT/ssh ]
-then
-    mkdir $X2GO_ROOT/ssh
+if [ ! -d $X2GO_ROOT/ssh ]; then
+	mkdir $X2GO_ROOT/ssh
 fi
 
-if [ ! -d $SESSION_DIR ]
-then
-    mkdir $SESSION_DIR
+if [ ! -d $SESSION_DIR ]; then
+	mkdir $SESSION_DIR
 fi
 
 X2GO_COOKIE=`mcookie`
@@ -210,55 +186,38 @@ xauth add ${HOSTNAME}/unix:${X2GO_PORT} MIT-MAGIC-COOKIE-1 ${X2GO_COOKIE}
 xauth add ${HOSTNAME}:${X2GO_PORT} MIT-MAGIC-COOKIE-1 ${X2GO_COOKIE}
 
 
-
 if [ "$X2GO_SET_KBD" == "0" ]
 then
-X2GO_HOST=nx/nx,link=${X2GO_LINK},pack=${X2GO_PACK},limit=0,root=${SESSION_DIR},cache=8M,images=32M,type=${X2GO_TYPE},\
-id=${SESSION_NAME},\
-cookie=$X2GO_COOKIE,errors=${SESSION_DIR}/session.log,kbtype=null/null,\
-geometry=${X2GO_GEOMETRY},resize=${X2GO_RESIZE},fullscreen=${X2GO_FULLSCREEN},accept=${REMOTE},listen=${GR_PORT},client=linux,menu=0
+    X2GO_HOST="nx/nx,link=${X2GO_LINK},pack=${X2GO_PACK},limit=0,root=${SESSION_DIR},cache=8M,images=32M,type=${X2GO_TYPE},id=${SESSION_NAME},cookie=$X2GO_COOKIE,errors=${SESSION_DIR}/session.log,kbtype=null/null,geometry=${X2GO_GEOMETRY},resize=${X2GO_RESIZE},fullscreen=${X2GO_FULLSCREEN},accept=${REMOTE},listen=${GR_PORT},client=linux,menu=0"
 else
-X2GO_HOST=nx/nx,link=${X2GO_LINK},pack=${X2GO_PACK},limit=0,root=${SESSION_DIR},cache=8M,images=32M,type=${X2GO_TYPE},\
-id=${SESSION_NAME},\
-cookie=$X2GO_COOKIE,errors=${SESSION_DIR}/session.log,kbtype=${X2GO_KBD_TYPE},\
-geometry=${X2GO_GEOMETRY},resize=${X2GO_RESIZE},fullscreen=${X2GO_FULLSCREEN},accept=${REMOTE},listen=${GR_PORT},client=linux,menu=0
+    X2GO_HOST="nx/nx,link=${X2GO_LINK},pack=${X2GO_PACK},limit=0,root=${SESSION_DIR},cache=8M,images=32M,type=${X2GO_TYPE},id=${SESSION_NAME},cookie=$X2GO_COOKIE,errors=${SESSION_DIR}/session.log,kbtype=${X2GO_KBD_TYPE},geometry=${X2GO_GEOMETRY},resize=${X2GO_RESIZE},fullscreen=${X2GO_FULLSCREEN},accept=${REMOTE},listen=${GR_PORT},client=linux,menu=0"
 fi
-
 
 
 echo "${X2GO_HOST}:${X2GO_PORT}" >${SESSION_DIR}/options
 
-NX_AGENT=:${X2GO_PORT}
-
-
-SAVED_DISPLAY=$DISPLAY
-
-DISPLAY=nx/nx,options=${SESSION_DIR}/options:${X2GO_PORT} 
+NX_AGENT=":${X2GO_PORT}"
+SAVED_DISPLAY="$DISPLAY"
+DISPLAY="nx/nx,options=${SESSION_DIR}/options:${X2GO_PORT}"
 export DISPLAY
 
 
-if [ "$X2GODPI" == "" ]
-then
-     X2GODPIOPTION_=""
+if [ "$X2GODPI" == "" ]; then
+	X2GODPIOPTION_=""
 else
-     X2GODPIOPTION_="-dpi $X2GODPI"
+	X2GODPIOPTION_="-dpi $X2GODPI"
 fi
 
-if [ "$X2GOXDMCP" == "" ]
-then
-    XDMCPOPT=""
+if [ "$X2GOXDMCP" == "" ] ;then
+	XDMCPOPT=""
 else
-    XDMCPOPT="-query $X2GOXDMCP"
+	XDMCPOPT="-query $X2GOXDMCP"
 fi
 
-if  [ "$X2GO_STYPE" == "S" ]
-then
-   LD_LIBRARY_PATH=$X2GO_LIB x2goagent $X2GODPIOPTION_  -$SESSION_TYPE -auth ~/.Xauthority \
-   -S -shadow $SHADOW_DESKTOP -shadowmode $SHADOW_MODE \
-   -geometry ${X2GO_GEOMETRY} -name "X2GO-${SESSION_NAME}"  ${NX_AGENT} 2>${SESSION_DIR}/session.log &
+if  [ "$X2GO_STYPE" == "S" ]; then
+	LD_LIBRARY_PATH=$X2GO_LIB x2goagent $X2GODPIOPTION_  -$SESSION_TYPE -auth ~/.Xauthority -S -shadow $SHADOW_DESKTOP -shadowmode $SHADOW_MODE -geometry ${X2GO_GEOMETRY} -name "X2GO-${SESSION_NAME}"  ${NX_AGENT} 2>${SESSION_DIR}/session.log &
 else
-   LD_LIBRARY_PATH=$X2GO_LIB x2goagent $X2GODPIOPTION_ $XDMCPOPT  -$SESSION_TYPE -auth ~/.Xauthority \
-   -geometry ${X2GO_GEOMETRY} -name "X2GO-${SESSION_NAME}"  ${NX_AGENT} 2>${SESSION_DIR}/session.log &
+	LD_LIBRARY_PATH=$X2GO_LIB x2goagent $X2GODPIOPTION_ $XDMCPOPT  -$SESSION_TYPE -auth ~/.Xauthority -geometry ${X2GO_GEOMETRY} -name "X2GO-${SESSION_NAME}"  ${NX_AGENT} 2>${SESSION_DIR}/session.log &
 fi
 
 X2GO_AGENT_PID=$!

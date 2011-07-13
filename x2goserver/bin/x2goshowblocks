@@ -30,8 +30,8 @@ my $uname=shift;
 my $id=shift;
 my $tbl="mounts";
 my @outp=dbsys_getmounts( $id);
-for(my $i=0;$i<@outp;$i++)
+for (my $i=0;$i<@outp;$i++)
 {
-    my $path=(split("\\|",@outp[$i]))[1];
-    print `su $uname -c "lsof 2>/dev/null | grep $path"`;
+	my $path=(split("\\|",@outp[$i]))[1];
+	print `su $uname -c "lsof 2>/dev/null | grep $path"`;
 }

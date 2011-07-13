@@ -29,53 +29,52 @@ use x2godbwrapper;
 
 sub check_stat
 {
-   my $sess=shift;
-   my $log="$ENV{'HOME'}/.x2go/C-$sess/session.log";
-   my $text=`tail -1 $log`;
-   if($text =~ m/Session suspended/)
-   {
-       return 0;
-   }
-   return 1;
+	my $sess=shift;
+	my $log="$ENV{'HOME'}/.x2go/C-$sess/session.log";
+	my $text=`tail -1 $log`;
+	if ($text =~ m/Session suspended/)
+	{
+		return 0;
+	}
+	return 1;
 }
 
 my $serv=shift;
 if( ! $serv)
 {
-   $serv=hostname;
+	$serv=hostname;
 }
 
 my @outp;
 if($serv eq "--all-servers")
 {
- @outp=db_listsessions_all();
+	@outp=db_listsessions_all();
 }
 else
 {
- @outp=db_listsessions($serv);
+	@outp=db_listsessions($serv);
 }
 
-for(my $i=0;$i<@outp;$i++)
+for (my $i=0;$i<@outp;$i++)
 {
-     @outp[$i] =~ s/ //g;
-     @outp[$i] =~ s/\*/ /g;
-     my @sinfo=split('\\|',"@outp[$i]");
-     if(@sinfo[4]eq 'F')
-     {
-           print "@outp[$i]\n";
-     }       
-     else
-     { 
-       if(@sinfo[4]eq 'R')
-       {
-           if(!check_stat(@sinfo[1]))
-	   {
-               db_changestatus( 'S', @sinfo[1] );
-	       @outp[$i] =~ s/\|R\|/\|S\|/;
-               system( "x2goumount-session @sinfo[1]");
-
-	   }
-       }       
-       print "@outp[$i]\n";
-     }
+	@outp[$i] =~ s/ //g;
+	@outp[$i] =~ s/\*/ /g;
+	my @sinfo=split('\\|',"@outp[$i]");
+	if (@sinfo[4]eq 'F')
+	{
+		print "@outp[$i]\n";
+	}
+	else
+	{ 
+		if (@sinfo[4]eq 'R')
+		{
+			if(!check_stat(@sinfo[1]))
+			{
+				db_changestatus( 'S', @sinfo[1] );
+				@outp[$i] =~ s/\|R\|/\|S\|/;
+				system( "x2goumount-session @sinfo[1]");
+			}
+		}
+		print "@outp[$i]\n";
+	}
 }

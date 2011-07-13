@@ -29,20 +29,20 @@ $Config->read('/etc/x2go/x2goserver.conf' );
 
 sub getGroupLimit
 {
-    my $group=shift;
-    my $strlimit=$Config->param("limit groups.$group");
-    if($strlimit ne "")
-    {
-            if($strlimit == 0)
-            {
-                    print "0\n";
-                    exit 0;
-            }
-            if($strlimit > $maxlimit)
-            {
-                   $maxlimit=$strlimit;
-            }
-    }
+	my $group=shift;
+	my $strlimit=$Config->param("limit groups.$group");
+	if ($strlimit ne "")
+	{
+		if ($strlimit == 0)
+		{
+			print "0\n";
+			exit 0;
+		}
+		if ($strlimit > $maxlimit)
+		{
+			$maxlimit=$strlimit;
+		}
+	}
 }
 
 my $uname;
@@ -56,18 +56,18 @@ my $strlimit=$Config->param("limit users.$uname");
 
 if($strlimit ne "")
 {
-    if($strlimit == 0)
-    {
-         print "0\n";
-         exit 0;
-    }
-    if($strlimit <= $scount)
-    {
-        print "$strlimit\n";
-        exit 0;
-    }
-    print "$strlimit\n";
-    exit 0;
+	if ($strlimit == 0)
+	{
+		print "0\n";
+		exit 0;
+	}
+	if ($strlimit <= $scount)
+	{
+		print "$strlimit\n";
+		exit 0;
+	}
+	print "$strlimit\n";
+	exit 0;
 }
 
 
@@ -75,23 +75,23 @@ my ($name, $pass, $uid, $pgid, $quota, $comment, $gcos, $dir, $shell, $expire) =
 
 while (my ($name, $passwd, $gid, $members)  = getgrent()) 
 {
-       if( $pgid eq $gid)
-       {
-              getGroupLimit $name;
-       }
-       my @memebers=split(" ",$members);
-       foreach my $member (@memebers) 
-       {
-           if($uname eq $member  )
-           {
-                getGroupLimit $name;
-           }
-       }
+	if ( $pgid eq $gid)
+	{
+		getGroupLimit $name;
+	}
+	my @memebers=split(" ",$members);
+	foreach my $member (@memebers) 
+	{
+		if ($uname eq $member  )
+		{
+			getGroupLimit $name;
+		}
+	}
 }
 
-if($maxlimit <= $scount)
+if ($maxlimit <= $scount)
 {
-        print "$maxlimit\n";
-        exit 0;
+	print "$maxlimit\n";
+	exit 0;
 }
 print "$maxlimit\n";

@@ -23,27 +23,25 @@
 use Sys::Hostname;
 use strict;
 
-
 sub check_stat
 {
-   my $sess=shift;
-   my $user=shift;
-   my $log="~$user/.x2go/C-$sess/session.log";
-   my $text=`tail -1 $log`;
-   if($text =~ m/Session suspended/)
-   {
-       return 0;
-   }
-   return 1;
+	my $sess=shift;
+	my $user=shift;
+	my $log="~$user/.x2go/C-$sess/session.log";
+	my $text=`tail -1 $log`;
+	if ($text =~ m/Session suspended/)
+	{
+		return 0;
+	}
+	return 1;
 }
-
 
 my $uname;
 
 my $serv=shift;
-if( ! $serv)
+if ( ! $serv)
 {
-   $serv=hostname;
+	$serv=hostname;
 }
 
 my $outp=`x2golistsessions_sql $serv 2>/dev/null`;
@@ -51,23 +49,23 @@ my $outp=`x2golistsessions_sql $serv 2>/dev/null`;
 
 my @outp=split("\n","$outp");
 
-for(my $i=0;$i<@outp;$i++)
+for (my $i=0;$i<@outp;$i++)
 {
-     my @sinfo=split('\\|',"@outp[$i]");
-     if(@sinfo[4]eq 'F')
-     {
-           print "@outp[$i]\n";
-     }       
-     else
-     { 
-       if(@sinfo[4]eq 'R')
-       {
-           if(!check_stat(@sinfo[1],@sinfo[11]))
-           {
-               system("su - @sinfo[11] -c \"x2gochangestatus 'S' @sinfo[1]\" > /dev/null");
-               @outp[$i] =~ s/\|R\|/\|S\|/;
-           }
-       }       
-       print "@outp[$i]\n";
-     }
+	my @sinfo=split('\\|',"@outp[$i]");
+	if (@sinfo[4]eq 'F')
+	{
+		print "@outp[$i]\n";
+	}
+	else
+	{ 
+		if (@sinfo[4]eq 'R')
+		{
+			if (!check_stat(@sinfo[1],@sinfo[11]))
+			{
+				system("su - @sinfo[11] -c \"x2gochangestatus 'S' @sinfo[1]\" > /dev/null");
+				@outp[$i] =~ s/\|R\|/\|S\|/;
+			}
+		}
+		print "@outp[$i]\n";
+	}
 }

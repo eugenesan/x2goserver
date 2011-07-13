@@ -23,4 +23,5 @@
 X2GO_ROOT=${HOME}/.x2go
 MESSAGE_FILE=$X2GO_ROOT/C-$1/cmdoutput
 
+# return command output of the command that was issued by x2goruncommand
 cat $MESSAGE_FILE
