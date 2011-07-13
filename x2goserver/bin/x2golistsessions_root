@@ -63,7 +63,7 @@ for(my $i=0;$i<@outp;$i++)
        if(@sinfo[4]eq 'R')
        {
            if(!check_stat(@sinfo[1],@sinfo[11]))
-	   {
+           {
                system("su - @sinfo[11] -c \"x2gochangestatus 'S' @sinfo[1]\" > /dev/null");
                @outp[$i] =~ s/\|R\|/\|S\|/;
            }
