@@ -25,7 +25,8 @@
 #include <unistd.h>
 #include <libgen.h>
 
-int main() {
+int main( int argc, char *argv[] ) {
+
 	char buffer[BUFSIZ];
 	char * x2gosqlitewrapper = NULL;
 
@@ -36,8 +37,9 @@ int main() {
 	asprintf(&x2gosqlitewrapper, "%s/%s", dirname(dirname(buffer)), "lib/x2go/x2gosqlitewrapper.pl");
 
 	// execute the script, taking setuid bit into consideration if set...
-	execl(x2gosqlitewrapper, "");
+	execv(x2gosqlitewrapper, argv);
 
 	// fake a successful return value
 	return 0;
+
 }
