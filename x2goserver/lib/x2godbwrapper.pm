@@ -138,7 +138,7 @@ sub dbsys_listsessionsroot_all
 	if ($backend eq 'postgres')
 	{
 		my @strings;
-		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $;
+		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 		my $sth=$dbh->prepare("select agent_pid, session_id, display, server, status,
 		                      to_char(init_time,'DD.MM.YY*HH24:MI:SS'),cookie,client,gr_port,
 		                      sound_port,to_char(last_time,'DD.MM.YY*HH24:MI:SS'),uname,
