@@ -44,7 +44,7 @@ case "$1" in
         x2godbadmin --createdb
     fi
 
-    dpkg-statoverride --add --update x2gouser x2gousers 6755 /usr/bin/x2gosqlitewrapper || true
+    dpkg-statoverride --add --update x2gouser x2gousers 6755 /usr/lib/x2go/x2gosqlitewrapper.pl || true
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)

@@ -31,7 +31,12 @@ MAN2HTML_DEST = .build_man2html/html
 
 all: clean build
 
-build: build-indep
+build: build-arch build-indep
+
+build-arch: build_setuidwrapper
+
+build_setuidwrapper:
+	gcc -o x2gosqlitewrapper x2gosqlitewrapper.c
 
 build-indep: build_man2html
 
@@ -52,6 +57,7 @@ install_scripts:
 	$(INSTALL_DIR) $(DESTDIR)$(SBINDIR)
 	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)
 	$(INSTALL_PROGRAM) bin/*                $(DESTDIR)$(BINDIR)/
+	$(INSTALL_PROGRAM) compat/bin/*         $(DESTDIR)$(BINDIR)/
 	$(INSTALL_PROGRAM) sbin/*               $(DESTDIR)$(SBINDIR)/
 	$(INSTALL_FILE) lib/*                   $(DESTDIR)$(LIBDIR)/
 

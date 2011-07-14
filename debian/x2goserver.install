@@ -3,10 +3,13 @@ x2goserver/sbin/x2go*                   /usr/sbin/
 x2goserver/etc/x2gosql/sql              /etc/x2go/x2gosql/
 x2goserver/etc/x2goserver.conf          /etc/x2go/
 x2goserver/lib/x2godbwrapper.pm         /usr/lib/x2go/
+x2goserver/lib/x2gosqlitewrapper.pl     /usr/lib/x2go/
 x2goserver/VERSION.x2goserver           /usr/share/x2go/versions/
+x2goserver/x2gosqlitewrapper            /usr/bin
 # the following executables should go to /usr/lib/x2go
 x2goserver/lib/x2gochangestatus         /usr/bin
 x2goserver/lib/x2gocreatesession        /usr/bin
+x2goserver/lib/x2goresume               /usr/bin
 x2goserver/lib/x2gogetagent             /usr/bin
 x2goserver/lib/x2gogetdisplays          /usr/bin
 x2goserver/lib/x2gogetports             /usr/bin
@@ -14,8 +17,7 @@ x2goserver/lib/x2gogetservers           /usr/bin
 x2goserver/lib/x2goinsertport           /usr/bin
 x2goserver/lib/x2goinsertsession        /usr/bin
 x2goserver/lib/x2gosessionlimit         /usr/bin
-x2goserver/lib/x2gosqlitewrapper        /usr/bin
 x2goserver/lib/x2golistsessions_sql     /usr/bin
 x2goserver/lib/x2golistsessions_root    /usr/bin
 # compatibility
-x2goserver/bin/compat/x2go*             /usr/bin
+x2goserver/compat/bin/x2go*             /usr/bin
