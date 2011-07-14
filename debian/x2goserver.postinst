@@ -44,7 +44,13 @@ case "$1" in
         x2godbadmin --createdb
     fi
 
+    # the sqlite db has to be accessed as uid x2gouser
     dpkg-statoverride --add --update x2gouser x2gousers 6755 /usr/lib/x2go/x2gosqlitewrapper.pl || true
+
+    # we may be upgrading versions of x2goserver that used perlsuid, so make sure setuid is removed
+    # from /usr/bin/x2gosqlitewrapper
+    dpkg-statoverride --remove /usr/bin/x2gosqlitewrapper && chown root:root /usr/bin/x2gosqlitewrapper && chmod 0755 /usr/bin/x2gosqlitewrapper || true
+
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)

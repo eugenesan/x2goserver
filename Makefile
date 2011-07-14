@@ -8,6 +8,10 @@ clean:
 	cd x2goserver && make $@
 	cd x2goserver-extensions && make $@
 
+build-arch:
+	cd x2goserver && make $@
+	cd x2goserver-extensions && make $@
+
 build-indep:
 	cd x2goserver && make $@
 	cd x2goserver-extensions && make $@

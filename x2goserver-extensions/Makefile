@@ -35,6 +35,8 @@ build: build-indep
 
 build-indep: build_man2html
 
+build-arch:
+
 build_man2html:
 	mkdir -p $(MAN2HTML_DEST)
 	for man_page in $(man_pages); do mkdir -p `dirname $(MAN2HTML_DEST)/$$man_page`; done
