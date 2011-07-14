@@ -15,9 +15,9 @@ Vcs-Browser: http://code.x2go.org/gitweb?p=x2goserver.git;a=summary
 Package: x2goserver
 Architecture: any
 Depends:
+ ${shlibs:Depends},
  ${misc:Depends},
  x2goagent,
- perl-suid,
  lsof,
  openssh-client,
  openssh-server,
@@ -37,7 +37,7 @@ Recommends:
  x11-xserver-utils,
  xinit,
  x2goserver-extensions (= ${source:Version})
-ConflictsB:
+Conflicts:
  x2goserver-one,
  x2goserver-home,
  x2goprint
@@ -65,7 +65,7 @@ Package: x2goserver-extensions
 Architecture: all
 Depends:
  ${misc:Depends},
- x2goserver (= ${source:Version}),
+ x2goserver (>= ${source:Version}), x2goserver (<< ${source:Version}.1~),
  x11-xkb-utils
 Description: X2go server daemon scripts (extensions)
  X2go is a serverbased computing environment with
