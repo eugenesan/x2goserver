@@ -45,10 +45,13 @@ build_man2html:
 	for man_page in $(man_pages); do mkdir -p `dirname $(MAN2HTML_DEST)/$$man_page`; done
 	for man_page in $(man_pages); do $(MAN2HTML_BIN) -r $(MAN2HTML_SRC)/$$man_page > $(MAN2HTML_DEST)/$$man_page.html; done
 
-clean: clean_man2html
+clean: clean_arch clean_man2html
+
+clean_arch:
+	rm -f x2gosqlitewrapper
 
 clean_man2html:
-	rm -rf `dirname $(MAN2HTML_DEST)`
+	rm -Rf `dirname $(MAN2HTML_DEST)`
 
 install: install_scripts install_config install_man install_version
 
