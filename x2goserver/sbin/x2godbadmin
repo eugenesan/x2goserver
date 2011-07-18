@@ -147,7 +147,7 @@ if($Config->param("backend") eq 'sqlite')
 	  
 	  $sth->finish();	  
 	  $dbh->disconnect();
-	  chmod(0750, "$dir");
+	  chmod(0770, "$dir");
 	  chown('root',$pgid,"$dir");
 	  chmod(0660, "$dbfile");
 	  chown('root',$pgid,"$dbfile");
