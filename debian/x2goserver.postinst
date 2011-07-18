@@ -50,11 +50,13 @@ case "$1" in
 			chmod 0660 /var/db/x2go/x2go_sessions
 		fi
 
+		# we may be upgrading versions of x2goserver that had /usr/lib/x2go/x2gosqlitewrapper.pl set to setuid x2gouser.
+		dpkg-statoverride --remove /usr/lib/x2go/x2gosqlitewrapper.pl && chown root:root /usr/lib/x2go/x2gosqlitewrapper.pl && chmod 0755 /usr/lib/x2go/x2gosqlitewrapper.pl || true
+		# we may be upgrading versions of x2goserver that had /usr/bin/x2gosqlitewrapper set to setuid x2gouser.
+		dpkg-statoverride --remove /usr/lib/x2go/x2gosqlitewrapper.pl && chown root:root /usr/bin/x2gosqlitewrapper && chmod 0755 /usr/bin/x2gosqlitewrapper || true
+
 		# the sqlite db has to be accessed as uid x2gouser
 		dpkg-statoverride --add --update root x2gouser 4755 /usr/bin/x2gosqlitewrapper || true
-
-		# we may be upgrading versions of x2goserver that had /usr/lib/x2go/x2gosqlitewrapper.pl set to setuid user.
-		dpkg-statoverride --remove /usr/lib/x2go/x2gosqlitewrapper.pl && chown root:root /usr/lib/x2go/x2gosqlitewrapper.pl && chmod 0755 /usr/lib/x2go/x2gosqlitewrapper.pl || true
 		;;
 
 	abort-upgrade|abort-remove|abort-deconfigure)
