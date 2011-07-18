@@ -39,9 +39,10 @@ case "$1" in
 		else
 			echo "User x2gouser already exists." >&2
 			# make sure all settings are appropriate
-			id -g --name "x2gouser" | grep "x2gousers" >/dev/null && usermod x2gouser --gid x2gouser
-			usermod x2gouser --home /var/db/x2go
-			usermod x2gouser --shell /bin/false
+			id -g --name "x2gouser" | grep "x2gousers" >/dev/null && usermod --gid x2gouser x2gouser
+			mkdir -p /var/db/x2go
+			usermod --home /var/db/x2go x2gouser
+			usermod --shell /bin/false x2gouser
 		fi
 
 		if [ ! -f /var/db/x2go/x2go_sessions ]; then
