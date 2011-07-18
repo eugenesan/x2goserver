@@ -22,7 +22,7 @@ case "$1" in
 	install|upgrade)
 		# cleanup old x2goserver installations
 		test -f /var/lib/x2go/x2go_sessions && rm /var/lib/x2go/x2go_sessions
-		test -d /var/lib/x2go && rm -Rf /var/lib/x2go
+		test -d /var/lib/x2go && rm -Rfv /var/lib/x2go/
 		getent group x2gousers >/dev/null && { echo; echo "*** WARNING: found obsolete group ,,x2gousers'', please remove manually!!!"; echo; }
 		;;
 	abort-upgrade)

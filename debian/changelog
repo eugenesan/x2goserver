@@ -13,7 +13,8 @@ x2goserver (3.0.99.5-0~x2go3) UNRELEASED; urgency=low
     from perlsuid.
   * Use source format 3.0 (native).
   * Fix of Debian clean rules, fix of Makefile's clean rules.
-  * Breaks/replaces packages: x2goserver-one, x2goserver-home, x2goprint (instead of Conflicts).
+  * Breaks/replaces packages: x2goserver-one, x2goserver-home, x2goprint (instead of
+    Conflicts).
   * Switch to setgid instead of setuid for SQLite wrapper.
   * Tab'ified postinst/postrm scripts.
 
