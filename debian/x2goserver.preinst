@@ -19,16 +19,15 @@ set -e
 
 
 case "$1" in
-	configure)
+	install|upgrade)
 		# cleanup old x2goserver installations
 		test -f /var/lib/x2go/x2go_sessions && rm /var/lib/x2go/x2go_sessions
-		getent group x2gousers && echo "WARNING: found obsolete group ,,x2gousers'', please remove manually!!!"
+		getent group x2gousers >/dev/null && echo "WARNING: found obsolete group ,,x2gousers'', please remove manually!!!"
 		;;
-	abort-upgrade|abort-remove|abort-deconfigure)
+	abort-upgrade)
 		;;
-
 	*)
-		echo "postinst called with unknown argument \`$1'" >&2
+		echo "preinst called with unknown argument \`$1'" >&2
 		exit 1
 		;;
 esac

@@ -19,7 +19,7 @@ set -e
 
 
 case "$1" in
-	configure|upgrade)
+	configure)
 		chmod 700 /etc/x2go/x2gosql/passwords || true
 		touch /etc/x2go/x2gosql/passwords/pgadmin || true
 		chmod 600 /etc/x2go/x2gosql/passwords/pgadmin || true
