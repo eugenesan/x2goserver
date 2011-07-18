@@ -49,7 +49,9 @@ case "$1" in
 		else
 			# make sure db permissions are set correctly
 			chown root:x2gouser /var/db/x2go -Rf
-			chmod 0750 /var/db/x2go
+			# egid x2gouser needs write access to the db dir (for temporary db journal file)
+			chmod 0770 /var/db/x2go
+			# ... and to the db file itself, of course
 			chmod 0660 /var/db/x2go/x2go_sessions
 		fi
 
