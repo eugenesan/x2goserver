@@ -25,31 +25,35 @@ case "$1" in
     chmod 600 /etc/x2go/x2gosql/passwords/pgadmin
 
     # setup x2gouser and group
-    if ! getent group x2gousers >/dev/null; then
-        echo "Creating x2gouser user." >&2
-        addgroup --system x2gousers
+    if ! getent group x2gouser >/dev/null; then
+        echo "Creating x2gouser group." >&2
+        addgroup --system x2gouser
     else
-        echo "User x2gouser already exists." >&2
+        echo "Group x2gouser already exists." >&2
     fi
     if ! getent passwd x2gouser >/dev/null; then
         echo "Creating x2gouser user." >&2
         adduser --system --no-create-home \
             --disabled-password --disabled-login \
-            --shell /bin/false --group --home /var/lib/x2go x2gouser
+            --shell /bin/false --group --home /var/db/x2go x2gouser
     else
         echo "User x2gouser already exists." >&2
     fi
 
-    if [ ! -f /var/lib/x2go/x2go_sessions ]; then
+    if [ ! -f /var/db/x2go/x2go_sessions ]; then
         x2godbadmin --createdb
+    else
+        # make sure db permissions are set correctly
+        chown root:x2gouser /var/db/x2go -Rf
+        chmod 0750 /var/db/x2go
+        chmod 0660 /var/db/x2go/x2go_sessions
     fi
 
     # the sqlite db has to be accessed as uid x2gouser
-    dpkg-statoverride --add --update x2gouser x2gousers 6755 /usr/lib/x2go/x2gosqlitewrapper.pl || true
+    dpkg-statoverride --add --update root x2gouser 4755 /usr/bin/x2gosqlitewrapper || true
 
-    # we may be upgrading versions of x2goserver that used perlsuid, so make sure setuid is removed
-    # from /usr/bin/x2gosqlitewrapper
-    dpkg-statoverride --remove /usr/bin/x2gosqlitewrapper && chown root:root /usr/bin/x2gosqlitewrapper && chmod 0755 /usr/bin/x2gosqlitewrapper || true
+    # we may be upgrading versions of x2goserver that had /usr/lib/x2go/x2gosqlitewrapper.pl set to setuid user.
+    dpkg-statoverride --remove /usr/lib/x2go/x2gosqlitewrapper.pl && chown root:root /usr/lib/x2go/x2gosqlitewrapper.pl && chmod 0755 /usr/lib/x2go/x2gosqlitewrapper.pl || true
 
     ;;
 

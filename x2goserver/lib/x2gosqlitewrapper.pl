@@ -25,14 +25,14 @@ use strict;
 use DBI;
 use POSIX;
 
-if ($< eq $>)
-{
-	die "Please install this program as SUID x2gouser!\n";
-}
-
-my $realuser=$<;
-my ($uname, $pass, $uid, $pgid, $quota, $comment, $gcos, $homedir, $shell, $expire) = getpwuid($>);
+# retrieve home dir of x2gouser 
+my $x2gouser='x2gouser';
+my ($uname, $pass, $uid, $pgid, $quota, $comment, $gcos, $homedir, $shell, $expire) = getpwnam($x2gouser);
 my $dbfile="$homedir/x2go_sessions";
+
+# retrieve account data of real user
+my $realuser=$<;
+my ($uname, $pass, $uid, $pgid, $quota, $comment, $gcos, $homedir, $shell, $expire) = getpwnam($realuser);
 
 my $dbh=DBI->connect("dbi:SQLite:dbname=$dbfile","","",{AutoCommit => 1}) or die $_;
 
