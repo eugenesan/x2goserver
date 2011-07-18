@@ -19,51 +19,50 @@ set -e
 
 
 case "$1" in
-    configure)
-    chmod 700 /etc/x2go/x2gosql/passwords
-    touch /etc/x2go/x2gosql/passwords/pgadmin
-    chmod 600 /etc/x2go/x2gosql/passwords/pgadmin
+	configure)
+		chmod 700 /etc/x2go/x2gosql/passwords
+		touch /etc/x2go/x2gosql/passwords/pgadmin
+		chmod 600 /etc/x2go/x2gosql/passwords/pgadmin
 
-    # setup x2gouser and group
-    if ! getent group x2gouser >/dev/null; then
-        echo "Creating x2gouser group." >&2
-        addgroup --system x2gouser
-    else
-        echo "Group x2gouser already exists." >&2
-    fi
-    if ! getent passwd x2gouser >/dev/null; then
-        echo "Creating x2gouser user." >&2
-        adduser --system --no-create-home \
-            --disabled-password --disabled-login \
-            --shell /bin/false --group --home /var/db/x2go x2gouser
-    else
-        echo "User x2gouser already exists." >&2
-    fi
+		# setup x2gouser and group
+		if ! getent group x2gouser >/dev/null; then
+			echo "Creating x2gouser group." >&2
+			addgroup --system x2gouser
+		else
+			echo "Group x2gouser already exists." >&2
+		fi
+		if ! getent passwd x2gouser >/dev/null; then
+			echo "Creating x2gouser user." >&2
+			adduser --system --no-create-home \
+			--disabled-password --disabled-login \
+			--shell /bin/false --group --home /var/db/x2go x2gouser
+		else
+			echo "User x2gouser already exists." >&2
+		fi
 
-    if [ ! -f /var/db/x2go/x2go_sessions ]; then
-        x2godbadmin --createdb
-    else
-        # make sure db permissions are set correctly
-        chown root:x2gouser /var/db/x2go -Rf
-        chmod 0750 /var/db/x2go
-        chmod 0660 /var/db/x2go/x2go_sessions
-    fi
+		if [ ! -f /var/db/x2go/x2go_sessions ]; then
+			x2godbadmin --createdb
+		else
+			# make sure db permissions are set correctly
+			chown root:x2gouser /var/db/x2go -Rf
+			chmod 0750 /var/db/x2go
+			chmod 0660 /var/db/x2go/x2go_sessions
+		fi
 
-    # the sqlite db has to be accessed as uid x2gouser
-    dpkg-statoverride --add --update root x2gouser 4755 /usr/bin/x2gosqlitewrapper || true
+		# the sqlite db has to be accessed as uid x2gouser
+		dpkg-statoverride --add --update root x2gouser 4755 /usr/bin/x2gosqlitewrapper || true
 
-    # we may be upgrading versions of x2goserver that had /usr/lib/x2go/x2gosqlitewrapper.pl set to setuid user.
-    dpkg-statoverride --remove /usr/lib/x2go/x2gosqlitewrapper.pl && chown root:root /usr/lib/x2go/x2gosqlitewrapper.pl && chmod 0755 /usr/lib/x2go/x2gosqlitewrapper.pl || true
+		# we may be upgrading versions of x2goserver that had /usr/lib/x2go/x2gosqlitewrapper.pl set to setuid user.
+		dpkg-statoverride --remove /usr/lib/x2go/x2gosqlitewrapper.pl && chown root:root /usr/lib/x2go/x2gosqlitewrapper.pl && chmod 0755 /usr/lib/x2go/x2gosqlitewrapper.pl || true
+		;;
 
-    ;;
+	abort-upgrade|abort-remove|abort-deconfigure)
+		;;
 
-    abort-upgrade|abort-remove|abort-deconfigure)
-    ;;
-
-    *)
-        echo "postinst called with unknown argument \`$1'" >&2
-        exit 1
-    ;;
+	*)
+		echo "postinst called with unknown argument \`$1'" >&2
+		exit 1
+		;;
 esac
 
 # dh_installdeb will replace this with shell code automatically
