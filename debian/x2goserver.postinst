@@ -34,8 +34,8 @@ case "$1" in
 		if ! getent passwd x2gouser >/dev/null; then
 			echo "Creating x2gouser user." >&2
 			adduser --system --no-create-home \
-			--disabled-password --disabled-login \
-			--shell /bin/false --group --home /var/db/x2go x2gouser
+			        --disabled-password --disabled-login \
+			        --shell /bin/false --group --home /var/db/x2go x2gouser
 		else
 			echo "User x2gouser already exists." >&2
 		fi
