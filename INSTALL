@@ -15,20 +15,25 @@ in base folder of the extracted tarball.
 Set up x2gouser account and its group if they do not exist
 already:
 
- $ addgroup --system x2gousers
+ $ addgroup --system x2gouser
  $ adduser --system --no-create-home \
            --disabled-password --disabled-login \
-           --shell /bin/false --group --home /var/lib/x2go x2gouser
+           --shell /bin/false --group x2gouser --home /var/db/x2go x2gouser
 
-3.) SUID USER
--------------
+3.) SUID GROUP
+--------------
 Configure ownership, permissions and setuid user bit of x2gosqlitewrapper:
 
- $ chown x2gouser:x2gousers /usr/bin/x2gosqlitewrapper
- $ chmod 6755 /usr/bin/x2gosqlitewrapper
+ $ chown root:x2gouser /usr/bin/x2gosqlitewrapper
+ $ chmod 4755 /usr/bin/x2gosqlitewrapper
+
+4.) DATABASE SETUP (SQLite only)
+--------------------------------
+
+ $ x2godbadmin --createdb
 
 
-4.) INIT SCRIPT
+5.) INIT SCRIPT
 ---------------
 Create a simple init script that starts $PREFIX/sbin/x2gocleansessions on system start
 (runlevel 2-3-4-5). 
@@ -38,16 +43,15 @@ Alternatively, you can add a single line to /etc/rc.local:
 /usr/local/sbin/x2gocleansessions &
 
 
-5.) OPTIONAL: PostgreSQL setup
+6.) OPTIONAL: PostgreSQL setup
 ------------------------------
 This last step is optional and is only needed for a setup of x2goserver
 with PostgreSQL as database backend...
 
 When using PostgreSQL the following steps are necessary:
 
- $ chmod 700 /etc/x2go/x2gosql/passwords
+ $ chmod 0750 /etc/x2go/x2gosql/passwords
  $ touch /etc/x2go/x2gosql/passwords/pgadmin
- $ chmod 600 /etc/x2go/x2gosql/passwords/pgadmin
- $ x2godbadmin --createdb
+ $ chmod 0640 /etc/x2go/x2gosql/passwords/pgadmin
 
 

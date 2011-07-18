@@ -3,7 +3,7 @@ TARBALL UNINSTALL OF x2goserver
 
 1.) Remove SQLite database
 --------------------------
- $ rm -vf /var/lib/x2go/x2go_sessions
+ $ rm -vf /var/db/x2go/x2go_sessions
 
 
 2.) Remove PostgreSQL passwords
@@ -15,7 +15,7 @@ TARBALL UNINSTALL OF x2goserver
 ----------------------------------------------
 
  $ deluser x2gouser
- $ delgroup x2gousers
+ $ delgroup x2gouser
 
 
 4.) Run Makefile's uninstall
