@@ -25,15 +25,10 @@ use strict;
 use DBI;
 use POSIX;
 
-###
-### We are not using perlsuid anymore as it is deprecated as of Perl 5.12.
-### Instead we ship our own setuidwrapper...
-###
-
-#if ($< eq $>)
-#{
-#	die "Please install this program as SUID x2gouser!\n";
-#}
+if ($< eq $>)
+{
+	die "Please install this program as SUID x2gouser!\n";
+}
 
 my $realuser=$<;
 my ($uname, $pass, $uid, $pgid, $quota, $comment, $gcos, $homedir, $shell, $expire) = getpwuid($>);
