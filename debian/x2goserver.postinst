@@ -19,10 +19,10 @@ set -e
 
 
 case "$1" in
-	configure)
-		chmod 700 /etc/x2go/x2gosql/passwords
-		touch /etc/x2go/x2gosql/passwords/pgadmin
-		chmod 600 /etc/x2go/x2gosql/passwords/pgadmin
+	configure|upgrade)
+		chmod 700 /etc/x2go/x2gosql/passwords || true
+		touch /etc/x2go/x2gosql/passwords/pgadmin || true
+		chmod 600 /etc/x2go/x2gosql/passwords/pgadmin || true
 
 		# setup x2gouser and group
 		if ! getent group x2gouser >/dev/null; then
