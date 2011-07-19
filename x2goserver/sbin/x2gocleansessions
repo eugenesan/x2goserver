@@ -25,41 +25,40 @@ use strict;
 
 sub check_pid
 {
-   my $pid=shift;
-   my $sess=shift;
-   my $sec=shift;
-   if($sec < 30)
-   {
-      return 1;
-   }
-   open (F,"</proc/$pid/cmdline") or return 0;
-   my $text=<F>;
-   close (F);
-   if($text =~ m/$sess/)
-   {
-      return 1;
-   }
-   return 0;
+	my $pid=shift;
+	my $sess=shift;
+	my $sec=shift;
+	if ($sec < 30)
+	{
+		return 1;
+	}
+	open (F,"</proc/$pid/cmdline") or return 0;
+	my $text=<F>;
+	close (F);
+	if ($text =~ m/$sess/)
+	{
+		return 1;
+	}
+	return 0;
 }
 
 sub check_stat
 {
-   my $sess=shift;
-   my $user=shift;
-   my $log="~$user/.x2go/C-$sess/session.log";
-   my $text=`tail -1 $log`;
-   if($text =~ m/Session suspended/)
-   {
-       return 0;
-   }
-   return 1;
+	my $sess=shift;
+	my $user=shift;
+	my $log="~$user/.x2go/C-$sess/session.log";
+	my $text=`tail -1 $log`;
+	if ($text =~ m/Session suspended/)
+	{
+		return 0;
+	}
+		return 1;
 }
-
 
 sub catch_term
 {
-   unlink("/var/run/x2goserver.pid");
-   exit;
+	unlink("/var/run/x2goserver.pid");
+	exit;
 }
 
 my $uname;
@@ -68,59 +67,56 @@ my $serv = hostname;
 my $pid = fork();
 if (not defined $pid) 
 {
-  print "resources not avilable.\n";
+	print "resources not avilable.\n";
 } 
 elsif ($pid != 0) 
 {
-    open (F,">/var/run/x2goserver.pid");
-    print F "$pid\n";
-    close(F);
+	open (F,">/var/run/x2goserver.pid");
+	print F "$pid\n";
+	close(F);
 }
 elsif ($pid == 0 )
 {
+	close(STDIN);
+	close(STDOUT);
+	close(STDERR);
 
- close(STDIN);
- close(STDOUT);
- close(STDERR);
- 
- $SIG{TERM}=\&catch_term;
- 
- while(sleep 5)
- {
-  $serv=`hostname`;
-  my $outp=`x2golistsessions_sql $serv 2>/dev/null`;
+	$SIG{TERM}=\&catch_term;
 
-  my @outp=split("\n","$outp");
-
-  for(my $i=0;$i<@outp;$i++)
-  {
-     my @sinfo=split('\\|',"@outp[$i]");
-     if(@sinfo[4]eq 'F')
-     {
-	 #print "@sinfo[1], is blocked\n";
-	 #print "(@sinfo[1])Unmounting all shares\n";	        
-	 system( "su @sinfo[11] -c \"export HOSTNAME && x2goumount-session @sinfo[1]\" 2> /dev/null");
-     }       
-     elsif(! check_pid (@sinfo[0],@sinfo[1],@sinfo[12]))
-     {
-         system("su @sinfo[11] -c \"x2gochangestatus 'F' @sinfo[1] \" > /dev/null");
-	 #print "@sinfo[1], pid @sinfo[0] not exist, changing status from @sinfo[4] to F\n";
-	 #print "(@sinfo[1])Unmounting all shares\n";	 
-	 system( "su @sinfo[11] -c \"export HOSTNAME && x2goumount-session @sinfo[1]\" 2> /dev/null");
-     }
-     else
-     { 
-       if(@sinfo[4]eq 'R')
-       {
-           if(!check_stat(@sinfo[1],@sinfo[11]))
-	   {
-               system("su @sinfo[11] -c  \"x2gochangestatus 'S' @sinfo[1] \" > /dev/null");
-	       #print "@sinfo[1], is suspended, changing status from @sinfo[4] to S\n";
-	       #print "(@sinfo[1])Unmounting all shares\n";	        
-	       system( "su @sinfo[11] -c \"export HOSTNAME && x2goumount-session @sinfo[1]\" 2> /dev/null");
-           }
-       }       
-     }
-  }
- }
+	while(sleep 5)
+	{
+		$serv=`hostname`;
+		my $outp=`x2golistsessions_sql $serv 2>/dev/null`;
+		my @outp=split("\n","$outp");
+		for (my $i=0;$i<@outp;$i++)
+		{
+			my @sinfo=split('\\|',"@outp[$i]");
+			if (@sinfo[4]eq 'F')
+			{
+				#print "@sinfo[1], is blocked\n";
+				#print "(@sinfo[1])Unmounting all shares\n";	        
+				system( "su @sinfo[11] -c \"export HOSTNAME && x2goumount-session @sinfo[1]\" 2> /dev/null");
+			}
+			elsif (! check_pid (@sinfo[0],@sinfo[1],@sinfo[12]))
+			{
+				system("su @sinfo[11] -c \"x2gochangestatus 'F' @sinfo[1] \" > /dev/null");
+				#print "@sinfo[1], pid @sinfo[0] not exist, changing status from @sinfo[4] to F\n";
+				#print "(@sinfo[1])Unmounting all shares\n";	 
+				system( "su @sinfo[11] -c \"export HOSTNAME && x2goumount-session @sinfo[1]\" 2> /dev/null");
+			}
+			else
+			{ 
+				if (@sinfo[4]eq 'R')
+				{
+					if (!check_stat(@sinfo[1],@sinfo[11]))
+					{
+						system("su @sinfo[11] -c  \"x2gochangestatus 'S' @sinfo[1] \" > /dev/null");
+						#print "@sinfo[1], is suspended, changing status from @sinfo[4] to S\n";
+						#print "(@sinfo[1])Unmounting all shares\n";	        
+						system( "su @sinfo[11] -c \"export HOSTNAME && x2goumount-session @sinfo[1]\" 2> /dev/null");
+					}
+				}
+			}
+		}
+	}
 }
