@@ -18,7 +18,7 @@ already:
  $ addgroup --system x2gouser
  $ adduser --system --no-create-home \
            --disabled-password --disabled-login \
-           --shell /bin/false --group x2gouser --home /var/db/x2go x2gouser
+           --shell /bin/false --group x2gouser --home /var/lib/x2go x2gouser
 
 3.) SUID GROUP
 --------------

@@ -17,6 +17,7 @@ x2goserver (3.0.99.5-0~x2go3) UNRELEASED; urgency=low
     (instead of Conflicts).
   * Switch to setgid instead of setuid for SQLite wrapper.
   * Tab'ified postinst/postrm scripts.
+  * Store SQLite db in /var/lib/x2go to comply to latest FHS.
 
   [Martin Oehler]
   * Removes old debug code fragment, fixes x2golistsessions parsing.

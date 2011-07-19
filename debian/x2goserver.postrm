@@ -20,7 +20,7 @@ case "$1" in
 	purge)
 		dpkg-statoverride --remove /usr/bin/x2gosqlitewrapper || true
 		echo "Removing x2go session database" >&2
-		rm -vf /var/db/x2go/x2go_sessions
+		rm -vf /var/lib/x2go/x2go_sessions
 		rm -vf /etc/x2go/x2gosql/passwords/pgadmin
 		getent passwd x2gouser >/dev/null && deluser x2gouser
 		getent group x2gousers >/dev/null && delgroup x2gousers
