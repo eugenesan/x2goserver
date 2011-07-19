@@ -20,6 +20,7 @@ x2goserver (3.0.99.5-0~x2go3) UNRELEASED; urgency=low
   * Store SQLite db in /var/lib/x2go to comply to latest FHS.
   * Tab'ified (forgotten) scripts in /usr/sbin.
   * Tab'ified (forgotten) init script.
+  * Tab'ified (forgotten) scripts in x2goserver-extensions package.
 
   [Martin Oehler]
   * Removes old debug code fragment, fixes x2golistsessions parsing.

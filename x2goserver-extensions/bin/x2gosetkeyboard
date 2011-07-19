@@ -33,26 +33,26 @@ test -f ${X2GO_CLIENT_KBD_FILE} || exit 0
 
 read_keyboard_file() {
 
-        # retrieve keyboard settings from keyboard file in X2go session dir
-        XKB_RULES=$(cat ${X2GO_CLIENT_KBD_FILE}  | egrep "^rules.*" | head -n1 | cut -d "=" -f2 | cut -d" " -f1)
-        XKB_MODEL=$(cat ${X2GO_CLIENT_KBD_FILE}  | egrep "^model.*" | head -n1 | cut -d "=" -f2 | cut -d" " -f1)
-        XKB_LAYOUT=$(cat ${X2GO_CLIENT_KBD_FILE} | egrep "^layout.*" | head -n1 | cut -d "=" -f2 | cut -d" " -f1)
-        XKB_VARIANT=$(cat ${X2GO_CLIENT_KBD_FILE} | egrep "^variant.*" | head -n1 | cut -d "=" -f2 | cut -d" " -f1)
-        XKB_OPTIONS=$(cat ${X2GO_CLIENT_KBD_FILE} | egrep "^options.*" | head -n1 | cut -d "=" -f2 | cut -d" " -f1)
+	# retrieve keyboard settings from keyboard file in X2go session dir
+	XKB_RULES=$(cat ${X2GO_CLIENT_KBD_FILE}  | egrep "^rules.*" | head -n1 | cut -d "=" -f2 | cut -d" " -f1)
+	XKB_MODEL=$(cat ${X2GO_CLIENT_KBD_FILE}  | egrep "^model.*" | head -n1 | cut -d "=" -f2 | cut -d" " -f1)
+	XKB_LAYOUT=$(cat ${X2GO_CLIENT_KBD_FILE} | egrep "^layout.*" | head -n1 | cut -d "=" -f2 | cut -d" " -f1)
+	XKB_VARIANT=$(cat ${X2GO_CLIENT_KBD_FILE} | egrep "^variant.*" | head -n1 | cut -d "=" -f2 | cut -d" " -f1)
+	XKB_OPTIONS=$(cat ${X2GO_CLIENT_KBD_FILE} | egrep "^options.*" | head -n1 | cut -d "=" -f2 | cut -d" " -f1)
 
 }
 
 update_keymap() {
 
-        # prepare for setxkbmap call
-        [ -n "$XKB_RULES" ] && XKB_RULES="-rules $XKB_RULES"
-        [ -n "$XKB_MODEL" ] && XKB_MODEL="-model $XKB_MODEL"
-        [ -n "$XKB_LAYOUT" ] && XKB_LAYOUT="-layout $XKB_LAYOUT"
-        [ -n "$XKB_VARIANT" ] && XKB_VARIANT="-variant $XKB_VARIANT"
-        [ -n "$XKB_OPTIONS" ] && XKB_OPTIONS="-options $XKB_OPTIONS"
+	# prepare for setxkbmap call
+	[ -n "$XKB_RULES" ] && XKB_RULES="-rules $XKB_RULES"
+	[ -n "$XKB_MODEL" ] && XKB_MODEL="-model $XKB_MODEL"
+	[ -n "$XKB_LAYOUT" ] && XKB_LAYOUT="-layout $XKB_LAYOUT"
+	[ -n "$XKB_VARIANT" ] && XKB_VARIANT="-variant $XKB_VARIANT"
+	[ -n "$XKB_OPTIONS" ] && XKB_OPTIONS="-options $XKB_OPTIONS"
 
-        # update keyboard map
-        setxkbmap $XKB_RULES $XKB_MODEL $XKB_LAYOUT $XKB_VARIANT $XKB_OPTIONS
+	# update keyboard map
+	setxkbmap $XKB_RULES $XKB_MODEL $XKB_LAYOUT $XKB_VARIANT $XKB_OPTIONS
 }
 
 ### main ###
