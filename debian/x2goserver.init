@@ -11,25 +11,25 @@
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
 case "$1" in
-  start)
-	echo "Cleaning up stale x2go sessions."
-	/usr/sbin/x2gocleansessions
+	start)
+		echo "Cleaning up stale x2go sessions."
+		/usr/sbin/x2gocleansessions
 	;;
-  stop)
-	# kill x2gocleansessions, ignore on failure
-	killall x2gocleansessions || true
+	stop)
+		# kill x2gocleansessions, ignore on failure
+		killall x2gocleansessions || true
 	;;
-  reload|force-reload|restart)
-	# kill x2gocleansessions, ignore on failure
-	killall x2gocleansessions || true
-	echo "Cleaning up stale x2go sessions."
-	/usr/sbin/x2gocleansessions
+	reload|force-reload|restart)
+		# kill x2gocleansessions, ignore on failure
+		killall x2gocleansessions || true
+		echo "Cleaning up stale x2go sessions."
+		/usr/sbin/x2gocleansessions
 	;;
-  *)
-	N=/etc/init.d/x2goserver
-	# echo "Usage: $N {start|stop|restart|reload|force-reload}" >&2
-	echo "Usage: $N {start|stop|restart|force-reload}" >&2
-	exit 1
+	*)
+		N=/etc/init.d/x2goserver
+		# echo "Usage: $N {start|stop|restart|reload|force-reload}" >&2
+		echo "Usage: $N {start|stop|restart|force-reload}" >&2
+		exit 1
 	;;
 esac
 
