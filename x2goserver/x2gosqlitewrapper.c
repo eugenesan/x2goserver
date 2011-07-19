@@ -1,5 +1,7 @@
 /*
- * Copyright (C) 2007-2011 X2go Project - http://wiki.x2go.org
+ * This file is part of the  X2go Project - http://www.x2go.org
+ * Copyright (C) 2011 Mike Gabriel <mike.gabriel@das-netzwerkteam.de> 
+ * Copyright (C) 2011 Moritz 'Morty' Strübe <morty@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,8 +18,7 @@
  * Free Software Foundation, Inc.,
  * 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
  *
- * Copyright (C) 2007-2011  Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
- * Copyright (C) 2007-2011  Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
+ * 
  */
 
 #include <stdio.h>
