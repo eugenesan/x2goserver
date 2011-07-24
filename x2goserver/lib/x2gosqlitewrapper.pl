@@ -25,14 +25,14 @@ use strict;
 use DBI;
 use POSIX;
 
-# retrieve home dir of x2gouser 
+# retrieve home dir of x2gouser
 my $x2gouser='x2gouser';
 my ($uname, $pass, $uid, $pgid, $quota, $comment, $gcos, $homedir, $shell, $expire) = getpwnam($x2gouser);
 my $dbfile="$homedir/x2go_sessions";
 
 # retrieve account data of real user
 my $realuser=$<;
-my ($uname, $pass, $uid, $pgid, $quota, $comment, $gcos, $homedir, $shell, $expire) = getpwnam($realuser);
+my ($uname, $pass, $uid, $pgid, $quota, $comment, $gcos, $homedir, $shell, $expire) = getpwuid($realuser);
 
 my $dbh=DBI->connect("dbi:SQLite:dbname=$dbfile","","",{AutoCommit => 1}) or die $_;
 
@@ -81,6 +81,7 @@ elsif($cmd eq  "listsessionsroot_all")
 elsif($cmd eq  "getmounts")
 {
 	my $sid=shift or die "argument \"session_id\" missed";
+	check_user($sid);
 	my @strings;
 	my $sth=$dbh->prepare("select client, path from mounts where session_id=?");
 	$sth->execute($sid)or die;
@@ -91,6 +92,7 @@ elsif($cmd eq  "deletemount")
 {
 	my $sid=shift or die "argument \"session_id\" missed";
 	my $path=shift or die "argument \"path\" missed";
+	check_user($sid);
 	my $sth=$dbh->prepare("delete from mounts where session_id=? and path=?");
 	$sth->execute($sid, $path);
 	$sth->finish();
@@ -101,6 +103,7 @@ elsif($cmd eq  "insertmount")
 	my $sid=shift or die "argument \"session_id\" missed";
 	my $path=shift or die "argument \"path\" missed";
 	my $client=shift or die "argument \"client\" missed";
+	check_user($sid);
 	my $sth=$dbh->prepare("insert into mounts (session_id,path,client) values  (?, ?, ?)");
 	$sth->execute($sid, $path, $client);
 	if(!$sth->err())
@@ -115,6 +118,7 @@ elsif($cmd eq  "insertsession")
 	my $display=shift or die "argument \"display\" missed";
 	my $server=shift or die "argument \"server\" missed";
 	my $sid=shift or die "argument \"session_id\" missed";
+	check_user($sid);
 	my $sth=$dbh->prepare("insert into sessions (display,server,uname,session_id, init_time, last_time) values
 	                       (?, ?, ?, ?, datetime('now','localtime'), datetime('now','localtime'))");
 	$sth->execute($display, $server, $realuser, $sid) or die $_;
@@ -131,6 +135,7 @@ elsif($cmd eq  "createsession")
 	my $snd_port=shift or die"argument \"snd_port\" missed";
 	my $fs_port=shift or die"argument \"fs_port\" missed";
 	my $sid=shift or die "argument \"session_id\" missed";
+	check_user($sid);
 	my $sth=$dbh->prepare("update sessions set status='R',last_time=datetime('now','localtime'),cookie=?,agent_pid=?,
 	                       client=?,gr_port=?,sound_port=?,fs_port=? where session_id=? and uname=?");
 	$sth->execute($cookie, $pid, $client, $gr_port, $snd_port, $fs_port, $sid, $realuser)or die;
@@ -144,6 +149,7 @@ elsif($cmd eq  "insertport")
 	my $sid=shift or die "argument \"session_id\" missed";
 	my $sshport=shift or die "argument \"port\" missed";
 	my $sth=$dbh->prepare("insert into used_ports (server,session_id,port) values  (?, ?, ?)");
+	check_user($sid);
 	$sth->execute($server, $sid, $sshport) or die;
 	$sth->finish();
 }
@@ -152,6 +158,7 @@ elsif($cmd eq  "resume")
 {
 	my $client=shift or die "argument \"client\" missed";
 	my $sid=shift or die "argument \"session_id\" missed";
+	check_user($sid);
 	my $sth=$dbh->prepare("update sessions set last_time=datetime('now','localtime'),status='R',
 	                       client=? where session_id = ? and uname=?");
 	$sth->execute($client, $sid, $realuser) or die;
@@ -162,6 +169,7 @@ elsif($cmd eq  "changestatus")
 {
 	my $status=shift or die "argument \"status\" missed";
 	my $sid=shift or die "argument \"session_id\" missed";
+	check_user($sid);
 	my $sth=$dbh->prepare("update sessions set last_time=datetime('now','localtime'),
 	                       status=? where session_id = ? and uname=?");
 	$sth->execute($status, $sid, $realuser)or die;
@@ -170,7 +178,6 @@ elsif($cmd eq  "changestatus")
 
 elsif($cmd eq  "getdisplays")
 {
-
 	#ignore $server
 	my @strings;
 	my $sth=$dbh->prepare("select display from sessions");
@@ -222,6 +229,7 @@ elsif($cmd eq  "getagent")
 {
 	my $sid=shift or die "argument \"session_id\" missed";
 	my $agent;
+	check_user($sid);
 	my $sth=$dbh->prepare("select agent_pid from sessions
 	                       where session_id=?");
 	$sth->execute($sid)or die;
@@ -239,6 +247,7 @@ elsif($cmd eq  "getdisplay")
 {
 	my $sid=shift or die "argument \"session_id\" missed";
 	my $display;
+	check_user($sid);
 	my $sth=$dbh->prepare("select display from sessions
 	                       where session_id =?");
 	$sth->execute($sid)or die;
@@ -294,6 +303,14 @@ sub checkroot
 	{
 		die "$realuser, you can not do this job";
 	}
+}
+
+sub check_user
+{
+	my $sid=shift or die "argument \"session_id\" missed";
+	# session id looks like someuser-51-1304005895_stDgnome-session_dp24
+	my ( $user, $rest ) = split('-', $sid, 2);
+	$user eq $uname or die "$uname is not authorized (should be $user)";
 }
 
 sub fetchrow_printall_array
