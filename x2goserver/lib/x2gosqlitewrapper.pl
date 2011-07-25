@@ -31,8 +31,8 @@ my ($uname, $pass, $uid, $pgid, $quota, $comment, $gcos, $homedir, $shell, $expi
 my $dbfile="$homedir/x2go_sessions";
 
 # retrieve account data of real user
-my $realuser=$<;
-my ($uname, $pass, $uid, $pgid, $quota, $comment, $gcos, $homedir, $shell, $expire) = getpwuid($realuser);
+my ($uname, $pass, $uid, $pgid, $quota, $comment, $gcos, $homedir, $shell, $expire) = getpwuid($<);
+my $realuser=$uname;
 
 my $dbh=DBI->connect("dbi:SQLite:dbname=$dbfile","","",{AutoCommit => 1}) or die $_;
 
@@ -310,7 +310,7 @@ sub check_user
 	my $sid=shift or die "argument \"session_id\" missed";
 	# session id looks like someuser-51-1304005895_stDgnome-session_dp24
 	my ( $user, $rest ) = split('-', $sid, 2);
-	$user eq $uname or die "$uname is not authorized (should be $user)";
+	$user eq $realuser or die "$realuser is not authorized (should be $user)";
 }
 
 sub fetchrow_printall_array
