@@ -4,7 +4,8 @@
 
 VERSION=`head -n1 debian/changelog | sed 's,.*(\(.*\)).*,\1,' | cut -d"-" -f1`
 DOC_HOST=code.x2go.org
-DOC_PATH=/srv/sites/x2go.org/packages/doc/x2goserver/man-pages/
+DOC_PATH_1=/srv/sites/x2go.org/packages/doc/x2goserver/man/
+DOC_PATH_2=/srv/sites/x2go.org/packages/doc/x2goserver-extensions/man/
 DOC_USER=x2go-admin
 
 doc: docbuild docupload
@@ -13,9 +14,9 @@ docbuild:
 	make -f Makefile build_man2html
 
 docupload:
-	
-	ssh -l${DOC_USER} ${DOC_HOST} "{ mkdir -p ${DOC_PATH}; rm -Rfv ${DOC_PATH}/; mkdir -p ${DOC_PATH}/{x2goserver,x2goserver-extensions}; }"
-	scp -r x2goserver/.build_man2html/html/* ${DOC_USER}@${DOC_HOST}:${DOC_PATH}/x2goserver/
-	scp -r x2goserver-extensions/.build_man2html/html/* ${DOC_USER}@${DOC_HOST}:${DOC_PATH}/x2goserver-extensions/
+	ssh -l${DOC_USER} ${DOC_HOST} "{ mkdir -p ${DOC_PATH_1}; rm -Rfv ${DOC_PATH_1}/*; }"
+	ssh -l${DOC_USER} ${DOC_HOST} "{ mkdir -p ${DOC_PATH_2}; rm -Rfv ${DOC_PATH_2}/*; }"
+	scp -r x2goserver/.build_man2html/html/* ${DOC_USER}@${DOC_HOST}:${DOC_PATH_1}/
+	scp -r x2goserver-extensions/.build_man2html/html/* ${DOC_USER}@${DOC_HOST}:${DOC_PATH_2}/
 
 
