@@ -60,7 +60,6 @@ install_scripts:
 	$(INSTALL_DIR) $(DESTDIR)$(SBINDIR)
 	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)
 	$(INSTALL_PROGRAM) bin/*                $(DESTDIR)$(BINDIR)/
-	$(INSTALL_PROGRAM) compat/bin/*         $(DESTDIR)$(BINDIR)/
 	$(INSTALL_PROGRAM) sbin/*               $(DESTDIR)$(SBINDIR)/
 	$(INSTALL_FILE) lib/*                   $(DESTDIR)$(LIBDIR)/
 
