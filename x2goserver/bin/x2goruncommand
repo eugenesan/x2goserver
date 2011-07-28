@@ -109,7 +109,7 @@ if [ "$EXEC" != "" ] && [ -x `which $cmd` ]; then
 	fi
 else
 	echo "X2GORUNCOMMAND ERR NOEXEC:$cmd" > $MESSAGE_FILE
-fi 
+fi
 
 kill -TERM  $X2GO_AGENT_PID
 $X2GO_LIB_PATH/x2gochangestatus 'F' $X2GO_SESSION  > /dev/null

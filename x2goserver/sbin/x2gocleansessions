@@ -23,6 +23,8 @@
 use Sys::Hostname;
 use strict;
 
+my $x2go_lib_path=`echo -n \$(dirname $0)/../lib/x2go`;
+
 sub check_pid
 {
 	my $pid=shift;
@@ -86,7 +88,7 @@ elsif ($pid == 0 )
 	while(sleep 5)
 	{
 		$serv=`hostname`;
-		my $outp=`x2golistsessions_sql $serv 2>/dev/null`;
+		my $outp=`$x2go_lib_path/x2golistsessions_sql $serv 2>/dev/null`;
 		my @outp=split("\n","$outp");
 		for (my $i=0;$i<@outp;$i++)
 		{
@@ -99,7 +101,7 @@ elsif ($pid == 0 )
 			}
 			elsif (! check_pid (@sinfo[0],@sinfo[1],@sinfo[12]))
 			{
-				system("su @sinfo[11] -c \"x2gochangestatus 'F' @sinfo[1] \" > /dev/null");
+				system("su @sinfo[11] -c \"$x2go_lib_path/x2gochangestatus 'F' @sinfo[1] \" > /dev/null");
 				#print "@sinfo[1], pid @sinfo[0] not exist, changing status from @sinfo[4] to F\n";
 				#print "(@sinfo[1])Unmounting all shares\n";	 
 				system( "su @sinfo[11] -c \"export HOSTNAME && x2goumount-session @sinfo[1]\" 2> /dev/null");
@@ -110,7 +112,7 @@ elsif ($pid == 0 )
 				{
 					if (!check_stat(@sinfo[1],@sinfo[11]))
 					{
-						system("su @sinfo[11] -c  \"x2gochangestatus 'S' @sinfo[1] \" > /dev/null");
+						system("su @sinfo[11] -c  \"$x2go_lib_path/x2gochangestatus 'S' @sinfo[1] \" > /dev/null");
 						#print "@sinfo[1], is suspended, changing status from @sinfo[4] to S\n";
 						#print "(@sinfo[1])Unmounting all shares\n";	        
 						system( "su @sinfo[11] -c \"export HOSTNAME && x2goumount-session @sinfo[1]\" 2> /dev/null");
