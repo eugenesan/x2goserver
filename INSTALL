@@ -1,16 +1,7 @@
 TARBALL INSTALLATION OF x2goserver
 ==================================
 
-1.) INSTALL x2goserver FILES
------------------------------
-Extract tarball and run 
-
- $ make install
-
-in base folder of the extracted tarball. 
-
-
-2.) USER + GROUP for X2go
+1.) USER + GROUP for X2go
 -------------------------
 Set up x2gouser account and its group if they do not exist
 already:
@@ -18,7 +9,16 @@ already:
  $ addgroup --system x2gouser
  $ adduser --system --no-create-home \
            --disabled-password --disabled-login \
-           --shell /bin/false --group x2gouser --home /var/lib/x2go x2gouser
+           --shell /bin/false --group --home /var/lib/x2go x2gouser
+
+2.) INSTALL x2goserver FILES
+-----------------------------
+Extract tarball and run 
+
+ $ make install
+
+in base folder of the extracted tarball. 
+
 
 3.) SUID GROUP
 --------------
