@@ -99,9 +99,9 @@ uninstall_scripts:
 uninstall_config:
 	$(RM_FILE) $(DESTDIR)$(ETCDIR)/x2goserver.conf
 	$(RM_FILE) $(DESTDIR)$(ETCDIR)/x2gosql/sql
-	$(RM_DIR)  $(DESTDIR)$(ETCDIR)
-	$(RM_DIR)  $(DESTDIR)$(ETCDIR)/x2gosql/passwords
-	$(RM_DIR)  $(DESTDIR)$(ETCDIR)/x2gosql
+	$(RM_DIR)  $(DESTDIR)$(ETCDIR) || true
+	$(RM_DIR)  $(DESTDIR)$(ETCDIR)/x2gosql/passwords || true
+	$(RM_DIR)  $(DESTDIR)$(ETCDIR)/x2gosql || true
 
 uninstall_man:
 	for file in $(BIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(MANDIR)/man8/$$file.1.gz; done

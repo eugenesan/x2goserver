@@ -31,8 +31,8 @@ install:
 	cd x2goserver-extensions && make $@
 
 uninstall:
-	cd x2goserver && make $@
-	cd x2goserver-compat && make $@
 	cd x2goserver-extensions && make $@
+	cd x2goserver-compat && make $@
+	cd x2goserver && make $@
 
 
