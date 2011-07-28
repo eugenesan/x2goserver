@@ -62,8 +62,8 @@ install_scripts:
 	$(INSTALL_PROGRAM) bin/*                $(DESTDIR)$(BINDIR)/
 	$(INSTALL_PROGRAM) sbin/*               $(DESTDIR)$(SBINDIR)/
 	$(INSTALL_FILE) lib/*                   $(DESTDIR)$(LIBDIR)/
-	chown root:x2gouser /usr/lib/x2go/x2gosqlitewrapper
-	chmod 2755 /usr/lib/x2go/x2gosqlitewrapper
+	chown root:x2gouser $(DESTDIR)$(LIBDIR)/x2gosqlitewrapper
+	chmod 2755 $(DESTDIR)$(LIBDIR)/x2gosqlitewrapper
 
 install_config:
 	$(INSTALL_DIR) $(DESTDIR)$(ETCDIR)
