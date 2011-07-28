@@ -37,6 +37,8 @@ Recommends:
  x11-xserver-utils,
  xinit,
  x2goserver-extensions (= ${source:Version})
+Suggests:
+ x2goserver-compat (= ${source:Version})
 Breaks:
  x2goserver-one,
  x2goserver-home,
@@ -64,6 +66,23 @@ Description: X2go server daemon scripts
  However, if you intend using other client implementations 
  of X2go make sure that you also have X2go server
  extensions package (x2goserver-extensions) installed.
+
+Package: x2goserver-compat
+Architecture: all
+Depends:
+ ${misc:Depends},
+ x2goserver (>= ${source:Version}), x2goserver (<< ${source:Version}.1~)
+Description: X2go server daemon scripts (backwards compatitbity to old client versions)
+ X2go is a serverbased computing environment with
+    - session resuming
+    - low bandwith support
+    - LDAP support
+    - client side mass storage mounting support
+    - audio support
+    - authentication by smartcard and USB stick
+ .
+ This package contains compatitbility scripts to allow
+ old x2goclient versions to connect to your X2go server.
 
 Package: x2goserver-extensions
 Architecture: all
