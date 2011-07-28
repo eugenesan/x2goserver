@@ -68,7 +68,7 @@ install_man:
 	$(INSTALL_DIR) $(DESTDIR)$(MANDIR)
 	$(INSTALL_DIR) $(DESTDIR)$(MANDIR)/man1
 	$(INSTALL_FILE) man/man1/*.1           $(DESTDIR)$(MANDIR)/man1
-	gzip -f $(DESTDIR)$(MANDIR)/man8/x2go*.1
+	gzip -f $(DESTDIR)$(MANDIR)/man1/x2go*.1
 
 install_version:
 	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)
