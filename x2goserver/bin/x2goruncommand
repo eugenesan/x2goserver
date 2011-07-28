@@ -35,6 +35,8 @@ X2GO_ROOT=${HOME}/.x2go
 MESSAGE_FILE=$X2GO_ROOT/C-$X2GO_SESSION/cmdoutput
 echo "exec $cmd" >> $MESSAGE_FILE
 
+X2GO_LIB_PATH="$(dirname $0)/../lib/x2go"
+
 IMEXIT="false"
 
 if [ "$sndsys" == "esd" ]; then
@@ -110,6 +112,6 @@ else
 fi 
 
 kill -TERM  $X2GO_AGENT_PID
-x2gochangestatus 'F' $X2GO_SESSION  > /dev/null
+$X2GO_LIB_PATH/x2gochangestatus 'F' $X2GO_SESSION  > /dev/null
 export HOSTNAME
 x2goumount-session $X2GO_SESSION

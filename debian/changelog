@@ -21,6 +21,8 @@ x2goserver (3.0.99.5-0~x2go3) UNRELEASED; urgency=low
   * Tab'ified (forgotten) scripts in /usr/sbin.
   * Tab'ified (forgotten) init script.
   * Tab'ified (forgotten) scripts in x2goserver-extensions package.
+  * Install internal x2goserver scripts to /usr/lib/x2go, make sure scripts in /usr/bin
+    find these scripts.
 
   [Martin Oehler]
   * Removes old debug code fragment, fixes x2golistsessions parsing.

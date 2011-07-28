@@ -38,6 +38,8 @@ X2GO_CMD=$9
 X2GO_RESIZE=0
 X2GO_FULLSCREEN=0
 
+X2GO_LIB_PATH="$(dirname $0)/../lib/x2go"
+
 if [ "$X2GO_STYPE" == "S" ]; then
 
 	SHADOW_MODE=`echo "$X2GO_CMD"|awk '{split($0,a,"XSHAD"); print a[1]}'`
@@ -77,7 +79,7 @@ if [ "$LWORD" == "LIMIT" ]; then
 	exit -1
 fi
 
-export NX_CLIENT=/usr/bin/x2gosuspend-agent
+export NX_CLIENT=$X2GO_LIB_PATH/x2gosuspend-agent
 
 COLORDEPTH=`echo "$X2GO_TYPE"|awk '{split($0,a,"-depth_"); print a[2]}'`
 
@@ -93,7 +95,7 @@ if [ "$X2GO_CLIENT" == "" ]; then
 	X2GO_CLIENT=$HOSTNAME
 fi
 
-USED_DISPLAYS=`x2gogetdisplays $HOSTNAME`
+USED_DISPLAYS=`$X2GO_LIB_PATH/x2gogetdisplays $HOSTNAME`
 
 
 while [ "$OUTPUT"  != "inserted" ]; do
@@ -108,12 +110,12 @@ while [ "$OUTPUT"  != "inserted" ]; do
 			SESSION_NAME="$SESSION_NAME"_st${SESSION_TYPE}${X2GO_CMD}_dp${COLORDEPTH}
 			SESSION_NAME=`echo "$SESSION_NAME" | sed  -e  "s/:/PP/g"`
 		fi
-		OUTPUT=`x2goinsertsession $X2GO_PORT $HOSTNAME $SESSION_NAME`
+		OUTPUT=`$X2GO_LIB_PATH/x2goinsertsession $X2GO_PORT $HOSTNAME $SESSION_NAME`
 	fi 
 done
 
 
-USED_PORTS=`x2gogetports $HOSTNAME`
+USED_PORTS=`$X2GO_LIB_PATH/x2gogetports $HOSTNAME`
 
 
 while [ "$GR_PORT" == "" ] || [ "$SOUND_PORT" == "" ] || [ "$FS_PORT" == "" ]; do
@@ -129,7 +131,7 @@ while [ "$GR_PORT" == "" ] || [ "$SOUND_PORT" == "" ] || [ "$FS_PORT" == "" ]; d
 			CR=`echo "use IO::Socket; \\$sock = new IO::Socket::INET ( LocalAddr => 'localhost',LocalPort => \"$SSH_PORT\",\
                                   Proto => 'tcp',Listen => 1,Reuse =>1 ) or die ;print \"OK\";close(\\$sock);"|perl 2>/dev/null`
 			if [ "$CR" == "OK" ]; then
-				OUTPUT=`x2goinsertport $HOSTNAME $SESSION_NAME $SSH_PORT`
+				OUTPUT=`$X2GO_LIB_PATH/x2goinsertport $HOSTNAME $SESSION_NAME $SSH_PORT`
 			fi
 		fi
 	done
@@ -224,7 +226,7 @@ X2GO_AGENT_PID=$!
 
 X2GO_SND_PORT=1024
 
-x2gocreatesession $X2GO_COOKIE $X2GO_AGENT_PID $X2GO_CLIENT $GR_PORT $SOUND_PORT $FS_PORT $SESSION_NAME > /dev/null
+$X2GO_LIB_PATH/x2gocreatesession $X2GO_COOKIE $X2GO_AGENT_PID $X2GO_CLIENT $GR_PORT $SOUND_PORT $FS_PORT $SESSION_NAME > /dev/null
 
 echo $X2GO_PORT
 echo $X2GO_COOKIE
