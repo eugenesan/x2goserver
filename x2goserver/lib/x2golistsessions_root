@@ -36,6 +36,8 @@ sub check_stat
 	return 1;
 }
 
+my $x2go_lib_path="`dirname $0`/../x2go/lib"
+
 my $uname;
 
 my $serv=shift;
@@ -62,7 +64,7 @@ for (my $i=0;$i<@outp;$i++)
 		{
 			if (!check_stat(@sinfo[1],@sinfo[11]))
 			{
-				system("su - @sinfo[11] -c \"x2gochangestatus 'S' @sinfo[1]\" > /dev/null");
+				system("export X2GO_LIB_PATH=$x2go_lib_path; su - @sinfo[11] -c \"\$X2GO_LIB_PATH/x2gochangestatus 'S' @sinfo[1]\" > /dev/null");
 				@outp[$i] =~ s/\|R\|/\|S\|/;
 			}
 		}
