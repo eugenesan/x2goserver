@@ -94,6 +94,7 @@ uninstall_scripts:
 	for file in $(BIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(BINDIR)/$$file; done
 	for file in $(SBIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(SBINDIR)/$$file; done
 	for file in $(LIB_FILES); do $(RM_FILE) $(DESTDIR)$(LIBDIR)/$$file; done
+	$(RM_FILE) $(DESTDIR)$(LIBDIR)/x2gosqlitewrapper
 	$(RM_DIR) $(DESTDIR)$(LIBDIR) || true
 
 uninstall_config:
