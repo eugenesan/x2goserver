@@ -4,6 +4,5 @@ x2goserver/lib/x2go*                    /usr/lib/x2go/
 x2goserver/etc/x2gosql/sql              /etc/x2go/x2gosql/
 x2goserver/etc/x2goserver.conf          /etc/x2go/
 x2goserver/VERSION.x2goserver           /usr/share/x2go/versions/
-x2goserver/x2gosqlitewrapper            /usr/bin
-# compatibility
-x2goserver/compat/bin/x2go*             /usr/bin
+x2goserver/x2gosqlitewrapper            /usr/lib/x2go/
+
