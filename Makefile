@@ -2,7 +2,7 @@
 
 all: build
 
-build: build-indep
+build: build-arch build-indep
 
 # make man2html build available from project's base folder...
 build_man2html:
