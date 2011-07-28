@@ -81,22 +81,22 @@ uninstall_scripts:
 	for file in $(BIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(BINDIR)/$$file; done
 #	for file in $(SBIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(SBINDIR)/$$file; done
 #	for file in $(LIB_FILES); do $(RM_FILE) $(DESTDIR)$(LIBDIR)/$$file; done
-#	$(RM_DIR) $(DESTDIR)$(LIBDIR)
+#	$(RM_DIR) $(DESTDIR)$(LIBDIR) || true
 
 uninstall_config:
 #	$(RM_FILE) $(DESTDIR)$(ETCDIR)/x2goserver.conf
 #	$(RM_FILE) $(DESTDIR)$(ETCDIR)/x2gosql/sql
-#	$(RM_DIR)  $(DESTDIR)$(ETCDIR)
-#	$(RM_DIR)  $(DESTDIR)$(ETCDIR)/x2gosql/passwords
-#	$(RM_DIR)  $(DESTDIR)$(ETCDIR)/x2gosql
+#	$(RM_DIR)  $(DESTDIR)$(ETCDIR) || true
+#	$(RM_DIR)  $(DESTDIR)$(ETCDIR)/x2gosql/passwords || true
+#	$(RM_DIR)  $(DESTDIR)$(ETCDIR)/x2gosql || true
 
 uninstall_man:
 	for file in $(BIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(MANDIR)/man1/$$file.1.gz; done
 	for file in $(SBIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(MANDIR)/man1/$$file.1.gz; done
 	for file in $(BIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(MANDIR)/man8/$$file.8.gz; done
 	for file in $(SBIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(MANDIR)/man8/$$file.8.gz; done
-	$(RM_DIR)  $(DESTDIR)$(MANDIR)
+	$(RM_DIR)  $(DESTDIR)$(MANDIR) || true
 
 uninstall_version:
 	$(RM_FILE) $(DESTDIR)$(SHAREDIR)/versions/VERSION.x2goserver-compat
-	$(RM_DIR)  $(DESTDIR)$(SHAREDIR)/versions
+	$(RM_DIR)  $(DESTDIR)$(SHAREDIR)/versions || true
