@@ -100,6 +100,8 @@ uninstall_config:
 	$(RM_DIR)  $(DESTDIR)$(ETCDIR)/x2gosql
 
 uninstall_man:
+	for file in $(BIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(MANDIR)/man8/$$file.1.gz; done
+	for file in $(SBIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(MANDIR)/man8/$$file.1.gz; done
 	for file in $(BIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(MANDIR)/man8/$$file.8.gz; done
 	for file in $(SBIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(MANDIR)/man8/$$file.8.gz; done
 	$(RM_DIR)  $(DESTDIR)$(MANDIR)
