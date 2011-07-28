@@ -26,7 +26,7 @@ use DBI;
 
 use POSIX;
 
-my $x2go_lib_path=`echo -n \$(dirname $0)/../lib/x2go`;
+my $x2go_lib_path=`echo -n \$(dirname $0)`;
 
 my ($uname, $pass, $uid, $pgid, $quota, $comment, $gcos, $homedir, $shell, $expire) = getpwuid(getuid());
 
