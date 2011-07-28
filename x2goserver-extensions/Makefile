@@ -17,7 +17,7 @@ BINDIR=$(PREFIX)/bin
 #SBINDIR=$(PREFIX)/sbin
 #LIBDIR=$(PREFIX)/lib/x2go
 MANDIR=$(PREFIX)/share/man
-#SHAREDIR=$(PREFIX)/share/x2go
+SHAREDIR=$(PREFIX)/share/x2go
 
 BIN_SCRIPTS=$(shell cd bin && ls)
 #SBIN_SCRIPTS=$(shell cd sbin && ls)
