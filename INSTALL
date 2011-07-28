@@ -24,8 +24,11 @@ already:
 --------------
 Configure ownership, permissions and setuid user bit of x2gosqlitewrapper:
 
- $ chown root:x2gouser /usr/bin/x2gosqlitewrapper
- $ chmod 4755 /usr/bin/x2gosqlitewrapper
+  NOTE: The described action have already been performed by the Makefile 
+  run, leaving this here for documentation only.
+
+ $ chown root:x2gouser /usr/lib/x2go/x2gosqlitewrapper
+ $ chmod 2755 /usr/bin/x2gosqlitewrapper
 
 4.) DATABASE SETUP (SQLite only)
 --------------------------------
