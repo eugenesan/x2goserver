@@ -360,7 +360,7 @@ sub db_changestatus
 	}
 	if ($backend eq 'sqlite')
 	{
-	`x2gosqlitewrapper changestatus $status $sid`;
+		`x2gosqlitewrapper changestatus $status $sid`;
 	}
 }
 
