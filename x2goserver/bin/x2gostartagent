@@ -38,7 +38,7 @@ X2GO_CMD=$9
 X2GO_RESIZE=0
 X2GO_FULLSCREEN=0
 
-X2GO_LIB_PATH="$(dirname $0)/../lib/x2go"
+X2GO_LIB_PATH=`echo -n \$(x2gobasepath)/lib/x2go`
 
 if [ "$X2GO_STYPE" == "S" ]; then
 

@@ -35,7 +35,7 @@ X2GO_ROOT=${HOME}/.x2go
 MESSAGE_FILE=$X2GO_ROOT/C-$X2GO_SESSION/cmdoutput
 echo "exec $cmd" >> $MESSAGE_FILE
 
-X2GO_LIB_PATH="$(dirname $0)/../lib/x2go"
+X2GO_LIB_PATH=`echo -n \$(x2gobasepath)/lib/x2go`
 
 IMEXIT="false"
 

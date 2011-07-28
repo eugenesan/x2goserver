@@ -26,7 +26,7 @@ else
 	SESSION_NAME=$X2GO_SESSION
 fi
 
-X2GO_LIB_PATH="$(dirname $0)/../lib/x2go"
+X2GO_LIB_PATH=`echo -n \$(x2gobasepath)/lib/x2go`
 
 X2GO_AGENT_PID=`$X2GO_LIB_PATH/x2gogetagent $SESSION_NAME` 
 X2GO_AGENT_PID=`echo "$X2GO_AGENT_PID"| awk {'print $1'}`

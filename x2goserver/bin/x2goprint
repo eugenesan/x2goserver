@@ -25,7 +25,7 @@ use File::Copy;
 use File::Path;
 use strict;
 
-use lib "/usr/lib/x2go";
+use lib `echo -n \$(x2gobasepath)/lib/x2go`;
 use x2godbwrapper;
 
 if (scalar(@ARGV) ==1)

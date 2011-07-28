@@ -22,7 +22,7 @@
 
 use strict;
 
-use lib "/usr/lib/x2go";
+use lib `echo -n \$(x2gobasepath)/lib/x2go`;;
 use x2godbwrapper; 
 
 my $host=shift or die;
