@@ -28,13 +28,12 @@ X2GO_KBD_LAYOUT=$5
 X2GO_KBD_TYPE=$6
 X2GO_SET_KBD=$7
 
-X2GO_AGENT_PID=`x2gogetagent $SESSION_NAME`
+X2GO_LIB_PATH=`echo -n \$(x2gobasepath)/lib/x2go`
+X2GO_AGENT_PID=`$X2GO_LIB_PATH/x2gogetagent $SESSION_NAME`
 
 X2GO_ROOT=${HOME}/.x2go
 X2GO_RESIZE=0
 X2GO_FULLSCREEN=0
-
-X2GO_LIB_PATH=`echo -n \$(x2gobasepath)/lib/x2go`
 
 if [ "$X2GO_GEOMETRY" == "" ]
 then
