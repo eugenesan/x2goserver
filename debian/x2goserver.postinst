@@ -20,9 +20,10 @@ set -e
 
 case "$1" in
 	configure)
-		chmod 700 /etc/x2go/x2gosql/passwords || true
-		touch /etc/x2go/x2gosql/passwords/pgadmin || true
-		chmod 600 /etc/x2go/x2gosql/passwords/pgadmin || true
+		mkdir -p  /etc/x2go/x2gosql/passwords
+		chmod 700 /etc/x2go/x2gosql/passwords
+		touch     /etc/x2go/x2gosql/passwords/pgadmin
+		chmod 600 /etc/x2go/x2gosql/passwords/pgadmin
 
 		# setup x2gouser and group
 		if ! getent group x2gouser >/dev/null; then
@@ -39,29 +40,47 @@ case "$1" in
 		else
 			echo "User x2gouser already exists." >&2
 			# make sure all settings are appropriate
-			id -g --name "x2gouser" | grep "x2gousers" >/dev/null && usermod --gid x2gouser x2gouser
-			usermod --home /var/lib/x2go x2gouser
-			usermod --shell /bin/false x2gouser
+			if [ "`id -gn x2gouser`" != "x2gouser" ]; then
+				usermod --gid x2gouser x2gouser
+			fi
+			if [ "`ls -1d ~x2gouser`" != "/var/lib/x2go" ]; then
+				usermod --move-home --home /var/lib/x2go x2gouser
+			fi
+			# leave user shell alone. we have never set this wrongly
+			# and we need to respect the administrator's choices
 		fi
 
 		if [ ! -f /var/lib/x2go/x2go_sessions ]; then
 			x2godbadmin --createdb
 		else
 			# make sure db permissions are set correctly
-			chown root:x2gouser /var/lib/x2go -Rf
+			chown -R root:x2gouser /var/lib/x2go
 			# egid x2gouser needs write access to the db dir (for temporary db journal file)
 			chmod 0770 /var/lib/x2go
 			# ... and to the db file itself, of course
 			chmod 0660 /var/lib/x2go/x2go_sessions
 		fi
 
-		# we may be upgrading versions of x2goserver that had /usr/lib/x2go/x2gosqlitewrapper.pl set to setuid x2gouser.
-		dpkg-statoverride --remove /usr/lib/x2go/x2gosqlitewrapper.pl 2>/dev/null && chown root:root /usr/lib/x2go/x2gosqlitewrapper.pl 2>/dev/null && chmod 0755 /usr/lib/x2go/x2gosqlitewrapper.pl 2>/dev/null || true
-		# we may be upgrading versions of x2goserver that had /usr/bin/x2gosqlitewrapper set to setuid or setgid x2gouser.
-		dpkg-statoverride --remove /usr/bin/x2gosqlitewrapper 2>/dev/null && chown root:root /usr/bin/x2gosqlitewrapper 2>/dev/null && chmod 0755 /usr/bin/x2gosqlitewrapper 2>/dev/null || true
+		# we may be upgrading versions of x2goserver that had
+		# /usr/lib/x2go/x2gosqlitewrapper.pl set to setuid x2gouser.
+		if dpkg-statoverride --list /usr/lib/x2go/x2gosqlitewrapper.pl >/dev/null; then
+			dpkg-statoverride --remove /usr/lib/x2go/x2gosqlitewrapper.pl
+			chown root:root /usr/lib/x2go/x2gosqlitewrapper.pl
+			chmod 0755 /usr/lib/x2go/x2gosqlitewrapper.pl
+		fi
+
+		# we may be upgrading versions of x2goserver that had
+		# /usr/bin/x2gosqlitewrapper set to setuid or setgid x2gouser.
+		if dpkg-statoverride --list /usr/bin/x2gosqlitewrapper >/dev/null; then
+			dpkg-statoverride --remove /usr/bin/x2gosqlitewrapper
+			chown root:root /usr/bin/x2gosqlitewrapper
+			chmod 0755 /usr/bin/x2gosqlitewrapper
+		fi
 
 		# the sqlite db has to be accessed as uid x2gouser
-		dpkg-statoverride --add --update root x2gouser 2755 /usr/lib/x2go/x2gosqlitewrapper || true
+		if ! dpkg-statoverride --list /usr/lib/x2go/x2gosqlitewrapper >/dev/null; then
+		    dpkg-statoverride --add --update root x2gouser 2755 /usr/lib/x2go/x2gosqlitewrapper
+		fi
 		;;
 
 	abort-upgrade|abort-remove|abort-deconfigure)
