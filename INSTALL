@@ -28,15 +28,10 @@ Configure ownership, permissions and setuid user bit of x2gosqlitewrapper:
   run, leaving this here for documentation only.
 
  $ chown root:x2gouser /usr/lib/x2go/x2gosqlitewrapper
- $ chmod 2755 /usr/bin/x2gosqlitewrapper
-
-4.) DATABASE SETUP (SQLite only)
---------------------------------
-
- $ x2godbadmin --createdb
+ $ chmod 2755 /usr/lib/x2go/x2gosqlitewrapper
 
 
-5.) INIT SCRIPT
+4.) INIT SCRIPT
 ---------------
 Create a simple init script that starts $PREFIX/sbin/x2gocleansessions on system start
 (runlevel 2-3-4-5). 
@@ -45,16 +40,26 @@ Alternatively, you can add a single line to /etc/rc.local:
 
 /usr/local/sbin/x2gocleansessions &
 
+4.) DATABASE SETUP (SQLite only)
+--------------------------------
 
-6.) OPTIONAL: PostgreSQL setup
-------------------------------
-This last step is optional and is only needed for a setup of x2goserver
-with PostgreSQL as database backend...
+ $ x2godbadmin --createdb
 
-When using PostgreSQL the following steps are necessary:
 
- $ chmod 0750 /etc/x2go/x2gosql/passwords
- $ touch /etc/x2go/x2gosql/passwords/pgadmin
- $ chmod 0640 /etc/x2go/x2gosql/passwords/pgadmin
+4a.) DEFAULT: SQLite setup
+--------------------------
+This variant is the default X2go database setup. The X2go database keeps track of
+running/suspended/finished X2go sessions, mounted devices, etc. If you use SQLite
+as DB backend, X2go will run on one single server.
 
+For multi-X2goServer support use the PostgreSQL setup variant of X2go server. All files
+should be present for this setup. If not, please report it as a bug.
+
+
+4b.) ALTERNATIVE: PostgreSQL setup
+----------------------------------
+This variant is for a setup of x2goserver that uses a PostgreSQL database backend...
+
+The exact installation of x2goserver with PostgreSQL support is described here:
+http://wiki.x2go.org/adding_x2go_server_postgresql_support
 
