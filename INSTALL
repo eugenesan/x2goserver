@@ -39,13 +39,13 @@ Alternatively, you can add a single line to /etc/rc.local:
 
 /usr/local/sbin/x2gocleansessions &
 
-4.) DATABASE SETUP (SQLite only)
+5.) DATABASE SETUP (SQLite only)
 --------------------------------
 
  $ x2godbadmin --createdb
 
 
-4a.) DEFAULT: SQLite setup
+5a.) DEFAULT: SQLite setup
 --------------------------
 This variant is the default X2go database setup. The X2go database keeps track of
 running/suspended/finished X2go sessions, mounted devices, etc. If you use SQLite
@@ -55,7 +55,7 @@ For multi-X2goServer support use the PostgreSQL setup variant of X2go server. Al
 should be present for this setup. If not, please report it as a bug.
 
 
-4b.) ALTERNATIVE: PostgreSQL setup
+5b.) ALTERNATIVE: PostgreSQL setup
 ----------------------------------
 This variant is for a setup of x2goserver that uses a PostgreSQL database backend...
 
