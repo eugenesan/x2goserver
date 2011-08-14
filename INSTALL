@@ -50,6 +50,9 @@ have to be members of your server system's ,,fuse'' group
 
 6.) PRINTING
 ------------
+Also users that shall be able to send print jobs to client-side printers have to be
+members of the server-side ,,fuse'' group (see above).
+
 As X2go printing setups can be rather versatile, details on X2go printing are explained in 
 the project's wiki:
 http://wiki.x2go.org/installing_x2go_printing_debian_ubuntu
