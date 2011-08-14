@@ -6,10 +6,9 @@ TARBALL INSTALLATION OF x2goserver
 Set up x2gouser account and its group if they do not exist
 already:
 
- $ addgroup --system x2gouser
- $ adduser --system --no-create-home \
-           --disabled-password --disabled-login \
-           --shell /bin/false --group --home /var/lib/x2go x2gouser
+ $ groupadd --system x2gouser
+ $ useradd --system --no-create-home \
+           --shell /bin/false --home /var/lib/x2go x2gouser
 
 2.) INSTALL x2goserver FILES
 -----------------------------
