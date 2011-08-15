@@ -56,6 +56,8 @@ if [ "$cmd" == "WWWBROWSER" ]; then
 		cmd="/usr/bin/konqueror"
 	elif  [ -e "/usr/bin/galeon" ]; then
 		cmd="/usr/bin/galeon"
+	elif  [ -e "/usr/bin/chromium-browser" ]; then
+		cmd="/usr/bin/chromium-browser"
 	fi
 fi
 
