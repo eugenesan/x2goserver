@@ -106,7 +106,7 @@ then
 	IMEXIT="true"
 fi
 
-if [ "$EXEC" != "" ] && [ -x `which $cmd` ]; then
+if [ "$EXEC" != "" ] && [ -x $EXEC ]; then
 	$cmd
 	#### some applications can quit immediately, we will wait here as long as x2goagent exists
 	if [  "$X2GO_SESS_TYPE" == "R" ] && [ "$IMEXIT" == "false" ]; then
