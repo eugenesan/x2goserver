@@ -74,10 +74,9 @@ if [ "$cmd" == "MAILCLIENT" ]; then
 fi
 
 if [ "$cmd" == "OFFICE" ]; then
-	if [ -e "/usr/bin/ooffice" ]
-     then
-         cmd="/usr/bin/ooffice"
-     fi
+	if [ -e "/usr/bin/ooffice" ]; then
+		cmd="/usr/bin/ooffice"
+	fi
 fi
 
 if [ "$cmd" == "TERMINAL" ]; then
