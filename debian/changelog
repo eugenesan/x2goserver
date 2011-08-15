@@ -29,6 +29,8 @@ x2goserver (3.0.99.5-0~x2go3) UNRELEASED; urgency=low
   * Add chromium-browser as possible WWWBROWSER to x2goruncommand.
   * Add lxterminal as possible TERMINAL to x2goruncommand.
   * Add LibreOffice.org as possible OFFICE application to x2goruncommand.
+  * Fix for TERMINAL command execution if konsole (KDE4) is installed on the
+    server (closes upstream issue #87)
 
   [Martin Oehler]
   * Removes old debug code fragment, fixes x2golistsessions parsing.

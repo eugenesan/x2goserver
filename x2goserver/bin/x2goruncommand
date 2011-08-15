@@ -85,6 +85,8 @@ if [ "$cmd" == "TERMINAL" ]; then
 	IMEXIT="true"
 	if [ -e "/usr/bin/konsole" ]; then
 		cmd="/usr/bin/konsole"
+		# KDE4 konsole behaves differently from other terminals
+		IMEXIT="false"
 	elif  [ -e "/usr/bin/gnome-terminal" ]; then
 		cmd="/usr/bin/gnome-terminal"
 	elif  [ -e "/usr/bin/lxterminal" ]; then
