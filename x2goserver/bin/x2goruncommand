@@ -105,7 +105,7 @@ fi
 
 if [ "$EXEC" != "" ] && [ -x `which $cmd` ]; then
 	$cmd
-	#### some applications can quit immediately, we waiting until x2goagent exists
+	#### some applications can quit immediately, we will wait here as long as x2goagent exists
 	if [  "$X2GO_SESS_TYPE" == "R" ] && [ "$IMEXIT" == "false" ]; then
 		while [ -d /proc/$X2GO_AGENT_PID ]; do
 			sleep 1
