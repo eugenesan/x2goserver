@@ -30,7 +30,7 @@ x2goserver (3.0.99.5-0~x2go3) UNRELEASED; urgency=low
   * Add lxterminal as possible TERMINAL to x2goruncommand.
   * Add LibreOffice.org as possible OFFICE application to x2goruncommand.
   * Fix for TERMINAL command execution if konsole (KDE4) is installed on the
-    server (closes upstream issue #87)
+    server (closes upstream issue #87).
   * Silence x2golistsessions on missing session.log files.
 
   [Martin Oehler]
