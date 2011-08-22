@@ -70,11 +70,10 @@ case "$1" in
 		fi
 
 		# we may be upgrading versions of x2goserver that had
-		# /usr/bin/x2gosqlitewrapper set to setuid or setgid x2gouser.
+		# /usr/bin/x2gosqlitewrapper set to setuid or setgid x2gouser, the script itself is
+		# at this location anymore, we just clear the dpkg-statoverride config entry.
 		if dpkg-statoverride --list /usr/bin/x2gosqlitewrapper >/dev/null; then
 			dpkg-statoverride --remove /usr/bin/x2gosqlitewrapper
-			chown root:root /usr/bin/x2gosqlitewrapper
-			chmod 0755 /usr/bin/x2gosqlitewrapper
 		fi
 
 		# the sqlite db has to be accessed as uid x2gouser
