@@ -28,8 +28,6 @@
 #include <errno.h>
 
 
-
-
 int main( int argc, char *argv[] ) {
 	char * x2goprint = NULL;
 	size_t path_max;
@@ -62,14 +60,12 @@ int main( int argc, char *argv[] ) {
 			exit(EXIT_FAILURE);
 		}
 
-
 		// derive the full path of x2goprint.pl from path of this binary
-		rvap = asprintf(&x2goprint, "%s/../lib/x2go/%s", dirname(buffer), "x2goprint.pl");
+		rvap = asprintf(&x2goprint, "%s/lib/x2go/%s", dirname(dirname(buffer)), "x2goprint.pl");
 		if(rvap == -1){
 			fprintf(stderr, "Failed to allocate memory calling asprintf\n");
 			exit(EXIT_FAILURE);
 		}
-
 
 		// execute the script, running with user-rights of this binary 
 		execv(x2goprint, argv);

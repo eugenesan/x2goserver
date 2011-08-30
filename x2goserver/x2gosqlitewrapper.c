@@ -27,9 +27,6 @@
 #include <libgen.h>
 #include <errno.h>
 
-
-
-
 int main( int argc, char *argv[] ) {
 	char * x2gosqlitewrapper = NULL;
 	size_t path_max;
@@ -62,14 +59,12 @@ int main( int argc, char *argv[] ) {
 			exit(EXIT_FAILURE);
 		}
 
-
 		// derive the full path of x2gosqlitewrapper.pl from path of this binary
 		rvap = asprintf(&x2gosqlitewrapper, "%s/%s", dirname(buffer), "x2gosqlitewrapper.pl");
 		if(rvap == -1){
 			fprintf(stderr, "Failed to allocate memory calling asprintf\n");
 			exit(EXIT_FAILURE);
 		}
-
 
 		// execute the script, running with user-rights of this binary 
 		execv(x2gosqlitewrapper, argv);
