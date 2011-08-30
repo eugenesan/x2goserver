@@ -14,9 +14,10 @@ Set up x2goprint account and its group if they do not exist
 already:
 
  $ groupadd --system x2goprint
- $ useradd --system --no-create-home \
+ $ useradd --system \
            --shell /bin/false --home /var/spool/x2goprint x2goprint
-
+ $ chown x2goprint:x2goprint ~x2goprint
+ $ chmod 0770 ~x2goprint
 
 2.) INSTALL x2goserver FILES
 -----------------------------
