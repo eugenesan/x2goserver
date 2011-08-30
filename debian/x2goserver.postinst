@@ -116,6 +116,11 @@ case "$1" in
 			# and we need to respect the administrator's choices
 		fi
 
+		# make sure x2goprint spool dir permissions are set correctly
+		chown -R x2goprint:x2goprint /var/spool/x2goprint
+		# egid x2goprint needs write access to the spool dir
+		chmod 0770 /var/spool/x2goprint
+
 		### setgid section for x2goprint (X2go printing)
 
 		# the x2goprint command can only be run by users that are in group x2goprint
