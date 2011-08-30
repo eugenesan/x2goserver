@@ -7,4 +7,3 @@ usr/lib/x2go
 usr/share/x2go
 usr/share/x2go/versions
 var/lib/x2go
-var/spool/x2goprint

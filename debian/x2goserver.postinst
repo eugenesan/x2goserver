@@ -100,7 +100,7 @@ case "$1" in
 		fi
 		if ! getent passwd x2goprint >/dev/null; then
 			echo "Creating x2goprint user." >&2
-			adduser --system --no-create-home \
+			adduser --system \
 			        --disabled-password --disabled-login \
 			        --shell /bin/false --group --home /var/spool/x2goprint x2goprint
 		else
