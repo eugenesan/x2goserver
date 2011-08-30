@@ -25,6 +25,10 @@ case "$1" in
 		touch     /etc/x2go/x2gosql/passwords/pgadmin
 		chmod 600 /etc/x2go/x2gosql/passwords/pgadmin
 
+		###
+		### X2go session DB management
+		###
+
 		# setup x2gouser and group
 		if ! getent group x2gouser >/dev/null; then
 			echo "Creating x2gouser group." >&2
@@ -46,7 +50,7 @@ case "$1" in
 			if [ "`ls -1d ~x2gouser`" != "/var/lib/x2go" ]; then
 				usermod --move-home --home /var/lib/x2go x2gouser
 			fi
-			# leave user shell alone. we have never set this wrongly
+			# we leave user shell alone. we have never set this wrongly
 			# and we need to respect the administrator's choices
 		fi
 
@@ -60,6 +64,8 @@ case "$1" in
 			# ... and to the db file itself, of course
 			chmod 0660 /var/lib/x2go/x2go_sessions
 		fi
+
+		### setgid section for x2gouser (SQLite DB access)
 
 		# we may be upgrading versions of x2goserver that had
 		# /usr/lib/x2go/x2gosqlitewrapper.pl set to setuid x2gouser.
@@ -80,7 +86,44 @@ case "$1" in
 		if ! dpkg-statoverride --list /usr/lib/x2go/x2gosqlitewrapper >/dev/null; then
 		    dpkg-statoverride --add --update root x2gouser 2755 /usr/lib/x2go/x2gosqlitewrapper
 		fi
+
+		###
+		### X2go printing
+		###
+
+		# setup x2goprint user and x2goprint group
+		if ! getent group x2goprint >/dev/null; then
+			echo "Creating x2goprint group." >&2
+			addgroup --system x2goprint
+		else
+			echo "Group x2goprint already exists." >&2
+		fi
+		if ! getent passwd x2goprint >/dev/null; then
+			echo "Creating x2goprint user." >&2
+			adduser --system --no-create-home \
+			        --disabled-password --disabled-login \
+			        --shell /bin/false --group --home /var/spool/x2goprint x2goprint
+		else
+			echo "User x2goprint already exists." >&2
+			# make sure all settings are appropriate
+			if [ "`id -gn x2gprint`" != "x2goprint" ]; then
+				usermod --gid x2goprint# x2goprint
+			fi
+			if [ "`ls -1d ~x2goprint`" != "/var/spool/x2goprint" ]; then
+				usermod --move-home --home /var/spool/x2goprint x2goprint
+			fi
+			# we leave user shell alone. we have never set this wrongly
+			# and we need to respect the administrator's choices
+		fi
+
+		### setgid section for x2goprint (X2go printing)
+
+		# the x2goprint command can only be run by users that are in group x2goprint
+		if ! dpkg-statoverride --list /usr/bin/x2goprint >/dev/null; then
+		    dpkg-statoverride --add --update root x2goprint 2755 /usr/bin/x2goprint
+		fi
 		;;
+
 
 	abort-upgrade|abort-remove|abort-deconfigure)
 		;;
