@@ -35,6 +35,7 @@ x2goserver (3.0.99.5-0~x2go3) UNRELEASED; urgency=low
   * Create x2goprint user/group on package installation, add same info to INSTALL howto.
   * Change permissions on x2goprint, using 2755:root:x2goprint (setgid).
   * Change X2go printing concept: use setgit and a sgid wrapper instead of sudo.
+  * Makefile update for x2goprint setgid wrapper.
 
   [Martin Oehler]
   * Removes old debug code fragment, fixes x2golistsessions parsing.
