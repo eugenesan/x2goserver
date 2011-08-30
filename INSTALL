@@ -1,14 +1,22 @@
 TARBALL INSTALLATION OF x2goserver
 ==================================
 
-1.) USER + GROUP for X2go
--------------------------
+1.) USERS + GROUPS for X2go
+---------------------------
 Set up x2gouser account and its group if they do not exist
 already:
 
  $ groupadd --system x2gouser
  $ useradd --system --no-create-home \
            --shell /bin/false --home /var/lib/x2go x2gouser
+
+Set up x2goprint account and its group if they do not exist
+already:
+
+ $ groupadd --system x2goprint
+ $ useradd --system --no-create-home \
+           --shell /bin/false --home /var/spool/x2goprint x2goprint
+
 
 2.) INSTALL x2goserver FILES
 -----------------------------
@@ -19,15 +27,18 @@ Extract tarball and run
 in base folder of the extracted tarball. 
 
 
-3.) SUID GROUP
+3.) SGID GROUP
 --------------
-Configure ownership, permissions and setuid user bit of x2gosqlitewrapper:
+Configure ownership, permissions and setgid group bits of x2gosqlitewrapper and x2goprint:
 
-  NOTE: The described action have already been performed by the Makefile 
+  NOTE: The described actions have already been performed by the Makefile 
   run, leaving this here for documentation only.
 
  $ chown root:x2gouser /usr/lib/x2go/x2gosqlitewrapper
  $ chmod 2755 /usr/lib/x2go/x2gosqlitewrapper
+
+ $ chown root:x2goprint /usr/bin/x2goprint
+ $ chmod 2755 /usr/bin/x2goprint
 
 
 4.) INIT SCRIPT
