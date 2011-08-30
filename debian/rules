@@ -11,4 +11,3 @@ override_dh_auto_clean:
 	rm -Rfv x2goserver/.build_html
 	rm -Rfv x2goserver-extensions/.build_html
 	dh_auto_clean
-
