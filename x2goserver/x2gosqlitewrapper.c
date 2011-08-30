@@ -58,7 +58,7 @@ int main( int argc, char *argv[] ) {
 			exit(EXIT_FAILURE);
 		}
 		if(rvrl >= path_max){
-			fprintf(stderr, "Could not resolve the path of this file using \"/proc/self/exe\". The path is to long (> %i)", path_max);
+			fprintf(stderr, "Could not resolve the path of this file using \"/proc/self/exe\". The path is too long (> %i)", path_max);
 			exit(EXIT_FAILURE);
 		}
 
