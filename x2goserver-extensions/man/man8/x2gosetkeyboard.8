@@ -1,0 +1,29 @@
+'\" -*- coding: utf-8 -*-
+.if \n(.g .ds T< \\FC
+.if \n(.g .ds T> \\F[\n[.fam]]
+.de URL
+\\$2 \(la\\$1\(ra\\$3
+..
+.if \n(.g .mso www.tmac
+.TH x2gosetkeyboard 8 "31 May 2011" "Version 3.0.99.x" "X2go Server Tool (Extension)"
+.SH NAME
+x2gosetkeyboard \- Allow server-side Keyboard Setting Updates issued by X2go Client
+.SH SYNOPSIS
+'nh
+.fi
+.ad l
+x2gosetkeyboard
+
+.SH DESCRIPTION
+\fBx2gosetkeyboard\fR looks for a 'keyboard' file in the X2go session directory and introspects
+the X2go session keyboard settings requested from the client side.
+.PP
+If no 'keyboard' file is present in the X2go session directory, nothing happens (i.e. no error
+will be raised).
+.PP
+.SH FILES
+${HOME}/.x2go/C-${X2GO_SESSION}/keyboard
+.PP
+.SH AUTHOR
+This manual has been written by Mike Gabriel <mike.gabriel@das-netzwerkteam.de> for the X2go project
+(http://www.x2go.org).
