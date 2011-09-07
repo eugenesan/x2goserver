@@ -279,7 +279,6 @@ elsif($cmd eq  "listsessions")
 
 elsif($cmd eq  "listsessions_all")
 {
-        my $user=shift and $realuser = $user;
 	my @strings;
 	my $sth=$dbh->prepare("select agent_pid, session_id, display, server, status,
 	                       substr(strftime('%d.%m.%Y*%H:%M:%S',init_time),0,6)||substr(strftime('%d.%m.%Y*%H:%M:%S',init_time),9,11),
