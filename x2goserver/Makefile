@@ -37,7 +37,6 @@ build-arch: build_setgidwrappers
 
 build_setgidwrappers:
 	gcc -o x2gosqlitewrapper x2gosqlitewrapper.c
-	gcc -o x2goprint x2goprint.c
 
 build-indep: build_man2html
 
@@ -50,7 +49,6 @@ clean: clean_arch clean_man2html
 
 clean_arch:
 	rm -f x2gosqlitewrapper
-	rm -f x2goprint
 
 clean_man2html:
 	rm -Rf `dirname $(MAN2HTML_DEST)`
@@ -64,7 +62,6 @@ install_scripts:
 	$(INSTALL_PROGRAM) bin/*                $(DESTDIR)$(BINDIR)/
 	$(INSTALL_PROGRAM) sbin/*               $(DESTDIR)$(SBINDIR)/
 	$(INSTALL_PROGRAM) x2gosqlitewrapper       $(DESTDIR)$(LIBDIR)/
-	$(INSTALL_PROGRAM) x2goprint               $(DESTDIR)$(BINDIR)/
 	$(INSTALL_PROGRAM) lib/*                   $(DESTDIR)$(LIBDIR)/
 	chmod a-x $(DESTDIR)$(LIBDIR)/*.pm
 	chown root:x2gouser $(DESTDIR)$(LIBDIR)/x2gosqlitewrapper
@@ -100,7 +97,6 @@ uninstall_scripts:
 	for file in $(SBIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(SBINDIR)/$$file; done
 	for file in $(LIB_FILES); do $(RM_FILE) $(DESTDIR)$(LIBDIR)/$$file; done
 	$(RM_FILE) $(DESTDIR)$(LIBDIR)/x2gosqlitewrapper
-	$(RM_FILE) $(DESTDIR)$(BINDIR)/x2goprint
 	$(RM_DIR) $(DESTDIR)$(LIBDIR) || true
 
 uninstall_config:
