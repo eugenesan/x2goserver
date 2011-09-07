@@ -121,13 +121,13 @@ case "$1" in
 		# egid x2goprint needs write access to the spool dir
 		chmod 0770 /var/spool/x2goprint
 
-		### setgid section for x2goprint (X2go printing)
-
-		# the x2goprint command can only be run by users that are in group x2goprint
-		if ! dpkg-statoverride --list /usr/bin/x2goprint >/dev/null; then
-		    dpkg-statoverride --add --update root x2goprint 2755 /usr/bin/x2goprint
+		# we may be upgrading versions of x2goserver that had
+		# /usr/bin/x2goprint was set to setuid x2goprint.
+		if dpkg-statoverride --list /usr/bin/x2goprint >/dev/null; then
+			dpkg-statoverride --remove /usr/bin/x2goprint
+			chown root:root /usr/bin/x2goprint
+			chmod 0755 /usr/bin/x2goprint
 		fi
-		;;
 
 
 	abort-upgrade|abort-remove|abort-deconfigure)

@@ -28,9 +28,6 @@ case "$1" in
 		getent group x2gouser >/dev/null && delgroup x2gouser
 		getent group x2gousers >/dev/null && delgroup x2gousers
 
-		if dpkg-statoverride --list /usr/bin/x2goprint >/dev/null; then
-			dpkg-statoverride --remove /usr/bin/x2goprint
-		fi
 		getent passwd x2goprint >/dev/null && deluser x2goprint
 		getent group x2goprint >/dev/null && delgroup x2goprint
 		;;

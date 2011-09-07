@@ -279,6 +279,7 @@ elsif($cmd eq  "listsessions")
 
 elsif($cmd eq  "listsessions_all")
 {
+        my $user=shift and $realuser = $user;
 	my @strings;
 	my $sth=$dbh->prepare("select agent_pid, session_id, display, server, status,
 	                       substr(strftime('%d.%m.%Y*%H:%M:%S',init_time),0,6)||substr(strftime('%d.%m.%Y*%H:%M:%S',init_time),9,11),
@@ -287,6 +288,7 @@ elsif($cmd eq  "listsessions_all")
 	                       uname,
 	                       strftime('%s','now','localtime') - strftime('%s',init_time),fs_port from  sessions 
 	                       where status !='F' and uname=? and  (  session_id not like '%XSHAD%')  order by status desc");
+	
 	$sth->execute($realuser)or die;
 	fetchrow_printall_array($sth);
 }

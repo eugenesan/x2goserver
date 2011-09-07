@@ -30,7 +30,7 @@ use x2godbwrapper;
 
 if (scalar(@ARGV) ==1)
 {
-	system ("su @ARGV[0] -c \"x2golistsessions --all-servers\" ");
+	db_listsessions_all @ARGV[0];
 }
 elsif (scalar(@ARGV) != 4)
 {
