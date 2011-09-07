@@ -1,6 +1,6 @@
 x2goserver (3.0.99.5-0~x2go3) UNRELEASED; urgency=low
 
-  [Mike Gabriel]
+  [ Mike Gabriel ]
   * Rename x2goumount_session calls to x2goumount-session calls in x2goserver
     internal scripts.
   * React to bug #627990, prefer man2html-base over man2html.
@@ -34,11 +34,9 @@ x2goserver (3.0.99.5-0~x2go3) UNRELEASED; urgency=low
   * Silence x2golistsessions on missing session.log files.
   * Create x2goprint user/group on package installation, add same info to 
     INSTALL howto.
-  * Change permissions on x2goprint, using 2755:root:x2goprint (setgid).
-  * Change X2go printing concept: use setgit and a sgid wrapper instead of sudo.
-  * Makefile update for x2goprint setgid wrapper.
+  * Add sanity checks to x2goprint, script can only be run as root.
 
-  [Martin Oehler]
+  [ Martin Oehler ]
   * Removes old debug code fragment, fixes x2golistsessions parsing.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Sun, 05 Jun 2011 20:44:32 +0200
