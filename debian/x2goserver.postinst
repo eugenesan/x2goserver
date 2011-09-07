@@ -128,7 +128,7 @@ case "$1" in
 			chown root:root /usr/bin/x2goprint
 			chmod 0755 /usr/bin/x2goprint
 		fi
-
+		;;
 
 	abort-upgrade|abort-remove|abort-deconfigure)
 		;;
