@@ -35,6 +35,7 @@ x2goserver (3.0.99.5-0~x2go3) UNRELEASED; urgency=low
   * Create x2goprint user/group on package installation, add same info to 
     INSTALL howto.
   * Add sanity checks to x2goprint, script can only be run as root.
+  * Fix x2goprint, add syslogging, add inline comments.
 
   [ Martin Oehler ]
   * Removes old debug code fragment, fixes x2golistsessions parsing.
