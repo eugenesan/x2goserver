@@ -22,8 +22,27 @@
 
 use strict;
 use Config::Simple;
+use Sys::Syslog qw( :standard :macros );
 
-use lib `echo -n \$(x2gobasepath)/lib/x2go`;
-use x2gologlevel;
+use base 'Exporter';
+our @EXPORT = ( 'x2gologlevel' );
 
-print x2gologlevel();
+my $Config = new Config::Simple(syntax=>'ini');
+$Config->read('/etc/x2go/x2goserver.conf' );
+
+my $strloglevel = $Config->param("log.loglevel");
+
+sub x2gologlevel {
+	my $loglevel = LOG_NOTICE;
+	if    ( $strloglevel eq "emerg" )  { $loglevel = LOG_EMERG; }
+	elsif ( $strloglevel eq "alert" )  { $loglevel = LOG_ALERT; }
+	elsif ( $strloglevel eq "crit" )   { $loglevel = LOG_CRIT; }
+	elsif ( $strloglevel eq "err" )    { $loglevel = LOG_ERR; }
+	elsif ( $strloglevel eq "warn" )   { $loglevel = LOG_WARNING; }
+	elsif ( $strloglevel eq "notice" ) { $loglevel = LOG_NOTICE; }
+	elsif ( $strloglevel eq "info" )   { $loglevel = LOG_INFO; }
+	elsif ( $strloglevel eq "debug" )  { $loglevel = LOG_DEBUG; }
+	return $loglevel;
+}
+
+1;

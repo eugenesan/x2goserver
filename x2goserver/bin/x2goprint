@@ -23,14 +23,15 @@
 use File::Basename;
 use File::Copy;
 use File::Path;
-use Sys::Syslog qw( :DEFAULT setlogsock);
+use Sys::Syslog qw( :DEFAULT );
 use strict;
 
 use lib `echo -n \$(x2gobasepath)/lib/x2go`;
 use x2godbwrapper;
+use x2gologlevel;
 
-setlogsock('unix');
 openlog($0,'cons,pid','user');
+setlogmask( LOG_UPTO(x2gologlevel()) );
 
 sub check_root
 {
@@ -81,7 +82,7 @@ if( -e "$printdir/$titleFile")
 	close (TITLE);
 	unlink("$printdir/$titleFile");
 }
-syslog('info', "x2goprint is processing $printdir/$pdfFile with print job title ,,$title\''");
+syslog('notice', "x2goprint is processing $printdir/$pdfFile with print job title ,,$title\''");
 
 # temp location for placing incoming spool files, so that
 # they can can be picked by the session user and further processed
