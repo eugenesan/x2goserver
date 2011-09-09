@@ -272,19 +272,19 @@ for (my $i=0;$i<@dirs;$i++)
 				if ($type eq "dir")
 				{
 					$fname="$fname(sshfs-disk)";
-					syslog('debug', "@dirs[$i] mounted, mount point type is: client-side folder on harddrive");
+					syslog('debug', "creating desktop icon for @dirs[$i], media type is: client-side folder on harddrive");
 				}
 				else
 				{
 					if ($fname =~ m/CDROM/)
 					{
 						$fname="$fname(sshfs-cdrom)";
-						syslog('debug', "@dirs[$i] mounted, mount point type is: optical disc");
+						syslog('debug', "creating desktop icon for @dirs[$i], media type is: optical disc");
 					}
 					else
 					{
 						$fname="$fname(sshfs-removable)";
-						syslog('debug', "@dirs[$i] mounted, mount point type is: removable device");
+						syslog('debug', "creating desktop icon for @dirs[$i], media type is: removable device");
 					}
 					$fname=~s/_ramdrive_mnt_//;
 				}
