@@ -48,6 +48,7 @@ x2goserver (3.0.99.5-0~x2go3) UNRELEASED; urgency=low
     package. This has to be done by the scripts that use x2godbwrapper.pm.
   * Add info loglevel messages for x2goserver-extensions scripts.
   * Add debug messages to x2gomountdirs script.
+  * Use usermapping for SSHFS mount points.
 
   [ Martin Oehler ]
   * Removes old debug code fragment, fixes x2golistsessions parsing.
