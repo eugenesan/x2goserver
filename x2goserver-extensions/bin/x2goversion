@@ -20,6 +20,10 @@
 # Copyright (C) 2011  Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
 # Copyright (C) 2011  Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
 
+X2GO_LIB_PATH=`echo -n \$(x2gobasepath)/lib/x2go`
+
+$X2GO_LIB_PATH/x2gosyslog "$0" "info" "$(basename $0) called with options: $@"
+
 X2GO_VERSIONS_BASEPATH="$(dirname $0)/../share/x2go/versions"
 
 get_version() {
