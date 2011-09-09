@@ -35,6 +35,9 @@ X2GO_AGENT_PID=`echo "$X2GO_AGENT_PID"| awk {'print $1'}`
 
 $X2GO_LIB_PATH/x2gochangestatus 'F' $SESSION_NAME  > /dev/null
 
-kill -TERM $X2GO_AGENT_PID
+kill -TERM $X2GO_AGENT_PID && \
+	$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "client $X2GO_CLIENT successfully terminated session with ID $SESSION_NAME" || \
+	$X2GO_LIB_PATH/x2gosyslog "$0" "err" "ERROR: client $X2GO_CLIENT failed to terminate session with ID $SESSION_NAME"
+
 export HOSTNAME
 x2goumount-session $SESSION_NAME
