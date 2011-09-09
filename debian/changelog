@@ -41,8 +41,8 @@ x2goserver (3.0.99.5-0~x2go3) UNRELEASED; urgency=low
   * Change x2gologlevel script into a Perl module (and a script that calls it).
     Using x2gologlevel function in x2goprint to set loglevel mask.
   * Initialize Syslog module for all Perl scripts in x2goserver package.
-  * Add debugging support for almost all DB functions in x2godbwrapper.pm, fix for
-    Syslog module initialization in all Perl scripts.
+  * Add debugging support for almost all DB functions in x2godbwrapper.pm, fix
+    for Syslog module initialization in all Perl scripts.
 
   [ Martin Oehler ]
   * Removes old debug code fragment, fixes x2golistsessions parsing.
