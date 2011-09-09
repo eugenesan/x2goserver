@@ -40,3 +40,6 @@ my $fs_port=shift or die;
 my $sid=shift or die;
 
 db_createsession($cookie,$pid,$client,$gr_port, $snd_port, $fs_port, $sid);
+
+# closing syslog 
+closelog;

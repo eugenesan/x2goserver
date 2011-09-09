@@ -105,3 +105,6 @@ if ($maxlimit <= $scount)
 	exit 0;
 }
 print "$maxlimit\n";
+
+# closing syslog 
+closelog;

@@ -53,3 +53,6 @@ for ( $i=0;$i<@array;$i++)
 	}
 	print "@array[$i]\n";
 }
+
+# closing syslog 
+closelog;

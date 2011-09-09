@@ -42,3 +42,6 @@ for (my $i=0;$i<@outp;$i++)
 	my $path=(split("\\|",@outp[$i]))[1];
 	print `su $uname -c "lsof 2>/dev/null | grep $path"`;
 }
+
+# closing syslog 
+closelog;

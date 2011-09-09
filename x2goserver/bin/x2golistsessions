@@ -88,3 +88,6 @@ for (my $i=0;$i<@outp;$i++)
 		print "@outp[$i]\n";
 	}
 }
+
+# closing syslog 
+closelog;

@@ -38,3 +38,5 @@ my $port=shift or die;
 db_insertport($server,$sid,$port);
 print "inserted";
 
+# closing syslog 
+closelog;

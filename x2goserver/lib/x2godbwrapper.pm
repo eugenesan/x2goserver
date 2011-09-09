@@ -587,3 +587,6 @@ sub db_listsessions_all
 		return split("\n",`$x2go_lib_path/x2gosqlitewrapper listsessions_all`);
 	}
 }
+
+# closing syslog 
+closelog;

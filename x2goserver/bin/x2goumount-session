@@ -137,3 +137,5 @@ break:
 cont:
 }
 
+# closing syslog 
+closelog;

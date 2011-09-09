@@ -38,3 +38,6 @@ my $capt=shift;
 my @words=split(" ",$capt);
 
 system("x2gosuspend-session @words[2] > /dev/null");
+
+# closing syslog 
+closelog;

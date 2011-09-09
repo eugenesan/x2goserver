@@ -35,3 +35,6 @@ my $client=shift or die;
 my $sid=shift or die;
 
 db_resume($client, $sid);
+
+# closing syslog 
+closelog;

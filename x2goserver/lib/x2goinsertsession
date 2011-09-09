@@ -37,3 +37,6 @@ my $sid=shift or die;
 
 db_insertsession($display, $server, $sid);
 print "inserted";
+
+# closing syslog 
+closelog;

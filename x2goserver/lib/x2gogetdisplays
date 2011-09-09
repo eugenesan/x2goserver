@@ -34,3 +34,6 @@ setlogmask( LOG_UPTO(x2gologlevel()) );
 my $host=shift or die;
 my $displays = join("\n", db_getdisplays($host));
 print $displays;
+
+# closing syslog 
+closelog;

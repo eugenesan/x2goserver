@@ -300,3 +300,6 @@ for (my $i=0;$i<@dirs;$i++)
 
 unlink($key);
 unlink("$key.ident");
+
+# closing syslog 
+closelog;

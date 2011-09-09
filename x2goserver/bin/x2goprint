@@ -137,3 +137,6 @@ if ( $mounts=~m/$spooldir/)
 
 	unlink("$printdir/$pdfFile");
 }
+
+# closing syslog 
+closelog;

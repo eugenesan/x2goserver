@@ -32,3 +32,6 @@ setlogmask( LOG_UPTO(x2gologlevel()) );
 
 my $servers = join("\n", db_getservers);
 print $servers;
+
+# closing syslog 
+closelog;

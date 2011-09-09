@@ -35,3 +35,6 @@ my $host=shift or die;
 
 my $ports = join("\n", db_getports($host));
 print $ports;
+
+# closing syslog 
+closelog;
