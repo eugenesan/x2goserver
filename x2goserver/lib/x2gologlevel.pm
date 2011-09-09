@@ -20,6 +20,8 @@
 # Copyright (C) 2007-2011  Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
 # Copyright (C) 2007-2011  Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
 
+package x2gologlevel;
+
 use strict;
 use Config::Simple;
 use Sys::Syslog qw( :standard :macros );
