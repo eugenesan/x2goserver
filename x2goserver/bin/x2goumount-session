@@ -20,17 +20,20 @@
 # Copyright (C) 2007-2011  Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
 # Copyright (C) 2007-2011  Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
 
-use Sys::Hostname;
 use strict;
+use Sys::Hostname;
+use Sys::Syslog qw( :DEFAULT );
 
 use lib `echo -n \$(x2gobasepath)/lib/x2go`;
 use x2godbwrapper; 
+use x2gologlevel;
+
+openlog($0,'cons,pid','user');
+setlogmask( LOG_UPTO(x2gologlevel()) );
 
 
 my $session=shift;
 my $only_path=shift;
-
-
 my $uname=$ENV{'USER'};
 my $serv=hostname;
 

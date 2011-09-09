@@ -21,9 +21,16 @@
 # Copyright (C) 2007-2011  Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
 
 use Sys::Hostname;
+use Sys::Syslog qw( :DEFAULT );
 use strict;
 
 my $x2go_lib_path=`echo -n \$(x2gobasepath)/lib/x2go`;
+use lib $x2go_lib_path;
+use x2gologlevel;
+
+openlog($0,'cons,pid','user');
+setlogmask( LOG_UPTO(x2gologlevel()) );
+
 
 sub check_pid
 {

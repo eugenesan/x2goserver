@@ -40,6 +40,7 @@ x2goserver (3.0.99.5-0~x2go3) UNRELEASED; urgency=low
     with only parameter ,,loglevel''.
   * Change x2gologlevel script into a Perl module (and a script that calls it).
     Using x2gologlevel function in x2goprint to set loglevel mask.
+  * Initialize Syslog module for all Perl scripts in x2goserver package.
 
   [ Martin Oehler ]
   * Removes old debug code fragment, fixes x2golistsessions parsing.

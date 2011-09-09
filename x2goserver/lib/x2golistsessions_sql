@@ -21,9 +21,15 @@
 # Copyright (C) 2007-2011  Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
 
 use strict;
+use Sys::Syslog qw( :DEFAULT );
 
 use lib `echo -n \$(x2gobasepath)/lib/x2go`;
 use x2godbwrapper; 
+use x2gologlevel;
+
+openlog($0,'cons,pid','user');
+setlogmask( LOG_UPTO(x2gologlevel()) );
+
 
 my $serv=shift;
 my @array;

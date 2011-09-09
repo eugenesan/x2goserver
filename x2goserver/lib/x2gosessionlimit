@@ -22,6 +22,14 @@
 
 use strict;
 use Config::Simple;
+use Sys::Syslog qw( :DEFAULT );
+
+use lib `echo -n \$(x2gobasepath)/lib/x2go`;
+use x2gologlevel;
+
+openlog($0,'cons,pid','user');
+setlogmask( LOG_UPTO(x2gologlevel()) );
+
 
 my $maxlimit=0;
 my $Config = new Config::Simple(syntax=>'ini');
