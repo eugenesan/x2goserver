@@ -38,6 +38,7 @@ my $session=shift;
 my $user=shift;
 my $key=shift;
 my @dl;
+my $msg;
 my $i=0;
 @dl[$i]=shift;
 while(@dl[$i])
@@ -199,12 +200,14 @@ for (my $i=0;$i<@dirs;$i++)
 		@dirs[$i]=~s/__PRINT_SPOOL_//;
 		$printspool=1;
 		$mntpath=$spooldir;
+		syslog('debug', "mounting $spooldir, mount point type is print spool directory");
 	}
 	elsif(@dirs[$i]=~m/__MIMEBOX_SPOOL_/)
 	{
 		@dirs[$i]=~s/__MIMEBOX_SPOOL_//;
 		$mimeboxspool=1;
 		$mntpath=$mimeboxdir;
+		syslog('debug', "mounting $mimeboxdir, mount point type is MIME box directory");
 	}
 	else
 	{
@@ -266,16 +269,19 @@ for (my $i=0;$i<@dirs;$i++)
 				if ($type eq "dir")
 				{
 					$fname="$fname(sshfs-disk)";
+					syslog('debug', "@dirs[$i] mounted, mount point type is: client-side folder on harddrive");
 				}
 				else
 				{
 					if ($fname =~ m/CDROM/)
 					{
 						$fname="$fname(sshfs-cdrom)";
+						syslog('debug', "@dirs[$i] mounted, mount point type is: optical disc");
 					}
 					else
 					{
 						$fname="$fname(sshfs-removable)";
+						syslog('debug', "@dirs[$i] mounted, mount point type is: removable device");
 					}
 					$fname=~s/_ramdrive_mnt_//;
 				}
@@ -287,14 +293,18 @@ for (my $i=0;$i<@dirs;$i++)
 		}
 		else
 		{
-			print "mount @dirs[$i] failed\n";
+			$msg = "mounting of @dirs[$i] failed";
+			print "$msg\n";
+			syslog('warn', "WARNING: $msg");
 			db_deletemount( $session, $mntpath);
 			rmdir($mntpath);
 		}
 	}
 	else
 	{
-		print "insertion failed(already mounted?), not mounting\n";
+		$msg = "insertion of @dirs[$i] failed (already mounted?), not mounting";
+		syslog('warn', "WARNING: $msg");
+		print "$msg\n";
 	}
 }
 
