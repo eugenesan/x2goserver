@@ -25,7 +25,7 @@ use Sys::Syslog qw( :DEFAULT );
 use strict;
 
 my $x2go_lib_path=`echo -n \$(x2gobasepath)/lib/x2go`;
-use lib $x2go_lib_path;
+use lib `echo -n \$(x2gobasepath)/lib/x2go`;
 use x2gologlevel;
 
 openlog($0,'cons,pid','user');
