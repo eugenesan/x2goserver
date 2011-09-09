@@ -30,9 +30,6 @@ my $x2go_lib_path=`echo -n \$(x2gobasepath)/lib/x2go`;
 use lib `echo -n \$(x2gobasepath)/lib/x2go`;
 use x2gologlevel;
 
-openlog($0,'cons,pid','user');
-setlogmask( LOG_UPTO(x2gologlevel()) );
-
 
 my ($uname, $pass, $uid, $pgid, $quota, $comment, $gcos, $homedir, $shell, $expire) = getpwuid(getuid());
 
@@ -587,6 +584,3 @@ sub db_listsessions_all
 		return split("\n",`$x2go_lib_path/x2gosqlitewrapper listsessions_all`);
 	}
 }
-
-# closing syslog 
-closelog;

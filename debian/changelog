@@ -44,6 +44,8 @@ x2goserver (3.0.99.5-0~x2go3) UNRELEASED; urgency=low
   * Add debugging support for almost all DB functions in x2godbwrapper.pm, fix
     for Syslog module initialization in all Perl scripts.
   * Add info loglevel messages for all scripts in bin dir.
+  * Fix for x2godbwrapper.pm: we can't open/close the syslog socket in a
+    package. This has to be done by the scripts that use x2godbwrapper.pm.
 
   [ Martin Oehler ]
   * Removes old debug code fragment, fixes x2golistsessions parsing.
