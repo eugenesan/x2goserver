@@ -42,7 +42,7 @@ sub check_root
 	my $realuser=$uname;
 	if ($realuser ne "root")
 	{
-		syslog('err', "x2goprint was called by user $realuser directly, x2goprint exits now!");
+		syslog('err', "ERROR: x2goprint was called by user $realuser directly, x2goprint exits now!");
 		die "$realuser, you cannot use x2goprint as non-root user...";
 	}
 }
@@ -57,7 +57,7 @@ sub check_usage
 	}
 	elsif (scalar(@ARGV) != 4)
 	{
-		syslog('err', "x2goprint was called with a wrong number of cmd line args, x2goprint exits now!");
+		syslog('err', "ERROR: x2goprint was called with a wrong number of cmd line args, x2goprint exits now!");
 		print STDERR "ERROR: Usage:\nx2goprint user session file titleFile\nx2goprint user\n";
 		exit 1;
 	}
@@ -112,7 +112,7 @@ if ( $mounts=~m/$spooldir/)
 	syslog('info', "client-side spool dir is mounted, transferring printable file $pdfFile to X2go client system");
 
 	if (not move("$printdir/$pdfFile", "$spooltmp")) {
-		syslog('err', "x2goprint failed to process print spool job for file $pdfFile");
+		syslog('err', "ERROR: x2goprint failed to process print spool job for file $pdfFile");
 		die "$0: Can't move $printdir/$pdfFile to $spooltmp/";
 	}
 	chown $uid, $gid, "$spooltmp/$pdfFile";
