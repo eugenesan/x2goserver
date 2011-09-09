@@ -32,6 +32,8 @@ openlog($0,'cons,pid','user');
 setlogmask( LOG_UPTO(x2gologlevel()) );
 
 
+syslog('info', "x2goumount-session has been called with options: @ARGV");
+
 my $session=shift;
 my $only_path=shift;
 my $uname=$ENV{'USER'};

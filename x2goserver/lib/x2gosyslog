@@ -21,70 +21,18 @@
 # Copyright (C) 2007-2011  Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
 
 use strict;
-use Sys::Hostname;
 use Sys::Syslog qw( :standard :macros );
 
 use lib `echo -n \$(x2gobasepath)/lib/x2go`;
-use x2godbwrapper; 
 use x2gologlevel;
 
-openlog($0,'cons,pid','user');
 setlogmask( LOG_UPTO(x2gologlevel()) );
 
-if ( @ARGV ) {
-	syslog('info', "x2golistsessions has been called with options: @ARGV");
-} else {
-	syslog('info', "x2golistsessions has been called with no option");
-}
+my $component = shift;
+my $loglevel = shift;
+my $msg = "@ARGV";
 
-sub check_stat
-{
-	my $sess=shift;
-	my $log="$ENV{'HOME'}/.x2go/C-$sess/session.log";
-	my $text=`tail -1 $log 2>/dev/null`;
-	if ($text =~ m/Session suspended/)
-	{
-		return 0;
-	}
-	return 1;
-}
+openlog($component,'cons','user');
+syslog($loglevel, $msg);
+closelog;
 
-my $serv=shift;
-if( ! $serv)
-{
-	$serv=hostname;
-}
-
-my @outp;
-if($serv eq "--all-servers")
-{
-	@outp=db_listsessions_all();
-}
-else
-{
-	@outp=db_listsessions($serv);
-}
-
-for (my $i=0;$i<@outp;$i++)
-{
-	@outp[$i] =~ s/ //g;
-	@outp[$i] =~ s/\*/ /g;
-	my @sinfo=split('\\|',"@outp[$i]");
-	if (@sinfo[4]eq 'F')
-	{
-		print "@outp[$i]\n";
-	}
-	else
-	{ 
-		if (@sinfo[4]eq 'R')
-		{
-			if(!check_stat(@sinfo[1]))
-			{
-				db_changestatus( 'S', @sinfo[1] );
-				@outp[$i] =~ s/\|R\|/\|S\|/;
-				system( "x2goumount-session @sinfo[1]");
-			}
-		}
-		print "@outp[$i]\n";
-	}
-}

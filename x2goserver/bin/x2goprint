@@ -34,6 +34,8 @@ openlog($0,'cons,pid','user');
 setlogmask( LOG_UPTO(x2gologlevel()) );
 
 
+syslog('info', "x2goprint has been called with options: @ARGV");
+
 sub check_root
 {
 	my ($uname, $pass, $uid, $pgid, $quota, $comment, $gcos, $homedir, $shell, $expire) = getpwuid($<);

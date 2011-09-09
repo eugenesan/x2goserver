@@ -35,6 +35,8 @@ X2GO_ROOT=${HOME}/.x2go
 X2GO_RESIZE=0
 X2GO_FULLSCREEN=0
 
+$X2GO_LIB_PATH/x2gosyslog "$0" "info" "$(basename $0) called with options: $@"
+
 if [ "$X2GO_GEOMETRY" == "" ]
 then
 	X2GO_GEOMETRY=fullscreen
