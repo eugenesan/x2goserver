@@ -22,7 +22,7 @@
 
 use strict;
 use Sys::Hostname;
-use Sys::Syslog qw( :DEFAULT );
+use Sys::Syslog qw( :standard :macros );
 
 use lib `echo -n \$(x2gobasepath)/lib/x2go`;
 use x2gologlevel;
@@ -74,6 +74,7 @@ for (my $i=0;$i<@outp;$i++)
 				@outp[$i] =~ s/\|R\|/\|S\|/;
 			}
 		}
+		syslog('debug', "x2golistsessions_root has been called...");
 		print "@outp[$i]\n";
 	}
 }

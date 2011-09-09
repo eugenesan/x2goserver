@@ -20,7 +20,8 @@
 # Copyright (C) 2007-2011  Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
 # Copyright (C) 2007-2011  Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
 
-use Sys::Syslog qw( :DEFAULT );
+strict;
+use Sys::Syslog qw( :standard :macros );
 
 use lib `echo -n \$(x2gobasepath)/lib/x2go`;
 use x2gologlevel;

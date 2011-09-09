@@ -21,7 +21,7 @@
 
 use strict;
 use Sys::Hostname;
-use Sys::Syslog qw( :DEFAULT );
+use Sys::Syslog qw( :standard :macros );
 
 use lib `echo -n \$(x2gobasepath)/lib/x2go`;
 use x2gologlevel;

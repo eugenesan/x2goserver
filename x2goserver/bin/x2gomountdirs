@@ -21,7 +21,7 @@
 # Copyright (C) 2007-2011  Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
 
 use strict;
-use Sys::Syslog qw( :DEFAULT );
+use Sys::Syslog qw( :standard :macros );
 
 use lib `echo -n \$(x2gobasepath)/lib/x2go`;
 use x2godbwrapper;

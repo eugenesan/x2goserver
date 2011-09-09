@@ -24,7 +24,7 @@ use strict;
 use File::Basename;
 use File::Copy;
 use File::Path;
-use Sys::Syslog qw( :DEFAULT );
+use Sys::Syslog qw( :standard :macros );
 
 use lib `echo -n \$(x2gobasepath)/lib/x2go`;
 use x2godbwrapper;

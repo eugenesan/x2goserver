@@ -23,10 +23,16 @@ package x2godbwrapper;
 use strict;
 use Config::Simple;
 use DBI;
-
 use POSIX;
+use Sys::Syslog qw( :standard :macros );
 
 my $x2go_lib_path=`echo -n \$(x2gobasepath)/lib/x2go`;
+use lib `echo -n \$(x2gobasepath)/lib/x2go`;
+use x2gologlevel;
+
+openlog($0,'cons,pid','user');
+setlogmask( LOG_UPTO(x2gologlevel()) );
+
 
 my ($uname, $pass, $uid, $pgid, $quota, $comment, $gcos, $homedir, $shell, $expire) = getpwuid(getuid());
 
@@ -165,6 +171,7 @@ sub dbsys_listsessionsroot_all
 
 sub dbsys_getmounts
 {
+	my $mounts;
 	my $sid=shift or die "argument \"session_id\" missed";
 	if ($backend eq 'postgres')
 	{
@@ -180,16 +187,20 @@ sub dbsys_getmounts
 		}
 		$sth->finish();
 		$dbh->disconnect();
-		return @strings;
+		$mounts = @strings;
 	}
 	if ($backend eq 'sqlite')
 	{
-		return split("\n",`$x2go_lib_path/x2gosqlitewrapper getmounts $sid`);
+		$mounts = split("\n",`$x2go_lib_path/x2gosqlitewrapper getmounts $sid`);
 	}
+	my $log_retval = join(" ", $mounts);
+	syslog('debug', "dbsys_getmounts called, session ID: $sid; return value: $log_retval");
+	return $mounts
 }
 
 sub db_getmounts
 {
+	my $mounts;
 	my $sid=shift or die "argument \"session_id\" missed";
 	if($backend eq 'postgres')
 	{
@@ -205,12 +216,15 @@ sub db_getmounts
 		}
 		$sth->finish();
 		$dbh->disconnect();
-		return @strings;
+		$mounts = @strings;
 	}
 	if ($backend eq 'sqlite')
 	{
-		return split("\n",`$x2go_lib_path/x2gosqlitewrapper getmounts $sid`);
+		$mounts = split("\n",`$x2go_lib_path/x2gosqlitewrapper getmounts $sid`);
 	}
+	my $log_retval = join(" ", $mounts);
+	syslog('debug', "db_getmounts called, session ID: $sid; return value: $log_retval");
+	return $mounts
 }
 
 sub db_deletemount
@@ -229,6 +243,7 @@ sub db_deletemount
 	{
 		`$x2go_lib_path/x2gosqlitewrapper deletemount $sid \"$path\"`;
 	}
+	syslog('debug', "db_deletemount called, session ID: $sid, path: $path");
 }
 
 sub db_insertmount
@@ -256,6 +271,7 @@ sub db_insertmount
 			$res_ok=1;
 		}
 	}
+	syslog('debug', "db_insertmount called, session ID: $sid, path: $path, client: $client; return value: $res_ok");
 	return $res_ok;
 }
 
@@ -280,6 +296,7 @@ sub db_insertsession
 			die "$err: $x2go_lib_path/x2gosqlitewrapper insertsession $display $server $sid";
 		}
 	}
+	syslog('debug', "db_insertsession called, session ID: $sid, server: $server, session ID: $sid");
 }
 
 sub db_createsession
@@ -309,6 +326,7 @@ sub db_createsession
 			die $err;
 		}
 	}
+	syslog('debug', "db_createsession called, session ID: $sid, cookie: $cookie, client: $client, pid: $pid, graphics port: $gr_port, sound port: $snd_port, file sharing port: $fs_port");
 }
 
 sub db_insertport
@@ -328,6 +346,7 @@ sub db_insertport
 	{
 		`$x2go_lib_path/x2gosqlitewrapper insertport $server $sid $sshport`;
 	}
+	syslog('debug', "db_insertport called, session ID: $sid, server: $server, SSH port: $sshport");
 }
 
 sub db_resume
@@ -346,6 +365,7 @@ sub db_resume
 	{
 		`$x2go_lib_path/x2gosqlitewrapper resume $client $sid`;
 	}
+	syslog('debug', "db_resume called, session ID: $sid, client: $client");
 }
 
 sub db_changestatus
@@ -364,10 +384,12 @@ sub db_changestatus
 	{
 		`$x2go_lib_path/x2gosqlitewrapper changestatus $status $sid`;
 	}
+	syslog('debug', "db_changestatus called, session ID: $sid, new status: $status");
 }
 
 sub db_getdisplays
 {
+	my $displays;
 	#ignore $server
 	my $server=shift or die "argument \"server\" missed";         
 	if ($backend eq 'postgres')
@@ -384,16 +406,20 @@ sub db_getdisplays
 		}
 		$sth->finish();
 		$dbh->disconnect();
-		return @strings;
+		$displays = @strings;
 	}
 	if ($backend eq 'sqlite')
 	{
-		return split("\n",`$x2go_lib_path/x2gosqlitewrapper getdisplays $server`);
+		$displays = split("\n",`$x2go_lib_path/x2gosqlitewrapper getdisplays $server`);
 	}
+	my $log_retval = join(" ", $displays);
+	syslog('debug', "db_getdisplays called, server: $server; return value: $log_retval");
+	return $displays;
 }
 
 sub db_getports
 {
+	my $ports;
 	#ignore $server
 	my $server=shift or die "argument \"server\" missed";         
 	if ($backend eq 'postgres')
@@ -410,16 +436,20 @@ sub db_getports
 		}
 		$sth->finish();
 		$dbh->disconnect();
-		return @strings;
+		$ports = @strings;
 	}
 	if ($backend eq 'sqlite')
 	{
-		return split("\n",`$x2go_lib_path/x2gosqlitewrapper getports $server`);
+		$ports = split("\n",`$x2go_lib_path/x2gosqlitewrapper getports $server`);
 	}
+	my $log_retval = join(" ", $ports);
+	syslog('debug', "db_getports called, server: $server; return value: $log_retval");
+	return $ports;
 }
 
 sub db_getservers
 {
+	my $servers;
 	if ($backend eq 'postgres')
 	{
 		my @strings;
@@ -434,18 +464,21 @@ sub db_getservers
 		}
 		$sth->finish();
 		$dbh->disconnect();
-		return @strings;
+		$servers = @strings;
 	}
-		if ($backend eq 'sqlite')
+	if ($backend eq 'sqlite')
 	{
-		return split("\n",`$x2go_lib_path/x2gosqlitewrapper getservers`);
+		$servers = split("\n",`$x2go_lib_path/x2gosqlitewrapper getservers`);
 	}
+	my $log_retval = join(" ", $servers);
+	syslog('debug', "db_getservers called, return value: $log_retval");
+	return $servers;
 }
 
 sub db_getagent
 {
-	my $sid=shift or die "argument \"session_id\" missed";
 	my $agent;
+	my $sid=shift or die "argument \"session_id\" missed";
 	if ($backend eq 'postgres')
 	{
 		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
@@ -465,13 +498,14 @@ sub db_getagent
 	{
 		$agent=`$x2go_lib_path/x2gosqlitewrapper getagent $sid`;
 	}
+	syslog('debug', "db_getagent called, session ID: $sid; return value: $agent");
 	return $agent;
 }
 
 sub db_getdisplay
 {
-	my $sid=shift or die "argument \"session_id\" missed";
 	my $display;
+	my $sid=shift or die "argument \"session_id\" missed";
 	if ($backend eq 'postgres')
 	{
 		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
@@ -491,6 +525,7 @@ sub db_getdisplay
 	{
 		$display=`$x2go_lib_path/x2gosqlitewrapper getdisplay $sid`;
 	}
+	syslog('debug', "db_getdisplay called, session ID: $sid; return value: $display");
 	return $display;
 }
 

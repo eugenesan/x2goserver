@@ -20,9 +20,9 @@
 # Copyright (C) 2007-2011  Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
 # Copyright (C) 2007-2011  Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
 
-use Sys::Hostname;
-use Sys::Syslog qw( :DEFAULT );
 use strict;
+use Sys::Hostname;
+use Sys::Syslog qw( :standard :macros );
 
 my $x2go_lib_path=`echo -n \$(x2gobasepath)/lib/x2go`;
 use lib `echo -n \$(x2gobasepath)/lib/x2go`;

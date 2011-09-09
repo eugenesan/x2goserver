@@ -21,7 +21,6 @@
 # Copyright (C) 2007-2011  Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
 
 use strict;
-
 use DBI;
 use POSIX;
 
