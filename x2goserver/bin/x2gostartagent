@@ -20,6 +20,8 @@
 # Copyright (C) 2007-2011  Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
 # Copyright (C) 2007-2011  Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
 
+set -e
+
 X2GO_LIB_PATH=`echo -n \$(x2gobasepath)/lib/x2go`
 
 $X2GO_LIB_PATH/x2gosyslog "$0" "info" "$(basename $0) called with options: $@"
@@ -223,6 +225,8 @@ if  [ "$X2GO_STYPE" == "S" ]; then
 else
 	LD_LIBRARY_PATH=$X2GO_LIB x2goagent $X2GODPIOPTION_ $XDMCPOPT  -$SESSION_TYPE -auth ~/.Xauthority -geometry ${X2GO_GEOMETRY} -name "X2GO-${SESSION_NAME}"  ${NX_AGENT} 2>${SESSION_DIR}/session.log &
 fi
+
+$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "successfully started X2go session with ID $SESSION_NAME"
 
 X2GO_AGENT_PID=$!
 
