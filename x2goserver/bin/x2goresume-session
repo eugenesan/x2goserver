@@ -83,4 +83,6 @@ echo "$NEWOPTIONS" >${SESSION_DIR}/options
 
 $X2GO_LIB_PATH/x2goresume  $X2GO_CLIENT $SESSION_NAME  > /dev/null
 
-kill -HUP $X2GO_AGENT_PID
+kill -HUP $X2GO_AGENT_PID && \
+	$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "client $X2GO_CLIENT successfully resumed session with ID $SESSION_NAME" || \
+	$X2GO_LIB_PATH/x2gosyslog "$0" "err" "ERROR: client $X2GO_CLIENT failed to resume session with ID $SESSION_NAME"
