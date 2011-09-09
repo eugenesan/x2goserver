@@ -437,7 +437,7 @@ sub db_getports
 	}
 	if ($backend eq 'sqlite')
 	{
-		$ports = split("\n",`$x2go_lib_path/x2gosqlitewrapper getports $server`);
+		@ports = split("\n",`$x2go_lib_path/x2gosqlitewrapper getports $server`);
 	}
 	my $log_retval = join(" ", @ports);
 	syslog('debug', "db_getports called, server: $server; return value: $log_retval");

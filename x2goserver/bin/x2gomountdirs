@@ -247,6 +247,7 @@ for (my $i=0;$i<@dirs;$i++)
 		if (system("sshfs  $code_conv -o ServerAliveInterval=300,Cipher=blowfish,IdentityFile=$key,UserKnownHostsFile=$key.ident \"$user\"\@$host:\"@dirs[$i]\" \"$mntpath\" -p $port 2>>~/mounts.log")==0)
 		{
 			print "mount @dirs[$i] ok\n";
+			syslog('notice', "successfully mounted $user\@$user:@dirs[$i] to $mntpath");
 			# check if kde4 plasmoid running
 			my $useplasmoid=0;
 			if ( -e $plasmstamp )
