@@ -168,7 +168,7 @@ sub dbsys_listsessionsroot_all
 
 sub dbsys_getmounts
 {
-	my $mounts;
+	my @mounts;
 	my $sid=shift or die "argument \"session_id\" missed";
 	if ($backend eq 'postgres')
 	{
@@ -184,20 +184,20 @@ sub dbsys_getmounts
 		}
 		$sth->finish();
 		$dbh->disconnect();
-		$mounts = @strings;
+		@mounts = @strings;
 	}
 	if ($backend eq 'sqlite')
 	{
-		$mounts = split("\n",`$x2go_lib_path/x2gosqlitewrapper getmounts $sid`);
+		@mounts = split("\n",`$x2go_lib_path/x2gosqlitewrapper getmounts $sid`);
 	}
-	my $log_retval = join(" ", $mounts);
+	my $log_retval = join(" ", @mounts);
 	syslog('debug', "dbsys_getmounts called, session ID: $sid; return value: $log_retval");
-	return $mounts
+	return @mounts;
 }
 
 sub db_getmounts
 {
-	my $mounts;
+	my @mounts;
 	my $sid=shift or die "argument \"session_id\" missed";
 	if($backend eq 'postgres')
 	{
@@ -213,15 +213,15 @@ sub db_getmounts
 		}
 		$sth->finish();
 		$dbh->disconnect();
-		$mounts = @strings;
+		@mounts = @strings;
 	}
 	if ($backend eq 'sqlite')
 	{
-		$mounts = split("\n",`$x2go_lib_path/x2gosqlitewrapper getmounts $sid`);
+		@mounts = split("\n",`$x2go_lib_path/x2gosqlitewrapper getmounts $sid`);
 	}
-	my $log_retval = join(" ", $mounts);
+	my $log_retval = join(" ", @mounts);
 	syslog('debug', "db_getmounts called, session ID: $sid; return value: $log_retval");
-	return $mounts
+	return @mounts;
 }
 
 sub db_deletemount
@@ -386,7 +386,7 @@ sub db_changestatus
 
 sub db_getdisplays
 {
-	my $displays;
+	my @displays;
 	#ignore $server
 	my $server=shift or die "argument \"server\" missed";         
 	if ($backend eq 'postgres')
@@ -403,20 +403,20 @@ sub db_getdisplays
 		}
 		$sth->finish();
 		$dbh->disconnect();
-		$displays = @strings;
+		@displays = @strings;
 	}
 	if ($backend eq 'sqlite')
 	{
-		$displays = split("\n",`$x2go_lib_path/x2gosqlitewrapper getdisplays $server`);
+		@displays = split("\n",`$x2go_lib_path/x2gosqlitewrapper getdisplays $server`);
 	}
-	my $log_retval = join(" ", $displays);
+	my $log_retval = join(" ", @displays);
 	syslog('debug', "db_getdisplays called, server: $server; return value: $log_retval");
-	return $displays;
+	return @displays;
 }
 
 sub db_getports
 {
-	my $ports;
+	my @ports;
 	#ignore $server
 	my $server=shift or die "argument \"server\" missed";         
 	if ($backend eq 'postgres')
@@ -433,20 +433,20 @@ sub db_getports
 		}
 		$sth->finish();
 		$dbh->disconnect();
-		$ports = @strings;
+		@ports = @strings;
 	}
 	if ($backend eq 'sqlite')
 	{
 		$ports = split("\n",`$x2go_lib_path/x2gosqlitewrapper getports $server`);
 	}
-	my $log_retval = join(" ", $ports);
+	my $log_retval = join(" ", @ports);
 	syslog('debug', "db_getports called, server: $server; return value: $log_retval");
-	return $ports;
+	return @ports;
 }
 
 sub db_getservers
 {
-	my $servers;
+	my @servers;
 	if ($backend eq 'postgres')
 	{
 		my @strings;
@@ -461,15 +461,15 @@ sub db_getservers
 		}
 		$sth->finish();
 		$dbh->disconnect();
-		$servers = @strings;
+		@servers = @strings;
 	}
 	if ($backend eq 'sqlite')
 	{
-		$servers = split("\n",`$x2go_lib_path/x2gosqlitewrapper getservers`);
+		@servers = split("\n",`$x2go_lib_path/x2gosqlitewrapper getservers`);
 	}
-	my $log_retval = join(" ", $servers);
+	my $log_retval = join(" ", @servers);
 	syslog('debug', "db_getservers called, return value: $log_retval");
-	return $servers;
+	return @servers;
 }
 
 sub db_getagent
