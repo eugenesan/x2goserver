@@ -20,8 +20,12 @@
 # Copyright (C) 2007-2011  Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
 # Copyright (C) 2007-2011  Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
 
+X2GO_LIB_PATH=`echo -n \$(x2gobasepath)/lib/x2go`
 X2GO_ROOT=${HOME}/.x2go
 MESSAGE_FILE=$X2GO_ROOT/C-$1/cmdoutput
+
+$X2GO_LIB_PATH/x2gosyslog "$0" "info" "$(basename $0) called with options: $@"
+$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "command output starts with: $(head -n5 $MESSAGE_FILE | sed s/\n/ /g)"
 
 # return command output of the command that was issued by x2goruncommand
 cat $MESSAGE_FILE
