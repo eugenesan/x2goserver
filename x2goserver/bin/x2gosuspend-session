@@ -40,8 +40,8 @@ killall -HUP knotify
 $X2GO_LIB_PATH/x2gochangestatus 'S' $SESSION_NAME  > /dev/null
 
 kill -HUP $X2GO_AGENT_PID && \
-	$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "client $X2GO_CLIENT successfully suspended session with ID $SESSION_NAME" || \
-	$X2GO_LIB_PATH/x2gosyslog "$0" "err" "ERROR: client $X2GO_CLIENT failed to suspend session with ID $SESSION_NAME"
+	$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "session with ID $SESSION_NAME has successfully been suspended" || \
+	$X2GO_LIB_PATH/x2gosyslog "$0" "err" "ERROR: failed to suspend session with ID $SESSION_NAME"
 
 export HOSTNAME 
 x2goumount-session $SESSION_NAME
