@@ -243,9 +243,9 @@ for (my $i=0;$i<@dirs;$i++)
 		{
 			$code_conv="-o $code_conv";
 		}
-		$msg = "inserted,\nsshfs $code_conv -o idmap=user,uid=`id -u`,gid=`id -g`,ServerAliveInterval=300,Cipher=blowfish,IdentityFile=$key,UserKnownHostsFile=$key.ident \"$user\"\@$host:\"@dirs[$i]\" \"$mntpath\" -p $port";
-		syslog('debug', "$msg");
-		print "$msg\n";
+		$msg = "sshfs $code_conv -o idmap=user,uid=`id -u`,gid=`id -g`,ServerAliveInterval=300,Cipher=blowfish,IdentityFile=$key,UserKnownHostsFile=$key.ident \"$user\"\@$host:\"@dirs[$i]\" \"$mntpath\" -p $port";
+		syslog('debug', "executing: $msg");
+		print "inserted, $msg\n";
 		if (system("sshfs  $code_conv -o idmap=user,uid=`id -u`,gid=`id -g`,ServerAliveInterval=300,Cipher=blowfish,IdentityFile=$key,UserKnownHostsFile=$key.ident \"$user\"\@$host:\"@dirs[$i]\" \"$mntpath\" -p $port 2>>~/mounts.log")==0)
 		{
 			print "mount @dirs[$i] ok\n";
