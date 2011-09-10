@@ -89,7 +89,7 @@ for ($i=0;$i<@outp;$i++)
 		if (@mounts[$j]=~m/sshfs/ && @mounts[$j]=~m/@line[0]/ && @mounts[$j]=~m/@line[1]/ )
 		{
 			$found=1;
-			syslog('debug', "found mount point for @mounts[$j]");
+			syslog('debug', "found mounted share @mounts[$j]");
 			$remote=(split(" ",@mounts[$j]))[0];
 			goto break;
 		}
@@ -99,7 +99,7 @@ break:
 	{
 		if (system( "fusermount -u @line[1]" ) == 0)
 		{
-			syslog('notice', "successfully mounted @line[1]");
+			syslog('notice', "successfully unmounted @line[1]");
 			$found=0;
 		}
 		else
