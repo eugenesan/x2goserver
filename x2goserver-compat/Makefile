@@ -67,7 +67,7 @@ install_config:
 install_man:
 	$(INSTALL_DIR) $(DESTDIR)$(MANDIR)
 	$(INSTALL_DIR) $(DESTDIR)$(MANDIR)/man8
-	$(INSTALL_FILE) man/man1/*.8           $(DESTDIR)$(MANDIR)/man8
+	$(INSTALL_FILE) man/man8/*.8           $(DESTDIR)$(MANDIR)/man8
 	gzip -f $(DESTDIR)$(MANDIR)/man1/x2go*.8
 
 install_version:
