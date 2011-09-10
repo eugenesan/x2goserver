@@ -54,6 +54,7 @@ x2goserver (3.0.99.5-0~x2go3) UNRELEASED; urgency=low
   * Cleanup of man page area, thanks to Ivan Kabaivanov for pointing that out.
   * Rename example user and group for session limits in x2goserver.conf so that
     people do not get the idea to put users in x2gouser group.
+  * Makefile and man page area fix for x2goserver-extensions.
 
   [ Ivan Kabaivanov ]
   * Makefile fix around man page installation in x2goserver-compat package.
