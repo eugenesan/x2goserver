@@ -34,7 +34,8 @@ setlogmask( LOG_UPTO(x2gologlevel()) );
 if ( @ARGV ) {
 	syslog('info', "x2golistsessions has been called with options: @ARGV");
 } else {
-	syslog('info', "x2golistsessions has been called with no option");
+	# hiding normal x2golistsessions calls into debug loglevel
+	syslog('debug', "x2golistsessions has been called with no option");
 }
 
 sub check_stat
