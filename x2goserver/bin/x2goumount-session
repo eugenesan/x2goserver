@@ -89,6 +89,7 @@ for ($i=0;$i<@outp;$i++)
 		if (@mounts[$j]=~m/sshfs/ && @mounts[$j]=~m/@line[0]/ && @mounts[$j]=~m/@line[1]/ )
 		{
 			$found=1;
+			syslog('debug', "found mount point for @mounts[$j]");
 			$remote=(split(" ",@mounts[$j]))[0];
 			goto break;
 		}
@@ -98,11 +99,13 @@ break:
 	{
 		if (system( "fusermount -u @line[1]" ) == 0)
 		{
+			syslog('notice', "successfully mounted @line[1]");
 			$found=0;
 		}
 		else
 		{
 			$ENV{'DISPLAY'}=":$display";
+			syslog('err', "ERROR: failed to unmount @line[1]");
 			if ($use_zenity == 0)
 			{
 				system("kdialog --error \"@line[1]\"&");
@@ -120,15 +123,18 @@ break:
 		$remote="$ENV{'HOME'}/Desktop/$remote";
 		if ( -e "$remote(sshfs-disk)")
 		{
-		   unlink("$remote(sshfs-disk)");
+		    syslog('info', "removing desktop icon $remote(sshfs-disk)");
+		    unlink("$remote(sshfs-disk)");
 		}
 		$remote=~s/%2framdrive%2fmnt%2f//;
 		if ( -e "$remote(sshfs-removable)")
 		{
+			syslog('info', "removing desktop icon $remote(sshfs-removable)");
 			unlink("$remote(sshfs-removable)");
 		}
 		if ( -e "$remote(sshfs-cdrom)")
 		{
+			syslog('info', "removing desktop icon $remote(sshfs-cdrom)");
 			unlink("$remote(sshfs-cdrom)");
 		}
 		db_deletemount ($session, @line[1]);
