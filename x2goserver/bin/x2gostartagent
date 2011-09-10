@@ -227,8 +227,8 @@ fi
 X2GO_AGENT_PID=$!
 X2GO_AGENT_RETVAL=$?
 test $X2GO_AGENT_RETVAL && \
-	$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "successfully started X2go session with ID $SESSION_NAME" || \
-	$X2GO_LIB_PATH/x2gosyslog "$0" "err" "ERROR: failed to start X2go session with ID $SESSION_NAME"
+	$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "successfully started X2go agent session with ID $SESSION_NAME" || \
+	$X2GO_LIB_PATH/x2gosyslog "$0" "err" "ERROR: failed to start X2go agent session with ID $SESSION_NAME"
 
 X2GO_SND_PORT=1024
 
