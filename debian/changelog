@@ -51,6 +51,7 @@ x2goserver (3.0.99.5-0~x2go3) UNRELEASED; urgency=low
   * Use usermapping for SSHFS mount points.
   * Add notice messages for start, suspend, resume, terminate, mountdirs
     actions.
+  * Cleanup of man page area, thanks to Ivan Kabaivanov for pointing that out.
 
   [ Martin Oehler ]
   * Removes old debug code fragment, fixes x2golistsessions parsing.

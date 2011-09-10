@@ -78,9 +78,6 @@ install_config:
 
 install_man:
 	$(INSTALL_DIR) $(DESTDIR)$(MANDIR)
-	$(INSTALL_DIR) $(DESTDIR)$(MANDIR)/man1
-	$(INSTALL_FILE) man/man1/*.1           $(DESTDIR)$(MANDIR)/man1
-	gzip -f $(DESTDIR)$(MANDIR)/man1/x2go*.1
 	$(INSTALL_DIR) $(DESTDIR)$(MANDIR)/man8
 	$(INSTALL_FILE) man/man8/*.8           $(DESTDIR)$(MANDIR)/man8
 	gzip -f $(DESTDIR)$(MANDIR)/man8/x2go*.8
@@ -107,8 +104,6 @@ uninstall_config:
 	$(RM_DIR)  $(DESTDIR)$(ETCDIR)/x2gosql || true
 
 uninstall_man:
-	for file in $(BIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(MANDIR)/man1/$$file.1.gz; done
-	for file in $(SBIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(MANDIR)/man1/$$file.1.gz; done
 	for file in $(BIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(MANDIR)/man8/$$file.8.gz; done
 	for file in $(SBIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(MANDIR)/man8/$$file.8.gz; done
 	$(RM_DIR)  $(DESTDIR)$(MANDIR) || true
