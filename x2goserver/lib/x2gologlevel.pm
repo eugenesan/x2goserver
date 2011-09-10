@@ -40,7 +40,7 @@ sub x2gologlevel {
 	elsif ( $strloglevel eq "alert" )  { $loglevel = LOG_ALERT; }
 	elsif ( $strloglevel eq "crit" )   { $loglevel = LOG_CRIT; }
 	elsif ( $strloglevel eq "err" )    { $loglevel = LOG_ERR; }
-	elsif ( $strloglevel eq "warn" )   { $loglevel = LOG_WARNING; }
+	elsif ( $strloglevel eq "warning" )   { $loglevel = LOG_WARNING; }
 	elsif ( $strloglevel eq "notice" ) { $loglevel = LOG_NOTICE; }
 	elsif ( $strloglevel eq "info" )   { $loglevel = LOG_INFO; }
 	elsif ( $strloglevel eq "debug" )  { $loglevel = LOG_DEBUG; }

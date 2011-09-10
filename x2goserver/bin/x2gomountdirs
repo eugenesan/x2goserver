@@ -298,7 +298,7 @@ for (my $i=0;$i<@dirs;$i++)
 		{
 			$msg = "mounting of @dirs[$i] failed";
 			print "$msg\n";
-			syslog('warn', "WARNING: $msg");
+			syslog('warning', "WARNING: $msg");
 			db_deletemount( $session, $mntpath);
 			rmdir($mntpath);
 		}
@@ -306,7 +306,7 @@ for (my $i=0;$i<@dirs;$i++)
 	else
 	{
 		$msg = "insertion of @dirs[$i] failed (already mounted?), not mounting";
-		syslog('warn', "WARNING: $msg");
+		syslog('warning', "WARNING: $msg");
 		print "$msg\n";
 	}
 }
