@@ -58,6 +58,7 @@ x2goserver (3.0.99.5-0~x2go3) UNRELEASED; urgency=low
   * x2goserver.postinst: fix home path updates if new home path already exists
   * Add real error message if client fails to resume/suspend/terminate
     a session.
+  * SQLite DB backend: Fix typo in date format template.
 
   [ Ivan Kabaivanov ]
   * Makefile fix around man page installation in x2goserver-compat package.
