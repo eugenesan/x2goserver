@@ -52,9 +52,9 @@ elsif($cmd eq  "listsessionsroot")
 	my $server=shift or die "argument \"server\" missed";
 	my @strings;
 	my $sth=$dbh->prepare("select agent_pid, session_id, display, server, status,
-	                       substr(strftime('%d.%m.%Y*%H:%M:%S',init_time),0,6)||substr(strftime('%d.%m.%Y*%H:%M:%S',init_time),9,11),
+	                       strftime('%Y-%m-%dT%H:%M:%S',init_time),
 	                       cookie,client,gr_port,sound_port,
-	                       substr(strftime('%d.%m.%Y*%H:%M:%S',last_time),0,6)||substr(strftime('%d.%m.%Y*%H:%M:%S',last_time),9,11),
+	                       strftime('%Y-%m-%dT%H:%M:%S',last_time),
 	                       uname,
 	                       strftime('%s','now','localtime') - strftime('%s',init_time),fs_port from  sessions
 	                       where server=?  order by status desc");
@@ -67,9 +67,9 @@ elsif($cmd eq  "listsessionsroot_all")
 	checkroot();
 	my @strings;
 	my $sth=$dbh->prepare("select agent_pid, session_id, display, server, status,
-	                       substr(strftime('%d.%m.%Y*%H:%M:%S',init_time),0,6)||substr(strftime('%d.%m.%Y*%H:%M:%S',init_time),9,11),
+	                       strftime('%Y-%m-%dT%H:%M:%S',init_time),
 	                       cookie,client,gr_port,sound_port,
-	                       substr(strftime('%d.%m.%Y*%H:%M:%S',last_time),0,6)||substr(strftime('%d.%m.%Y*%H:%M:%S',last_time),9,11),
+	                       strftime('%Y-%m-%dT%H:%M:%S',last_time),
 	                       uname,
 	                       strftime('%s','now','localtime') - strftime('%s',init_time),fs_port from  sessions
 	                       order by status desc");
@@ -265,9 +265,9 @@ elsif($cmd eq  "listsessions")
 	my $server=shift or die "argument \"server\" missed";
 	my @strings;
 	my $sth=$dbh->prepare("select agent_pid, session_id, display, server, status,
-	                       substr(strftime('%d.%m.%Y*%H:%M:%S',init_time),0,6)||substr(strftime('%d.%m.%Y*%H:%M:%S',init_time),9,11),
+	                       strftime('%Y-%m-%dT%H:%M:%S',init_time),
 	                       cookie,client,gr_port,sound_port,
-	                       substr(strftime('%d.%m.%Y*%H:%M:%S',last_time),0,6)||substr(strftime('%d.%m.%Y*%H:%M:%S',last_time),9,11),
+	                       strftime('%Y-%m-%dT%H:%M:%S',last_time),
 	                       uname,
 	                       strftime('%s','now','localtime') - strftime('%s',init_time),fs_port from  sessions
 	                       where status !='F' and server=? and uname=?
@@ -280,9 +280,9 @@ elsif($cmd eq  "listsessions_all")
 {
 	my @strings;
 	my $sth=$dbh->prepare("select agent_pid, session_id, display, server, status,
-	                       substr(strftime('%d.%m.%Y*%H:%M:%S',init_time),0,6)||substr(strftime('%d.%m.%Y*.%H:%M:%S',init_time),9,11),
+	                       strftime('%Y-%m-%dT%H:%M:%S',init_time),
 	                       cookie,client,gr_port,sound_port,
-	                       substr(strftime('%d.%m.%Y*%H:%M:%S',last_time),0,6)||substr(strftime('%d.%m.%Y*.%H:%M:%S',last_time),9,11),
+	                       strftime('%Y-%m-%dT%H:%M:%S',last_time),
 	                       uname,
 	                       strftime('%s','now','localtime') - strftime('%s',init_time),fs_port from  sessions 
 	                       where status !='F' and uname=? and  (  session_id not like '%XSHAD%')  order by status desc");

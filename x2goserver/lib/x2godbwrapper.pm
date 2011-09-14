@@ -117,8 +117,8 @@ sub dbsys_listsessionsroot
 		                     "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 
 		my $sth=$dbh->prepare("select agent_pid, session_id, display, server, status,
-		                      to_char(init_time,'DD.MM.YY*HH24:MI:SS'),cookie,client,gr_port,
-		                      sound_port,to_char(last_time,'DD.MM.YY*HH24:MI:SS'),uname,
+		                      to_char(init_time,'YYYY-MM-DDTHH24:MI:SS'),cookie,client,gr_port,
+		                      sound_port,to_char(last_time,'YYYY-MM-DDTHH24:MI:SS'),uname,
 		                      to_char(now()-init_time,'SSSS'),fs_port  from  sessions
 		                      where server='$server'  order by status desc");
 		$sth->execute()or die;
@@ -145,8 +145,8 @@ sub dbsys_listsessionsroot_all
 		my @strings;
 		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 		my $sth=$dbh->prepare("select agent_pid, session_id, display, server, status,
-		                      to_char(init_time,'DD.MM.YY*HH24:MI:SS'),cookie,client,gr_port,
-		                      sound_port,to_char(last_time,'DD.MM.YY*HH24:MI:SS'),uname,
+		                      to_char(init_time,'YYYY-MM-DDTHH24:MI:SS'),cookie,client,gr_port,
+		                      sound_port,to_char(last_time,'YYYY-MM-DDTHH24:MI:SS'),uname,
 		                      to_char(now()-init_time,'SSSS'),fs_port  from  sessions
 		                      order by status desc");
 		$sth->execute()or die;
@@ -534,8 +534,8 @@ sub db_listsessions
 		my @strings;
 		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 		my $sth=$dbh->prepare("select agent_pid, session_id, display, server, status,
-		                      to_char(init_time,'DD.MM.YY*HH24:MI:SS'), cookie, client, gr_port,
-		                      sound_port, to_char( last_time, 'DD.MM.YY*HH24:MI:SS'), uname,
+		                      to_char(init_time,'YYYY-MM-DDTHH24:MI:SS'), cookie, client, gr_port,
+		                      sound_port, to_char( last_time, 'YYYY-MM-DDTHH24:MI:SS'), uname,
 		                      to_char(now()- init_time,'SSSS'), fs_port from  sessions_view
 		                      where status !='F' and server='$server' and  
 		                      (session_id not like '%XSHAD%') order by status desc");
@@ -563,8 +563,8 @@ sub db_listsessions_all
 		my @strings;
 		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 		my $sth=$dbh->prepare("select agent_pid, session_id, display, server, status,
-		                      to_char(init_time,'DD.MM.YY*HH24:MI:SS'), cookie, client, gr_port,
-		                      sound_port, to_char( last_time, 'DD.MM.YY*HH24:MI:SS'), uname,
+		                      to_char(init_time,'YYYY-MM-DDTHH24:MI:SS'), cookie, client, gr_port,
+		                      sound_port, to_char( last_time, 'YYYY-MM-DDTHH24:MI:SS'), uname,
 		                      to_char(now()- init_time,'SSSS'), fs_port from  sessions_view
 		                      where status !='F'  and  
 		                      (session_id not like '%XSHAD%') order by status desc");
