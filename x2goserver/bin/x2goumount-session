@@ -43,8 +43,12 @@ if ($only_path)
 {
 	$only_path=~s/\/ramdrive\/mnt\///;
 	$only_path=~ s/\//_/g;
-	my $end="_media";
-	$only_path="$ENV{'HOME'}/media/$only_path";
+	
+	### FIXME: handle CDROM and Removable Media mounts here, as well!!!	
+
+	$only_path="/tmp/$ENV{'USER'}_media/disk/$only_path";
+	#                                   ^^^^
+	syslog('debug',"x2goumount-session unmounting $only_path only");
 }
 
 
@@ -78,6 +82,7 @@ for ($i=0;$i<@outp;$i++)
 	{
 		if (@line[1] ne $only_path)
 		{
+			syslog('debug', "skipping non-requested path @line[1]");
 			goto cont;
 		}
 	}
@@ -145,3 +150,4 @@ cont:
 
 # closing syslog 
 closelog;
+
