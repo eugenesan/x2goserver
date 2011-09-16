@@ -61,6 +61,8 @@ x2goserver (3.0.99.5-0~x2go3) UNRELEASED; urgency=low
   * SQLite DB backend: Fix typo in date format template.
   * Present an ISO-8601 compliant datetime string in session lists
     rendered by x2golistsessions (and similar) command(s).
+  * Silence knotify SIGHUP signals in case that no knotify is running in the
+    X2go session.
 
   [ Ivan Kabaivanov ]
   * Makefile fix around man page installation in x2goserver-compat package.
