@@ -36,7 +36,7 @@ X2GO_AGENT_PID=`echo "$X2GO_AGENT_PID"| awk {'print $1'}`
 $X2GO_LIB_PATH/x2gochangestatus 'F' $SESSION_NAME  > /dev/null
 
 kill -TERM $X2GO_AGENT_PID &>/dev/null && {
-	$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "session with ID $SESSION_NAME has successfully been terminated"
+	$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "session with ID $SESSION_NAME has been terminated successfully"
 } || {
        err_msg="ERROR: failed to terminate session with ID $SESSION_NAME"
        echo "err_$msg" 1>&2
