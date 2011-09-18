@@ -248,7 +248,7 @@ sub db_insertmount
 	my $sid=shift or die "argument \"session_id\" missed";
 	my $path=shift or die "argument \"path\" missed";
 	my $client=shift or die "argument \"client\" missed";
-	my $res_ok=1;
+	my $res_ok=0;
 	if ($backend eq 'postgres')
 	{
 		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;	       
