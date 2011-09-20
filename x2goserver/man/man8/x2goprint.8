@@ -5,17 +5,53 @@
 \\$2 \(la\\$1\(ra\\$3
 ..
 .if \n(.g .mso www.tmac
-.TH x2goprint 8 "18 May 2011" "Version 3.0.99.x" "X2go Server Tool"
+.TH x2goprint 8 "Sep 2011" "Version 3.0.99.x" "X2go Server Tool"
 .SH NAME
-x2goprint \- X2go Server Script
+x2goprint \- Process X2go Print Job
 .SH SYNOPSIS
 'nh
 .fi
 .ad l
-x2goprint
+x2goprint <username> <session_id> <pdf_file> <title_file>
 
 .SH DESCRIPTION
-\fBx2goprint\fR is one of many scripts belonging to X2go Server.
+X2go print jobs are rendered by the \fBcups-x2go\fR backend on your network's (central) CUPS server and
+then get copied to the X2go server that the X2go print job was issued from.
+.PP
+On that X2go server \fBcups-x2go\fR places two print job files (a PDF file and a title file)
+into the home directory of the POSIX system user ,,x2goprint'' where they await further processing
+by \fBx2goprint\fR.
+.PP
+The \fBx2goprint\fR command on the session's X2go server (executed by \fBcups-x2go\fR backend) then
+prepares the job files for delivery to the X2go client-side.
+.PP
+\fBx2goprint\fR must run with root privileges and is executed by \fBcups-x2go\fR.
+.SH ARGUMENTS
+.TP
+\*(T<\fB\<username>\fR\*(T>
+The owner of the incoming print jobs is given as the <username> argument.
+.TP
+\*(T<\fB\<session_id>\fR\*(T>
+The <session_id> is the unique identifier of the X2go session that the processed print job is
+coming from.
+.TP
+\*(T<\fB\<pdf_file>\fR\*(T>
+The filename of the PDF file as dropped into ~x2goprint by \fBcups-x2go\fR.
+.TP
+\*(T<\fB\<title_file>\fR\*(T>
+The filename of the title file as dropped into ~x2goprint by \fBcups-x2go\fR.
+.PP
+.SH PERMISSIONS
+X2go uses the fuse-based SSH filesystem (SSHFS) for transferring print jobs from X2go server to X2go client.
+Users that shall use X2go printing must be members of the X2go server's ,,fuse'' POSIX group.
+.PP
+.SH X2GO CLUSTER MODE
+If X2go server and CUPS server are the same machine, no further setup for X2go printing is necessary.
+.PP
+However, if X2go server and CUPS server are hosted on separate machines then a special setup of sudo and SSH
+is required on X2go server(s) and the central CUPS server.
+.PP
+Refer to http://wiki.x2go.org/installing_x2go_printing_debian_ubuntu for further information.
 .PP
 .SH AUTHOR
 This manual has been written by Mike Gabriel <mike.gabriel@das-netzwerkteam.de> for the X2go project

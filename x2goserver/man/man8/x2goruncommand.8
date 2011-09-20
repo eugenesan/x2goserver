@@ -5,18 +5,43 @@
 \\$2 \(la\\$1\(ra\\$3
 ..
 .if \n(.g .mso www.tmac
-.TH x2goruncommand 8 "18 May 2011" "Version 3.0.99.x" "X2go Server Tool"
+.TH x2goruncommand 8 "Sep 2011" "Version 3.0.99.x" "X2go Server Tool"
 .SH NAME
-x2goruncommand \- X2go Server Script
+x2goruncommand \- Launch Command inside an X2go Session
 .SH SYNOPSIS
 'nh
 .fi
 .ad l
-x2goruncommand
+x2goruncommand <display> <agent_pid> <session_id> <command> <sound_system> <session_type>
 
 .SH DESCRIPTION
-\fBx2goruncommand\fR is one of many scripts belonging to X2go Server.
+\fBx2goruncommand\fR launches a(n X-based) command inside of a given X2go session.
 .PP
+\fBx2goruncommand\fR is run with X2go user privileges and normally executed by an X2go client application.
+.SH ARGUMENTS
+.TP
+\*(T<\fB\<display>\fR\*(T>
+The X display number/port of the session this command is for.
+.TP
+\*(T<\fB\<agent_pid>\fR\*(T>
+The process ID (pid) of the x2goagent instance that the given session runs in.
+.TP
+\*(T<\fB\<session_id>\fR\*(T>
+The <session_id> is the unique identifier of the X2go session that this command is intended for.
+.TP
+\*(T<\fB\<command>\fR\*(T>
+Execute command <command>. Full paths will be ignored, the command has to be in the server's $PATH.
+
+Possible generic values for <command> are: WWWBROWSER, OFFICE, MAILCLIENT and TERMINAL.
+.TP
+\*(T<\fB\<sound_system>\fR\*(T>
+Either of the possible sound systems supported by X2go: pulse, esd, arts (obsolete) or none.
+.TP
+\*(T<\fB\<session_type>\fR\*(T>
+Allowed values for <session_type> are: D (desktop) and R (rootless).
+.PP
+.SH SEE ALSO
+x2gostartagent(8), x2goresume-session(8), x2gosuspend-session(8), x2goterminate-sessions(8)
 .SH AUTHOR
 This manual has been written by Mike Gabriel <mike.gabriel@das-netzwerkteam.de> for the X2go project
 (http://www.x2go.org).

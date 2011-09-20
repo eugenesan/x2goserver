@@ -5,18 +5,44 @@
 \\$2 \(la\\$1\(ra\\$3
 ..
 .if \n(.g .mso www.tmac
-.TH x2gomountdirs 8 "18 May 2011" "Version 3.0.99.x" "X2go Server Tool"
+.TH x2gomountdirs 8 "Sep 2011" "Version 3.0.99.x" "X2go Server Tool"
 .SH NAME
-x2gomountdirs \- X2go Server Script
+x2gomountdirs \- Share Client-Side Folder with X2go Session
 .SH SYNOPSIS
 'nh
 .fi
 .ad l
-x2gomountdirs
+x2gomountdirs <mount_type> <session_id> <username> <key_file> <dir1> [<dir2> [<dir3> [...]]]
 
 .SH DESCRIPTION
-\fBx2gomountdirs\fR is one of many scripts belonging to X2go Server.
+\fBx2gomountdirs\fR mounts client-side folders or devices onto mountpoints that are accessible
+from within your remote X2go session.
 .PP
+\fBx2gomountdirs\fR is run with X2go user privileges and normally issued by an X2go client application.
+.SH ARGUMENTS
+.TP
+\*(T<\fB\<mount_type>\fR\*(T>
+If the mount type is set to ,,dir'' then the client-side mount target is interpreted as a folder. If other,
+it is interpreted as a device.
+.TP
+\*(T<\fB\<session_id>\fR\*(T>
+The <session_id> is the unique identifier of the X2go session that this command is run for.
+.TP
+\*(T<\fB\<username>\fR\*(T>
+The owner of session <session_id> is given as the <username> argument.
+.TP
+\*(T<\fB\<key_file>\fR\*(T>
+Location of a temporary private SSH key file (only valid for this command execution).
+.TP
+\*(T<\fB\<dir1> [<dir2> [<dir3> [...]]]\fR\*(T>
+A list of client-side folders or device mount points that shall be mounted for X2go session <session_id>.
+.PP
+.SH PERMISSIONS
+X2go uses the fuse-based SSH filesystem (SSHFS) for sharing client-side file ressources with X2go sessions.
+Users that shall use X2go folder sharing must be members of the X2go server's ,,fuse'' POSIX group.
+.PP
+.SH SEE ALSO
+x2goumount-session(8)
 .SH AUTHOR
 This manual has been written by Mike Gabriel <mike.gabriel@das-netzwerkteam.de> for the X2go project
 (http://www.x2go.org).

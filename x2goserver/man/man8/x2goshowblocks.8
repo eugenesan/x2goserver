@@ -5,18 +5,22 @@
 \\$2 \(la\\$1\(ra\\$3
 ..
 .if \n(.g .mso www.tmac
-.TH x2goruncommand 8 "18 May 2011" "Version 3.0.99.x" "X2go Server Tool"
+.TH x2goshowblocks 8 "Sep 2011" "Version 3.0.99.x" "X2go Server Tool"
 .SH NAME
-x2goruncommand \- X2go Server Script
+x2goshowblocks \- Show X2go-Mounted Block Devices
 .SH SYNOPSIS
 'nh
 .fi
 .ad l
-x2goruncommand
+x2goshowblocks <username> <session_id>
 
 .SH DESCRIPTION
-\fBx2goruncommand\fR is one of many scripts belonging to X2go Server.
+\fBx2goshowblocks\fR lists mounted shares for user <username> and X2go session with ID <session_id>.
 .PP
+The \fBx2goshowblocks\fR must be run with root privileges.
+
+.SH SEE ALSO
+x2gomountdirs(8), x2goumount-session(8)
 .SH AUTHOR
 This manual has been written by Mike Gabriel <mike.gabriel@das-netzwerkteam.de> for the X2go project
 (http://www.x2go.org).

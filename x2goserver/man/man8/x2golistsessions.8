@@ -5,17 +5,25 @@
 \\$2 \(la\\$1\(ra\\$3
 ..
 .if \n(.g .mso www.tmac
-.TH x2golistsessions 8 "18 May 2011" "Version 3.0.99.x" "X2go Server Tool"
+.TH x2golistsessions 8 "Sep 2011" "Version 3.0.99.x" "X2go Server Tool"
 .SH NAME
-x2golistsessions \- X2go Server Script
+x2golistsessions \- List Available X2go Sessions for User
 .SH SYNOPSIS
 'nh
 .fi
 .ad l
-x2golistsessions
+x2golistsessions [<server-hostname|--all-servers]
 
 .SH DESCRIPTION
-\fBx2golistsessions\fR is one of many scripts belonging to X2go Server.
+\fBx2golistsessions\fR returns a list of running or suspended X2go sessions for X2go server <server-hostnamme>.
+If no server hostname is given at the command line, the session list query runs for the local system.
+.PP
+\fBx2golistsessions\fR is run with normal user privileges and it is used by X2go clients to render
+a list of available X2go sessions.
+.SH X2GO CLUSTER MODE
+If \fBx2golistsessions\fR is executed with the \fI--all-servers\fR option then the central database
+of your X2go cluster is queried for running/suspended sessions belonging to the user executing this command.
+These sessions may be active on any of the X2go servers within you cluster.
 .PP
 .SH AUTHOR
 This manual has been written by Mike Gabriel <mike.gabriel@das-netzwerkteam.de> for the X2go project

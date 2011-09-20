@@ -5,18 +5,29 @@
 \\$2 \(la\\$1\(ra\\$3
 ..
 .if \n(.g .mso www.tmac
-.TH x2golistdesktops 8 "July 2011" "Version 3.0.99.x" "X2go Server Tool"
+.TH x2golistdesktops 8 "Sep 2011" "Version 3.0.99.x" "X2go Server Tool"
 .SH NAME
-x2golistdesktops \- X2go Server Script
+x2golistdesktops \- List Available X Desktops
 .SH SYNOPSIS
 'nh
 .fi
 .ad l
-x2golistdesktops
+x2golistdesktops [<server-hostname>]
 
 .SH DESCRIPTION
-\fBx2golistdesktops\fR is one of many scripts belonging to X2go Server.
+\fBx2golistdesktops\fR returns a list of active desktop sessions running on server <server-hostnamme>.
+If no server hostname is given at the command line, the fully qualified domain name of the local system
+is used here.
 .PP
+\fBx2golistdesktops\fR is run with X2go user privileges and it is used by X2go clients to render
+a list of available desktops that may be candidates for X2go desktop sharing (shadow sessions).
+.PP
+The list of desktops will include local desktop sessions (launched via KDM, GDM, etc.) run by the same user, X2go desktop
+sessions run by the same user and desktop sessions of other users (local or remote) that are announced via 
+the \fBx2godesktopsharing\fR utility.
+.PP
+.SH SEE ALSO
+x2godesktopsharing(1)
 .SH AUTHOR
 This manual has been written by Mike Gabriel <mike.gabriel@das-netzwerkteam.de> for the X2go project
 (http://www.x2go.org).

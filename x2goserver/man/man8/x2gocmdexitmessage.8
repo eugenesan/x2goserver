@@ -7,15 +7,17 @@
 .if \n(.g .mso www.tmac
 .TH x2gocmdexitmessage 8 "July 2011" "Version 3.0.99.x" "X2go Server Tool"
 .SH NAME
-x2goexitmessage \- X2go Server Script
+x2gocmdexitmessage \- Exit Message of X2go Command
 .SH SYNOPSIS
 'nh
 .fi
 .ad l
-x2goexitmessage
+x2gocmdexitmessage <session_id>
 
 .SH DESCRIPTION
-\fBx2goexitmessage\fR is one of many scripts belonging to X2go Server.
+\fBx2gocmdexitmessage\fR prints out the exit message of the last command run with \fBx2goruncommand\fR for session <session_id>.
+
+\fBx2gocmdexitmessage\fR is run with X2go user privileges.
 .PP
 .SH AUTHOR
 This manual has been written by Mike Gabriel <mike.gabriel@das-netzwerkteam.de> for the X2go project

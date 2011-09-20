@@ -7,29 +7,79 @@
 .if \n(.g .mso www.tmac
 .TH x2gostartagent 8 "18 May 2011" "Version 3.0.99.x" "X2go Server Tool"
 .SH NAME
-x2gostartagent \- X2go Server Script
+x2gostartagent \- Start a New X2go Session
 .SH SYNOPSIS
 'nh
 .fi
 .ad l
-x2gostartagent <geometry> <link-quality> <nx-pack-meth> <cache-type+dpi> <kblayout> <kbtype> <setkbd> <session-type> <command>
+x2gostartagent <geometry> <link_quality> <nx_pack_meth> <cache_type+dpi> <kblayout> <kbtype> <setkbd> <session_type> <command>
 
 .SH DESCRIPTION
-\fBx2gostartagent\fR is a script that coordinates the startup process of new X2go sessions. 
+\fBx2gostartagent\fR coordinates the startup process of a new X2go session.
 It expects quite a list of parameters, all of which are obligatory.
+.PP
+\fBx2gostartagent\fR is run with X2go user privileges and normally executed by an X2go client application.
+.SH ARGUMENTS
+.TP
+\*(T<\fB\<geometry>\fR\*(T>
+Session window size on screen (allowed values: <width>x<height> or fullscreen).
+.TP
+\*(T<\fB\<link_quality>\fR\*(T>
+Any value out of: modem, isdn, adsl, wan or lan.
+.TP
+\*(T<\fB\<nx_pack_method>\fR\*(T>
+NX compression method (see below for possible values).
+.TP
+\*(T<\fB\<cache_type+dpi>\fR\*(T>
+Cache type and color depth for X2go session window. The most common value is: unix-kde-depth_24 where ,,24'' is the color depth in bit.
+.TP
+\*(T<\fB\<kblayout>\fR\*(T>
+Keyboard layout (e.g. us, de, etc.).
+.TP
+\*(T<\fB\<kbtype>\fR\*(T>
+Keyboard type/model (e.g. pc105/us).
+.TP
+\*(T<\fB\<setkbd>\fR\*(T>
+Force setting keyboard layout and type within the X2go session on startup. Values: 0 or 1.
+.TP
+\*(T<\fB\<session_type>\fR\*(T>
+Allowed values for <session_type> are: D (desktop), R (rootless) or S (shadow session, X2go desktop sharing).
+.TP
+\*(T<\fB\<command>\fR\*(T>
+The command given by the <command> argument is only used to create the session ID for this new X2go session. The
+actual execution of a command is handled by \fBx2goruncommand\fR.
+.PP
 .SH RETURN VALUES
 A list of parameters will be returned after a successful session startup. Each value will be presented on
 a new line:
 
-    \fB<X-display-number>\fR
-    \fB<session-cookie-hash>\fR
-    \fB<x2goagent-pid>\fR
-    \fB<session-name>\fR
-    \fB<graphics-port>\fR
-    \fB<sound-port>\fR
-    \fB<sshfs-port>\fR
+    \fB<X_display_number>\fR
+    \fB<session_cookie_hash>\fR
+    \fB<agent_pid>\fR
+    \fB<session_id>\fR
+    \fB<graphics_port>\fR
+    \fB<sound_port>\fR
+    \fB<sshfs_port>\fR
 
 .PP
+.SH NX COMPRESSION METHODS
+As NX compression methods (\fB<link-quality>\fR argument) the following values are possible. The % character must be replaced by a digit 0-9.
+.PP
+nopack, 8, 64, 256, 512, 4k, 32k, 64k, 256k, 2m, 16m
+256-rdp, 256-rdp-compressed, 32k-rdp, 32k-rdp-compressed, 64k-rdp
+64k-rdp-compressed, 16m-rdp, 16m-rdp-compressed
+rfb-hextile, rfb-tight, rfb-tight-compressed
+8-tight, 64-tight, 256-tight, 512-tight, 4k-tight, 32k-tight
+64k-tight, 256k-tight, 2m-tight, 16m-tight
+8-jpeg-%, 64-jpeg, 256-jpeg, 512-jpeg, 4k-jpeg, 32k-jpeg
+64k-jpeg, 256k-jpeg, 2m-jpeg, 16m-jpeg-%
+8-png-jpeg-%, 64-png-jpeg, 256-png-jpeg, 512-png-jpeg, 4k-png-jpeg
+32k-png-jpeg, 64k-png-jpeg, 256k-png-jpeg, 2m-png-jpeg, 16m-png-jpeg-%
+8-png-%, 64-png, 256-png, 512-png, 4k-png
+32k-png, 64k-png, 256k-png, 2m-png, 16m-png-%
+16m-rgb-%, 16m-rle-%
+.SH SEE ALSO
+x2goruncommand(8), x2goresume-session(8), x2gosuspend-session(8), x2goterminate-session(8)
 .SH AUTHOR
 This manual has been written by Mike Gabriel <mike.gabriel@das-netzwerkteam.de> for the X2go project
 (http://www.x2go.org).

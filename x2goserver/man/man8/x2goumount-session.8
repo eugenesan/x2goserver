@@ -5,18 +5,33 @@
 \\$2 \(la\\$1\(ra\\$3
 ..
 .if \n(.g .mso www.tmac
-.TH x2goumount-session 8 "18 May 2011" "Version 3.0.99.x" "X2go Server Tool"
+.TH x2goumount-session 8 "Sep 2011" "Version 3.0.99.x" "X2go Server Tool"
 .SH NAME
-x2goumount-session \- X2go Server Script
+x2goumount-session \- Unshare mounted Folders from X2go Session
 .SH SYNOPSIS
 'nh
 .fi
 .ad l
-x2goumount-session
+x2goumount-session <session_id> [<local_path_on_client>]
 
 .SH DESCRIPTION
-\fBx2goumount-session\fR is one of many scripts belonging to X2go Server.
+\fBx2goumount-session\fR is used to unshare client folders from X2go session with session ID <session_id>.
+Shared folders have been previously mounted into the X2go session by the \fBx2gomountdirs\fR command.
 .PP
+\fBx2goumount-session\fR is run with X2go user privileges and normally issued by an X2go client application.
+.SH ARGUMENTS
+.TP
+\*(T<\fB\<session_id>\fR\*(T>
+Unmount shared folder(s) as registered for X2go session ID <session_id> in the X2go session database.
+.TP
+\*(T<\fB\<local_path_on_client>\fR\*(T>
+Optionally, you can name a local path name (path name as found on the client-side) here. If given,
+only the named folder is unshared from the X2go session <session_id>.
+
+If this optional argument is omitted, then ALL session folders will be unshared (including spool folders for printing and MIME box).
+
+.SH SEE ALSO
+x2gomountdirs(8)
 .SH AUTHOR
 This manual has been written by Mike Gabriel <mike.gabriel@das-netzwerkteam.de> for the X2go project
 (http://www.x2go.org).

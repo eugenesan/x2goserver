@@ -5,18 +5,22 @@
 \\$2 \(la\\$1\(ra\\$3
 ..
 .if \n(.g .mso www.tmac
-.TH x2gosuspend-session 8 "18 May 2011" "Version 3.0.99.x" "X2go Server Tool"
+.TH x2gosuspend-session 8 "Sep 2011" "Version 3.0.99.x" "X2go Server Tool"
 .SH NAME
-x2gosuspend-session \- X2go Server Script
+x2gosuspend-session \- Suspend an X2go Session
 .SH SYNOPSIS
 'nh
 .fi
 .ad l
-x2gosuspend-session
+x2gosuspend-session <session_id>
 
 .SH DESCRIPTION
-\fBx2gosuspend-session\fR is one of many scripts belonging to X2go Server.
+\fBx2gosuspend-session\fR suspends the running session with session ID <session_id>.
 .PP
+This command is normally issued by an X2go client application with X2go user privileges.
+.PP
+.SH SEE ALSO
+x2gostartagent(8), x2goruncommand(8), x2goresume-session(8), x2goterminate-session(8)
 .SH AUTHOR
 This manual has been written by Mike Gabriel <mike.gabriel@das-netzwerkteam.de> for the X2go project
 (http://www.x2go.org).

@@ -66,6 +66,7 @@ x2goserver (3.0.99.5-0~x2go3) UNRELEASED; urgency=low
   * Fix x2goumount-session for individual paths (folder type: disk),
     ToDo: folder type CDROM and removable media.
   * Let db_insertmount create a proper return value (success vs. failed).
+  * Improvement of man pages.
 
   [ Ivan Kabaivanov ]
   * Makefile fix around man page installation in x2goserver-compat package.
