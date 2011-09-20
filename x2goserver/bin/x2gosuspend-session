@@ -42,8 +42,8 @@ kill -HUP $X2GO_AGENT_PID &>/dev/null && {
 	$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "session with ID $SESSION_NAME has been suspended successfully"
 } || {
 	err_msg="ERROR: failed to suspend session with ID $SESSION_NAME"
-	echo err_$msg 1>&2
-	$X2GO_LIB_PATH/x2gosyslog "$0" "err" "$err_msg"B
+	echo "$err_msg" 1>&2
+	$X2GO_LIB_PATH/x2gosyslog "$0" "err" "$err_msg"
 }
 
 export HOSTNAME 

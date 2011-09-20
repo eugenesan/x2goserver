@@ -87,7 +87,6 @@ kill -HUP $X2GO_AGENT_PID &>/dev/null && {
 	$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "client $X2GO_CLIENT has successfully resumed session with ID $SESSION_NAME"
 } || {
        err_msg="ERROR: failed to resume session with ID $SESSION_NAME"
-       echo err_$msg 1>&2
+       echo "$err_msg" 1>&2
        $X2GO_LIB_PATH/x2gosyslog "$0" "err" "$err_msg"
 }
-B
