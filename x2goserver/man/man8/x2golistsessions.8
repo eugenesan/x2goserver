@@ -12,7 +12,7 @@ x2golistsessions \- List Available X2go Sessions for User
 'nh
 .fi
 .ad l
-x2golistsessions [<server_hostname|--all-servers]
+x2golistsessions [<server_hostname>|--all-servers]
 
 .SH DESCRIPTION
 \fBx2golistsessions\fR returns a list of running or suspended X2go sessions for X2go server <server_hostname>.
@@ -24,7 +24,31 @@ a list of available X2go sessions.
 If \fBx2golistsessions\fR is executed with the \fI--all-servers\fR option then the central database
 of your X2go cluster is queried for running/suspended sessions belonging to the user executing this command.
 These sessions may be active on any of the X2go servers within you cluster.
+.SH RETURN VALUES
+A line-by-line list of available X2go sessions. Each line consists of several session attribute fields separated by the pipe
+symbol (,,|'').
 .PP
+The meaning of the session attributes of each output line are shown below:
+
+  field 01: <agent_pid>
+  field 02: <session_id>
+  field 03: <port>
+  field 04: <host>
+  field 05: <state>
+  field 06: <init_time>
+  field 07: <session_cookie>
+  field 08: <client_ip>
+  field 09: <gr_port>
+  field 10: <snd_port>
+  field 11: <last_time>
+  field 12: <user>
+  field 13: <age_in_secs>
+  field 14: <sshfs_port>
+
+.PP
+As exitcode \fBx2golistsessions\fR always returns 0.
+.SH SEE ALSO
+x2golistsessions_root(8), x2golistdesktops(8), x2goresume-session(8), x2gosuspend-session(8), x2goterminate-session(8)
 .SH AUTHOR
 This manual has been written by Mike Gabriel <mike.gabriel@das-netzwerkteam.de> for the X2go project
 (http://www.x2go.org).

@@ -53,6 +53,12 @@ is required on X2go server(s) and the central CUPS server.
 .PP
 Refer to http://wiki.x2go.org/installing_x2go_printing_debian_ubuntu for further information.
 .PP
+.SH RETURN VALUES
+By \fBx2goprint\fR nothing is reported on stdout or stderr.
+.PP
+If \fBx2goprint\fR has run successfully, an exitcode of 0 is returned. If the script has either been
+called by a non-root user or with the wrong number of command line arguments, a non-zero exitcode is
+returned.
 .SH AUTHOR
 This manual has been written by Mike Gabriel <mike.gabriel@das-netzwerkteam.de> for the X2go project
 (http://www.x2go.org).

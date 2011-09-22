@@ -27,9 +27,14 @@ Unmount shared folder(s) as registered for X2go session ID <session_id> in the X
 \*(T<\fB\<local_path_on_client>\fR\*(T>
 Optionally, you can name a local path name (path name as found on the client-side) here. If given,
 only the named folder is unshared from the X2go session <session_id>.
-
+.PP
 If this optional argument is omitted, then ALL session folders will be unshared (including spool folders for printing and MIME box).
-
+.SH RETURN VALUES
+.SH RETURN VALUES
+By \fBx2goumount-session\fR nothing is reported on stdout or stderr.
+.PP
+As exitcode \fBx2goumount-session\fR return 0 on successful an umount action. If there is a failure during
+unmounting a shared folder a non-zero exit code is returned.
 .SH SEE ALSO
 x2gomountdirs(8)
 .SH AUTHOR

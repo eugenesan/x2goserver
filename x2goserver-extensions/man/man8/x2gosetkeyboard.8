@@ -20,7 +20,12 @@ the X2go session keyboard settings requested from the client side.
 .PP
 If no 'keyboard' file is present in the X2go session directory, nothing happens (i.e. no error
 will be raised).
+.SH RETURN VALUES
+If \fBx2gosetkeyboard\fR successfully sets the session's keyboard parameters an exit code of 0 is
+returned. Also, if the file ${HOME}/.x2go/C-${X2GO_SESSION}/keyboard is not presented at the
+expected location, a zero-exitcode is returned.
 .PP
+If the command fails on its way, then the exitcode of the failing command is returned.
 .SH FILES
 ${HOME}/.x2go/C-${X2GO_SESSION}/keyboard
 .PP

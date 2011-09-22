@@ -40,7 +40,26 @@ A list of client-side folders or device mount points that shall be mounted for X
 .SH PERMISSIONS
 X2go uses the fuse-based SSH filesystem (SSHFS) for sharing client-side file ressources with X2go sessions.
 Users that shall use X2go folder sharing must be members of the X2go server's ,,fuse'' POSIX group.
+.SH RETURN VALUES
+\fBx2gomountdirs\fR returns some mount point information to stdout if the mounting process has been successful.
+The mount results are printed line-by-line. The individual lines must be interpreted as shown below:
+
+    line 01: dirs:<local_path>__REVERSESSH_PORT__<sshfs_port>
+    line 02: ssh port:<sshfs_port>
+    line 03: Host:<client_ip>
+    line 04: User:<user>
+    line 05: inserted, sshfs  -o <options> \\
+                "<user">@<client_ip>:"<local_path>" \\
+                "<server_path>" -p <sshfs_port>
+    line 06: mount <local_path> ok
+    line 07: fname: <desktop_icon_name>
 .PP
+If mounting of a client folder fails, either of the errors is returned (on stdout):
+
+    error 01: mounting of <local_path> failed
+    error 02: insertion of <local_path> failed (already mounted?), not mounting
+.PP
+As exitcode \fBx2gomoundirs\fR always returns 0.
 .SH SEE ALSO
 x2goumount-session(8)
 .SH AUTHOR
