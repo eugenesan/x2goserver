@@ -20,7 +20,9 @@ x2goresume-session <session_id>
 This command is normally issued
 by an X2go client application with X2go user privileges.
 .SH RETURN VALUES
-By \fBx2goresume-session\fR nothing is reported on stdout or stderr.
+\fBx2goresume-session\fR reports to stderr if resuming of session <session_id> failed. This
+very probably means that the session's X agent has died, so the session <session_id> will
+be marked as finished in the X2go session database.
 .PP
 As exitcode \fBx2goresume-session\fR always returns 0.
 .SH SEE ALSO
