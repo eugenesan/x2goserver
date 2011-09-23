@@ -94,9 +94,10 @@ Description: X2go server daemon scripts (extensions)
  to the X2go client.
  .
  This package co-operates with the cups-x2go CUPS
- backend. If CUPS server and X2go server are different
- machines, then install cups-x2go on the CUPS server
- and x2goserver-printing on your X2go server(s).
+ backend. If CUPS server and X2go server are hosted
+ on different machines, then make sure you install
+ this package on the X2go server/s (and the cups-x2go
+ package on the CUPS server).
 
 Package: x2goserver-compat
 Architecture: all
