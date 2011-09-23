@@ -68,9 +68,10 @@ x2goserver (3.0.99.5-0~x2go3) UNRELEASED; urgency=low
   * Let db_insertmount create a proper return value (success vs. failed).
   * Improvement of man pages.
   * Add return value information of X2go commands to man pages.
-  * If resuming or suspending of a session fails, mark the session has finished
-    (because the session's x2goagent is very probably dead). Do not write
-    an error to stderr if x2goterminate-session fails (i.e. if x2goagent is dead).
+  * If resuming or suspending of a session fails, mark the session has
+    finished (because the session's x2goagent is very probably dead). 
+    Do not write an error to stderr if x2goterminate-session fails (i.e. if
+    x2goagent is dead).
   * Man page update for x2gosession-terminate, x2gosession-resume.
 
   [ Ivan Kabaivanov ]
