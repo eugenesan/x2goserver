@@ -75,6 +75,7 @@ x2goserver (3.0.99.5-0~x2go3) UNRELEASED; urgency=low
   * Man page update for x2gosession-terminate, x2gosession-resume.
   * Split up x2goprint script + man page + adduser x2goprint as seperate
     package x2goserver-printing.
+  * Add man page for x2gobasepath and man page draft for x2gosessionlimit.
 
   [ Ivan Kabaivanov ]
   * Makefile fix around man page installation in x2goserver-compat package.
