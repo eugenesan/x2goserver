@@ -38,17 +38,15 @@ Recommends:
  xinit,
  x2goserver-extensions (= ${source:Version})
 Suggests:
- x2goserver-compat (= ${source:Version})
+ x2goserver-printing (= ${source:Version}), x2goserver-compat (= ${source:Version})
 Breaks:
  x2goserver-one,
  x2goserver-home,
- x2goprint
 Replaces:
  x2goserver-one,
  x2goserver-home,
- x2goprint
 Description: X2go server daemon scripts
- X2go is a serverbased computing environment with
+ X2go is a server based computing environment with
     - session resuming
     - low bandwith support
     - LDAP support
@@ -67,13 +65,46 @@ Description: X2go server daemon scripts
  of X2go make sure that you also have X2go server
  extensions package (x2goserver-extensions) installed.
 
+Package: x2goserver-printing
+Architecture: all
+Depends:
+ ${misc:Depends},
+ x2goserver (>= ${source:Version}), x2goserver (<< ${source:Version}.1~),
+ adduser
+Breaks:
+ x2goprint
+Replaces:
+ x2goprint
+Suggests:
+ cups-x2go
+Description: X2go server daemon scripts (extensions)
+ X2go is a server based computing environment with
+    - session resuming
+    - low bandwith support
+    - LDAP support
+    - client side mass storage mounting support
+    - audio support
+    - authentication by smartcard and USB stick
+ .
+ The X2go server printing package provides
+ client-side printing support for X2go.
+ .
+ This package has to be installed on X2go servers
+ that shall be able to pass X2go print jobs on
+ to the X2go client.
+ .
+ This package co-operates with the cups-x2go CUPS
+ backend. If CUPS server and X2go server are different
+ machines, then install cups-x2go on the CUPS server
+ and x2goserver-printing on your X2go server(s).
+
 Package: x2goserver-compat
 Architecture: all
 Depends:
  ${misc:Depends},
  x2goserver (>= ${source:Version}), x2goserver (<< ${source:Version}.1~)
 Description: X2go server daemon scripts (backwards compatitbity to old client versions)
- X2go is a serverbased computing environment with
+ X2go is a server based computing environment with
     - session resuming
     - low bandwith support
     - LDAP support
@@ -91,7 +122,7 @@ Depends:
  x2goserver (>= ${source:Version}), x2goserver (<< ${source:Version}.1~),
  x11-xkb-utils
 Description: X2go server daemon scripts (extensions)
- X2go is a serverbased computing environment with
+ X2go is a server based computing environment with
     - session resuming
     - low bandwith support
     - LDAP support
@@ -106,3 +137,4 @@ Description: X2go server daemon scripts (extensions)
  Make sure you have this package installed on your server
  if you want non-legacy X2go clients to be able to
  access your server without lack of features.
+

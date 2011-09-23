@@ -73,6 +73,8 @@ x2goserver (3.0.99.5-0~x2go3) UNRELEASED; urgency=low
     Do not write an error to stderr if x2goterminate-session fails (i.e. if
     x2goagent is dead).
   * Man page update for x2gosession-terminate, x2gosession-resume.
+  * Split up x2goprint script + man page + adduser x2goprint as seperate
+    package x2goserver-printing.
 
   [ Ivan Kabaivanov ]
   * Makefile fix around man page installation in x2goserver-compat package.
