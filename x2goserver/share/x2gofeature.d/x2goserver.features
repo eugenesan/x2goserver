@@ -21,18 +21,16 @@
 # Copyright (C) 2011  Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
 
 X2GO_LIB_PATH=`echo -n \$(x2gobasepath)/lib/x2go`
-X2GO_SHARE_PATH=`echo -n \$(x2gobasepath)/share/x2go`
 
 $X2GO_LIB_PATH/x2gosyslog "$0" "info" "$(basename $0) called with options: $@"
 
 X2GO_FEATURE=$1
 
-# run x2gofeature scripts of X2go extensions
-test -d $X2GO_SHARE_PATH/x2gofeature.d && {
-    for subscript in $X2GO_SHARE_PATH/x2gofeature.d/*.features; do
-        $subscript $@ && exit 0
-    done
-}
+# check for X2go server core features
+case "$X2GO_FEATURE" in
 
-echo "not available"
-exit 0
+    "X2GO_UMOUNTSESSION_ONLYPATH") echo "ok"; exit 0;;
+    *) exit -1;;
+
+esac
+
