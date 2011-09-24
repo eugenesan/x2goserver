@@ -5,4 +5,4 @@ x2goserver/etc/x2gosql/sql              /etc/x2go/x2gosql/
 x2goserver/etc/x2goserver.conf          /etc/x2go/
 x2goserver/VERSION.x2goserver           /usr/share/x2go/versions/
 x2goserver/x2gosqlitewrapper            /usr/lib/x2go/
-
+x2goserver/share/x2gofeature.d          /usr/share/x2go/
