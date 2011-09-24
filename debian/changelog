@@ -76,6 +76,8 @@ x2goserver (3.0.99.5-0~x2go3) UNRELEASED; urgency=low
   * Split up x2goprint script + man page + adduser x2goprint as separate
     package x2goserver-printing.
   * Add man page for x2gobasepath and man page draft for x2gosessionlimit.
+  * Identified x2goumount script (x2goserver-compat) as a necessary component of
+    x2gognomebindings and moved it there (with new name: x2goumount-session-gnome).
 
   [ Ivan Kabaivanov ]
   * Makefile fix around man page installation in x2goserver-compat package.
