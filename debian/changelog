@@ -83,6 +83,7 @@ x2goserver (3.0.99.5-0~x2go3) UNRELEASED; urgency=low
   * Add x2gofeature script and x2gofeature.d subscript for x2goserver-extensions and
     x2goserver-printing.
   * Add x2gofeature man page.
+  * Move x2goversion into x2goserver core package.
 
   [ Ivan Kabaivanov ]
   * Makefile fix around man page installation in x2goserver-compat package.
