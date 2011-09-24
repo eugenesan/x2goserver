@@ -29,6 +29,9 @@ X2GO_FEATURE=$1
 # check for X2go server core features
 case "$X2GO_FEATURE" in
 
+    "X2GO_LIST_DESKTOPS") echo "ok"; exit 0;;
+    "X2GO_MOUNTDIRS") echo "ok"; exit 0;;
+    "X2GO_UMOUNTSESSION_ALL") echo "ok"; exit 0;;
     "X2GO_UMOUNTSESSION_ONLYPATH") echo "ok"; exit 0;;
     *) exit -1;;
 
