@@ -1,0 +1,29 @@
+'\" -*- coding: utf-8 -*-
+.if \n(.g .ds T< \\FC
+.if \n(.g .ds T> \\F[\n[.fam]]
+.de URL
+\\$2 \(la\\$1\(ra\\$3
+..
+.if \n(.g .mso www.tmac
+.TH x2gofeature 8 "Sep 2011" "Version 3.0.99.x" "X2go Server Admin Tool"
+.SH NAME
+x2gofeature \- Query X2go Feature Availability on X2go Server
+.SH SYNOPSIS
+'nh
+.fi
+.ad 1
+x2gofeature <feature_name>
+
+.SH DESCRIPTION
+\fBx2gofeature\fR allows client applications to query the server for certain features
+before trying to use them.
+.PP
+\fBx2gofeature\fR can be run with user privileges.
+.SH RETURN VALUES
+If feature <feature_name> is available on the X2go server, then ,,ok'' is written to stdout.
+Otherwise the expression ,,not available'' is written to stdout.
+.SH SEE ALSO
+/usr/share/x2go/x2gofeature.d/*.features
+.SH AUTHOR
+This manual has been written by Mike Gabriel <mike.gabriel@das-netzwerkteam.de> for the X2go project
+(http://www.x2go.org).
