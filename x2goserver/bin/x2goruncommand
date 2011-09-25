@@ -128,3 +128,7 @@ kill -TERM  $X2GO_AGENT_PID
 $X2GO_LIB_PATH/x2gochangestatus 'F' $X2GO_SESSION  > /dev/null
 export HOSTNAME
 x2goumount-session $X2GO_SESSION
+
+if [ "$($X2GO_LIB_PATH/x2gologlevel)" != "debug" ]; then
+    rm -Rf $HOME/.x2go/C-$X2GO_SESSION
+fi
