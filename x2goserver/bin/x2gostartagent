@@ -47,23 +47,29 @@ if [ "$X2GO_STYPE" == "S" ]; then
 	SHADOW_MODE=`echo "$X2GO_CMD"|awk '{split($0,a,"XSHAD"); print a[1]}'`
 	SHADOW_USER=`echo "$X2GO_CMD"|awk '{split($0,a,"XSHAD"); print a[2]}'`
 	SHADOW_DESKTOP=`echo "$X2GO_CMD"|awk '{split($0,a,"XSHAD"); print a[3]}'`
+	$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "shadow session requested: mode $SHADOW_MODE, user: $SHADOW_USER, desktop: $SHADOW_DESKTOP"
 
 	echo "suser $SHADOW_USER user $USER " >> /tmp/uagent
 
 	if [ "$SHADOW_USER" != "$USER" ]; then
 
+		$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "user $USER requests desktop sharing from user $SHADOW_USER on display $SHADOW_DISPLAY"
+		$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "executing command: x2godesktopsharing client $X2GO_CLIENT $@"
 		OUTPUT=`x2godesktopsharing client $X2GO_CLIENT $@`
+		$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "command result is: $OUTPUT"
 		if [ "$OUTPUT" == "DENY" ]; then
 			echo "ACCESS DENIED" 1>&2
+			$X2GO_LIB_PATH/x2gosyslog "$0" "err" "ERROR: user $SHADOW_USER denied desktop sharing session"
 			exit -1
 		fi
 		X2GO_COOKIE=`echo $OUTPUT | awk '{print $2}'`
 		X2GO_PORT=`echo $OUTPUT | awk '{print $1}'`
+		$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "received shadow session information: cookie: $X2GO_COOKIE, port: $X2GO_PORT"
 		xauth add ${HOSTNAME}/unix:${X2GO_PORT} MIT-MAGIC-COOKIE-1 ${X2GO_COOKIE}
 		xauth add ${HOSTNAME}:${X2GO_PORT} MIT-MAGIC-COOKIE-1 ${X2GO_COOKIE}
 
 		echo $X2GO_PORT
-		echo $X2GO_COOKIE        
+		echo $X2GO_COOKIE
 		echo $OUTPUT | awk '{print $3}'
 		echo $OUTPUT | awk '{print $4}'
 		echo $OUTPUT | awk '{print $5}'
