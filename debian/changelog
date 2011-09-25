@@ -1,4 +1,4 @@
-x2goserver (3.0.99.5-0~x2go3) UNRELEASED; urgency=low
+x2goserver (3.0.99.6-0~x2go1) UNRELEASED; urgency=low
 
   [ Mike Gabriel ]
   * Rename x2goumount_session calls to x2goumount-session calls in x2goserver
