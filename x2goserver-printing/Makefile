@@ -22,6 +22,7 @@ SHAREDIR=$(PREFIX)/share/x2go
 BIN_SCRIPTS=$(shell cd bin && ls)
 #SBIN_SCRIPTS=$(shell cd sbin && ls)
 #LIB_FILES=$(shell cd lib && ls)
+FEATURE_SCRIPTS=$(shell cd share/x2gofeature.d && ls *.features)
 
 man_pages = `cd man && find * -type f`
 
@@ -53,9 +54,11 @@ install_scripts:
 	$(INSTALL_DIR) $(DESTDIR)$(BINDIR)
 #	$(INSTALL_DIR) $(DESTDIR)$(SBINDIR)
 #	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)
+	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)
 	$(INSTALL_PROGRAM) bin/*                $(DESTDIR)$(BINDIR)/
 #	$(INSTALL_PROGRAM) sbin/*               $(DESTDIR)$(SBINDIR)/
 #	$(INSTALL_FILE) lib/*                   $(DESTDIR)$(LIBDIR)/
+	$(INSTALL_PROGRAM) share/x2gofeature.d/*.features $(DESTDIR)$(SHAREDIR)/x2gofeature.d/
 
 install_config:
 #	$(INSTALL_DIR) $(DESTDIR)$(ETCDIR)
@@ -81,7 +84,7 @@ uninstall_scripts:
 	for file in $(BIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(BINDIR)/$$file; done
 #	for file in $(SBIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(SBINDIR)/$$file; done
 #	for file in $(LIB_FILES); do $(RM_FILE) $(DESTDIR)$(LIBDIR)/$$file; done
-#	$(RM_DIR) $(DESTDIR)$(LIBDIR) || true
+	for file in $(FEATURE_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(SHAREDIR)/x2gofeature.d/$$file; done
 
 uninstall_config:
 #	$(RM_FILE) $(DESTDIR)$(ETCDIR)/x2goserver.conf
