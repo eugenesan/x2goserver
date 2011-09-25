@@ -91,6 +91,8 @@ x2goserver (3.0.99.5-0~x2go3) UNRELEASED; urgency=low
     x2godesktopsharing (>=3.0.1.3) for it to work.
   * Clean session dir ~/.x2go/C-<session_id> after session terminates, if not
     running in debug mode.
+  * Change of Desktop icons for shared folders. This change is needed for
+    parallel installation of x2gognomebindings and x2golxdebindings.
 
   [ Ivan Kabaivanov ]
   * Makefile fix around man page installation in x2goserver-compat package.

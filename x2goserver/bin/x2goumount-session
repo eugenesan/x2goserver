@@ -126,21 +126,22 @@ break:
 		$remote=~s/\//_/g;
 		$remote=(split(":","$remote"))[1];
 		$remote="$ENV{'HOME'}/Desktop/$remote";
-		if ( -e "$remote(sshfs-disk)")
+		$current_desktop="$ENV{'XDG_CURRENT_DESKTOP'}"
+		if ( -e "$remote (sshfs-disk/$current_desktop)")
 		{
 		    syslog('info', "removing desktop icon $remote(sshfs-disk)");
-		    unlink("$remote(sshfs-disk)");
+		    unlink("$remote (sshfs-disk/$current_desktop)");
 		}
 		$remote=~s/%2framdrive%2fmnt%2f//;
-		if ( -e "$remote(sshfs-removable)")
+		if ( -e "$remote (sshfs-removable/$current_desktop)")
 		{
 			syslog('info', "removing desktop icon $remote(sshfs-removable)");
-			unlink("$remote(sshfs-removable)");
+			unlink("$remote (sshfs-removable/$current_desktop)");
 		}
-		if ( -e "$remote(sshfs-cdrom)")
+		if ( -e "$remote (sshfs-cdrom/$current_desktop)")
 		{
 			syslog('info', "removing desktop icon $remote(sshfs-cdrom)");
-			unlink("$remote(sshfs-cdrom)");
+			unlink("$remote (sshfs-cdrom/$current_desktop)");
 		}
 		db_deletemount ($session, @line[1]);
 		rmdir (@line[1]);

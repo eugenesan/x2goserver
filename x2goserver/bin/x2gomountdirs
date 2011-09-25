@@ -265,25 +265,27 @@ for (my $i=0;$i<@dirs;$i++)
 			if (! $printspool && ! $mimeboxspool && ! $useplasmoid)
 			{
 				my $fname="$ENV{'HOME'}/Desktop";
+				my $current_desktop="$ENV{'XDG_CURRENT_DESKTOP'}";
+
 				my $p=@dirs[$i];
 				$p=~s/\/cygdrive\///g;
 				$p=~s/\//_/g;
 				$fname="$fname/$p";
 				if ($type eq "dir")
 				{
-					$fname="$fname(sshfs-disk)";
+					$fname="$fname (sshfs-disk/$current_desktop)";
 					syslog('info', "creating desktop icon for @dirs[$i], media type is: client-side folder on harddrive");
 				}
 				else
 				{
 					if ($fname =~ m/CDROM/)
 					{
-						$fname="$fname(sshfs-cdrom)";
+						$fname="$fname (sshfs-cdrom/$current_desktop)";
 						syslog('info', "creating desktop icon for @dirs[$i], media type is: optical disc");
 					}
 					else
 					{
-						$fname="$fname(sshfs-removable)";
+						$fname="$fname (sshfs-removable/$current_desktop)";
 						syslog('info', "creating desktop icon for @dirs[$i], media type is: removable device");
 					}
 					$fname=~s/_ramdrive_mnt_//;
