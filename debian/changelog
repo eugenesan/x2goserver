@@ -87,6 +87,8 @@ x2goserver (3.0.99.5-0~x2go3) UNRELEASED; urgency=low
   * Makefile update for including x2gofeature scripts into installation, minor fixes
     to x2goserver core package Makefile.
   * Add debug output around shadow session startup (in x2gostartagent).
+  * Pass extra argument $USER to client-mode x2godesktopsharing, requires
+    x2godesktopsharing (>=3.0.1.3) for it to work.
 
   [ Ivan Kabaivanov ]
   * Makefile fix around man page installation in x2goserver-compat package.
