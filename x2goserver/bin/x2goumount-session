@@ -126,22 +126,32 @@ break:
 		$remote=~s/\//_/g;
 		$remote=(split(":","$remote"))[1];
 		$remote="$ENV{'HOME'}/Desktop/$remote";
-		my $current_desktop=`echo $session | cut -d"_" -f2 | cut -d"D" -f2-`;
-		if ( -e "$remote (sshfs-disk/$current_desktop)")
+
+		my $current_desktop = '';
+		if ($p =~ m/stDGNOME/)
 		{
-		    syslog('info', "removing desktop icon $remote(sshfs-disk)");
-		    unlink("$remote (sshfs-disk/$current_desktop)");
+			$current_desktop="/GNOME";
+		}
+		elsif ($p =~ m/stDLXDE/)
+		{
+			$current_desktop="/LXDE";
+		}
+
+		if ( -e "$remote (sshfs-disk$current_desktop)")
+		{
+		    syslog('info', "removing desktop icon $remote(sshfs-disk$current_desktop)");
+		    unlink("$remote (sshfs-disk$current_desktop)");
 		}
 		$remote=~s/%2framdrive%2fmnt%2f//;
-		if ( -e "$remote (sshfs-removable/$current_desktop)")
+		if ( -e "$remote (sshfs-removable$current_desktop)")
 		{
-			syslog('info', "removing desktop icon $remote(sshfs-removable)");
-			unlink("$remote (sshfs-removable/$current_desktop)");
+			syslog('info', "removing desktop icon $remote(sshfs-removable$current_desktop)");
+			unlink("$remote (sshfs-removable$current_desktop)");
 		}
 		if ( -e "$remote (sshfs-cdrom/$current_desktop)")
 		{
-			syslog('info', "removing desktop icon $remote(sshfs-cdrom)");
-			unlink("$remote (sshfs-cdrom/$current_desktop)");
+			syslog('info', "removing desktop icon $remote (sshfs-cdrom$current_desktop)");
+			unlink("$remote (sshfs-cdrom$current_desktop)");
 		}
 		db_deletemount ($session, @line[1]);
 		rmdir (@line[1]);
