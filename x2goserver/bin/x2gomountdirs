@@ -265,7 +265,7 @@ for (my $i=0;$i<@dirs;$i++)
 			if (! $printspool && ! $mimeboxspool && ! $useplasmoid)
 			{
 				my $fname="$ENV{'HOME'}/Desktop";
-				my $current_desktop="$ENV{'XDG_CURRENT_DESKTOP'}";
+				my $current_desktop=`echo $session | cut -d"_" -f2 | cut -d"D" -f2-`;
 
 				my $p=@dirs[$i];
 				$p=~s/\/cygdrive\///g;

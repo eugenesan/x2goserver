@@ -126,7 +126,7 @@ break:
 		$remote=~s/\//_/g;
 		$remote=(split(":","$remote"))[1];
 		$remote="$ENV{'HOME'}/Desktop/$remote";
-		$current_desktop="$ENV{'XDG_CURRENT_DESKTOP'}"
+		my $current_desktop=`echo $session | cut -d"_" -f2 | cut -d"D" -f2-`;
 		if ( -e "$remote (sshfs-disk/$current_desktop)")
 		{
 		    syslog('info', "removing desktop icon $remote(sshfs-disk)");
