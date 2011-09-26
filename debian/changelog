@@ -93,6 +93,7 @@ x2goserver (3.0.99.6-0~x2go1) UNRELEASED; urgency=low
     running in debug mode.
   * Change of Desktop icons for shared folders. This change is needed for
     parallel installation of x2gognomebindings and x2golxdebindings.
+  * Only remove server-side session directory if x2goruncommand has not failed.
 
   [ Ivan Kabaivanov ]
   * Makefile fix around man page installation in x2goserver-compat package.

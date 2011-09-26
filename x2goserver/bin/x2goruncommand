@@ -109,6 +109,7 @@ then
 	IMEXIT="true"
 fi
 
+if sucessful_run=false
 if [ "$EXEC" != "" ] && [ -x $EXEC ]; then
 	$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "running command $EXEC"
 	$cmd
@@ -119,6 +120,8 @@ if [ "$EXEC" != "" ] && [ -x $EXEC ]; then
 			sleep 1
 		done
 	fi
+	# if we reach here the possibility of a successful command execution is rather high
+	successful_run=true
 else
 	$X2GO_LIB_PATH/x2gosyslog "$0" "err" "ERROR: command $EXEC failed to execute"
 	echo "X2GORUNCOMMAND ERR NOEXEC:$cmd" > $MESSAGE_FILE
@@ -129,6 +132,6 @@ $X2GO_LIB_PATH/x2gochangestatus 'F' $X2GO_SESSION  > /dev/null
 export HOSTNAME
 x2goumount-session $X2GO_SESSION
 
-if [ "$($X2GO_LIB_PATH/x2gologlevel)" != "debug" ]; then
+if [ "$($X2GO_LIB_PATH/x2gologlevel)" != "debug" ] && [ "x$successful_run" = "xtrue" ]; then
     rm -Rf $HOME/.x2go/C-$X2GO_SESSION
 fi
