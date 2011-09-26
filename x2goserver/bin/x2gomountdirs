@@ -266,13 +266,13 @@ for (my $i=0;$i<@dirs;$i++)
 			{
 				my $fname="$ENV{'HOME'}/Desktop";
 				my $current_desktop = "";
-				if ($p =~ m/stDGNOME/)
+				if ($session =~ m/stDGNOME/)
 				{
-					$current_desktop="/GNOME";
+					$current_desktop="-gnome";
 				}
-				elsif ($p =~ m/stDLXDE/)
+				elsif ($session =~ m/stDLXDE/)
 				{
-					$current_desktop="/LXDE";
+					$current_desktop="-lxde";
 				}
 
 				my $p=@dirs[$i];
@@ -281,20 +281,20 @@ for (my $i=0;$i<@dirs;$i++)
 				$fname="$fname/$p";
 				if ($type eq "dir")
 				{
-					$fname="$fname (sshfs-disk$current_desktop)";
-					syslog('info', "creating desktop icon for @dirs[$i], media type is: client-side folder on harddrive");
+					$fname="$fname\ (sshfs-disk$current_desktop)";
+					syslog('info', "creating desktop icon for ,,@dirs[$i]'' at ,,$fname'', media type is: client-side folder on harddrive");
 				}
 				else
 				{
 					if ($fname =~ m/CDROM/)
 					{
-						$fname="$fname (sshfs-cdrom$current_desktop)";
-						syslog('info', "creating desktop icon for @dirs[$i], media type is: optical disc");
+						$fname="$fname\ (sshfs-cdrom$current_desktop)";
+						syslog('info', "creating desktop icon for ,,@dirs[$i]'' at ,,$fname'', media type is: optical disc");
 					}
 					else
 					{
-						$fname="$fname (sshfs-removable$current_desktop)";
-						syslog('info', "creating desktop icon for @dirs[$i], media type is: removable device");
+						$fname="$fname\ (sshfs-removable$current_desktop)";
+						syslog('info', "creating desktop icon for ,,@dirs[$i]'' at ,,$fname'', media type is: removable device");
 					}
 					$fname=~s/_ramdrive_mnt_//;
 				}
