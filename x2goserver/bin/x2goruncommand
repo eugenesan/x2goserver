@@ -109,7 +109,7 @@ then
 	IMEXIT="true"
 fi
 
-if sucessful_run=false
+sucessful_run=false
 if [ "$EXEC" != "" ] && [ -x $EXEC ]; then
 	$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "running command $EXEC"
 	$cmd
