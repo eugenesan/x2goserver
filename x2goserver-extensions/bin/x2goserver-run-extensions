@@ -32,6 +32,7 @@ X2GO_MODALITY=$2
 
 # scan extensions and execute them
 ls $X2GO_LIB_PATH/extensions/$X2GO_MODALITY.d/* | sort | while read x2go_extension; do
+	$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "executing $x2go_extension with option $X2GO_SESSION"
 	$x2go_extension $X2GO_SESSION
 done
 exit 0
