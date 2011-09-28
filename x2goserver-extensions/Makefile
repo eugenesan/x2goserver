@@ -54,18 +54,19 @@ install_scripts:
 	$(INSTALL_DIR) $(DESTDIR)$(BINDIR)
 #	$(INSTALL_DIR) $(DESTDIR)$(SBINDIR)
 	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)
-	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/pre-start.d
-	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/post-start.d
-	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/fail-start.d
-	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/pre-resume.d
-	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/post-resume.d
-	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/fail-resume.d
-	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/pre-suspend.d
-	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/post-suspend.d
-	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/fail-suspend.d
-	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/pre-terminate.d
-	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/post-terminate.d
-	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/fail-terminate.d
+	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/extensions
+	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/extensions/pre-start.d
+	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/extensions/post-start.d
+	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/extensions/fail-start.d
+	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/extensions/pre-resume.d
+	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/extensions/post-resume.d
+	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/extensions/fail-resume.d
+	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/extensions/pre-suspend.d
+	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/extensions/post-suspend.d
+	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/extensions/fail-suspend.d
+	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/extensions/pre-terminate.d
+	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/extensions/post-terminate.d
+	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/extensions/fail-terminate.d
 	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)
 	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)/x2gofeature.d
 	$(INSTALL_PROGRAM) bin/*                $(DESTDIR)$(BINDIR)/
