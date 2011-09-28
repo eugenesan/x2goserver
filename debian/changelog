@@ -80,12 +80,12 @@ x2goserver (3.0.99.6-0~x2go1) UNRELEASED; urgency=low
     of x2gognomebindings and moved it there (with new name:
     x2goumount-session-gnome).
   * Add x2golistmounts script to X2go server extensions.
-  * Add x2gofeature script and x2gofeature.d subscript for x2goserver-extensions and
-    x2goserver-printing.
+  * Add x2gofeature script and x2gofeature.d subscript for x2goserver-extensions
+    and x2goserver-printing.
   * Add x2gofeature man page.
   * Move x2goversion into x2goserver core package.
-  * Makefile update for including x2gofeature scripts into installation, minor fixes
-    to x2goserver core package Makefile.
+  * Makefile update for including x2gofeature scripts into installation, minor
+    fixes to x2goserver core package Makefile.
   * Add debug output around shadow session startup (in x2gostartagent).
   * Pass extra argument $USER to client-mode x2godesktopsharing, requires
     x2godesktopsharing (>=3.0.1.3) for it to work.
@@ -93,10 +93,12 @@ x2goserver (3.0.99.6-0~x2go1) UNRELEASED; urgency=low
     running in debug mode.
   * Change of Desktop icons for shared folders. This change is needed for
     parallel installation of x2gognomebindings and x2golxdebindings.
-  * Only remove server-side session directory if x2goruncommand has not failed.
-  * Syntax fix in x2golistsessions_sql, hopefully fixes broken x2gocleansessions.
-  * Terminate x2godesktopsharing for current session on x2goterminate-session or
-    when x2goruncommand is about to exit.
+  * Only remove server-side session directory if x2goruncommand has not
+    failed.
+  * Syntax fix in x2golistsessions_sql, hopefully fixes broken
+    x2gocleansessions.
+  * Terminate x2godesktopsharing for current session on x2goterminate-session
+    or when x2goruncommand is about to exit.
 
   [ Ivan Kabaivanov ]
   * Makefile fix around man page installation in x2goserver-compat package.
