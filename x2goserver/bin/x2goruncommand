@@ -128,7 +128,7 @@ else
 fi
 
 # stop x2godesktopsharing process gracefully...
-x2gofeature X2GO_DESKTOPSHARING >/dev/null && x2godesktopsharing-terminate $SESSION_NAME
+x2gofeature X2GO_DESKTOPSHARING >/dev/null && x2godesktopsharing-terminate $X2GO_SESSION
 
 kill -TERM  $X2GO_AGENT_PID
 $X2GO_LIB_PATH/x2gochangestatus 'F' $X2GO_SESSION  > /dev/null
