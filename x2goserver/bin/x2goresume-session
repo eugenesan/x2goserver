@@ -83,8 +83,18 @@ echo "$NEWOPTIONS" >${SESSION_DIR}/options
 
 $X2GO_LIB_PATH/x2goresume  $X2GO_CLIENT $SESSION_NAME  > /dev/null
 
+# run x2goserver-extensions for pre-resume
+x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME pre-resume
+
 kill -HUP $X2GO_AGENT_PID &>/dev/null && {
 	$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "client $X2GO_CLIENT has successfully resumed session with ID $SESSION_NAME"
+
+	# resume x2godesktopsharing, if it has been in use before the session got suspended
+	x2gofeature X2GO_DESKTOPSHARING &>/dev/null && x2godesktopsharing_resume $SESSION_NAME
+
+	# run x2goserver-extensions for post-resume
+	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME post-resume
+
 } || {
 	err_msg="ERROR: failed to resume session with ID $SESSION_NAME"
 	echo "$err_msg" 1>&2
@@ -93,7 +103,9 @@ kill -HUP $X2GO_AGENT_PID &>/dev/null && {
 	# If we reach here it means that the x2goagent process of the session has vanisshed
 	# If this happens than we mark the session as finished...
 	$X2GO_LIB_PATH/x2gochangestatus 'F' $SESSION_NAME  > /dev/null
+
+	# run x2goserver-extensions for fail-resume
+	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME fail-resume
+
 }
 
-# resume x2godesktopsharing, if it has been in use before the session got suspended
-x2gofeature X2GO_DESKTOPSHARING &>/dev/null && x2godesktopsharing_resume $SESSION_NAME

@@ -15,7 +15,7 @@ PREFIX=/usr/local
 ETCDIR=/etc/x2go
 BINDIR=$(PREFIX)/bin
 #SBINDIR=$(PREFIX)/sbin
-#LIBDIR=$(PREFIX)/lib/x2go
+LIBDIR=$(PREFIX)/lib/x2go
 MANDIR=$(PREFIX)/share/man
 SHAREDIR=$(PREFIX)/share/x2go
 
@@ -53,11 +53,35 @@ install: install_scripts install_config install_man install_version
 install_scripts:
 	$(INSTALL_DIR) $(DESTDIR)$(BINDIR)
 #	$(INSTALL_DIR) $(DESTDIR)$(SBINDIR)
-#	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)
+	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)
+	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/pre-start.d
+	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/post-start.d
+	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/fail-start.d
+	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/pre-resume.d
+	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/post-resume.d
+	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/fail-resume.d
+	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/pre-suspend.d
+	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/post-suspend.d
+	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/fail-suspend.d
+	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/pre-terminate.d
+	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/post-terminate.d
+	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/fail-terminate.d
 	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)
+	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)/x2gofeature.d
 	$(INSTALL_PROGRAM) bin/*                $(DESTDIR)$(BINDIR)/
 #	$(INSTALL_PROGRAM) sbin/*               $(DESTDIR)$(SBINDIR)/
-#	$(INSTALL_FILE) lib/*                   $(DESTDIR)$(LIBDIR)/
+	$(INSTALL_FILE) lib/extensions/pre-start.d/* $(DESTDIR)$(LIBDIR)/extensions/pre-start.d/
+	$(INSTALL_FILE) lib/extensions/post-start.d/* $(DESTDIR)$(LIBDIR)/extensions/post-start.d/
+	$(INSTALL_FILE) lib/extensions/fail-start.d/* $(DESTDIR)$(LIBDIR)/extensions/fail-start.d/
+	$(INSTALL_FILE) lib/extensions/pre-resume.d/* $(DESTDIR)$(LIBDIR)/extensions/pre-resume.d/
+	$(INSTALL_FILE) lib/extensions/post-resume.d/* $(DESTDIR)$(LIBDIR)/extensions/post-resume.d/
+	$(INSTALL_FILE) lib/extensions/post-fail.d/* $(DESTDIR)$(LIBDIR)/extensions/fail-resume.d/
+	$(INSTALL_FILE) lib/extensions/pre-suspend.d/* $(DESTDIR)$(LIBDIR)/extensions/pre-suspend.d/
+	$(INSTALL_FILE) lib/extensions/post-suspend.d/* $(DESTDIR)$(LIBDIR)/extensions/post-suspend.d/
+	$(INSTALL_FILE) lib/extensions/fail-suspend.d/* $(DESTDIR)$(LIBDIR)/extensions/fail-suspend.d/
+	$(INSTALL_FILE) lib/extensions/pre-terminate.d/* $(DESTDIR)$(LIBDIR)/extensions/pre-terminate.d/
+	$(INSTALL_FILE) lib/extensions/post-terminate.d/* $(DESTDIR)$(LIBDIR)/extensions/post-terminate.d/
+	$(INSTALL_FILE) lib/extensions/fail-terminate.d/* $(DESTDIR)$(LIBDIR)/extensions/fail-terminate.d/
 	$(INSTALL_PROGRAM) share/x2gofeature.d/*.features $(DESTDIR)$(SHAREDIR)/x2gofeature.d/
 
 install_config:
@@ -84,7 +108,7 @@ uninstall_scripts:
 	for file in $(BIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(BINDIR)/$$file; done
 #	for file in $(SBIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(SBINDIR)/$$file; done
 #	for file in $(LIB_FILES); do $(RM_FILE) $(DESTDIR)$(LIBDIR)/$$file; done
-#	$(RM_DIR) $(DESTDIR)$(LIBDIR) || true
+	$(RM_DIR) $(DESTDIR)$(LIBDIR)/extensions/ || true
 	for file in $(FEATURE_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(SHAREDIR)/x2gofeature.d/$$file; done
 
 uninstall_config:

@@ -101,6 +101,8 @@ x2goserver (3.0.99.6-0~x2go1) UNRELEASED; urgency=low
     or when x2goruncommand is about to exit.
   * Resume/suspend x2godesktopsharing during x2goresume-session,
     x2gosuspend-session.
+  * Provide pluggable X2go extension system for main X2go server
+    functions.
 
   [ Ivan Kabaivanov ]
   * Makefile fix around man page installation in x2goserver-compat package.

@@ -224,6 +224,9 @@ else
 	XDMCPOPT="-query $X2GOXDMCP"
 fi
 
+# run x2goserver-extensions for pre-start
+x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME pre-start
+
 if  [ "$X2GO_STYPE" == "S" ]; then
 	LD_LIBRARY_PATH=$X2GO_LIB x2goagent $X2GODPIOPTION_  -$SESSION_TYPE -auth ~/.Xauthority -S -shadow $SHADOW_DESKTOP -shadowmode $SHADOW_MODE -geometry ${X2GO_GEOMETRY} -name "X2GO-${SESSION_NAME}"  ${NX_AGENT} 2>${SESSION_DIR}/session.log &
 else
@@ -232,9 +235,19 @@ fi
 
 X2GO_AGENT_PID=$!
 X2GO_AGENT_RETVAL=$?
-test $X2GO_AGENT_RETVAL && \
-	$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "successfully started X2go agent session with ID $SESSION_NAME" || \
+test $X2GO_AGENT_RETVAL && {
+	$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "successfully started X2go agent session with ID $SESSION_NAME"
+
+	# run x2goserver-extensions for post-start
+	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME post-start
+
+} || {
 	$X2GO_LIB_PATH/x2gosyslog "$0" "err" "ERROR: failed to start X2go agent session with ID $SESSION_NAME"
+
+	# run x2goserver-extensions for fail-start
+	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME fail-start
+
+}
 
 X2GO_SND_PORT=1024
 
