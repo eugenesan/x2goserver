@@ -38,6 +38,9 @@ killall -HUP knotify &>/dev/null
 
 $X2GO_LIB_PATH/x2gochangestatus 'S' $SESSION_NAME  > /dev/null
 
+# terminate x2godesktopsharing instance and remember that it was running...
+x2gofeature X2GO_DESKTOPSHARING &>/dev/null && x2godesktopsharing-suspend $SESSION_NAME
+
 kill -HUP $X2GO_AGENT_PID &>/dev/null && {
 	$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "session with ID $SESSION_NAME has been suspended successfully"
 } || {
