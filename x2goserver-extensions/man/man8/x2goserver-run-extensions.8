@@ -1,0 +1,77 @@
+'\" -*- coding: utf-8 -*-
+.if \n(.g .ds T< \\FC
+.if \n(.g .ds T> \\F[\n[.fam]]
+.de URL
+\\$2 \(la\\$1\(ra\\$3
+..
+.if \n(.g .mso www.tmac
+.TH x2goserver-run-extensions 8 "Sep 2011" "Version 3.0.99.x" "X2go Server Tool"
+.SH NAME
+x2goserver-run-extensions \- Run X2go Server Extensions
+.SH SYNOPSIS
+'nh
+.fi
+.ad l
+x2goserver-run-extensions <session_id> <modality>
+
+.SH DESCRIPTION
+\fBx2goserver-run-extensions\fR is called from within a number of X2go Server core scripts.
+.PP
+\fIWARNING:\fR Do not call it directly unless you really know what you are doing.
+.PP
+\fBx2goserver-run-extensions\fR executes scripts that have been
+provided by third-party X2go extension packages.
+.PP
+What this man page is about is not the script usage itself but the way of how to provide X2go server
+extensions and features without the need to change the core X2go server scripts.
+.SH MODALITIES
+\fBx2goserver-run-extensions\fR is called with user privileges, as first cmd line argument the session ID is provided
+as the second cmd line argument a (what we call it) modality is provided.
+.PP
+This modality tells \fBx2goserver-run-extensions\fR at what stage of an X2go
+session startup, resumption, suspension or termination the calling script currently is at.
+.PP
+Calling X2go Server core scripts currently are: \fBx2gostartagent(8)\fR, \fBx2goruncommand(8)\fR, \fBx2goresume-session(8)\fR,
+\fBx2gosuspend-session(8)\fR or \fBx2goterminate-session(8)\fR.
+.PP
+The modality names all refer to a sub-directory of the path:
+
+  \fI<INSTALL_PREFIX>/lib/x2go/extensions\fR,
+
+where <INSTALL_PREFIX> mostly is /usr on commonly-used GNU/Linux systems.
+.PP
+In any of these sub-directories third-party X2go extension packages can place scripts or binaries that will then get executed by the core X2go server
+commands, either before or after the essential functionality (e.g. x2goagent startup, x2goagent suspension, x2goagent resumption, etc.) or on failure of that
+essential functionality.
+.PP
+The following table shows the available modalities, the calling scripts and the location where to place third-party extension scripts:
+
+
+ CALLING SCRIPT        MODALITY NAMES    EXTENSION SCRIPTS LOCATION
+ --------------        ---------------   --------------------------
+ x2gostartagent        pre-start         extensions/pre-start.d/
+                       post-start        extensions/post-start.d/
+                       fail-start        extensions/fail-start.d/
+ x2goruncommand        pre-runcommand    extensions/pre-runcommand.d/
+                       post-runcommand   extensions/post-runcommand.d/
+                       fail-runcommand   extensions/fail-runcommand.d/
+ x2goresume-session    pre-resume        extensions/pre-resume.d/
+                       post-resume       extensions/post-resume.d/
+                       fail-resume       extensions/fail-resume.d/
+ x2gosuspend-session   pre-suspend       extensions/pre-suspend.d/
+                       post-suspend      extensions/post-suspend.d/
+                       fail-suspend      extensions/fail-suspend.d/
+ x2goterminate-session pre-terminate     extensions/pre-terminate.d/
+                       post-terminate    extensions/post-terminate.d/
+                       fail-terminate    extensions/fail-terminate.d/
+
+\fIIMPORTANT:\fR When providing X2go Server extensions by this mechanism, please pretty well make sure that these extension scripts of yours that you place
+in either of the above folders do under no circumstance fail during execution.
+
+.SH RETURN VALUES
+As exitcode \fBx2goserver-run-extensions\fR always returns 0 and pretends to be permanently happy :-).
+.SH SEE ALSO
+\fBx2gostartagent(8)\fR, \fBx2goruncommand(8)\fR, \fBx2goresume-session(8)\fR, \fBx2gosuspend-session(8)\fR and \fBx2goterminate-session(8)\fR.
+.SH AUTHOR
+This manual has been written by Mike Gabriel <mike.gabriel@das-netzwerkteam.de> for the X2go project
+(http://www.x2go.org).
