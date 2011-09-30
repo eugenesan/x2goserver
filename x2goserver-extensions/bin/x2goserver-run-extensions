@@ -33,7 +33,7 @@ X2GO_MODALITY=$2
 # scan extensions and execute them
 ls $X2GO_LIB_PATH/extensions/$X2GO_MODALITY.d/* | sort | while read x2go_extension; do
 	$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "executing $x2go_extension with option $X2GO_SESSION"
-	$x2go_extension $X2GO_SESSION && {
+	$x2go_extension $X2GO_SESSION &>/dev/null && {
 		$X2GO_LIB_PATH/x2gosyslog "$0" "info" "$x2go_extension$(basename $0) for session $X2GO_SESSION has finished sucessfully"
 	} || {
 		$X2GO_LIB_PATH/x2gosyslog "$0" "warn" "$x2go_extension$(basename $0) for session $X2GO_SESSION returned a non-zero exit code, continuing..."
