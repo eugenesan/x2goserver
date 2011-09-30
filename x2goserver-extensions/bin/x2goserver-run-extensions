@@ -31,7 +31,7 @@ X2GO_SESSION=$1
 X2GO_MODALITY=$2
 
 # scan extensions and execute them
-ls $X2GO_LIB_PATH/extensions/$X2GO_MODALITY.d/* | egrep "^[0-9]{3}_[:alnum:]+" | sort | while read x2go_extension; do
+find /usr/lib/x2go/extensions/pre-start.d/ -maxdepth 1 -mindepth 1 | egrep "^[0-9]{3}_[:alnum:]+" | sort | while read x2go_extension; do
 	$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "executing $x2go_extension with option $X2GO_SESSION"
 	$x2go_extension $X2GO_SESSION &>/dev/null && {
 		$X2GO_LIB_PATH/x2gosyslog "$0" "info" "$x2go_extension$(basename $0) for session $X2GO_SESSION has finished sucessfully"
