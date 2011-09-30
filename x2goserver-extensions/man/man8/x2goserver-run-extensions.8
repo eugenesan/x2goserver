@@ -66,14 +66,17 @@ The following table shows the available modalities, the calling scripts and the 
                        fail-terminate    extensions/fail-terminate.d/
 
 \fIIMPORTANT:\fR When providing X2go Server extensions by this mechanism, please pretty well make sure that these extension scripts of yours that you place
-in either of the above folders do under no circumstance fail during execution.
+in either of the above folders do under no circumstance fail during execution. Return codes are ignored and failures are therefore not (yet) propagated.
 .SH EXECUTION OF EXTENSIONS
 Scripts (or binaries) that have been placed into one of the pre/post/fail modality folders (see above) are executed in alpha-numerical sorting order.
-So best practice probably is prepending extension file names with digits to make sure they get executed in the wanted order:
-
-  0010_x2goserver-statistics
-  0020_x2goserver-mail-notify
-  0021_x2goserver-monitoring
+.PP
+Extensions will only get executed if their file names start with three digits.
+This restriction is there to make sure that X2go Server extensions get executed in the correct/wanted order:
+.PP
+For example:
+  010_x2goserver-statistics
+  020_x2goserver-mail-notify
+  021_x2goserver-monitoring
   etc.pp.
 .SH RETURN VALUES
 As exitcode \fBx2goserver-run-extensions\fR always returns 0 and pretends to be permanently happy :-).

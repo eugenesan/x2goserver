@@ -109,6 +109,10 @@ x2goserver (3.0.99.6-0~x2go1) UNRELEASED; urgency=low
   * X2go server extensions have to completely quiet, diverting stdout/stderr to
     /dev/null.
 
+  [ Moritz Strübe ]
+  * Make digits at the beginning of X2go server extension scripts a must, not a
+    suggestion.
+
   [ Ivan Kabaivanov ]
   * Makefile fix around man page installation in x2goserver-compat package.
   * Makefile fix around man page installation in x2goserver-extensions package.
