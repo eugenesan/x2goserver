@@ -108,6 +108,7 @@ x2goserver (3.0.99.6-0~x2go1) UNRELEASED; urgency=low
     mechanism of x2goserver.
   * X2go server extensions have to completely quiet, diverting stdout/stderr to
     /dev/null.
+  * Fix for session dir cleanup, x2gologlevel returns int value, not string.
 
   [ Moritz Strübe ]
   * Make digits at the beginning of X2go server extension scripts a must, not a
