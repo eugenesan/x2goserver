@@ -65,5 +65,5 @@ x2goumount-session $SESSION_NAME
 
 # if we are not running in log level debug (=7) then clean up session dir
 if [ "$($X2GO_LIB_PATH/x2gologlevel)" != "7" ]; then
- (sleep 10; rm -Rf $HOME/.x2go/C-$X2GO_SESSION)&
+	(sleep 10; rm -Rf $HOME/.x2go/C-$X2GO_SESSION)&
 fi
