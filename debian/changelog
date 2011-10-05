@@ -1,4 +1,4 @@
-x2goserver (3.0.99.6-0~x2go1) UNRELEASED; urgency=low
+x2goserver (3.0.99.6-0~x2go1.1) UNRELEASED; urgency=low
 
   [ Mike Gabriel ]
   * Rename x2goumount_session calls to x2goumount-session calls in x2goserver
@@ -122,7 +122,10 @@ x2goserver (3.0.99.6-0~x2go1) UNRELEASED; urgency=low
   [ Martin Oehler ]
   * Removes old debug code fragment, fixes x2golistsessions parsing.
 
- -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Sun, 05 Jun 2011 20:44:32 +0200
+  [ Oleksandr Shneyder ]
+  * remove session directory after 10 sec delay to let x2goclient check cmdoutput file
+
+ -- Oleksandr Shneyder <oleksandr.shneyder@treuchtlingen.de>  Wed, 05 Oct 2011 14:25:12 +0200
 
 x2goserver (3.0.99.5-0~x2go2) unstable; urgency=low
 
