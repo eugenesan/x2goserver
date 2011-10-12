@@ -1,131 +1,114 @@
-x2goserver (3.0.99.6-0~x2go1.1) UNRELEASED; urgency=low
+x2goserver (3.0.99.6-0~x2go1) unstable; urgency=low
 
   [ Mike Gabriel ]
-  * Rename x2goumount_session calls to x2goumount-session calls in x2goserver
-    internal scripts.
+  * New upstream version (3.0.99.6):
+    - Rename x2goumount_session calls to x2goumount-session calls in
+      x2goserver internal scripts.
+    - Re-arranged script files into /bin and /lib directories.
+    - Tab'ified all script files, proper indentation, coding style.
+    - Fix for x2gomountdirs, now also usernames containing blanks can use
+      local folder sharing.
+    - Provide C wrapper for setgid call of x2gosqlitewrapper.pl. Remove
+      dependency from perlsuid.
+    - Store SQLite db in /var/lib/x2go to comply to latest FHS.
+    - Add x2gobasepath script to reliably detect x2goserver install path.
+    - Add man page for x2gobasepath.
+    - Remove Debianisms from INSTALL howto.
+    - Add chromium-browser as possible WWWBROWSER to x2goruncommand.
+    - Add lxterminal as possible TERMINAL to x2goruncommand.
+    - Add LibreOffice.org as possible OFFICE application to x2goruncommand.
+    - Fix for TERMINAL command execution if konsole (KDE4) is installed on the
+      server (closes upstream issue #87).
+    - Silence x2golistsessions on missing session.log files.
+    - Add x2goprint user creation information to INSTALL howto.
+    - Add sanity checks to x2goprint, script can only be run as root.
+    - Fix x2goprint, add syslogging, add inline comments.
+    - Add script lib/x2gologlevel: introduce [log] section in x2goserver.conf
+      with only parameter ,,loglevel''.
+    - Initialize Syslog module for all Perl scripts in x2goserver package.
+    - Add debugging support for almost all DB functions in x2godbwrapper.pm, fix
+      for Syslog module initialization in all Perl scripts.
+    - Add info loglevel messages for all scripts in bin dir.
+    - Add notice messages for start, suspend, resume, terminate, mountdirs
+      actions.
+    - Fix for x2godbwrapper.pm: we can't open/close the syslog socket in a
+      package. This has to be done by the scripts that use x2godbwrapper.pm.
+    - Add info loglevel messages for x2goserver-extensions scripts.
+    - Use usermapping for SSHFS mount points.
+    - Cleanup of man page area, thanks to Ivan Kabaivanov for pointing that out.
+    - Rename example user and group for session limits in x2goserver.conf so that
+      people do not get the idea to put users in x2gouser group.
+    - Add real error message if client fails to resume/suspend/terminate
+      a session.
+    - Present an ISO-8601 compliant datetime string in session lists
+      rendered by x2golistsessions (and similar) command(s).
+    - Silence knotify SIGHUP signals in case that no knotify is running in the
+      X2go session.
+    - Fix x2goumount-session for individual paths (folder type: disk),
+      ToDo: folder type CDROM and removable media.
+    - Let db_insertmount create a proper return value (success vs. failed).
+    - If resuming or suspending of a session fails, mark the session as
+      finished (because the session's x2goagent is very probably dead). 
+      Do not write an error to stderr if x2goterminate-session fails (i.e. if
+      x2goagent is dead).
+    - Identified x2goumount script (x2goserver-compat) as a necessary
+      component of x2gognomebindings and moved it there (with new name:
+      x2goumount-session-gnome).
+    - Add x2golistmounts script to X2go server extensions.
+    - Add x2gofeature script and x2gofeature.d subscripts.
+    - Add x2gofeature man page.
+    - Move x2goversion script into x2goserver core.
+    - Add debug output around shadow session startup (in x2gostartagent).
+    - Pass extra argument $USER to client-mode x2godesktopsharing, requires
+      x2godesktopsharing (>=3.0.1.3) for it to work.
+    - Clean session dir ~/.x2go/C-<session_id> after session terminates, if not
+      running in debug mode.
+    - Change of Desktop icons for shared folders. This change is needed for
+      parallel installation of x2gognomebindings and x2golxdebindings.
+    - Terminate x2godesktopsharing cleanly for current session on
+      x2goterminate-session or when x2goruncommand is about to exit.
+    - Resume/suspend x2godesktopsharing during x2goresume-session,
+      x2gosuspend-session.
+    - Provide pluggable X2go extension system for main X2go server
+      functions.
+    - Provide man page for x2goserver-run-extensions that explains the new plug-in
+      mechanism of x2goserver.
+
+
+
   * React to bug #627990, prefer man2html-base over man2html.
-  * Re-arranged script files in /bin and /lib directories, this is
-    still compensated by dh_install and dh_link and needs more work.
-  * Tab'ified all script files, proper indentation, coding style.
-  * Fix for x2gomountdirs, now also usernames containing blanks can use
-    local folder sharing.
-  * Provide C wrapper for setuid call of x2gosqlitewrapper.pl. Remove dependency
-    from perlsuid.
+  * Do not depend on package perlsuid anymore.
   * Use source format 3.0 (native).
   * Fix of Debian clean rules, fix of Makefile's clean rules.
   * Breaks/replaces packages: x2goserver-one, x2goserver-home, x2goprint
     (instead ofB Conflicts).
-  * Switch to setgid instead of setuid for SQLite wrapper.
   * Tab'ified postinst/postrm scripts.
-  * Store SQLite db in /var/lib/x2go to comply to latest FHS.
-  * Tab'ified (forgotten) scripts in /usr/sbin.
-  * Tab'ified (forgotten) init script.
-  * Tab'ified (forgotten) scripts in x2goserver-extensions package.
   * Install internal x2goserver scripts to /usr/lib/x2go, make sure scripts
     in /usr/bin find these scripts.
-  * Add x2gobasepath script to reliably detect x2goserver install path.
-  * Add man page for x2gobasepath.
-  * Remove Debianisms from INSTALL howto.
-  * Add chromium-browser as possible WWWBROWSER to x2goruncommand.
-  * Add lxterminal as possible TERMINAL to x2goruncommand.
-  * Add LibreOffice.org as possible OFFICE application to x2goruncommand.
-  * Fix for TERMINAL command execution if konsole (KDE4) is installed on the
-    server (closes upstream issue #87).
-  * Silence x2golistsessions on missing session.log files.
-  * Create x2goprint user/group on package installation, add same info to 
-    INSTALL howto.
-  * Add sanity checks to x2goprint, script can only be run as root.
-  * Fix x2goprint, add syslogging, add inline comments.
-  * Add script lib/x2gologlevel: introduce [log] section in x2goserver.conf
-    with only parameter ,,loglevel''.
-  * Change x2gologlevel script into a Perl module (and a script that calls it).
-    Using x2gologlevel function in x2goprint to set loglevel mask.
-  * Initialize Syslog module for all Perl scripts in x2goserver package.
-  * Add debugging support for almost all DB functions in x2godbwrapper.pm, fix
-    for Syslog module initialization in all Perl scripts.
-  * Add info loglevel messages for all scripts in bin dir.
-  * Fix for x2godbwrapper.pm: we can't open/close the syslog socket in a
-    package. This has to be done by the scripts that use x2godbwrapper.pm.
-  * Add info loglevel messages for x2goserver-extensions scripts.
-  * Add debug messages to x2gomountdirs script.
-  * Use usermapping for SSHFS mount points.
-  * Add notice messages for start, suspend, resume, terminate, mountdirs
-    actions.
-  * Cleanup of man page area, thanks to Ivan Kabaivanov for pointing that out.
-  * Rename example user and group for session limits in x2goserver.conf so that
-    people do not get the idea to put users in x2gouser group.
-  * Makefile and man page area fix for x2goserver-extensions.
   * x2goserver.postinst: fix home path updates if new home path already exists
-  * Add real error message if client fails to resume/suspend/terminate
-    a session.
-  * SQLite DB backend: Fix typo in date format template.
-  * Present an ISO-8601 compliant datetime string in session lists
-    rendered by x2golistsessions (and similar) command(s).
-  * Silence knotify SIGHUP signals in case that no knotify is running in the
-    X2go session.
-  * Fix x2goumount-session for individual paths (folder type: disk),
-    ToDo: folder type CDROM and removable media.
-  * Let db_insertmount create a proper return value (success vs. failed).
-  * Improvement of man pages.
-  * Add return value information of X2go commands to man pages.
-  * If resuming or suspending of a session fails, mark the session has
-    finished (because the session's x2goagent is very probably dead). 
-    Do not write an error to stderr if x2goterminate-session fails (i.e. if
-    x2goagent is dead).
-  * Man page update for x2gosession-terminate, x2gosession-resume.
-  * Split up x2goprint script + man page + adduser x2goprint as separate
-    package x2goserver-printing.
-  * Add man page for x2gobasepath and man page draft for x2gosessionlimit.
-  * Identified x2goumount script (x2goserver-compat) as a necessary component
-    of x2gognomebindings and moved it there (with new name:
-    x2goumount-session-gnome).
-  * Add x2golistmounts script to X2go server extensions.
-  * Add x2gofeature script and x2gofeature.d subscript for x2goserver-extensions
-    and x2goserver-printing.
-  * Add x2gofeature man page.
-  * Move x2goversion into x2goserver core package.
-  * Makefile update for including x2gofeature scripts into installation, minor
-    fixes to x2goserver core package Makefile.
-  * Add debug output around shadow session startup (in x2gostartagent).
-  * Pass extra argument $USER to client-mode x2godesktopsharing, requires
-    x2godesktopsharing (>=3.0.1.3) for it to work.
-  * Clean session dir ~/.x2go/C-<session_id> after session terminates, if not
-    running in debug mode.
-  * Change of Desktop icons for shared folders. This change is needed for
-    parallel installation of x2gognomebindings and x2golxdebindings.
-  * Only remove server-side session directory if x2goruncommand has not
-    failed.
-  * Syntax fix in x2golistsessions_sql, hopefully fixes broken
-    x2gocleansessions.
-  * Terminate x2godesktopsharing for current session on x2goterminate-session
-    or when x2goruncommand is about to exit.
-  * Resume/suspend x2godesktopsharing during x2goresume-session,
-    x2gosuspend-session.
-  * Provide pluggable X2go extension system for main X2go server
-    functions.
-  * Adapt to renaming of x2godesktopsharing scripts.
-  * Provide man page for x2goserver-run-extensions that explains the new plug-in
-    mechanism of x2goserver.
-  * X2go server extensions have to completely quiet, diverting stdout/stderr to
-    /dev/null.
-  * Fix for session dir cleanup, x2gologlevel returns int value, not string.
+  * Provide separate package x2goserver-printing: x2goprint script + man page +
+    adduser x2goprint.
 
   [ Moritz Strübe ]
-  * Make digits at the beginning of X2go server extension scripts a must, not a
-    suggestion.
+  * Improvements for new upstream version (3.0.99.6):
+    - Make digits at the beginning of X2go server extension scripts a must, not a
+      suggestion.
 
   [ Ivan Kabaivanov ]
-  * Makefile fix around man page installation in x2goserver-compat package.
-  * Makefile fix around man page installation in x2goserver-extensions package.
-  * Proof-reading code, fixing typos.
+  * Improvements for new upstream version (3.0.99.6):
+    - Many Makefile fixes around man page installation.
+    - Proof-reading code, fixing typos.
 
   [ Martin Oehler ]
-  * Removes old debug code fragment, fixes x2golistsessions parsing.
+  * Fixes for new upstream version (3.0.99.6):
+    - Removes old debug code fragment, fixes x2golistsessions parsing.
 
   [ Oleksandr Shneyder ]
-  * remove session directory after 10 sec delay to let x2goclient check cmdoutput file
+  * Improvements for new upstream version (3.0.99.6):
+    - Remove session directory after 10 sec delay to let x2goclient check
+      cmdoutput file.
 
- -- Oleksandr Shneyder <oleksandr.shneyder@treuchtlingen.de>  Wed, 05 Oct 2011 14:25:12 +0200
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Wed, 12 Oct 2011 11:44:59 +0200
 
 x2goserver (3.0.99.5-0~x2go2) unstable; urgency=low
 
