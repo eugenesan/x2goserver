@@ -262,7 +262,7 @@ for (my $i=0;$i<@dirs;$i++)
 					$useplasmoid=1;
 				}
 			}
-			if (! $printspool && ! $mimeboxspool && ! $useplasmoid)
+			if (! $printspool && ! $mimeboxspool && ! $useplasmoid && ! ($session =~ m/stDKDE/))
 			{
 				my $fname="$ENV{'HOME'}/Desktop";
 				my $current_desktop = "";
