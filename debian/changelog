@@ -3,6 +3,7 @@ x2goserver (3.0.99.7-0~x2go1) UNRELEASED; urgency=low
   * New upstream version (3.0.99.7):
     - Move x2golistmounts script from x2goserver-extensions to x2goserver
       core.
+    - X2go server extensions: fix regular expression when scanning modality dirs.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Wed, 12 Oct 2011 13:17:38 +0200
 
