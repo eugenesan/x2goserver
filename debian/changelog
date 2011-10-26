@@ -1,3 +1,9 @@
+x2goserver (3.0.99.8-0~x2go1) UNRELEASED; urgency=low
+
+  * New upstream version (3.0.99.8).
+
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Wed, 26 Oct 2011 17:37:10 +0200
+
 x2goserver (3.0.99.7-0~x2go1) unstable; urgency=low
 
   * New upstream version (3.0.99.7):
