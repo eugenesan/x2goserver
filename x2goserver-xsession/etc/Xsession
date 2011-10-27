@@ -99,13 +99,21 @@ rm -f "$WRITE_TEST"
 # instead of executing so that the variables and functions defined above
 # are available to the scripts, and so that they can pass variables to each
 # other
+
 SESSIONFILES=$(run-parts --list $SYSSESSIONDIR)
+SYSSESSIONDIR=/etc/x2go/Xsession.d
+
+SESSIONFILES=$(run-parts --list $SYSSESSIONDIR)
+
+### source Xsession files
 if [ -n "$SESSIONFILES" ]; then
-  set +e
-  for SESSIONFILE in $SESSIONFILES; do
-    . $SESSIONFILE
-  done
-  set -e
+
+    set +e
+    for SESSIONFILE in $SESSIONFILES; do
+        /usr/lib/x2go/x2gosyslog "$0" "notice" "executing $SESSIONFILE"
+        . $SESSIONFILE
+    done
+    set -e
 fi
 
 exit 0
