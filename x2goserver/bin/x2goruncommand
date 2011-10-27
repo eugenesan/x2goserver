@@ -125,7 +125,6 @@ if [ "$EXEC" != "" ] && [ -x $EXEC ]; then
 		$cmd
 	}
 
-	$cmd
 	#### some applications can quit immediately, we will wait here as long as x2goagent exists
 	if [  "$X2GO_SESS_TYPE" == "R" ] && [ "$IMEXIT" == "false" ]; then
 		$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "command $EXEC forked to background, waiting for agent to finish"
