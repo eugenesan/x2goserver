@@ -238,6 +238,9 @@ X2GO_AGENT_RETVAL=$?
 test $X2GO_AGENT_RETVAL && {
 	$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "successfully started X2go agent session with ID $SESSION_NAME"
 
+	# initialize x2goserver-xsession (process /etc/x2go/Xsession)
+	x2gofeature X2GO_XSESSION &>/dev/null && [ "x$SESSION_TYPE" = "xD" ] && . /etc/x2go/Xsession
+
 	# run x2goserver-extensions for post-start
 	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME post-start
 

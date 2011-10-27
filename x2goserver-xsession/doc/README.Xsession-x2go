@@ -1,0 +1,15 @@
+Xsession-x2go README
+====================
+
+With X2Go it is possible to use Xsession config files of your
+local X11 system.
+
+By default most files and folders related to Xsession config
+are symlinks to the corresponding file/folder in /etc/X11.
+
+If you want to customize your X2Go server's Xsession setup
+copy the corresponding files from /etc/X11 to /etc/x2go and
+adapt the setup to your needs.
+
+light+love,
+Mike Gabriel, 20111027
