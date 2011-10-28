@@ -119,8 +119,7 @@ if [ "$EXEC" != "" ] && [ -x $EXEC ]; then
 	x2gofeature X2GO_XSESSION &>/dev/null && [ "x$X2GO_SESS_TYPE" = "xD" ] && {
 		STARTUP=$cmd
 		$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "launching session with Xsession-x2go mechanism, using STARTUP=\"$STARTUP\""
-		export $STARTUP
-		/etc/x2go/Xsession
+		STARTUP="$STARTUP" /etc/x2go/Xsession
 	} || {
 		$cmd
 	}
