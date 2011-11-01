@@ -36,16 +36,16 @@ X2GO_AGENT_PID=`echo "$X2GO_AGENT_PID"| awk {'print $1'}`
 $X2GO_LIB_PATH/x2gochangestatus 'F' $SESSION_NAME  > /dev/null
 
 # stop x2godesktopsharing process gracefully...
-x2gofeature X2GO_DESKTOPSHARING &>/dev/null && x2goterminate-desktopsharing $SESSION_NAME
+x2gofeature X2GO_DESKTOPSHARING &>/dev/null && x2goterminate-desktopsharing $SESSION_NAME || true
 
 # run x2goserver-extensions for pre-terminate
-x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME pre-terminate
+x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME pre-terminate || true
 
 kill -TERM $X2GO_AGENT_PID &>/dev/null && {
 	$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "session with ID $SESSION_NAME has been terminated successfully"
 
 	# run x2goserver-extensions for post-terminate
-	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME post-terminate
+	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME post-terminate || true
 
 } || {
 	err_msg="ERROR: failed to terminate session with ID $SESSION_NAME"
@@ -56,7 +56,7 @@ kill -TERM $X2GO_AGENT_PID &>/dev/null && {
 	$X2GO_LIB_PATH/x2gosyslog "$0" "err" "$err_msg"
 
 	# run x2goserver-extensions for fail-terminate
-	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME fail-terminate
+	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME fail-terminate || true
 
 }
 

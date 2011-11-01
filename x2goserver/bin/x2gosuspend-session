@@ -39,16 +39,16 @@ killall -HUP knotify &>/dev/null
 $X2GO_LIB_PATH/x2gochangestatus 'S' $SESSION_NAME  > /dev/null
 
 # terminate x2godesktopsharing instance and remember that it was running...
-x2gofeature X2GO_DESKTOPSHARING &>/dev/null && x2gosuspend-desktopsharing $SESSION_NAME
+x2gofeature X2GO_DESKTOPSHARING &>/dev/null && x2gosuspend-desktopsharing $SESSION_NAME || true
 
 # run x2goserver-extensions for pre-suspend
-x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME pre-suspend
+x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME pre-suspend || true
 
 kill -HUP $X2GO_AGENT_PID &>/dev/null && {
 	$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "session with ID $SESSION_NAME has been suspended successfully"
 
 	# run x2goserver-extensions for post-suspend
-	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME post-suspend
+	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME post-suspend || true
 
 } || {
 	err_msg="ERROR: failed to suspend session with ID $SESSION_NAME"
@@ -60,7 +60,7 @@ kill -HUP $X2GO_AGENT_PID &>/dev/null && {
 	$X2GO_LIB_PATH/x2gochangestatus 'F' $SESSION_NAME  > /dev/null
 
 	# run x2goserver-extensions for fail-suspend
-	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME fail-suspend
+	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME fail-suspend || true
 
 }
 
