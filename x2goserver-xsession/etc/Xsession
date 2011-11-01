@@ -110,7 +110,7 @@ if [ -n "$SESSIONFILES" ]; then
 
     set +e
     for SESSIONFILE in $SESSIONFILES; do
-        /usr/lib/x2go/x2gosyslog "$0" "notice" "executing $SESSIONFILE"
+        /usr/lib/x2go/x2gosyslog "$0" "info" "executing $SESSIONFILE"
         . $SESSIONFILE
     done
     set -e

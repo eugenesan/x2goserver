@@ -6,6 +6,7 @@ x2goserver (3.0.99.8-0~x2go1) UNRELEASED; urgency=low
       package).
     - Ignore failures of x2gofeature calls, fixes x2goserver being
       installed without x2goserver-extensions.
+    - Set X2Go log level to info when running Xsession parts.
   * Make sure that package scripts (postinst, postrm, etc.) exit with
     exit code 0 at the end of the script.
 
