@@ -110,7 +110,7 @@ then
 fi
 
 # run x2goserver-extensions for pre-runcommand
-x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME pre-runcommand
+x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME pre-runcommand || true
 
 sucessful_run=false
 if [ "$EXEC" != "" ] && [ -x $EXEC ]; then
@@ -135,19 +135,19 @@ if [ "$EXEC" != "" ] && [ -x $EXEC ]; then
 	successful_run=true
 
 	# run x2goserver-extensions for post-runcommand
-	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME post-runcommand
+	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME post-runcommand || true
 
 else
 	$X2GO_LIB_PATH/x2gosyslog "$0" "err" "ERROR: command $EXEC failed to execute"
 	echo "X2GORUNCOMMAND ERR NOEXEC:$cmd" > $MESSAGE_FILE
 
 	# run x2goserver-extensions for fail-runcommand
-	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME fail-runcommand
+	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME fail-runcommand || true
 
 fi
 
 # stop x2godesktopsharing process gracefully...
-x2gofeature X2GO_DESKTOPSHARING >/dev/null && x2godesktopsharing-terminate $X2GO_SESSION
+x2gofeature X2GO_DESKTOPSHARING >/dev/null && x2godesktopsharing-terminate $X2GO_SESSION || true
 
 kill -TERM  $X2GO_AGENT_PID
 $X2GO_LIB_PATH/x2gochangestatus 'F' $X2GO_SESSION  > /dev/null

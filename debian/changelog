@@ -4,6 +4,8 @@ x2goserver (3.0.99.8-0~x2go1) UNRELEASED; urgency=low
     - Fix feature list in x2goserver-extensions.
     - Add Xsession.d processing to X2Go (as x2goserver-xsession add-on
       package).
+    - Ignore failures of x2gofeature calls, fixes x2goserver being
+      installed without x2goserver-extensions.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Wed, 26 Oct 2011 17:37:10 +0200
 

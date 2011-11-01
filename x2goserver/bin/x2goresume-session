@@ -84,16 +84,16 @@ echo "$NEWOPTIONS" >${SESSION_DIR}/options
 $X2GO_LIB_PATH/x2goresume  $X2GO_CLIENT $SESSION_NAME  > /dev/null
 
 # run x2goserver-extensions for pre-resume
-x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME pre-resume
+x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME pre-resume || true
 
 kill -HUP $X2GO_AGENT_PID &>/dev/null && {
 	$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "client $X2GO_CLIENT has successfully resumed session with ID $SESSION_NAME"
 
 	# resume x2godesktopsharing, if it has been in use before the session got suspended
-	x2gofeature X2GO_DESKTOPSHARING &>/dev/null && x2goresume-desktopsharing $SESSION_NAME
+	x2gofeature X2GO_DESKTOPSHARING &>/dev/null && x2goresume-desktopsharing $SESSION_NAME || true
 
 	# run x2goserver-extensions for post-resume
-	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME post-resume
+	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME post-resume || true
 
 } || {
 	err_msg="ERROR: failed to resume session with ID $SESSION_NAME"
@@ -105,7 +105,7 @@ kill -HUP $X2GO_AGENT_PID &>/dev/null && {
 	$X2GO_LIB_PATH/x2gochangestatus 'F' $SESSION_NAME  > /dev/null
 
 	# run x2goserver-extensions for fail-resume
-	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME fail-resume
+	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME fail-resume || true
 
 }
 
