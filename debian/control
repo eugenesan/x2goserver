@@ -79,7 +79,7 @@ Replaces:
  x2goprint
 Suggests:
  cups-x2go
-Description: X2go server daemon scripts (extensions)
+Description: X2go server daemon scripts (printing)
  X2go is a server based computing environment with
     - session resuming
     - low bandwith support
