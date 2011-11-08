@@ -40,7 +40,7 @@ case "$1" in
 			echo "User x2goprint already exists." >&2
 			# make sure all settings are appropriate
 			if [ "`id -gn x2goprint`" != "x2goprint" ]; then
-				usermod --gid x2goprint# x2goprint
+				usermod --gid x2goprint x2goprint
 			fi
 			if [ "getent passwd x2goprint" | egrep -v '^.*:x:.*:.*:.*:.*:/bin/sh$' &>/dev/null ]; then
 				usermod --shell /bin/sh x2goprint
