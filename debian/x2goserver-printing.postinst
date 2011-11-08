@@ -35,12 +35,15 @@ case "$1" in
 			echo "Creating x2goprint user." >&2
 			adduser --system \
 			        --disabled-password --disabled-login \
-			        --shell /bin/false --group --home /var/spool/x2goprint x2goprint
+			        --shell /bin/sh --group --home /var/spool/x2goprint x2goprint
 		else
 			echo "User x2goprint already exists." >&2
 			# make sure all settings are appropriate
 			if [ "`id -gn x2goprint`" != "x2goprint" ]; then
 				usermod --gid x2goprint# x2goprint
+			fi
+			if [ "getent passwd x2goprint" | egrep -v '^.*:x:.*:.*:.*:.*:/bin/sh$' &>/dev/null ]; then
+				usermod --shell /bin/sh x2goprint
 			fi
 			if [ "`ls -1d ~x2goprint`" != "/var/spool/x2goprint" ]; then
 				test -d /var/spool/x2goprint && \

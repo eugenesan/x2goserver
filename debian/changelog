@@ -9,6 +9,9 @@ x2goserver (3.0.99.8-0~x2go1) UNRELEASED; urgency=low
     - Set X2Go log level to info when running Xsession parts.
   * Make sure that package scripts (postinst, postrm, etc.) exit with
     exit code 0 at the end of the script.
+  * Fix non-local printing with X2Go: x2goprint user on X2Go server host
+    needs a shell to accept incoming print jobs from the central CUPS
+    server(s).
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Wed, 26 Oct 2011 17:37:10 +0200
 
