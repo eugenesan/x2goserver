@@ -1,4 +1,4 @@
-x2goserver (3.0.99.8-0~x2go1) UNRELEASED; urgency=low
+x2goserver (3.0.99.8-0~x2go1) unstable; urgency=low
 
   * New upstream version (3.0.99.8):
     - Fix feature list in x2goserver-extensions.
@@ -13,7 +13,7 @@ x2goserver (3.0.99.8-0~x2go1) UNRELEASED; urgency=low
     needs a shell to accept incoming print jobs from the central CUPS
     server(s).
 
- -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Wed, 26 Oct 2011 17:37:10 +0200
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Sun, 20 Nov 2011 18:54:26 +0100
 
 x2goserver (3.0.99.7-0~x2go1) unstable; urgency=low
 
