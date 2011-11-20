@@ -5,6 +5,7 @@ SHELL=/bin/bash
 
 INSTALL_DIR=install -d -o root -g root -m 755
 INSTALL_FILE=install -o root -g root -m 644
+INSTALL_SYMLINKK=ln -s -f
 INSTALL_PROGRAM=install -o root -g root -m 755
 
 RM_FILE=rm -f
@@ -62,7 +63,11 @@ install_scripts:
 
 install_config:
 	$(INSTALL_DIR) $(DESTDIR)$(ETCDIR)
-	$(INSTALL_FILE) etc/*                   $(DESTDIR)$(ETCDIR)/
+	$(INSTALL_FILE) etc/Xsession                    $(DESTDIR)$(ETCDIR)/
+	$(INSTALL_SYMLINK) /etc/X11/Xresources          $(DESTDIR)$(ETCDIR)/Xresources
+	$(INSTALL_SYMLINK) /etc/X11/Xsession.d          $(DESTDIR)$(ETCDIR)/Xsession.d
+	$(INSTALL_SYMLINK) /etc/X11/Xsession.options    $(DESTDIR)$(ETCDIR)/Xsession.options
+
 
 install_man:
 #	$(INSTALL_DIR) $(DESTDIR)$(MANDIR)
