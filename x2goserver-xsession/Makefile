@@ -68,9 +68,9 @@ install_config:
 	mkdir -p /etc/X11/Xsession.d
 	touch /etc/X11/Xsession.options
 	$(INSTALL_FILE) etc/Xsession                    $(DESTDIR)$(ETCDIR)/
-	$(INSTALL_SYMLINK) /etc/X11/Xresources          $(DESTDIR)$(ETCDIR)/Xresources
-	$(INSTALL_SYMLINK) /etc/X11/Xsession.d          $(DESTDIR)$(ETCDIR)/Xsession.d
-	$(INSTALL_SYMLINK) /etc/X11/Xsession.options    $(DESTDIR)$(ETCDIR)/Xsession.options
+	$(INSTALL_SYMLINK) /etc/X11/Xresources          $(DESTDIR)$(ETCDIR)/
+	$(INSTALL_SYMLINK) /etc/X11/Xsession.d          $(DESTDIR)$(ETCDIR)/
+	$(INSTALL_SYMLINK) /etc/X11/Xsession.options    $(DESTDIR)$(ETCDIR)/
 
 
 install_man:
