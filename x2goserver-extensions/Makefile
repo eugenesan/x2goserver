@@ -76,7 +76,7 @@ install_scripts:
 	$(INSTALL_FILE) lib/extensions/fail-start.d/.placeholder $(DESTDIR)$(LIBDIR)/extensions/fail-start.d/
 	$(INSTALL_FILE) lib/extensions/pre-resume.d/.placeholder $(DESTDIR)$(LIBDIR)/extensions/pre-resume.d/
 	$(INSTALL_FILE) lib/extensions/post-resume.d/.placeholder $(DESTDIR)$(LIBDIR)/extensions/post-resume.d/
-	$(INSTALL_FILE) lib/extensions/post-fail.d/.placeholder $(DESTDIR)$(LIBDIR)/extensions/fail-resume.d/
+	$(INSTALL_FILE) lib/extensions/fail-resume.d/.placeholder $(DESTDIR)$(LIBDIR)/extensions/fail-resume.d/
 	$(INSTALL_FILE) lib/extensions/pre-suspend.d/.placeholder $(DESTDIR)$(LIBDIR)/extensions/pre-suspend.d/
 	$(INSTALL_FILE) lib/extensions/post-suspend.d/.placeholder $(DESTDIR)$(LIBDIR)/extensions/post-suspend.d/
 	$(INSTALL_FILE) lib/extensions/fail-suspend.d/.placeholder $(DESTDIR)$(LIBDIR)/extensions/fail-suspend.d/
