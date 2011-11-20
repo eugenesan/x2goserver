@@ -67,7 +67,7 @@ install_scripts:
 	$(INSTALL_PROGRAM) lib/*                   $(DESTDIR)$(LIBDIR)/
 	$(INSTALL_PROGRAM) share/x2gofeature.d/*.features $(DESTDIR)$(SHAREDIR)/x2gofeature.d/
 	chmod a-x $(DESTDIR)$(LIBDIR)/*.pm
-	chown root:x2gouser $(DESTDIR)$(LIBDIR)/x2gosqlitewrapper
+	getent group x2gouser &>/dev/null && chown root:x2gouser $(DESTDIR)$(LIBDIR)/x2gosqlitewrapper
 	chmod 2755 $(DESTDIR)$(LIBDIR)/x2gosqlitewrapper
 
 install_config:
