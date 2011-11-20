@@ -19,11 +19,11 @@ already:
  $ chown x2goprint:x2goprint ~x2goprint
  $ chmod 0770 ~x2goprint
 
-2.) INSTALL x2goserver FILES
+2.) BUILD + INSTALL x2goserver FILES
 -----------------------------
 Extract tarball and run 
 
- $ make install
+ $ make && make install
 
 in base folder of the extracted tarball. 
 
