@@ -5,7 +5,7 @@ SHELL=/bin/bash
 
 INSTALL_DIR=install -d -o root -g root -m 755
 INSTALL_FILE=install -o root -g root -m 644
-INSTALL_SYMLINKK=ln -s -f
+INSTALL_SYMLINK=ln -s -f
 INSTALL_PROGRAM=install -o root -g root -m 755
 
 RM_FILE=rm -f
