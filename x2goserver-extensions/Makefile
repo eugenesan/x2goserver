@@ -71,18 +71,18 @@ install_scripts:
 	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)/x2gofeature.d
 	$(INSTALL_PROGRAM) bin/*                $(DESTDIR)$(BINDIR)/
 #	$(INSTALL_PROGRAM) sbin/*               $(DESTDIR)$(SBINDIR)/
-	$(INSTALL_FILE) lib/extensions/pre-start.d/* $(DESTDIR)$(LIBDIR)/extensions/pre-start.d/
-	$(INSTALL_FILE) lib/extensions/post-start.d/* $(DESTDIR)$(LIBDIR)/extensions/post-start.d/
-	$(INSTALL_FILE) lib/extensions/fail-start.d/* $(DESTDIR)$(LIBDIR)/extensions/fail-start.d/
-	$(INSTALL_FILE) lib/extensions/pre-resume.d/* $(DESTDIR)$(LIBDIR)/extensions/pre-resume.d/
-	$(INSTALL_FILE) lib/extensions/post-resume.d/* $(DESTDIR)$(LIBDIR)/extensions/post-resume.d/
-	$(INSTALL_FILE) lib/extensions/post-fail.d/* $(DESTDIR)$(LIBDIR)/extensions/fail-resume.d/
-	$(INSTALL_FILE) lib/extensions/pre-suspend.d/* $(DESTDIR)$(LIBDIR)/extensions/pre-suspend.d/
-	$(INSTALL_FILE) lib/extensions/post-suspend.d/* $(DESTDIR)$(LIBDIR)/extensions/post-suspend.d/
-	$(INSTALL_FILE) lib/extensions/fail-suspend.d/* $(DESTDIR)$(LIBDIR)/extensions/fail-suspend.d/
-	$(INSTALL_FILE) lib/extensions/pre-terminate.d/* $(DESTDIR)$(LIBDIR)/extensions/pre-terminate.d/
-	$(INSTALL_FILE) lib/extensions/post-terminate.d/* $(DESTDIR)$(LIBDIR)/extensions/post-terminate.d/
-	$(INSTALL_FILE) lib/extensions/fail-terminate.d/* $(DESTDIR)$(LIBDIR)/extensions/fail-terminate.d/
+	$(INSTALL_FILE) lib/extensions/pre-start.d/.placeholder $(DESTDIR)$(LIBDIR)/extensions/pre-start.d/
+	$(INSTALL_FILE) lib/extensions/post-start.d/.placeholder $(DESTDIR)$(LIBDIR)/extensions/post-start.d/
+	$(INSTALL_FILE) lib/extensions/fail-start.d/.placeholder $(DESTDIR)$(LIBDIR)/extensions/fail-start.d/
+	$(INSTALL_FILE) lib/extensions/pre-resume.d/.placeholder $(DESTDIR)$(LIBDIR)/extensions/pre-resume.d/
+	$(INSTALL_FILE) lib/extensions/post-resume.d/.placeholder $(DESTDIR)$(LIBDIR)/extensions/post-resume.d/
+	$(INSTALL_FILE) lib/extensions/post-fail.d/.placeholder $(DESTDIR)$(LIBDIR)/extensions/fail-resume.d/
+	$(INSTALL_FILE) lib/extensions/pre-suspend.d/.placeholder $(DESTDIR)$(LIBDIR)/extensions/pre-suspend.d/
+	$(INSTALL_FILE) lib/extensions/post-suspend.d/.placeholder $(DESTDIR)$(LIBDIR)/extensions/post-suspend.d/
+	$(INSTALL_FILE) lib/extensions/fail-suspend.d/.placeholder $(DESTDIR)$(LIBDIR)/extensions/fail-suspend.d/
+	$(INSTALL_FILE) lib/extensions/pre-terminate.d/.placeholder $(DESTDIR)$(LIBDIR)/extensions/pre-terminate.d/
+	$(INSTALL_FILE) lib/extensions/post-terminate.d/.placeholder $(DESTDIR)$(LIBDIR)/extensions/post-terminate.d/
+	$(INSTALL_FILE) lib/extensions/fail-terminate.d/.placeholder $(DESTDIR)$(LIBDIR)/extensions/fail-terminate.d/
 	$(INSTALL_PROGRAM) share/x2gofeature.d/*.features $(DESTDIR)$(SHAREDIR)/x2gofeature.d/
 
 install_config:
