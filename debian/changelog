@@ -1,3 +1,10 @@
+x2goserver (3.0.99.9-0~x2go1) UNRELEASED; urgency=low
+
+  * New upstream version (3.0.99.9):
+    - Fix for install stanzas in several Makefiles.
+
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Mon, 21 Nov 2011 21:09:07 +0100
+
 x2goserver (3.0.99.8-0~x2go1) unstable; urgency=low
 
   * New upstream version (3.0.99.8):
