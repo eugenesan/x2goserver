@@ -228,9 +228,21 @@ fi
 x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME pre-start || true
 
 if  [ "$X2GO_STYPE" == "S" ]; then
-	LD_LIBRARY_PATH=$X2GO_LIB x2goagent $X2GODPIOPTION_  -$SESSION_TYPE -auth ~/.Xauthority -S -shadow $SHADOW_DESKTOP -shadowmode $SHADOW_MODE -geometry ${X2GO_GEOMETRY} -name "X2GO-${SESSION_NAME}"  ${NX_AGENT} 2>${SESSION_DIR}/session.log &
+	SESSION_WINDOW_TITLE="Shadow Desktop on ${HOSTNAME} shared by ${SHADOW_USER}, "
+	if [ "x${SHADOW_MODE}" == "x1" ]; then
+		SESSION_WINDOW_TITLE+="granting full access to ${USER}"
+	else
+		SESSION_WINDOW_TITLE+="granting view-only access to ${USER}"
+	fi
+	SESSION_WINDOW_TITLE+=" (X2GO-${SESSION_NAME})"
+	LD_LIBRARY_PATH=$X2GO_LIB x2goagent $X2GODPIOPTION_  -$SESSION_TYPE -auth ~/.Xauthority -S -shadow $SHADOW_DESKTOP -shadowmode $SHADOW_MODE -geometry ${X2GO_GEOMETRY} -name "${SESSION_WINDOW_TITLE}"  ${NX_AGENT} 2>${SESSION_DIR}/session.log &
 else
-	LD_LIBRARY_PATH=$X2GO_LIB x2goagent $X2GODPIOPTION_ $XDMCPOPT  -$SESSION_TYPE -auth ~/.Xauthority -geometry ${X2GO_GEOMETRY} -name "X2GO-${SESSION_NAME}"  ${NX_AGENT} 2>${SESSION_DIR}/session.log &
+	if [ -n "$X2GO_CMD" ]; then
+		SESSION_WINDOW_TITLE="${X2GO_CMD} for ${USER}@${HOSTNAME} (X2GO-${SESSION_NAME})"
+	else
+		SESSION_WINDOW_TITLE="X2GO-${SESSION_NAME}"
+	fi
+	LD_LIBRARY_PATH=$X2GO_LIB x2goagent $X2GODPIOPTION_ $XDMCPOPT  -$SESSION_TYPE -auth ~/.Xauthority -geometry ${X2GO_GEOMETRY} -name "${SESSION_WINDOW_TITLE}"  ${NX_AGENT} 2>${SESSION_DIR}/session.log &
 fi
 
 X2GO_AGENT_PID=$!
