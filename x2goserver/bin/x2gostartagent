@@ -41,21 +41,25 @@ X2GO_STYPE=$8
 X2GO_CMD=$9
 X2GO_RESIZE=0
 X2GO_FULLSCREEN=0
+X2GO_USER=${USER}
 
 if [ "$X2GO_STYPE" == "S" ]; then
+
+	X2GO_SHADOW_REQUESTING_USER=$10
+	test -n ${X2GO_SHADOW_REQUESTING_USER} && X2GO_USER=${X2GO_SHADOW_REQUESTING_USER}
 
 	SHADOW_MODE=`echo "$X2GO_CMD"|awk '{split($0,a,"XSHAD"); print a[1]}'`
 	SHADOW_USER=`echo "$X2GO_CMD"|awk '{split($0,a,"XSHAD"); print a[2]}'`
 	SHADOW_DESKTOP=`echo "$X2GO_CMD"|awk '{split($0,a,"XSHAD"); print a[3]}'`
 	$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "shadow session requested: mode $SHADOW_MODE, user: $SHADOW_USER, desktop: $SHADOW_DESKTOP"
 
-	echo "suser $SHADOW_USER user $USER " >> /tmp/uagent
+	echo "suser $SHADOW_USER user $X2GO_USER " >> /tmp/uagent
 
-	if [ "$SHADOW_USER" != "$USER" ]; then
+	if [ "$SHADOW_USER" != "$X2GO_USER" ]; then
 
-		$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "user ,,$USER'' requests desktop sharing from user ,,$SHADOW_USER'' for desktop ,,$SHADOW_DESKTOP''"
-		$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "executing command: x2godesktopsharing client $X2GO_CLIENT $@ $USER"
-		OUTPUT=`x2godesktopsharing client $X2GO_CLIENT $@ $USER`
+		$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "user ,,$X2GO_USER'' requests desktop sharing from user ,,$SHADOW_USER'' for desktop ,,$SHADOW_DESKTOP''"
+		$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "executing command: x2godesktopsharing client $X2GO_CLIENT $@ $X2GO_USER"
+		OUTPUT=`x2godesktopsharing client $X2GO_CLIENT $@ $X2GO_USER`
 		$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "command result is: $OUTPUT"
 		if [ "$OUTPUT" == "DENY" ]; then
 			echo "ACCESS DENIED" 1>&2
@@ -113,7 +117,7 @@ while [ "$OUTPUT"  != "inserted" ]; do
 	if  [ -e "/tmp/.X${X2GO_PORT}-lock" ] || [ -e "/tmp/.X11-unix/X${X2GO_PORT}" ]; then
 		OUTPUT="XXX"
 	else
-		SESSION_NAME=${USER}-${X2GO_PORT}-`date +"%s"`
+		SESSION_NAME=${X2GO_USER}-${X2GO_PORT}-`date +"%s"`
 		if [ "$COLORDEPTH" != "" ]; then
 			SESSION_NAME="$SESSION_NAME"_st${SESSION_TYPE}${X2GO_CMD}_dp${COLORDEPTH}
 			SESSION_NAME=`echo "$SESSION_NAME" | sed  -e  "s/:/PP/g"`
@@ -230,15 +234,15 @@ x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSIO
 if  [ "$X2GO_STYPE" == "S" ]; then
 	SESSION_WINDOW_TITLE="Shadow Desktop on ${HOSTNAME} shared by ${SHADOW_USER}, "
 	if [ "x${SHADOW_MODE}" == "x1" ]; then
-		SESSION_WINDOW_TITLE+="granting full access to ${USER}"
+		SESSION_WINDOW_TITLE+="granting full access to ${X2GO_USER}"
 	else
-		SESSION_WINDOW_TITLE+="granting view-only access to ${USER}"
+		SESSION_WINDOW_TITLE+="granting view-only access to ${X2GO_USER}"
 	fi
 	SESSION_WINDOW_TITLE+=" (X2GO-${SESSION_NAME})"
 	LD_LIBRARY_PATH=$X2GO_LIB x2goagent $X2GODPIOPTION_  -$SESSION_TYPE -auth ~/.Xauthority -S -shadow $SHADOW_DESKTOP -shadowmode $SHADOW_MODE -geometry ${X2GO_GEOMETRY} -name "${SESSION_WINDOW_TITLE}"  ${NX_AGENT} 2>${SESSION_DIR}/session.log &
 else
 	if [ -n "$X2GO_CMD" ]; then
-		SESSION_WINDOW_TITLE="${X2GO_CMD} for ${USER}@${HOSTNAME} (X2GO-${SESSION_NAME})"
+		SESSION_WINDOW_TITLE="${X2GO_CMD} for ${X2GO_USER}@${HOSTNAME} (X2GO-${SESSION_NAME})"
 	else
 		SESSION_WINDOW_TITLE="X2GO-${SESSION_NAME}"
 	fi

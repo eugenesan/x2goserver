@@ -3,8 +3,9 @@ x2goserver (3.0.99.9-0~x2go1) UNRELEASED; urgency=low
   * New upstream version (3.0.99.9):
     - Fix for install stanzas in several Makefiles.
     - Give X2Go session windows a human readable title.
+    - Desktop sharing: fix username of user who requests desktop sharing.
 
- -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 25 Nov 2011 10:36:28 +0100
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 25 Nov 2011 11:38:46 +0100
 
 x2goserver (3.0.99.8-0~x2go1) unstable; urgency=low
 
