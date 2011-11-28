@@ -108,11 +108,13 @@ my $user="x2gouser";
 		                      unique(display))
 		                      ");
 		$sth->execute() or die;
+		$sth->finish();
 
 		my $sth=$dbh->prepare("
 		                      create table messages(mess_id varchar(20) primary key, message text)
 		                      ");
 		$sth->execute() or die;
+		$sth->finish();
 
 		my $sth=$dbh->prepare("
 		                      create table user_messages(
@@ -120,6 +122,7 @@ my $user="x2gouser";
 		                      uname varchar(100) not null)
 		                      ");
 		$sth->execute() or die;
+		$sth->finish();
 
 		my $sth=$dbh->prepare("
 		                      create table used_ports(
@@ -128,6 +131,7 @@ my $user="x2gouser";
 		                      port integer primary key)
 		                      ");
 		$sth->execute() or die;
+		$sth->finish();
 
 		my $sth=$dbh->prepare("
 		                      create table mounts(
@@ -137,6 +141,7 @@ my $user="x2gouser";
 		                      primary key(path,client))
 		                      ");
 		$sth->execute() or die;
+		$sth->finish();
 
 		my $sth=$dbh->prepare("
 		                      CREATE TRIGGER fkd_mounts_session_id
@@ -149,6 +154,7 @@ my $user="x2gouser";
 		                      END;
 		                      ");
 		$sth->execute() or die; 
+		$sth->finish();
 
 		my $sth=$dbh->prepare("
 		                      CREATE TRIGGER fkd_ports_session_id
@@ -160,9 +166,11 @@ my $user="x2gouser";
 		                      END;
 		                      ");
 		$sth->execute() or die; 
-
 		$sth->finish();
-		$dbh->disconnect();
+
+		# undef $dbh should be preferred to $dbh->disconnect(), see
+		# http://www.perlmonks.org/?node_id=665714
+		undef $dbh;
 		chmod(0770, "$dir");
 		chown('root',$pgid,"$dir");
 		chmod(0660, "$dbfile");
