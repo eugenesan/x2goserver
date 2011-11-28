@@ -21,9 +21,10 @@
 
 use strict;
 use Cwd;
-use Cwd 'abs_path';
+use Cwd q{abs_path};
+use File::Basename;
 
-my $dir = getcwd;
-my $base_path = abs_path("$0/../.."); 
+my $dir = dirname($0);
+my $base_path = abs_path("$dir/.."); 
 
 print "$base_path";

@@ -5,6 +5,7 @@ x2goserver (3.0.99.9-0~x2go1) UNRELEASED; urgency=low
     - Give X2Go session windows a human readable title.
     - Desktop sharing: fix username of user who requests desktop sharing.
     - Allow client-side setting of session window title.
+    - Fix x2gobasepath for Perl versions < 5.10.x.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 25 Nov 2011 11:38:46 +0100
 
