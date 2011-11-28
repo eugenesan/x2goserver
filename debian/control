@@ -26,7 +26,8 @@ Depends:
  libdbd-pg-perl,
  libdbd-sqlite3-perl,
  adduser,
- xauth
+ xauth,
+ psmisc
 Recommends:
  sshfs,
  x11-apps,
