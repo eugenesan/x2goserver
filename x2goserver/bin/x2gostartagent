@@ -238,42 +238,15 @@ fi
 # run x2goserver-extensions for pre-start
 x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME pre-start || true
 
+# rename session window title if supported by server+client
+x2gofeature X2GO_SET_SESSIONTITLE && SESSION_WINDOW_TITLE=$(x2gosessiontitle) || SESSION_WINDOW_TITLE="X2GO-${SESSION_NAME}"
+
 if  [ "$X2GO_STYPE" == "S" ]; then
-	if [ "x${SHADOW_MODE}" == "x1" ]; then
-		SHADOW_ACCESS="full"
-	else
-		SHADOW_ACCESS="view-only"
-	fi
-
-	SESSION_WINDOW_TITLE="Shadow Desktop on ${HOSTNAME} shared"
-	if [ "x${SHADOW_USER}" == "x${SHADREQ_USER}" ]; then
-		SESSION_WINDOW_TITLE+=" in ${SHADOW_ACCESS} mode by/with yourself"
-	else
-		SESSION_WINDOW_TITLE+=" by ${SHADOW_USER}, granting ${SHADOW_ACCESS} access to ${SHADREQ_USER}"
-	fi
-	SESSION_WINDOW_TITLE+=" (X2GO-${SESSION_NAME})"
-
-	test -z "${X2GO_SESSION_WINDOW_TITLE}" && { 
-		X2GO_SESSION_WINDOW_TITLE="${SESSION_WINDOW_TITLE}"
-	} || {
-		X2GO_SESSION_WINDOW_TITLE="${X2GO_SESSION_WINDOW_TITLE} (X2GO-${SESSION_NAME})"
-		$X2GO_LIB_PATH/x2gosyslog "$0" "info" "renaming session window title as requested by X2Go client to ,,$X2GO_SESSION_WINDOW_TITLE''"
-        }
-	LD_LIBRARY_PATH=$X2GO_LIB x2goagent $X2GODPIOPTION_  -$SESSION_TYPE -auth ~/.Xauthority -S -shadow $SHADOW_DESKTOP -shadowmode $SHADOW_MODE -geometry ${X2GO_GEOMETRY} -name "${X2GO_SESSION_WINDOW_TITLE}"  ${NX_AGENT} 2>${SESSION_DIR}/session.log &
+	LD_LIBRARY_PATH=$X2GO_LIB x2goagent $X2GODPIOPTION_  -$SESSION_TYPE -auth ~/.Xauthority -S -shadow $SHADOW_DESKTOP -shadowmode $SHADOW_MODE -geometry ${X2GO_GEOMETRY} -name "${SESSION_WINDOW_TITLE}"  ${NX_AGENT} 2>${SESSION_DIR}/session.log &
 else
-	if [ -n "$X2GO_CMD" ]; then
-		SESSION_WINDOW_TITLE="${X2GO_CMD} for ${USER}@${HOSTNAME} (X2GO-${SESSION_NAME})"
-	else
-		SESSION_WINDOW_TITLE="X2GO-${SESSION_NAME}"
-	fi
-	test -z "${X2GO_SESSION_WINDOW_TITLE}" && { 
-		X2GO_SESSION_WINDOW_TITLE="${SESSION_WINDOW_TITLE}"
-	} || {
-		X2GO_SESSION_WINDOW_TITLE="${X2GO_SESSION_WINDOW_TITLE} (X2GO-${SESSION_NAME})"
-		$X2GO_LIB_PATH/x2gosyslog "$0" "info" "renaming session window title as requested by X2Go client to ,,$X2GO_SESSION_WINDOW_TITLE''"
-        }
-	LD_LIBRARY_PATH=$X2GO_LIB x2goagent $X2GODPIOPTION_ $XDMCPOPT  -$SESSION_TYPE -auth ~/.Xauthority -geometry ${X2GO_GEOMETRY} -name "${X2GO_SESSION_WINDOW_TITLE}"  ${NX_AGENT} 2>${SESSION_DIR}/session.log &
+	LD_LIBRARY_PATH=$X2GO_LIB x2goagent $X2GODPIOPTION_ $XDMCPOPT  -$SESSION_TYPE -auth ~/.Xauthority -geometry ${X2GO_GEOMETRY} -name "${SESSION_WINDOW_TITLE}"  ${NX_AGENT} 2>${SESSION_DIR}/session.log &
 fi
+
 
 X2GO_AGENT_PID=$!
 X2GO_AGENT_RETVAL=$?
