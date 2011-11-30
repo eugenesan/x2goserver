@@ -250,7 +250,12 @@ if  [ "$X2GO_STYPE" == "S" ]; then
 	fi
 	SESSION_WINDOW_TITLE+=" (X2GO-${SESSION_NAME})"
 
-	test -z "${X2GO_SESSION_WINDOW_TITLE}" && X2GO_SESSION_WINDOW_TITLE="${SESSION_WINDOW_TITLE}"
+	test -z "${X2GO_SESSION_WINDOW_TITLE}" && { 
+		X2GO_SESSION_WINDOW_TITLE="${SESSION_WINDOW_TITLE}"
+	} || {
+		X2GO_SESSION_WINDOW_TITLE="${X2GO_SESSION_WINDOW_TITLE} (X2GO-${SESSION_NAME})"
+		$X2GO_LIB_PATH/x2gosyslog "$0" "info" "renaming session window title as requested by X2Go client to ,,$X2GO_SESSION_WINDOW_TITLE''"
+        }
 	LD_LIBRARY_PATH=$X2GO_LIB x2goagent $X2GODPIOPTION_  -$SESSION_TYPE -auth ~/.Xauthority -S -shadow $SHADOW_DESKTOP -shadowmode $SHADOW_MODE -geometry ${X2GO_GEOMETRY} -name "${X2GO_SESSION_WINDOW_TITLE}"  ${NX_AGENT} 2>${SESSION_DIR}/session.log &
 else
 	if [ -n "$X2GO_CMD" ]; then
@@ -258,7 +263,12 @@ else
 	else
 		SESSION_WINDOW_TITLE="X2GO-${SESSION_NAME}"
 	fi
-	test -z ${X2GO_SESSION_WINDOW_TITLE} && X2GO_SESSION_WINDOW_TITLE=${SESSION_WINDOW_TITLE}
+	test -z "${X2GO_SESSION_WINDOW_TITLE}" && { 
+		X2GO_SESSION_WINDOW_TITLE="${SESSION_WINDOW_TITLE}"
+	} || {
+		X2GO_SESSION_WINDOW_TITLE="${X2GO_SESSION_WINDOW_TITLE} (X2GO-${SESSION_NAME})"
+		$X2GO_LIB_PATH/x2gosyslog "$0" "info" "renaming session window title as requested by X2Go client to ,,$X2GO_SESSION_WINDOW_TITLE''"
+        }
 	LD_LIBRARY_PATH=$X2GO_LIB x2goagent $X2GODPIOPTION_ $XDMCPOPT  -$SESSION_TYPE -auth ~/.Xauthority -geometry ${X2GO_GEOMETRY} -name "${X2GO_SESSION_WINDOW_TITLE}"  ${NX_AGENT} 2>${SESSION_DIR}/session.log &
 fi
 
