@@ -7,6 +7,7 @@ x2goserver (3.0.99.9-0~x2go1) UNRELEASED; urgency=low
     - Allow client-side setting of session window title.
     - Fix x2gobasepath for Perl versions < 5.10.x.
     - Fix x2godbadmin for Perl versions < 5.10.x.
+    - Remove x2gosetkeyboard from x2goserver-extensions package.
   * Add psmisc package as dependency.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 25 Nov 2011 11:38:46 +0100
