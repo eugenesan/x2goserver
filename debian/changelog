@@ -11,6 +11,7 @@ x2goserver (3.0.99.9-0~x2go1) UNRELEASED; urgency=low
     - Remove x2gosetkeyboard from x2goserver-extensions package.
     - Re-add x2gosetkeyboard via new subproject x2goserver-pyhoca.
     - Add man page for x2gosessiontitle.
+    - Use cmd line parameters when calling x2gosessiontitle.
   * Add psmisc package as dependency.
   * Add new binary package to x2goserver source: x2goserver-pyhoca.
   * x2goserver package suggests x2goserver-pyhoca.

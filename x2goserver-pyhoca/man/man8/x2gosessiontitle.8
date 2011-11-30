@@ -12,7 +12,9 @@ x2gosessiontitle \- Render a custom session window title for X2Go sessions.
 'nh
 .fi
 .ad l
-x2gosessiontitle
+.nf
+x2gosessiontitle <session_id> <cmd> <session_type> <window_type> \\
+                 [<shadow_user> <shadow_requesting_user> <shadow_mode>]
 
 .SH DESCRIPTION
 \fBx2gosessiontitle\fR may only be called from within the \fBx2gostartagent\fR script. If called

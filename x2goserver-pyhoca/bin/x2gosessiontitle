@@ -29,6 +29,16 @@ test -n $X2GO_SESSION && exit 0
 # do nothing if called from some non-x2gostartagent context...
 test -z $SESSION_NAME && exit 0
 
+SESSION_NAME=$1; shift
+X2GO_CMD=$1; shift
+X2GO_STYPE=$1; shift
+# X2GO_TYPE is not used yet...
+X2GO_TYPE=$1; shift
+# only available if $X2GO_STYPE == S
+SHADOW_USER=$1; shift
+SHADOW_REQUSER=$1; shift
+SHADOW_MODE=$1; shift
+
 if [ "x$X2GO_FEATURE_SESSIONTITLE" == "xenabled" ]; then
 
 	if [ -z "${X2GO_SESSION_WINDOW_TITLE}" ] && [ -n "$X2GO_CMD" ]; then 
