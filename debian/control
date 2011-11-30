@@ -165,3 +165,25 @@ Description: X2go server daemon scripts (Xsession runner)
  startups and many more Xsession related features on 
  X2go session login automagically.
 
+Package: x2goserver-pyhoca
+Architecture: all
+Depends:
+ ${misc:Depends},
+ x2goserver (>= ${source:Version}), x2goserver (<< ${source:Version}.1~),
+Description: X2go server daemon scripts (add-ons for pyhoca client)
+ X2go is a server based computing environment with
+    - session resuming
+    - low bandwith support
+    - LDAP support
+    - client side mass storage mounting support
+    - audio support
+    - authentication by smartcard and USB stick
+ .
+ This X2go server add-on adds extra functionality when using
+ the pyhoca client (GUI or cmdline tool). The installation
+ of this package is completely optional, the pyhoca client
+ will work without.
+ .
+ Functionalities this package adds:
+    - renaming of session window titles
+    - setting detailled X keyboard parameters

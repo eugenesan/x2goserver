@@ -1,0 +1,66 @@
+#!/bin/bash
+
+# Copyright (C) 2007-2011 X2Go Project - http://wiki.x2go.org
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the
+# Free Software Foundation, Inc.,
+# 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
+#
+# Copyright (C) 2007-2011  Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
+
+X2GO_LIB_PATH=`echo -n \$(x2gobasepath)/lib/x2go`
+
+$X2GO_LIB_PATH/x2gosyslog "$0" "info" "$(basename $0) called with options: $@"
+
+# do nothing if called from an established X2Go session...
+test -n $X2GO_SESSION && exit 0
+
+# do nothing if called from some non-x2gostartagent context...
+test -z $SESSION_NAME && exit 0
+
+if [ "x$X2GO_FEATURE_SESSIONTITLE" == "xenabled" ]; then
+
+	if [ -z "${X2GO_SESSION_WINDOW_TITLE}" ] && [ -n "$X2GO_CMD" ];; then 
+
+		if  [ "$X2GO_STYPE" == "S" ]; then
+
+			if [ "x${SHADOW_MODE}" == "x1" ]; then
+				SHADOW_ACCESS="full"
+			else
+				SHADOW_ACCESS="view-only"
+			fi
+
+			SESSION_WINDOW_TITLE="Shadow Desktop on ${HOSTNAME} shared"
+			if [ "x${SHADOW_USER}" == "x${SHADREQ_USER}" ]; then
+				SESSION_WINDOW_TITLE+=" in ${SHADOW_ACCESS} mode by/with yourself"
+			else
+				SESSION_WINDOW_TITLE+=" by ${SHADOW_USER}, granting ${SHADOW_ACCESS} access to ${SHADREQ_USER}"
+			fi
+
+			X2GO_SESSION_WINDOW_TITLE="${SESSION_WINDOW_TITLE}"
+
+		else
+			SESSION_WINDOW_TITLE="${X2GO_CMD} for ${USER}@${HOSTNAME}"
+		fi
+
+	fi
+
+	X2GO_SESSION_WINDOW_TITLE+=" (X2GO-${SESSION_NAME})"
+	$X2GO_LIB_PATH/x2gosyslog "$0" "info" "renaming session window title as requested by X2Go client to ,,$X2GO_SESSION_WINDOW_TITLE''"
+
+else
+	X2GO_SESSION_WINDOW_TITLE="X2GO-${SESSION_NAME}"
+fi
+
+echo -n "$X2GO_SESSION_WINDOW_TITLE"
