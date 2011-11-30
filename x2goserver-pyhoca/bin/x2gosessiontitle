@@ -24,24 +24,21 @@ X2GO_LIB_PATH=`echo -n \$(x2gobasepath)/lib/x2go`
 $X2GO_LIB_PATH/x2gosyslog "$0" "info" "$(basename $0) called with options: $@"
 
 # do nothing if called from an established X2Go session...
-test -n $X2GO_SESSION && exit 0
-
-# do nothing if called from some non-x2gostartagent context...
-test -z $SESSION_NAME && exit 0
+#test -n $X2GO_SESSION && exit 0
 
 SESSION_NAME=$1; shift
 X2GO_CMD=$1; shift
 X2GO_STYPE=$1; shift
-# X2GO_TYPE is not used yet...
-X2GO_TYPE=$1; shift
 # only available if $X2GO_STYPE == S
 SHADOW_USER=$1; shift
 SHADOW_REQUSER=$1; shift
 SHADOW_MODE=$1; shift
 
-if [ "x$X2GO_FEATURE_SESSIONTITLE" == "xenabled" ]; then
+if [ "x${X2GO_CLIENTFEATURE_SET_SESSIONTITLE}" == "xenabled" ]; then
 
-	if [ -z "${X2GO_SESSION_WINDOW_TITLE}" ] && [ -n "$X2GO_CMD" ]; then 
+	$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "$(basename $0) session title feature got enabled by client"
+
+	if [ "x${X2GO_SESSION_WINDOW_TITLE}" == "x" ]; then 
 
 		if  [ "$X2GO_STYPE" == "S" ]; then
 
@@ -61,7 +58,8 @@ if [ "x$X2GO_FEATURE_SESSIONTITLE" == "xenabled" ]; then
 			X2GO_SESSION_WINDOW_TITLE="${SESSION_WINDOW_TITLE}"
 
 		else
-			SESSION_WINDOW_TITLE="${X2GO_CMD} for ${USER}@${HOSTNAME}"
+			test -z ${X2GO_CMD} && X2GO_CMD="UNKNOWN"
+			X2GO_SESSION_WINDOW_TITLE="${X2GO_CMD} for ${USER}@${HOSTNAME}"
 		fi
 
 	fi
