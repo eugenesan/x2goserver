@@ -29,7 +29,10 @@ SSH_PORT=30000 #First ssh port 30001
 
 X2GO_ROOT=${HOME}/.x2go
 REMOTE=localhost
+
 X2GO_CLIENT=`echo $SSH_CLIENT | awk '{print $1}'`
+$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "client announced itself as ,,$X2GO_CLIENT''"
+
 X2GO_GEOMETRY=$1; shift
 X2GO_LINK=$1; shift
 X2GO_PACK=$1; shift
