@@ -31,7 +31,7 @@ test -z $SESSION_NAME && exit 0
 
 if [ "x$X2GO_FEATURE_SESSIONTITLE" == "xenabled" ]; then
 
-	if [ -z "${X2GO_SESSION_WINDOW_TITLE}" ] && [ -n "$X2GO_CMD" ];; then 
+	if [ -z "${X2GO_SESSION_WINDOW_TITLE}" ] && [ -n "$X2GO_CMD" ]; then 
 
 		if  [ "$X2GO_STYPE" == "S" ]; then
 
