@@ -27,7 +27,8 @@ Depends:
  libdbd-sqlite3-perl,
  adduser,
  xauth,
- psmisc
+ psmisc,
+ net-tools
 Recommends:
  sshfs,
  x11-apps,

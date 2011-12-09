@@ -120,8 +120,12 @@ USED_DISPLAYS=`$X2GO_LIB_PATH/x2gogetdisplays $HOSTNAME`
 while [ "$OUTPUT"  != "inserted" ]; do
 	X2GO_PORT=$(($X2GO_PORT + 1))
 	X2GO_PORT=`echo "for(\\$i=$X2GO_PORT;\\$br ne \"true\";\\$i++){ if(\"$USED_DISPLAYS\" =~ m/\\|\\$i\\|/){\\$br=\"false\";}else{\\$br=\"true\";print \\$i;}}"|perl`
-
-	if  [ -e "/tmp/.X${X2GO_PORT}-lock" ] || [ -e "/tmp/.X11-unix/X${X2GO_PORT}" ]; then
+	
+	#Test if the session is already in use. nxagent uses 6000+DISPLAY to open a port. Therefore this must be tested, too.
+	NX_PORT=$(($X2GO_PORT + 6000))
+	if  [ -e "/tmp/.X${X2GO_PORT}-lock" ] ||
+		[ -e "/tmp/.X11-unix/X${X2GO_PORT}" ] || 
+		netstat -ntl 2>/dev/null | grep -q ":${NX_PORT} "; then
 		OUTPUT="XXX"
 	else
 		SESSION_NAME=${USER}-${X2GO_PORT}-`date +"%s"`
