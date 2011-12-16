@@ -31,7 +31,7 @@ openlog($0,'cons,pid','user');
 setlogmask( LOG_UPTO(x2gologlevel()) );
 
 
-syslog('info', "x2golistmountdirs has been called with options: @ARGV");
+syslog('info', "x2gomountdirs has been called with options: @ARGV");
 
 my $type=shift;
 my $session=shift;
