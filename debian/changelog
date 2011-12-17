@@ -12,6 +12,8 @@ x2goserver (3.0.99.9-0~x2go1) UNRELEASED; urgency=low
     - Re-add x2gosetkeyboard via new subproject x2goserver-pyhoca.
     - Add man page for x2gosessiontitle.
     - Use cmd line parameters when calling x2gosessiontitle.
+    - Call x2golistmounts with user privileges instead of using db_getmounts
+      in x2goprint script.
   * Add psmisc package as dependency.
   * Add new binary package to x2goserver source: x2goserver-pyhoca.
   * x2goserver package suggests x2goserver-pyhoca.
