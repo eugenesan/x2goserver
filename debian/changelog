@@ -4,14 +4,10 @@ x2goserver (3.0.99.9-0~x2go1) UNRELEASED; urgency=low
     - Fix for install stanzas in several Makefiles.
     - Give X2Go session windows a human readable title.
     - Desktop sharing: fix username of user who requests desktop sharing.
-    - Allow client-side setting of session window title (script:
-      x2gosessiontitle).
     - Fix x2gobasepath for Perl versions < 5.10.x.
     - Fix x2godbadmin for Perl versions < 5.10.x.
     - Remove x2gosetkeyboard from x2goserver-extensions package.
     - Re-add x2gosetkeyboard via new subproject x2goserver-pyhoca.
-    - Add man page for x2gosessiontitle.
-    - Use cmd line parameters when calling x2gosessiontitle.
     - Call x2golistmounts with user privileges instead of using db_getmounts
       in x2goprint script.
   * Add psmisc package as dependency.
