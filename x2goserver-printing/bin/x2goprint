@@ -100,7 +100,7 @@ chown $uid, $gid, "$spooltmp";
 chmod 0700, "$spooltmp";
 
 # this last part mainly uses the session user's privileges
-my ($mounts)=`su $user -c "x2golistmounts $session"`;
+my $mounts=`su $user -c "x2golistmounts $session"`;
 if ( $mounts=~m/$spooldir/)
 {
 
