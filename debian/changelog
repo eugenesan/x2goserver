@@ -13,6 +13,7 @@ x2goserver (3.0.99.9-0~x2go1) UNRELEASED; urgency=low
   * Add psmisc package as dependency.
   * Add new binary package to x2goserver source: x2goserver-pyhoca.
   * x2goserver package suggests x2goserver-pyhoca.
+  * Fix directory permissions of $HOME directory of x2goprint system user.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 25 Nov 2011 11:38:46 +0100
 

@@ -57,7 +57,7 @@ case "$1" in
 		# make sure x2goprint spool dir permissions are set correctly
 		chown -R x2goprint:x2goprint /var/spool/x2goprint
 		# egid x2goprint needs write access to the spool dir
-		chmod 0770 /var/spool/x2goprint
+		chmod 0700 /var/spool/x2goprint
 
 		# we may be upgrading versions of x2goserver that had
 		# /usr/bin/x2goprint set to setuid x2goprint.
