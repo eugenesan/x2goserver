@@ -24,6 +24,13 @@ X2GO_LIB_PATH=`echo -n \$(x2gobasepath)/lib/x2go`
 
 $X2GO_LIB_PATH/x2gosyslog "$0" "info" "$(basename $0) called with options: $@"
 
+if [ ! ${LD_LIBRARY_PATH} ] || [ ! ${X2GO_LIB} ]; then
+	LD_LIBRARY_PATH="${LD_LIBRARY_PATH}${X2GO_LIB}"
+else
+	LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${X2GO_LIB}"
+fi
+export LD_LIBRARY_PATH
+
 X2GO_PORT=49 #First port for X2GO=50
 SSH_PORT=30000 #First ssh port 30001
 
@@ -196,8 +203,6 @@ fi
 X2GO_COOKIE=`mcookie`
 
 
-LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${X2GO_LIB}"
-export LD_LIBRARY_PATH
 
 PATH="${PATH}:${X2GO_BIN}/"
 export PATH
