@@ -24,13 +24,6 @@ X2GO_LIB_PATH=`echo -n \$(x2gobasepath)/lib/x2go`
 
 $X2GO_LIB_PATH/x2gosyslog "$0" "info" "$(basename $0) called with options: $@"
 
-if [ ! ${LD_LIBRARY_PATH} ] || [ ! ${X2GO_LIB} ]; then
-	LD_LIBRARY_PATH="${LD_LIBRARY_PATH}${X2GO_LIB}"
-else
-	LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${X2GO_LIB}"
-fi
-export LD_LIBRARY_PATH
-
 X2GO_PORT=49 #First port for X2GO=50
 SSH_PORT=30000 #First ssh port 30001
 
@@ -246,9 +239,9 @@ x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSIO
 SESSION_WINDOW_TITLE="X2GO-${SESSION_NAME}"
 
 if  [ "$X2GO_STYPE" == "S" ]; then
-	LD_LIBRARY_PATH=$X2GO_LIB x2goagent $X2GODPIOPTION_  -$SESSION_TYPE -auth ~/.Xauthority -S -shadow $SHADOW_DESKTOP -shadowmode $SHADOW_MODE -geometry ${X2GO_GEOMETRY} -name "${SESSION_WINDOW_TITLE}"  ${NX_AGENT} 2>${SESSION_DIR}/session.log &
+	x2goagent $X2GODPIOPTION_  -$SESSION_TYPE -auth ~/.Xauthority -S -shadow $SHADOW_DESKTOP -shadowmode $SHADOW_MODE -geometry ${X2GO_GEOMETRY} -name "${SESSION_WINDOW_TITLE}"  ${NX_AGENT} 2>${SESSION_DIR}/session.log &
 else
-	LD_LIBRARY_PATH=$X2GO_LIB x2goagent $X2GODPIOPTION_ $XDMCPOPT  -$SESSION_TYPE -auth ~/.Xauthority -geometry ${X2GO_GEOMETRY} -name "${SESSION_WINDOW_TITLE}"  ${NX_AGENT} 2>${SESSION_DIR}/session.log &
+	x2goagent $X2GODPIOPTION_ $XDMCPOPT  -$SESSION_TYPE -auth ~/.Xauthority -geometry ${X2GO_GEOMETRY} -name "${SESSION_WINDOW_TITLE}"  ${NX_AGENT} 2>${SESSION_DIR}/session.log &
 fi
 
 
