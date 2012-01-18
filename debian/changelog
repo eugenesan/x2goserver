@@ -12,6 +12,7 @@ x2goserver (3.0.99.9-0~x2go1) UNRELEASED; urgency=low
     - Call x2golistmounts with user privileges instead of using db_getmounts
       in x2goprint script.
     - Avoid potentially empty LD_LIBRARY_PATH path in x2goruncommand.
+    - Install x2gogetservers to $PREFIX/bin instead of $PREFIX/lib/x2go.
   * Add psmisc package as dependency.
   * Add new binary package to x2goserver source: x2goserver-pyhoca.
   * x2goserver package suggests x2goserver-pyhoca.
