@@ -1,4 +1,4 @@
-x2goserver (3.0.99.9-0~x2go1) UNRELEASED; urgency=low
+x2goserver (3.0.99.9-0~x2go1) unstable; urgency=low
 
   [ Mike Gabriel ]
   * New upstream version (3.0.99.9):
@@ -26,7 +26,7 @@ x2goserver (3.0.99.9-0~x2go1) UNRELEASED; urgency=low
   * New upstream version (3.0.99.9):
     - Add Xinerama support.
 
- -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 25 Nov 2011 11:38:46 +0100
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Wed, 18 Jan 2012 14:39:57 +0100
 
 x2goserver (3.0.99.8-0~x2go1) unstable; urgency=low
 
