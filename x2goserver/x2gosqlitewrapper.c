@@ -1,7 +1,7 @@
 /*
  * This file is part of the  X2Go Project - http://www.x2go.org
- * Copyright (C) 2011 Mike Gabriel <mike.gabriel@das-netzwerkteam.de> 
- * Copyright (C) 2011 Moritz 'Morty' Strübe <morty@gmx.net>
+ * Copyright (C) 2011-2012 Mike Gabriel <mike.gabriel@das-netzwerkteam.de> 
+ * Copyright (C) 2011-2012 Moritz 'Morty' Strübe <morty@gmx.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
