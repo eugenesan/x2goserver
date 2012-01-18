@@ -21,7 +21,8 @@ x2goserver (3.0.99.9-0~x2go1) UNRELEASED; urgency=low
     - Fix potentially empty LD_LIBRARY_PATH in x2gostartagent.
 
   [ Oleksandr Shneyder ]
-  * Xinerama support
+  * New upstream version (3.0.99.9):
+    - Add Xinerama support.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 25 Nov 2011 11:38:46 +0100
 
