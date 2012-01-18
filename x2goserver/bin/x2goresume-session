@@ -35,6 +35,12 @@ X2GO_ROOT=${HOME}/.x2go
 X2GO_RESIZE=0
 X2GO_FULLSCREEN=0
 
+NX_XINERAMA_CONF=$X2GO_ROOT/C-$SESSION_NAME/xinerama.conf
+if [ -e $NX_XINERAMA_CONF ]
+then
+	rm $NX_XINERAMA_CONF
+fi
+
 $X2GO_LIB_PATH/x2gosyslog "$0" "info" "$(basename $0) called with options: $@"
 
 if [ "$X2GO_GEOMETRY" == "" ]

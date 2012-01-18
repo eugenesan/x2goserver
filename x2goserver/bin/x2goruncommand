@@ -40,7 +40,14 @@ X2GO_ROOT=${HOME}/.x2go
 MESSAGE_FILE=$X2GO_ROOT/C-$X2GO_SESSION/cmdoutput
 echo "exec $cmd" >> $MESSAGE_FILE
 
+NX_XINERAMA_CONF=$X2GO_ROOT/C-$X2GO_SESSION/xinerama.conf
+export NX_XINERAMA_CONF
+
 IMEXIT="false"
+
+NX_XINERAMA_LIBS=/usr/lib/nx/X11/Xinerama
+LD_LIBRARY_PATH=$NX_XINERAMA_LIBS:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH
 
 if [ "$sndsys" == "esd" ]; then
 	export ESPEAKER=localhost:$4
