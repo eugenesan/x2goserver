@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright (C) 2007-2011 X2go Project - http://wiki.x2go.org
+# Copyright (C) 2007-2011 X2Go Project - http://wiki.x2go.org
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -248,13 +248,13 @@ fi
 X2GO_AGENT_PID=$!
 X2GO_AGENT_RETVAL=$?
 test $X2GO_AGENT_RETVAL && {
-	$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "successfully started X2go agent session with ID $SESSION_NAME"
+	$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "successfully started X2Go agent session with ID $SESSION_NAME"
 
 	# run x2goserver-extensions for post-start
 	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME post-start || true
 
 } || {
-	$X2GO_LIB_PATH/x2gosyslog "$0" "err" "ERROR: failed to start X2go agent session with ID $SESSION_NAME"
+	$X2GO_LIB_PATH/x2gosyslog "$0" "err" "ERROR: failed to start X2Go agent session with ID $SESSION_NAME"
 
 	# run x2goserver-extensions for fail-start
 	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME fail-start || true

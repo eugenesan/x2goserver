@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-# Copyright (C) 2007-2011 X2go Project - http://wiki.x2go.org
+# Copyright (C) 2007-2011 X2Go Project - http://wiki.x2go.org
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -109,7 +109,7 @@ if ( $mounts=~m/$spooldir/)
 	# we will copy the print files from the temp location above to
 	# the SSHFS share mounted from the client system.
 
-	syslog('info', "client-side spool dir is mounted, transferring printable file $pdfFile to X2go client system");
+	syslog('info', "client-side spool dir is mounted, transferring printable file $pdfFile to X2Go client system");
 
 	if (not move("$printdir/$pdfFile", "$spooltmp")) {
 		syslog('err', "ERROR: x2goprint failed to process print spool job for file $pdfFile");
@@ -118,7 +118,7 @@ if ( $mounts=~m/$spooldir/)
 	chown $uid, $gid, "$spooltmp/$pdfFile";
 
 	system("su $user -c \"mv $spooltmp/$pdfFile $spooldir\"");
-	syslog('debug', "x2goprint moved file $pdfFile to X2go client's spool dir");
+	syslog('debug', "x2goprint moved file $pdfFile to X2Go client's spool dir");
 
 	open (RFILE,">$spooltmp/$pdfFile.ready");
 	print RFILE "$pdfFile\n$title";
@@ -126,7 +126,7 @@ if ( $mounts=~m/$spooldir/)
 
 	chown $uid, $gid, "$spooltmp/$pdfFile.ready";
 	system ("su $user -c \"mv $spooltmp/$pdfFile.ready $spooldir\"");
-	syslog('debug', "x2goprint moved file $pdfFile.ready to X2go client's spool dir, X2go client should start the print dialog very soon");
+	syslog('debug', "x2goprint moved file $pdfFile.ready to X2Go client's spool dir, X2Go client should start the print dialog very soon");
 
 } else {
 

@@ -5,9 +5,9 @@
 \\$2 \(la\\$1\(ra\\$3
 ..
 .if \n(.g .mso www.tmac
-.TH x2goruncommand 8 "Sep 2011" "Version 3.0.99.x" "X2go Server Tool"
+.TH x2goruncommand 8 "Sep 2011" "Version 3.0.99.x" "X2Go Server Tool"
 .SH NAME
-x2goruncommand \- Launch Command inside an X2go Session
+x2goruncommand \- Launch Command inside an X2Go Session
 .SH SYNOPSIS
 'nh
 .fi
@@ -15,9 +15,9 @@ x2goruncommand \- Launch Command inside an X2go Session
 x2goruncommand <display> <agent_pid> <session_id> <command> <sound_system> <session_type>
 
 .SH DESCRIPTION
-\fBx2goruncommand\fR launches a(n X-based) command inside of a given X2go session.
+\fBx2goruncommand\fR launches a(n X-based) command inside of a given X2Go session.
 .PP
-\fBx2goruncommand\fR is run with X2go user privileges and normally executed by an X2go client application.
+\fBx2goruncommand\fR is run with X2Go user privileges and normally executed by an X2Go client application.
 .SH ARGUMENTS
 .TP
 \*(T<\fB\<display>\fR\*(T>
@@ -27,7 +27,7 @@ The X display number/port of the session this command is for.
 The process ID (pid) of the x2goagent instance that the given session runs in.
 .TP
 \*(T<\fB\<session_id>\fR\*(T>
-The <session_id> is the unique identifier of the X2go session that this command is intended for.
+The <session_id> is the unique identifier of the X2Go session that this command is intended for.
 .TP
 \*(T<\fB\<command>\fR\*(T>
 Execute command <command>. Full paths will be ignored, the command has to be in the server's $PATH.
@@ -46,5 +46,5 @@ As exitcode \fBx2goruncommand\fR always returns 0.
 .SH SEE ALSO
 x2gostartagent(8), x2goresume-session(8), x2gosuspend-session(8), x2goterminate-sessions(8)
 .SH AUTHOR
-This manual has been written by Mike Gabriel <mike.gabriel@das-netzwerkteam.de> for the X2go project
+This manual has been written by Mike Gabriel <mike.gabriel@das-netzwerkteam.de> for the X2Go project
 (http://www.x2go.org).

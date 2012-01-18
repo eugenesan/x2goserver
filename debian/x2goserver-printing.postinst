@@ -21,7 +21,7 @@ set -e
 case "$1" in
 	configure)
 		###
-		### X2go printing
+		### X2Go printing
 		###
 
 		# setup x2goprint user and x2goprint group

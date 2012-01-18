@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright (C) 2007-2011 X2go Project - http://wiki.x2go.org
+# Copyright (C) 2007-2011 X2Go Project - http://wiki.x2go.org
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@ $X2GO_LIB_PATH/x2gosyslog "$0" "info" "$(basename $0) called with options: $@"
 
 X2GO_FEATURE=$1
 
-# check for X2go server core features
+# check for X2Go server core features
 case "$X2GO_FEATURE" in
 
     "X2GO_RUN_EXTENSIONS") echo "ok"; exit 0;;

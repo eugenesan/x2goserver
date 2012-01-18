@@ -5,9 +5,9 @@
 \\$2 \(la\\$1\(ra\\$3
 ..
 .if \n(.g .mso www.tmac
-.TH x2gomountdirs 8 "Sep 2011" "Version 3.0.99.x" "X2go Server Tool"
+.TH x2gomountdirs 8 "Sep 2011" "Version 3.0.99.x" "X2Go Server Tool"
 .SH NAME
-x2gomountdirs \- Share Client-Side Folder with X2go Session
+x2gomountdirs \- Share Client-Side Folder with X2Go Session
 .SH SYNOPSIS
 'nh
 .fi
@@ -16,9 +16,9 @@ x2gomountdirs <mount_type> <session_id> <username> <key_file> <dir1> [<dir2> [<d
 
 .SH DESCRIPTION
 \fBx2gomountdirs\fR mounts client-side folders or devices onto mountpoints that are accessible
-from within your remote X2go session.
+from within your remote X2Go session.
 .PP
-\fBx2gomountdirs\fR is run with X2go user privileges and normally issued by an X2go client application.
+\fBx2gomountdirs\fR is run with X2Go user privileges and normally issued by an X2Go client application.
 .SH ARGUMENTS
 .TP
 \*(T<\fB\<mount_type>\fR\*(T>
@@ -26,7 +26,7 @@ If the mount type is set to ,,dir'' then the client-side mount target is interpr
 it is interpreted as a device.
 .TP
 \*(T<\fB\<session_id>\fR\*(T>
-The <session_id> is the unique identifier of the X2go session that this command is run for.
+The <session_id> is the unique identifier of the X2Go session that this command is run for.
 .TP
 \*(T<\fB\<username>\fR\*(T>
 The owner of session <session_id> is given as the <username> argument.
@@ -35,11 +35,11 @@ The owner of session <session_id> is given as the <username> argument.
 Location of a temporary private SSH key file (only valid for this command execution).
 .TP
 \*(T<\fB\<dir1> [<dir2> [<dir3> [...]]]\fR\*(T>
-A list of client-side folders or device mount points that shall be mounted for X2go session <session_id>.
+A list of client-side folders or device mount points that shall be mounted for X2Go session <session_id>.
 .PP
 .SH PERMISSIONS
-X2go uses the fuse-based SSH filesystem (SSHFS) for sharing client-side file ressources with X2go sessions.
-Users that shall use X2go folder sharing must be members of the X2go server's ,,fuse'' POSIX group.
+X2Go uses the fuse-based SSH filesystem (SSHFS) for sharing client-side file ressources with X2Go sessions.
+Users that shall use X2Go folder sharing must be members of the X2Go server's ,,fuse'' POSIX group.
 .SH RETURN VALUES
 \fBx2gomountdirs\fR returns some mount point information to stdout if the mounting process has been successful.
 The mount results are printed line-by-line. The individual lines must be interpreted as shown below:
@@ -63,5 +63,5 @@ As exitcode \fBx2gomoundirs\fR always returns 0.
 .SH SEE ALSO
 x2goumount-session(8)
 .SH AUTHOR
-This manual has been written by Mike Gabriel <mike.gabriel@das-netzwerkteam.de> for the X2go project
+This manual has been written by Mike Gabriel <mike.gabriel@das-netzwerkteam.de> for the X2Go project
 (http://www.x2go.org).

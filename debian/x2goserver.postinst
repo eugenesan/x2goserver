@@ -26,7 +26,7 @@ case "$1" in
 		chmod 600 /etc/x2go/x2gosql/passwords/pgadmin
 
 		###
-		### X2go session DB management
+		### X2Go session DB management
 		###
 
 		# setup x2gouser and group

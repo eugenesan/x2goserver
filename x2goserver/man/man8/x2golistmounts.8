@@ -5,9 +5,9 @@
 \\$2 \(la\\$1\(ra\\$3
 ..
 .if \n(.g .mso www.tmac
-.TH x2golistmounts 8 "Sep 2011" "Version 3.0.99.x" "X2go Server Tool"
+.TH x2golistmounts 8 "Sep 2011" "Version 3.0.99.x" "X2Go Server Tool"
 .SH NAME
-x2golistmounts \- List Mounted Shares for an X2go Session
+x2golistmounts \- List Mounted Shares for an X2Go Session
 .SH SYNOPSIS
 'nh
 .fi
@@ -18,8 +18,8 @@ x2golistmounts <session_id>
 \fBx2golistmounts\fR returns a list of mounted client-side folders or devices for X2go
 session <session_id>.
 .PP
-\fBx2golistmounts\fR is run with normal user privileges and it is used by X2go clients to render
-a list of SSHFS mounts for a given X2go sessions.
+\fBx2golistmounts\fR is run with normal user privileges and it is used by X2Go clients to render
+a list of SSHFS mounts for a given X2Go sessions.
 .SH RETURN VALUES
 A line-by-line list of mounted shares is returned by \fBx2golistmounts\fR. Each line consists of
 two mount point attribute fields separated by the pipe symbol (,,|'').
@@ -33,5 +33,5 @@ As exitcode \fBx2golistmounts\fR always returns 0.
 .SH SEE ALSO
 x2gomountdirs(8), x2goumount-session(8)
 .SH AUTHOR
-This manual has been written by Mike Gabriel <mike.gabriel@das-netzwerkteam.de> for the X2go project
+This manual has been written by Mike Gabriel <mike.gabriel@das-netzwerkteam.de> for the X2Go project
 (http://www.x2go.org).

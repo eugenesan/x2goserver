@@ -49,8 +49,8 @@ Breaks:
 Replaces:
  x2goserver-one,
  x2goserver-home,
-Description: X2go server daemon scripts
- X2go is a server based computing environment with
+Description: X2Go server daemon scripts
+ X2Go is a server based computing environment with
     - session resuming
     - low bandwith support
     - LDAP support
@@ -59,14 +59,14 @@ Description: X2go server daemon scripts
     - authentication by smartcard and USB stick
  .
  This package contains the main daemon and tools for
- X2go server-side session administrations.
+ X2Go server-side session administrations.
  .
  The x2goserver package provides full functionality
- for running the X2go project's legacy X2go client
+ for running the X2Go project's legacy X2Go client
  (x2goclient) on the client-side.
  .
  However, if you intend using other client implementations 
- of X2go make sure that you also have X2go server
+ of X2Go make sure that you also have X2Go server
  extensions package (x2goserver-extensions) installed.
 
 Package: x2goserver-printing
@@ -81,8 +81,8 @@ Replaces:
  x2goprint
 Suggests:
  cups-x2go
-Description: X2go server daemon scripts (printing)
- X2go is a server based computing environment with
+Description: X2Go server daemon scripts (printing)
+ X2Go is a server based computing environment with
     - session resuming
     - low bandwith support
     - LDAP support
@@ -90,17 +90,17 @@ Description: X2go server daemon scripts (printing)
     - audio support
     - authentication by smartcard and USB stick
  .
- The X2go server printing package provides
+ The X2Go server printing package provides
  client-side printing support for X2go.
  .
- This package has to be installed on X2go servers
- that shall be able to pass X2go print jobs on
- to the X2go client.
+ This package has to be installed on X2Go servers
+ that shall be able to pass X2Go print jobs on
+ to the X2Go client.
  .
  This package co-operates with the cups-x2go CUPS
- backend. If CUPS server and X2go server are hosted
+ backend. If CUPS server and X2Go server are hosted
  on different machines, then make sure you install
- this package on the X2go server/s (and the cups-x2go
+ this package on the X2Go server/s (and the cups-x2go
  package on the CUPS server).
 
 Package: x2goserver-compat
@@ -108,8 +108,8 @@ Architecture: all
 Depends:
  ${misc:Depends},
  x2goserver (>= ${source:Version}), x2goserver (<< ${source:Version}.1~)
-Description: X2go server daemon scripts (backwards compatitbity to old client versions)
- X2go is a server based computing environment with
+Description: X2Go server daemon scripts (backwards compatitbity to old client versions)
+ X2Go is a server based computing environment with
     - session resuming
     - low bandwith support
     - LDAP support
@@ -118,7 +118,7 @@ Description: X2go server daemon scripts (backwards compatitbity to old client ve
     - authentication by smartcard and USB stick
  .
  This package contains compatitbility scripts to allow
- old x2goclient versions to connect to your X2go server.
+ old x2goclient versions to connect to your X2Go server.
 
 Package: x2goserver-extensions
 Architecture: all
@@ -126,8 +126,8 @@ Depends:
  ${misc:Depends},
  x2goserver (>= ${source:Version}), x2goserver (<< ${source:Version}.1~),
  x11-xkb-utils
-Description: X2go server daemon scripts (extensions)
- X2go is a server based computing environment with
+Description: X2Go server daemon scripts (extensions)
+ X2Go is a server based computing environment with
     - session resuming
     - low bandwith support
     - LDAP support
@@ -135,12 +135,12 @@ Description: X2go server daemon scripts (extensions)
     - audio support
     - authentication by smartcard and USB stick
  .
- The X2go server extension namespace offers contributors
- to add script functionality to X2go that is not
- needed/ignored by the legacy X2go client (x2goclient).
+ The X2Go server extension namespace offers contributors
+ to add script functionality to X2Go that is not
+ needed/ignored by the legacy X2Go client (x2goclient).
  .
  Make sure you have this package installed on your server
- if you want non-legacy X2go clients to be able to
+ if you want non-legacy X2Go clients to be able to
  access your server without lack of features.
 
 Package: x2goserver-xsession
@@ -149,8 +149,8 @@ Depends:
  ${misc:Depends},
  x2goserver (>= ${source:Version}), x2goserver (<< ${source:Version}.1~),
  x11-common
-Description: X2go server daemon scripts (Xsession runner)
- X2go is a server based computing environment with
+Description: X2Go server daemon scripts (Xsession runner)
+ X2Go is a server based computing environment with
     - session resuming
     - low bandwith support
     - LDAP support
@@ -158,21 +158,21 @@ Description: X2go server daemon scripts (Xsession runner)
     - audio support
     - authentication by smartcard and USB stick
  .
- This X2go server add-on enables Xsession script handling
+ This X2Go server add-on enables Xsession script handling
  when starting desktop sessions with X2go.
  .
  Amongst others the parsing of Xsession scripts will
  enable desktop-profiles, ssh-agent startups, gpgagent
  startups and many more Xsession related features on 
- X2go session login automagically.
+ X2Go session login automagically.
 
 Package: x2goserver-pyhoca
 Architecture: all
 Depends:
  ${misc:Depends},
  x2goserver (>= ${source:Version}), x2goserver (<< ${source:Version}.1~),
-Description: X2go server daemon scripts (add-ons for pyhoca client)
- X2go is a server based computing environment with
+Description: X2Go server daemon scripts (add-ons for pyhoca client)
+ X2Go is a server based computing environment with
     - session resuming
     - low bandwith support
     - LDAP support
@@ -180,7 +180,7 @@ Description: X2go server daemon scripts (add-ons for pyhoca client)
     - audio support
     - authentication by smartcard and USB stick
  .
- This X2go server add-on adds extra functionality when using
+ This X2Go server add-on adds extra functionality when using
  the pyhoca client (GUI or cmdline tool). The installation
  of this package is completely optional, the pyhoca client
  will work without.

@@ -2,7 +2,7 @@
 #
 # /etc/x2go/Xsession
 #
-# X2go Xsession file -- used by x2goserver Xsession.d add-on.
+# X2Go Xsession file -- used by x2goserver Xsession.d add-on.
 
 # This file has been derived from the global Xsession file in Debian squeeze
 

@@ -5,9 +5,9 @@
 \\$2 \(la\\$1\(ra\\$3
 ..
 .if \n(.g .mso www.tmac
-.TH x2gostartagent 8 "18 May 2011" "Version 3.0.99.x" "X2go Server Tool"
+.TH x2gostartagent 8 "18 May 2011" "Version 3.0.99.x" "X2Go Server Tool"
 .SH NAME
-x2gostartagent \- Start a New X2go Session
+x2gostartagent \- Start a New X2Go Session
 .SH SYNOPSIS
 'nh
 .fi
@@ -15,10 +15,10 @@ x2gostartagent \- Start a New X2go Session
 x2gostartagent <geometry> <link_quality> <nx_pack_meth> <cache_type+dpi> <kblayout> <kbtype> <setkbd> <session_type> <command>
 
 .SH DESCRIPTION
-\fBx2gostartagent\fR coordinates the startup process of a new X2go session.
+\fBx2gostartagent\fR coordinates the startup process of a new X2Go session.
 It expects quite a list of parameters, all of which are obligatory.
 .PP
-\fBx2gostartagent\fR is run with X2go user privileges and normally executed by an X2go client application.
+\fBx2gostartagent\fR is run with X2Go user privileges and normally executed by an X2Go client application.
 .SH ARGUMENTS
 .TP
 \*(T<\fB\<geometry>\fR\*(T>
@@ -31,7 +31,7 @@ Any value out of: modem, isdn, adsl, wan or lan.
 NX compression method (see below for possible values).
 .TP
 \*(T<\fB\<cache_type+dpi>\fR\*(T>
-Cache type and color depth for X2go session window. The most common value is: unix-kde-depth_24 where ,,24'' is the color depth in bit.
+Cache type and color depth for X2Go session window. The most common value is: unix-kde-depth_24 where ,,24'' is the color depth in bit.
 .TP
 \*(T<\fB\<kblayout>\fR\*(T>
 Keyboard layout (e.g. us, de, etc.).
@@ -40,13 +40,13 @@ Keyboard layout (e.g. us, de, etc.).
 Keyboard type/model (e.g. pc105/us).
 .TP
 \*(T<\fB\<setkbd>\fR\*(T>
-Force setting keyboard layout and type within the X2go session on startup. Values: 0 or 1.
+Force setting keyboard layout and type within the X2Go session on startup. Values: 0 or 1.
 .TP
 \*(T<\fB\<session_type>\fR\*(T>
-Allowed values for <session_type> are: D (desktop), R (rootless) or S (shadow session, X2go desktop sharing).
+Allowed values for <session_type> are: D (desktop), R (rootless) or S (shadow session, X2Go desktop sharing).
 .TP
 \*(T<\fB\<command>\fR\*(T>
-The command given by the <command> argument is only used to create the session ID for this new X2go session. The
+The command given by the <command> argument is only used to create the session ID for this new X2Go session. The
 actual execution of a command is handled by \fBx2goruncommand\fR.
 .PP
 .SH RETURN VALUES
@@ -81,5 +81,5 @@ rfb-hextile, rfb-tight, rfb-tight-compressed
 .SH SEE ALSO
 x2goruncommand(8), x2goresume-session(8), x2gosuspend-session(8), x2goterminate-session(8)
 .SH AUTHOR
-This manual has been written by Mike Gabriel <mike.gabriel@das-netzwerkteam.de> for the X2go project
+This manual has been written by Mike Gabriel <mike.gabriel@das-netzwerkteam.de> for the X2Go project
 (http://www.x2go.org).

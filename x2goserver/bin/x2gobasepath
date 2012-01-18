@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-# Copyright (C) 2007-2011 X2go Project - http://wiki.x2go.org
+# Copyright (C) 2007-2011 X2Go Project - http://wiki.x2go.org
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

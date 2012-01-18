@@ -2,7 +2,7 @@ x2goserver (3.0.99.10-0~x2go1) UNRELEASED; urgency=low
 
   [ Mike Gabriel ]
   * New upstream version (3.0.99.10):
-    - Continue development...
+    - Replace all string ,,X2Go.' with ,,X2Go''.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Wed, 18 Jan 2012 14:43:21 +0100
 
@@ -58,7 +58,7 @@ x2goserver (3.0.99.7-0~x2go1) unstable; urgency=low
   * New upstream version (3.0.99.7):
     - Move x2golistmounts script from x2goserver-extensions to x2goserver
       core.
-    - X2go server extensions: fix regular expression when scanning modality dirs.
+    - X2Go server extensions: fix regular expression when scanning modality dirs.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Wed, 26 Oct 2011 13:04:54 +0200
 
@@ -107,7 +107,7 @@ x2goserver (3.0.99.6-0~x2go1) unstable; urgency=low
     - Present an ISO-8601 compliant datetime string in session lists
       rendered by x2golistsessions (and similar) command(s).
     - Silence knotify SIGHUP signals in case that no knotify is running in the
-      X2go session.
+      X2Go session.
     - Fix x2goumount-session for individual paths (folder type: disk),
       ToDo: folder type CDROM and removable media.
     - Let db_insertmount create a proper return value (success vs. failed).
@@ -118,7 +118,7 @@ x2goserver (3.0.99.6-0~x2go1) unstable; urgency=low
     - Identified x2goumount script (x2goserver-compat) as a necessary
       component of x2gognomebindings and moved it there (with new name:
       x2goumount-session-gnome).
-    - Add x2golistmounts script to X2go server extensions.
+    - Add x2golistmounts script to X2Go server extensions.
     - Add x2gofeature script and x2gofeature.d subscripts.
     - Add x2gofeature man page.
     - Move x2goversion script into x2goserver core.
@@ -133,7 +133,7 @@ x2goserver (3.0.99.6-0~x2go1) unstable; urgency=low
       x2goterminate-session or when x2goruncommand is about to exit.
     - Resume/suspend x2godesktopsharing during x2goresume-session,
       x2gosuspend-session.
-    - Provide pluggable X2go extension system for main X2go server
+    - Provide pluggable X2Go extension system for main X2Go server
       functions.
     - Provide man page for x2goserver-run-extensions that explains the new plug-in
       mechanism of x2goserver.
@@ -155,7 +155,7 @@ x2goserver (3.0.99.6-0~x2go1) unstable; urgency=low
 
   [ Moritz Strübe ]
   * Improvements for new upstream version (3.0.99.6):
-    - Make digits at the beginning of X2go server extension scripts a must, not a
+    - Make digits at the beginning of X2Go server extension scripts a must, not a
       suggestion.
 
   [ Ivan Kabaivanov ]
@@ -186,7 +186,7 @@ x2goserver (3.0.99.5-0~x2go2) unstable; urgency=low
 x2goserver (3.0.99.5-0~x2go1) unstable; urgency=low
 
   * adds x2goprint to x2goserver package
-  * implements X2go MIME Box feature
+  * implements X2Go MIME Box feature
   * fixes installation conflicts with x2goserver-one, x2goserver-home
     and x2goprint
   * change of version numbering scheme
