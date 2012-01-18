@@ -91,7 +91,7 @@ Description: X2Go server daemon scripts (printing)
     - authentication by smartcard and USB stick
  .
  The X2Go server printing package provides
- client-side printing support for X2go.
+ client-side printing support for X2Go.
  .
  This package has to be installed on X2Go servers
  that shall be able to pass X2Go print jobs on
@@ -159,7 +159,7 @@ Description: X2Go server daemon scripts (Xsession runner)
     - authentication by smartcard and USB stick
  .
  This X2Go server add-on enables Xsession script handling
- when starting desktop sessions with X2go.
+ when starting desktop sessions with X2Go.
  .
  Amongst others the parsing of Xsession scripts will
  enable desktop-profiles, ssh-agent startups, gpgagent
