@@ -57,15 +57,20 @@ case "$1" in
 			# and we need to respect the administrator's choices
 		fi
 
-		if [ ! -f /var/lib/x2go/x2go_sessions ]; then
-			x2godbadmin --createdb
+		if [ -f /etc/x2go/x2gosql/sql ] && egrep "^backend=sqlite.*" /etc/x2go/x2gosql/sql >/dev/null; then
+
+			if [ ! -f /var/lib/x2go/x2go_sessions ]; then
+				x2godbadmin --createdb
+			else
+				# make sure db permissions are set correctly
+				chown -R root:x2gouser /var/lib/x2go
+				# egid x2gouser needs write access to the db dir (for temporary db journal file)
+				chmod 0770 /var/lib/x2go
+				# ... and to the db file itself, of course
+				chmod 0660 /var/lib/x2go/x2go_sessions
+			fi
 		else
-			# make sure db permissions are set correctly
-			chown -R root:x2gouser /var/lib/x2go
-			# egid x2gouser needs write access to the db dir (for temporary db journal file)
-			chmod 0770 /var/lib/x2go
-			# ... and to the db file itself, of course
-			chmod 0660 /var/lib/x2go/x2go_sessions
+			echo "X2Go is configured to use a non-SQLite DB backend, leaving the database alone."
 		fi
 
 		### setgid section for x2gouser (SQLite DB access)
