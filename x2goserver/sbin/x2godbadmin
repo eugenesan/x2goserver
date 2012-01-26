@@ -284,12 +284,12 @@ sub rm_user()
 {
 	my $user=shift;
 
-	print ("rm DB user x2gouser_$user\n"); 
+	print ("rm DB user \"x2gouser_$user\"\n"); 
 
-	my $sth=$dbh->prepare("DROP OWNED BY x2gouser_$user");
+	my $sth=$dbh->prepare("DROP OWNED BY \"x2gouser_$user\"");
 	$sth->execute();      
 
-	my $sth=$dbh->prepare("drop USER if exists x2gouser_$user");
+	my $sth=$dbh->prepare("drop USER if exists \"x2gouser_$user\"");
 	$sth->execute();
 	$sth->finish();
 
@@ -316,24 +316,24 @@ sub add_user()
 	$pass=`makepasswd`;
 	chomp($pass);
 
-	my $sth=$dbh->prepare("DROP OWNED BY x2gouser_$user");
+	my $sth=$dbh->prepare("DROP OWNED BY \"x2gouser_$user\"");
 	$sth->{Warn}=0;
 	$sth->{PrintError}=0;
 	$sth->execute();
 
-	$sth=$dbh->prepare("drop USER if exists x2gouser_$user");
+	$sth=$dbh->prepare("drop USER if exists \"x2gouser_$user\"");
 	$sth->{Warn}=0;
 	$sth->{PrintError}=0;
 	$sth->execute();
 
-	print ("create DB user x2gouser_$user\n"); 
-	$sth=$dbh->prepare("create USER x2gouser_$user WITH ENCRYPTED PASSWORD '$pass'");
+	print ("create DB user \"x2gouser_$user\"\n"); 
+	$sth=$dbh->prepare("create USER \"x2gouser_$user\" WITH ENCRYPTED PASSWORD '$pass'");
 	$sth->execute();
 
-	$sth=$dbh->prepare("GRANT INSERT, UPDATE, DELETE ON sessions, used_ports, mounts TO x2gouser_$user");
+	$sth=$dbh->prepare("GRANT INSERT, UPDATE, DELETE ON sessions, used_ports, mounts TO \"x2gouser_$user\"");
 	$sth->execute();
 
-	$sth=$dbh->prepare("GRANT SELECT, UPDATE, DELETE ON sessions_view, mounts_view, servers_view, ports_view TO x2gouser_$user");
+	$sth=$dbh->prepare("GRANT SELECT, UPDATE, DELETE ON sessions_view, mounts_view, servers_view, ports_view TO \"x2gouser_$user\"");
 	$sth->execute();
 	$sth->finish();
 

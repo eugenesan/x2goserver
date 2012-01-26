@@ -4,6 +4,10 @@ x2goserver (3.0.99.10-0~x2go1) UNRELEASED; urgency=low
   * New upstream version (3.0.99.10):
     - Replace all string ,,X2Go.' with ,,X2Go''.
 
+  [ Jochen Schulz ]
+  * New upstream version (3.0.99.10):
+    - Escape DB user names in x2godbadmin.
+
   [ John Williams ]
   * New upstream version (3.0.99.10):
     - Fix xserver-xsession/Makefile: add missing $(DESTDIR) expressions.
