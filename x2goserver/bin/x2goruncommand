@@ -43,6 +43,9 @@ echo "exec $cmd" >> $MESSAGE_FILE
 NX_XINERAMA_CONF=$X2GO_ROOT/C-$X2GO_SESSION/xinerama.conf
 export NX_XINERAMA_CONF
 
+# make Kerberos's ticket cache known inside the X2Go session
+test -n $KRB5CCNAME && export KRB5CCNAME
+
 IMEXIT="false"
 
 NX_XINERAMA_LIBS=/usr/lib/nx/X11/Xinerama
