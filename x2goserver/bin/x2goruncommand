@@ -46,6 +46,9 @@ export NX_XINERAMA_CONF
 # make Kerberos's ticket cache known inside the X2Go session
 test -n $KRB5CCNAME && export KRB5CCNAME
 
+# disable rastering in >= KDE4.8 and Qt4.8
+export QT_GRAPHICSSYSTEM=native
+
 IMEXIT="false"
 
 NX_XINERAMA_LIBS=/usr/lib/nx/X11/Xinerama

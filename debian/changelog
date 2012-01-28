@@ -4,6 +4,7 @@ x2goserver (3.0.99.10-0~x2go1) UNRELEASED; urgency=low
   * New upstream version (3.0.99.10):
     - Replace all string ,,X2Go.' with ,,X2Go''.
     - Use $(MAKE) -C <subdir> calls to run Makefiles in subfolders.
+    - Disable rastering in >= KDE4.8 and Qt4.8.
   * x2goserver.postinst script leaves the DB file alone if
     a DB backend different from SQLite is configured. Thanks
     to Jochen Schulz for bringing this into awareness.
