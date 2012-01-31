@@ -15,6 +15,12 @@ x2goserver (3.0.99.10-0~x2go1) UNRELEASED; urgency=low
     - Export KRB5CCNAME in x2goruncommand, make Kerberos ticket cache
       known inside X2Go sessions.
 
+  [ Moritz Strübe ]
+  * New upstream version (3.0.99.10):
+    - Check whether the associated TCP/IP port is available before
+      assigning a display number.
+  * Add net-tools packaged as dependency.
+
   [ John Williams ]
   * New upstream version (3.0.99.10):
     - Fix xserver-xsession/Makefile: add missing $(DESTDIR) expressions.
