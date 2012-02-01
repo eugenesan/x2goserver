@@ -1,4 +1,4 @@
-x2goserver (3.0.99.10-0~x2go1) UNRELEASED; urgency=low
+x2goserver (3.0.99.10-0~x2go1) unstable; urgency=low
 
   [ Mike Gabriel ]
   * New upstream version (3.0.99.10):
@@ -25,7 +25,7 @@ x2goserver (3.0.99.10-0~x2go1) UNRELEASED; urgency=low
   * New upstream version (3.0.99.10):
     - Fix xserver-xsession/Makefile: add missing $(DESTDIR) expressions.
 
- -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Wed, 18 Jan 2012 14:43:21 +0100
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Wed, 01 Feb 2012 13:40:31 +0100
 
 x2goserver (3.0.99.9-0~x2go1) unstable; urgency=low
 
