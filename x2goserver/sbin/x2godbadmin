@@ -333,6 +333,9 @@ sub add_user()
 	$sth=$dbh->prepare("GRANT INSERT, UPDATE, DELETE ON sessions, used_ports, mounts TO \"x2gouser_$user\"");
 	$sth->execute();
 
+	$sth=$dbh->prepare("GRANT SELECT ON used_ports TO \"x2gouser_$user\"");
+	$sth->execute();
+
 	$sth=$dbh->prepare("GRANT SELECT, UPDATE, DELETE ON sessions_view, mounts_view, servers_view, ports_view TO \"x2gouser_$user\"");
 	$sth->execute();
 	$sth->finish();
@@ -454,7 +457,6 @@ sub create_tables()
 	                   server, port from used_ports
 	                   ");
 	$sth->execute() or die;
-
 
 	$sth=$dbh->prepare("
 	                   create or replace RULE insert_port_priv AS ON INSERT

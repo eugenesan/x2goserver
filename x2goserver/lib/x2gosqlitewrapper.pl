@@ -153,14 +153,28 @@ elsif($cmd eq  "insertport")
 	$sth->finish();
 }
 
+elsif($cmd eq  "rmport")
+{
+	my $server=shift or die "argument \"server\" missed";
+	my $sid=shift or die "argument \"session_id\" missed";
+	my $sshport=shift or die "argument \"port\" missed";
+	my $sth=$dbh->prepare("delete from used_ports where server=? and session_id=? and port=?");
+	check_user($sid);
+	$sth->execute($server, $sid, $sshport) or die;
+	$sth->finish();
+}
+
 elsif($cmd eq  "resume")
 {
 	my $client=shift or die "argument \"client\" missed";
 	my $sid=shift or die "argument \"session_id\" missed";
+	my $gr_port=shift or die "argument \"gr_port\" missed";
+	my $sound_port=shift or die "argument \"sound_port\" missed";
+	my $fs_port=shift or die "argument \"fs_port\" missed";
 	check_user($sid);
 	my $sth=$dbh->prepare("update sessions set last_time=datetime('now','localtime'),status='R',
-	                       client=? where session_id = ? and uname=?");
-	$sth->execute($client, $sid, $realuser) or die;
+	                       client=?,gr_port=?,sound_port=?,fs_port=? where session_id = ? and uname=?");
+	$sth->execute($client, $gr_port, $sound_port, $fs_port, $sid, $realuser) or die;
 	$sth->finish();
 }
 

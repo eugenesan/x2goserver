@@ -86,7 +86,7 @@ if ($backend eq 'postgres')
 use base 'Exporter';
 
 our @EXPORT=('db_listsessions','db_listsessions_all', 'db_getservers', 'db_getagent', 'db_resume', 'db_changestatus', 
-             'db_getdisplays', 'db_insertsession', 'db_getports', 'db_insertport', 'db_createsession', 'db_insertmount', 
+             'db_getdisplays', 'db_insertsession', 'db_getports', 'db_insertport', 'db_rmport', 'db_createsession', 'db_insertmount', 
              'db_getmounts', 'db_deletemount', 'db_getdisplay', 'dbsys_getmounts', 'dbsys_listsessionsroot', 
              'dbsys_listsessionsroot_all', 'dbsys_rmsessionsroot');
 
@@ -99,6 +99,8 @@ sub dbsys_rmsessionsroot
 		                     "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 
 		my $sth=$dbh->prepare("delete from sessions  where session_id='$sid'");
+		$sth->execute() or die;
+		$sth=$dbh->prepare("delete from used_ports where session_id='$sid'");
 		$sth->execute() or die;
 	}
 	if($backend eq 'sqlite')
@@ -230,7 +232,7 @@ sub db_deletemount
 	my $path=shift or die "argument \"path\" missed";
 	if ($backend eq 'postgres')
 	{
-		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;	       
+		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 		my $sth=$dbh->prepare("delete from mounts_view where session_id='$sid' and path='$path'");
 		$sth->execute();
 		$sth->finish();
@@ -251,7 +253,7 @@ sub db_insertmount
 	my $res_ok=0;
 	if ($backend eq 'postgres')
 	{
-		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;	       
+		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 		my $sth=$dbh->prepare("insert into mounts (session_id,path,client) values  ('$sid','$path','$client')");
 		$sth->execute();
 		if (!$sth->err())
@@ -279,7 +281,7 @@ sub db_insertsession
 	my $sid=shift or die "argument \"session_id\" missed";
 	if ($backend eq 'postgres')
 	{
-		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;	       
+		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 		my $sth=$dbh->prepare("insert into sessions (display,server,uname,session_id) values ('$display','$server','$uname','$sid')");
 		$sth->execute()or die $_;
 		$sth->finish();
@@ -307,7 +309,7 @@ sub db_createsession
 	my $sid=shift or die "argument \"session_id\" missed";
 	if ($backend eq 'postgres')
 	{
-		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;	       
+		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 		my $sth=$dbh->prepare("update sessions_view set status='R',last_time=now(),
 		                      cookie='$cookie',agent_pid='$pid',client='$client',gr_port='$gr_port',
 		                      sound_port='$snd_port',fs_port='$fs_port' where session_id='$sid'");
@@ -333,7 +335,7 @@ sub db_insertport
 	my $sshport=shift or die "argument \"port\" missed";
 	if ($backend eq 'postgres')
 	{
-		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;	       
+		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 		my $sth=$dbh->prepare("insert into used_ports (server,session_id,port) values  ('$server','$sid','$sshport')");
 		$sth->execute()or die;
 		$sth->finish();
@@ -346,32 +348,56 @@ sub db_insertport
 	syslog('debug', "db_insertport called, session ID: $sid, server: $server, SSH port: $sshport");
 }
 
-sub db_resume
+sub db_rmport
 {
-	my $client=shift or die "argument \"client\" missed";
-	my $sid=shift or die "argument \"session_id\" missed";       
+	my $server=shift or die "argument \"server\" missed";
+	my $sid=shift or die "argument \"session_id\" missed";
+	my $sshport=shift or die "argument \"port\" missed";
 	if ($backend eq 'postgres')
 	{
-		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;	       
-		my $sth=$dbh->prepare("update sessions_view set last_time=now(),status='R',client='$client' where session_id = '$sid'");
+		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
+		my $sth=$dbh->prepare("delete from used_ports where server='$server' and session_id='$sid' and port='$sshport'");
 		$sth->execute()or die;
 		$sth->finish();
 		$dbh->disconnect();
 	}
 	if ($backend eq 'sqlite')
 	{
-		`$x2go_lib_path/x2gosqlitewrapper resume $client $sid`;
+		`$x2go_lib_path/x2gosqlitewrapper rmport $server $sid $sshport`;
 	}
-	syslog('debug', "db_resume called, session ID: $sid, client: $client");
+	syslog('debug', "db_rmport called, session ID: $sid, server: $server, SSH port: $sshport");
+}
+
+sub db_resume
+{
+	my $client=shift or die "argument \"client\" missed";
+	my $sid=shift or die "argument \"session_id\" missed";
+	my $gr_port=shift or die "argument \"gr_port\" missed";
+	my $sound_port=shift or die "argument \"sound_port\" missed";
+	my $fs_port=shift or die "argument \"fs_port\" missed";
+	if ($backend eq 'postgres')
+	{
+		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
+		my $sth=$dbh->prepare("update sessions_view set last_time=now(),status='R',client='$client',gr_port='$gr_port',
+			sound_port='$sound_port',fs_port='$fs_port' where session_id = '$sid'");
+		$sth->execute()or die;
+		$sth->finish();
+		$dbh->disconnect();
+	}
+	if ($backend eq 'sqlite')
+	{
+		`$x2go_lib_path/x2gosqlitewrapper resume $client $sid $gr_port $sound_port $fs_port`;
+	}
+	syslog('debug', "db_resume called, session ID: $sid, client: $client, gr_port: $gr_port, sound_port: $sound_port, fs_port: $fs_port");
 }
 
 sub db_changestatus
 {
 	my $status=shift or die "argument \"status\" missed";
-	my $sid=shift or die "argument \"session_id\" missed";       
+	my $sid=shift or die "argument \"session_id\" missed";
 	if ($backend eq 'postgres')
 	{
-		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;	       
+		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 		my $sth=$dbh->prepare("update sessions_view set last_time=now(),status='$status' where session_id = '$sid'");
 		$sth->execute()or die;
 		$sth->finish();
@@ -388,7 +414,7 @@ sub db_getdisplays
 {
 	my @displays;
 	#ignore $server
-	my $server=shift or die "argument \"server\" missed";         
+	my $server=shift or die "argument \"server\" missed";
 	if ($backend eq 'postgres')
 	{
 		my @strings;
@@ -418,7 +444,7 @@ sub db_getports
 {
 	my @ports;
 	#ignore $server
-	my $server=shift or die "argument \"server\" missed";         
+	my $server=shift or die "argument \"server\" missed";
 	if ($backend eq 'postgres')
 	{
 		my @strings;
