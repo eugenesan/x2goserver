@@ -1,17 +1,14 @@
 x2goserver (3.1.0.0-0~x2go1) UNRELEASED; urgency=low
 
-  [ Mike Gabriel ]
-  * Continue development...
-
   [ Oleksandr Shneyder ]
   * New upstream version (3.1.0.0)
     - remove ports used by X2Go session from database after session was finished
-    if postgres backend is used.
+      if postgres backend is used.
     - before resuming X2Go session check if reserved ports still available
-    in other case find new free ports, save them in database and send to
-    x2goclient
+      in other case find new free ports, save them in database and send to
+      x2goclient
     - run netstat -tl --all to find free ports for graphic, sound and sshfs
-    tunnels in x2gostartagent and x2goresume-session
+      tunnels in x2gostartagent and x2goresume-session
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Wed, 01 Feb 2012 13:45:00 +0100
 
