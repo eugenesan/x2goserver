@@ -44,7 +44,7 @@ if ($only_path)
 	$only_path=~s/\/ramdrive\/mnt\///;
 	$only_path=~ s/\//_/g;
 	
-	### FIXME: handle CDROM and Removable Media mounts here, as well!!!	
+	### FIXME: handle CDROM and Removable Media mounts here, as well!!!
 
 	$only_path="/tmp/$ENV{'USER'}_media/disk/$only_path";
 	#                                   ^^^^
@@ -75,7 +75,7 @@ for ($i=0;$i<@outp;$i++)
 	@outp[$i]=~s/ //g;
 	chomp(@outp[$i]);
 	chomp(@outp[$i]);
-	chomp(@outp[$i]);    
+	chomp(@outp[$i]);
 	my @line=split('\|',"@outp[$i]");
 	my $path="@line[0]:@line[1]";
 	if ($only_path)
