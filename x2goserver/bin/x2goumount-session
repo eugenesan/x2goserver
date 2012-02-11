@@ -123,6 +123,8 @@ break:
 	}
 	if (! $found)
 	{
+
+		$remote=~s/\/cygdrive\///g;
 		$remote=~s/\//_/g;
 		$remote=(split(":","$remote"))[1];
 		$remote="$ENV{'HOME'}/Desktop/$remote";

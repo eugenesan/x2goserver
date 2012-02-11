@@ -10,6 +10,11 @@ x2goserver (3.1.0.0-0~x2go1) UNRELEASED; urgency=low
     - run netstat -tl --all to find free ports for graphic, sound and sshfs
       tunnels in x2gostartagent and x2goresume-session
 
+  [ Milan Knížek ]
+  * New upstream version (3.1.0.0)
+    - Fix removal of desktop link on x2goumount-session if local folder of a
+      Windows client gets unmounted.
+
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Wed, 01 Feb 2012 13:45:00 +0100
 
 x2goserver (3.0.99.10-0~x2go1) unstable; urgency=low
