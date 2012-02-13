@@ -15,7 +15,7 @@ all: doc
 doc: clean docbuild docupload
 
 docbuild:
-	make -f Makefile build_man2html
+	${MAKE} -f Makefile build_man2html
 
 docupload:
 	ssh -l${DOC_USER} ${DOC_HOST} "{ mkdir -p ${DOC_PATCH_x2goserver}; rm -Rfv ${DOC_PATCH_x2goserver}/*; }"

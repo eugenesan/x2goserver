@@ -23,6 +23,7 @@ x2goserver (3.1.0.0-0~x2go1) UNRELEASED; urgency=low
   [ Jan Engelhardt ]
   * New upstream version (3.1.0.0):
     - Use /cgi-bin/man/ path in web'ified man pages.
+    - Use ,,${MAKE}'' instead of ,,make'' in Makefile.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Wed, 01 Feb 2012 13:45:00 +0100
 
