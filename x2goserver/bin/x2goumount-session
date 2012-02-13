@@ -113,11 +113,11 @@ break:
 			syslog('err', "ERROR: failed to unmount @line[1]");
 			if ($use_zenity == 0)
 			{
-				system("kdialog --error \"@line[1]\"&");
+				system("which kdialog &>/dev/null && kdialog --error \"@line[1]\"&");
 			}
 			else
 			{
-				system("zenity --error --text \"@line[1]\"&");
+				system("which zenity &>/dev/null && zenity --error --text \"@line[1]\"&");
 			}
 		}
 	}
