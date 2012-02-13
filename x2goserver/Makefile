@@ -44,7 +44,7 @@ build-indep: build_man2html
 build_man2html:
 	mkdir -p $(MAN2HTML_DEST)
 	for man_page in $(man_pages); do mkdir -p `dirname $(MAN2HTML_DEST)/$$man_page`; done
-	for man_page in $(man_pages); do $(MAN2HTML_BIN) -r $(MAN2HTML_SRC)/$$man_page > $(MAN2HTML_DEST)/$$man_page.html; done
+	for man_page in $(man_pages); do $(MAN2HTML_BIN) $(MAN2HTML_SRC)/$$man_page > $(MAN2HTML_DEST)/$$man_page.html; done
 
 clean: clean_arch clean_man2html
 

@@ -20,6 +20,10 @@ x2goserver (3.1.0.0-0~x2go1) UNRELEASED; urgency=low
     - Only run kdialog/zenity from x2goumount-session if either of them exists
       in the system's $PATH.
 
+  [ Jan Engelhardt ]
+  * New upstream version (3.1.0.0):
+    - Use /cgi-bin/man/ path in web'ified man pages.
+
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Wed, 01 Feb 2012 13:45:00 +0100
 
 x2goserver (3.0.99.10-0~x2go1) unstable; urgency=low
