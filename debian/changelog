@@ -1,7 +1,7 @@
 x2goserver (3.1.0.0-0~x2go1) UNRELEASED; urgency=low
 
   [ Oleksandr Shneyder ]
-  * New upstream version (3.1.0.0)
+  * New upstream version (3.1.0.0):
     - remove ports used by X2Go session from database after session was finished
       if postgres backend is used.
     - before resuming X2Go session check if reserved ports still available
@@ -11,7 +11,7 @@ x2goserver (3.1.0.0-0~x2go1) UNRELEASED; urgency=low
       tunnels in x2gostartagent and x2goresume-session
 
   [ Milan Knížek ]
-  * New upstream version (3.1.0.0)
+  * New upstream version (3.1.0.0):
     - Fix removal of desktop link on x2goumount-session if local folder of a
       Windows client gets unmounted.
 
