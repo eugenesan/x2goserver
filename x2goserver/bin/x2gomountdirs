@@ -264,6 +264,10 @@ for (my $i=0;$i<@dirs;$i++)
 			}
 			if (! $printspool && ! $mimeboxspool && ! $useplasmoid )
 			{
+
+				### FIXME: Do we really want to create desktop icons for rootless sessions???
+				###        For desktop sessions this is great, but for rootless session???
+
 				my $fname="$ENV{'HOME'}/Desktop";
 				my $current_desktop = "NONE";
 				if (($session =~ m/stDGNOME/) && system("x2gofeature X2GO_GNOMEBINDINGS >/dev/null") == 0)
