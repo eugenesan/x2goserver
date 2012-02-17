@@ -45,6 +45,8 @@ X2GO_CMD=$1; shift
 X2GO_RESIZE=0
 X2GO_FULLSCREEN=0
 
+XAUTHORITY=${XAUTHORITY:-"$HOME/.Xauthority"}
+
 if [ "$X2GO_STYPE" == "S" ]; then
 
 	SHADOW_MODE=`echo "$X2GO_CMD"|awk '{split($0,a,"XSHAD"); print a[1]}'`
@@ -240,9 +242,9 @@ x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSIO
 SESSION_WINDOW_TITLE="X2GO-${SESSION_NAME}"
 
 if  [ "$X2GO_STYPE" == "S" ]; then
-	x2goagent $X2GODPIOPTION_  -$SESSION_TYPE -auth ~/.Xauthority -shadow $SHADOW_DESKTOP -shadowmode $SHADOW_MODE -geometry ${X2GO_GEOMETRY} -name "${SESSION_WINDOW_TITLE}"  ${NX_AGENT} 2>${SESSION_DIR}/session.log &
+	x2goagent $X2GODPIOPTION_ -$SESSION_TYPE -auth $XAUTHORITY -shadow $SHADOW_DESKTOP -shadowmode $SHADOW_MODE -geometry ${X2GO_GEOMETRY} -name "${SESSION_WINDOW_TITLE}"  ${NX_AGENT} 2>${SESSION_DIR}/session.log &
 else
-	x2goagent $X2GODPIOPTION_ $XDMCPOPT  -$SESSION_TYPE -auth ~/.Xauthority -geometry ${X2GO_GEOMETRY} -name "${SESSION_WINDOW_TITLE}"  ${NX_AGENT} 2>${SESSION_DIR}/session.log &
+	x2goagent $X2GODPIOPTION_ $XDMCPOPT  -$SESSION_TYPE -auth $XAUTHORITY -geometry ${X2GO_GEOMETRY} -name "${SESSION_WINDOW_TITLE}"  ${NX_AGENT} 2>${SESSION_DIR}/session.log &
 fi
 
 

@@ -31,6 +31,7 @@ x2goserver (3.1.0.0-0~x2go1) UNRELEASED; urgency=low
     - Provide new package x2goserver-fmbindings. Derived from a package draft
       provided by Milan Knížek (Thanks!).
     - Do not create desktop icons for rootless (i.e. non-desktop) sessions.
+    - Allow other $XAUTHORITY values than the default ($HOME/.Xauthority).
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Wed, 01 Feb 2012 13:45:00 +0100
 
