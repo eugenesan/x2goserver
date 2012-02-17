@@ -265,20 +265,17 @@ for (my $i=0;$i<@dirs;$i++)
 			if (! $printspool && ! $mimeboxspool && ! $useplasmoid )
 			{
 
-				### FIXME: Do we really want to create desktop icons for rootless sessions???
-				###        For desktop sessions this is great, but for rootless session???
-
 				my $fname="$ENV{'HOME'}/Desktop";
 				my $current_desktop = "NONE";
-				if (($session =~ m/stDGNOME/) && system("x2gofeature X2GO_GNOMEBINDINGS >/dev/null") == 0)
+				if (($session =~ m/_stDGNOME_dp/) && system("x2gofeature X2GO_GNOMEBINDINGS >/dev/null") == 0)
 				{
 					$current_desktop="-gnome";
 				}
-				elsif (($session =~ m/stDLXDE/) && system("x2gofeature X2GO_LXDEBINDINGS >/dev/null") == 0)
+				elsif (($session =~ m/_stDLXDE_dp/) && system("x2gofeature X2GO_LXDEBINDINGS >/dev/null") == 0)
 				{
 					$current_desktop="-lxde";
 				}
-				elsif (system("x2gofeature X2GO_FMBINDINGS >/dev/null") == 0)
+				elsif (($session =~ m/_stD.*_dp/) && system("x2gofeature X2GO_FMBINDINGS >/dev/null") == 0)
 				{
 					$current_desktop="";
 				}
