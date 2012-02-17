@@ -11,6 +11,7 @@ build_man2html:
 	$(MAKE) -C x2goserver-compat $@
 	$(MAKE) -C x2goserver-extensions $@
 	$(MAKE) -C x2goserver-xsession $@
+	$(MAKE) -C x2goserver-fmbindings $@
 	$(MAKE) -C x2goserver-pyhoca $@
 
 clean:
@@ -19,6 +20,7 @@ clean:
 	$(MAKE) -C x2goserver-compat $@
 	$(MAKE) -C x2goserver-extensions $@
 	$(MAKE) -C x2goserver-xsession $@
+	$(MAKE) -C x2goserver-fmbindings $@
 	$(MAKE) -C x2goserver-pyhoca $@
 
 build-arch:
@@ -27,6 +29,7 @@ build-arch:
 	$(MAKE) -C x2goserver-compat $@
 	$(MAKE) -C x2goserver-extensions $@
 	$(MAKE) -C x2goserver-xsession $@
+	$(MAKE) -C x2goserver-fmbindings $@
 	$(MAKE) -C x2goserver-pyhoca $@
 
 build-indep:
@@ -35,6 +38,7 @@ build-indep:
 	$(MAKE) -C x2goserver-compat $@
 	$(MAKE) -C x2goserver-extensions $@
 	$(MAKE) -C x2goserver-xsession $@
+	$(MAKE) -C x2goserver-fmbindings $@
 	$(MAKE) -C x2goserver-pyhoca $@
 
 install:
@@ -43,6 +47,7 @@ install:
 	$(MAKE) -C x2goserver-compat $@
 	$(MAKE) -C x2goserver-extensions $@
 	$(MAKE) -C x2goserver-xsession $@
+	$(MAKE) -C x2goserver-fmbindings $@
 	$(MAKE) -C x2goserver-pyhoca $@
 
 uninstall:
@@ -51,4 +56,5 @@ uninstall:
 	$(MAKE) -C x2goserver-compat $@
 	$(MAKE) -C x2goserver-extensions $@
 	$(MAKE) -C x2goserver-xsession $@
+	$(MAKE) -C x2goserver-fmbindings $@
 	$(MAKE) -C x2goserver-pyhoca $@

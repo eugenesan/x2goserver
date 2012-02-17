@@ -113,11 +113,11 @@ break:
 			syslog('err', "ERROR: failed to unmount @line[1]");
 			if ($use_zenity == 0)
 			{
-				system("which kdialog &>/dev/null && kdialog --error \"@line[1]\"&");
+				system("which kdialog &>/dev/null && kdialog --error \"ERROR (X2Go): Failed to unmount @line[1]\"&");
 			}
 			else
 			{
-				system("which zenity &>/dev/null && zenity --error --text \"@line[1]\"&");
+				system("which zenity &>/dev/null && zenity --error --text \"ERROR (X2Go): Failed to unmount @line[1]\"&");
 			}
 		}
 	}
@@ -129,31 +129,38 @@ break:
 		$remote=(split(":","$remote"))[1];
 		$remote="$ENV{'HOME'}/Desktop/$remote";
 
-		my $current_desktop = '';
-		if ($session =~ m/stDGNOME/)
+		my $current_desktop = 'NONE';
+		if (($session =~ m/stDGNOME/) && system("x2gofeature X2GO_GNOMEBINDINGS >/dev/null") == 0)
 		{
 			$current_desktop="-gnome";
 		}
-		elsif ($session =~ m/stDLXDE/)
+		elsif (($session =~ m/stDLXDE/) && system("x2gofeature X2GO_LXDEBINDINGS >/dev/null") == 0)
 		{
 			$current_desktop="-lxde";
 		}
+		elsif (system("x2gofeature X2GO_FMBINDINGS >/dev/null") == 0)
+		{
+			$current_desktop="";
+		}
 
-		if ( -e "$remote\ (sshfs-disk$current_desktop)")
+		if ("$current_desktop" ne "NONE")
 		{
-		    syslog('info', "removing desktop icon ,,$remote (sshfs-disk$current_desktop)''");
-		    unlink("$remote\ (sshfs-disk$current_desktop)");
-		}
-		$remote=~s/%2framdrive%2fmnt%2f//;
-		if ( -e "$remote\ (sshfs-removable$current_desktop)")
-		{
-			syslog('info', "removing desktop icon ,,$remote\ (sshfs-removable$current_desktop)''");
-			unlink("$remote\ (sshfs-removable$current_desktop)");
-		}
-		if ( -e "$remote\ (sshfs-cdrom/$current_desktop)")
-		{
-			syslog('info', "removing desktop icon ,,$remote\ (sshfs-cdrom$current_desktop)''");
-			unlink("$remote\ (sshfs-cdrom$current_desktop)");
+			if ( -e "$remote\ (sshfs-disk$current_desktop)")
+			{
+				syslog('info', "removing desktop icon ,,$remote (sshfs-disk$current_desktop)''");
+				unlink("$remote\ (sshfs-disk$current_desktop)");
+			}
+			$remote=~s/%2framdrive%2fmnt%2f//;
+			if ( -e "$remote\ (sshfs-removable$current_desktop)")
+			{
+				syslog('info', "removing desktop icon ,,$remote\ (sshfs-removable$current_desktop)''");
+				unlink("$remote\ (sshfs-removable$current_desktop)");
+			}
+			if ( -e "$remote\ (sshfs-cdrom/$current_desktop)")
+			{
+				syslog('info', "removing desktop icon ,,$remote\ (sshfs-cdrom$current_desktop)''");
+				unlink("$remote\ (sshfs-cdrom$current_desktop)");
+			}
 		}
 		db_deletemount ($session, @line[1]);
 		rmdir (@line[1]);

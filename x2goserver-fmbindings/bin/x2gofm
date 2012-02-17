@@ -1,0 +1,8 @@
+#!/usr/bin/perl
+use strict;
+
+my $fname=shift;
+open(F,"<$fname") or die "can't open $fname";
+my $dir=<F>;
+close(F);
+system( "xdg-open  $dir" );

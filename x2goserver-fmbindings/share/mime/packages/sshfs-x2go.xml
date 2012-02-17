@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="application/sshfscdrom-x2go">
+    <comment>SSHFS CDROM</comment>
+    <comment xml:lang="de">SSHFS CDROM</comment>
+    <glob pattern="* (sshfs-cdrom)"/>
+  <generic-icon name="folder-remote"/>
+  </mime-type>
+  <mime-type type="application/sshfsdisk-x2go">
+    <comment>SSHFS Disk</comment>
+    <comment xml:lang="de">SSHFS Freigabe</comment>
+    <glob pattern="* (sshfs-disk)"/>
+  <generic-icon name="folder-remote"/>
+  </mime-type>
+  <mime-type type="application/sshfsremovable-x2go">
+    <comment>SSHFS Removable</comment>
+    <comment xml:lang="de">SSHFS Gerät</comment>
+    <glob pattern="* (sshfs-removable)"/>
+  <generic-icon name="folder-remote"/>
+  </mime-type>
+</mime-info>

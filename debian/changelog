@@ -25,6 +25,11 @@ x2goserver (3.1.0.0-0~x2go1) UNRELEASED; urgency=low
     - Use /cgi-bin/man/ path in web'ified man pages.
     - Use ,,${MAKE}'' instead of ,,make'' in Makefile.
 
+  [ Mike Gabriel ]
+  * New upstream version (3.1.0.0):
+    - Provide new package x2goserver-fmbindings. Derived from a package draft
+      provided by Milan Knížek (Thanks!).
+
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Wed, 01 Feb 2012 13:45:00 +0100
 
 x2goserver (3.0.99.10-0~x2go1) unstable; urgency=low

@@ -167,6 +167,33 @@ Description: X2Go server daemon scripts (Xsession runner)
  startups and many more Xsession related features on 
  X2Go session login automagically.
 
+Package: x2goserver-fmbindings
+Architecture: all
+Depends: ${shlibs:Depends},
+ ${misc:Depends},
+ x2goserver (>= ${source:Version}), x2goserver (<< ${source:Version}.1~),
+ desktop-file-utils,
+ xdg-utils
+Description: Generic (freedesktop-based) file manager bindings for X2Go
+ X2Go is a server based computing environment with
+    - session resuming
+    - low bandwith support
+    - LDAP support
+    - client side mass storage mounting support
+    - audio support
+    - authentication by smartcard and USB stick
+ .
+ x2goserver-fmbindings contains generic MIME type information
+ for X2Go's local folder sharing. It can be used with all
+ freedesktop.org compliant desktop shells.
+ .
+ However, this package will be superseded by other, more specific
+ destkop binding components, if installed and being used with the
+ corresponding desktop shell:
+    - under LXDE by x2golxdebindings
+    - under GNOME by x2gognomebindings
+    - under KDE4 by plasma-widget-x2go
+
 Package: x2goserver-pyhoca
 Architecture: all
 Depends:
@@ -189,3 +216,4 @@ Description: X2Go server daemon scripts (add-ons for pyhoca client)
  Functionalities this package adds:
     - renaming of session window titles
     - setting detailled X keyboard parameters
+
