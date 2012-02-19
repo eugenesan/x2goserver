@@ -78,8 +78,8 @@ if [ "$X2GO_STYPE" == "S" ]; then
 		X2GO_COOKIE=`echo $OUTPUT | awk '{print $2}'`
 		X2GO_PORT=`echo $OUTPUT | awk '{print $1}'`
 		$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "received shadow session information: cookie: $X2GO_COOKIE, port: $X2GO_PORT"
-		xauth add ${HOSTNAME}/unix:${X2GO_PORT} MIT-MAGIC-COOKIE-1 ${X2GO_COOKIE}
-		xauth add ${HOSTNAME}:${X2GO_PORT} MIT-MAGIC-COOKIE-1 ${X2GO_COOKIE}
+		xauth -f $XAUTHORITY add ${HOSTNAME}/unix:${X2GO_PORT} MIT-MAGIC-COOKIE-1 ${X2GO_COOKIE}
+		xauth -f $XAUTHORITY add ${HOSTNAME}:${X2GO_PORT} MIT-MAGIC-COOKIE-1 ${X2GO_COOKIE}
 
 		echo $X2GO_PORT
 		echo $X2GO_COOKIE
@@ -204,8 +204,8 @@ PATH="${PATH}:${X2GO_BIN}/"
 export PATH
 
 
-xauth add ${HOSTNAME}/unix:${X2GO_PORT} MIT-MAGIC-COOKIE-1 ${X2GO_COOKIE}
-xauth add ${HOSTNAME}:${X2GO_PORT} MIT-MAGIC-COOKIE-1 ${X2GO_COOKIE}
+xauth -f $XAUTHORITY add ${HOSTNAME}/unix:${X2GO_PORT} MIT-MAGIC-COOKIE-1 ${X2GO_COOKIE}
+xauth -f $XAUTHORITY add ${HOSTNAME}:${X2GO_PORT} MIT-MAGIC-COOKIE-1 ${X2GO_COOKIE}
 
 
 if [ "$X2GO_SET_KBD" == "0" ]

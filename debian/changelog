@@ -15,6 +15,7 @@ x2goserver (3.1.0.0-0~x2go1) UNRELEASED; urgency=low
     - Fix removal of desktop link on x2goumount-session if local folder of a
       Windows client gets unmounted.
     - Remove redundant -S option from x2goagent start-up command line.
+    - Use -f $XAUTHORITY with xauth calls.
 
   [ Sören Plönnigs ]
   * New upstream version (3.1.0.0):
