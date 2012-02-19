@@ -33,6 +33,8 @@ setlogmask( LOG_UPTO(x2gologlevel()) );
 
 syslog('info', "x2gomountdirs has been called with options: @ARGV");
 
+my $tmp_dir = $ENV{'TMP'} || '/tmp';
+
 my $type=shift;
 my $session=shift;
 my $user=shift;
@@ -98,12 +100,12 @@ close(F);
 chmod(0600,"$key");
 chmod(0600,"$key.ident");
 
-my $mdir="/tmp/$ENV{'USER'}_media";
+my $mdir="$tmp_dir/$ENV{'USER'}_media";
 my $ldir="$ENV{'HOME'}/media";
 my $spooldir_lnk="$ENV{'HOME'}/.x2go/C-$session/spool";
-my $spooldir="/tmp/spool_$ENV{'USER'}";
+my $spooldir="$tmp_dir/spool_$ENV{'USER'}";
 my $mimeboxdir_lnk="$ENV{'HOME'}/.x2go/C-$session/mimebox";
-my $mimeboxdir="/tmp/mimebox_$ENV{'USER'}";
+my $mimeboxdir="$tmp_dir/mimebox_$ENV{'USER'}";
 
 if (! -e $mdir)
 {
