@@ -35,6 +35,7 @@ x2goserver (3.1.0.0-0~x2go1) UNRELEASED; urgency=low
     - Allow other $XAUTHORITY values than the default ($HOME/.Xauthority).
     - For x2gomountdirs / x2goumount-session allow other TMP paths than
       /tmp. Use ENV{'TMP'} instead, unless it is empty. Then use /tmp.
+  * Let x2goserver package suggest x2goserver-fmbindings.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Wed, 01 Feb 2012 13:45:00 +0100
 
