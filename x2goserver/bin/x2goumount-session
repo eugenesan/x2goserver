@@ -34,7 +34,7 @@ setlogmask( LOG_UPTO(x2gologlevel()) );
 
 syslog('info', "x2goumount-session has been called with options: @ARGV");
 
-my $tmp_dir = $ENV{'TMP'} || '/tmp'
+my $tmp_dir = $ENV{'TMP'} || '/tmp';
 
 my $session=shift;
 my $only_path=shift;
