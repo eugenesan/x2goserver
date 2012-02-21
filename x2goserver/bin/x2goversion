@@ -41,7 +41,7 @@ if [ -n "$1" ]; then
 	fi
 else
 	cd "${X2GO_VERSIONS_BASEPATH}"
-	for compfile in `ls ${X2GO_VERSIONS_BASEPATH}`; do 
+	for compfile in `ls "${X2GO_VERSIONS_BASEPATH}"`; do 
 		X2GO_COMPONENT="$(echo $compfile | cut -d"." -f2)"
 		X2GO_COMPONENT_VERSION="$(get_version $compfile)"
 		echo "${X2GO_COMPONENT}: ${X2GO_COMPONENT_VERSION}"

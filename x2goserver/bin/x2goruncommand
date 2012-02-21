@@ -116,7 +116,7 @@ fi
 
 EXEC=`which $cmd`
 
-BNAME=`basename $EXEC`
+BNAME=`basename "$EXEC"`
 if [ "$BNAME" == "rdesktop" ]
 then
 	IMEXIT="true"

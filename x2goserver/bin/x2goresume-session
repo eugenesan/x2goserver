@@ -29,7 +29,7 @@ X2GO_KBD_TYPE="$6"
 X2GO_SET_KBD="$7"
 
 X2GO_LIB_PATH=`echo -n \$(x2gobasepath)/lib/x2go`
-X2GO_AGENT_PID=`$X2GO_LIB_PATH/x2gogetagent $SESSION_NAME`
+X2GO_AGENT_PID=`$X2GO_LIB_PATH/x2gogetagent "$SESSION_NAME"`
 
 X2GO_ROOT="${HOME}/.x2go"
 X2GO_RESIZE=0
@@ -55,7 +55,7 @@ then
 fi
 
 
-SESSIONINFO=`x2golistsessions | grep ${SESSION_NAME} | sed "s/|/,/g"`
+SESSIONINFO=`x2golistsessions | grep "${SESSION_NAME}" | sed "s/|/,/g"`
 
 GR_PORT=`echo "$SESSIONINFO" | awk -F, {'print $9'}`
 SOUND_PORT=`echo "$SESSIONINFO" | awk -F, {'print $10'}`
@@ -87,7 +87,7 @@ fi
 SSH_PORT=30000 #First ssh port 30001
 
 #Get all used in system ports from X2Go database and netstat output
-USED_PORTS=`$X2GO_LIB_PATH/x2gogetports $HOSTNAME ; netstat -nt -all | awk '{ n=split($0,lines,"\n"); for(i=1;i<=n;i++){split (lines[i],words," ");delim=split(words[4],ports,":"); if(delim>1)printf ("|%s|\n",ports[delim])} }'`
+USED_PORTS=`$X2GO_LIB_PATH/x2gogetports "$HOSTNAME"; netstat -nt -all | awk '{ n=split($0,lines,"\n"); for(i=1;i<=n;i++){split (lines[i],words," ");delim=split(words[4],ports,":"); if(delim>1)printf ("|%s|\n",ports[delim])} }'`
 
 while [ "$GR_PORT" == "" ] || [ "$SOUND_PORT" == "" ] || [ "$FS_PORT" == "" ]; do
 	OUTPUT=""
@@ -100,7 +100,7 @@ while [ "$GR_PORT" == "" ] || [ "$SOUND_PORT" == "" ] || [ "$FS_PORT" == "" ]; d
 		#check if port in /etc/services
 		SERV=`grep $SSH_PORT /etc/services`
 		if [ "$SERV" == "" ]; then
-			OUTPUT=`$X2GO_LIB_PATH/x2goinsertport $HOSTNAME $SESSION_NAME $SSH_PORT`
+			OUTPUT=`$X2GO_LIB_PATH/x2goinsertport "$HOSTNAME" "$SESSION_NAME" "$SSH_PORT"`
 		fi
 	done
 	if [ "$GR_PORT" == "" ]; then
@@ -125,8 +125,8 @@ KTSTR=`echo "$OPTIONS" | awk -F, {'print $12'}`
 LISTSTR=`echo "$OPTIONS" | awk -F, {'print $17'}`
 
 
-KTSTR=`echo $KTSTR | sed "s/\//\\\\\\\\\//"`
-X2GO_KBD_TYPE=`echo $X2GO_KBD_TYPE | sed "s/\//\\\\\\\\\//"`
+KTSTR=`echo "$KTSTR" | sed "s/\//\\\\\\\\\//"`
+X2GO_KBD_TYPE=`echo "$X2GO_KBD_TYPE" | sed "s/\//\\\\\\\\\//"`
 
 if [ "$X2GO_SET_KBD" == "0" ]
 then
@@ -141,7 +141,7 @@ NEWOPTIONS=`echo "$OPTIONS" | sed  -e  "s/$LSTR/link=$X2GO_LINK/"\
  -e "s/$LISTSTR/listen=$GR_PORT/"\
  -e "s/$FSTR/fullscreen=$X2GO_FULLSCREEN/"`
 
-X2GO_CLIENT=`echo $SSH_CLIENT | awk '{print $1}'`
+X2GO_CLIENT=`echo "$SSH_CLIENT" | awk '{print $1}'`
 if [ "$X2GO_CLIENT" == "" ]
 then
 	X2GO_CLIENT="$HOSTNAME"
