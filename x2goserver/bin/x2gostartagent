@@ -244,7 +244,7 @@ SESSION_WINDOW_TITLE="X2GO-${SESSION_NAME}"
 if  [ "$X2GO_STYPE" == "S" ]; then
 	x2goagent $X2GODPIOPTION_ -$SESSION_TYPE -auth "$XAUTHORITY" -shadow $SHADOW_DESKTOP -shadowmode $SHADOW_MODE -geometry ${X2GO_GEOMETRY} -name "${SESSION_WINDOW_TITLE}"  "${NX_AGENT}" 2>"${SESSION_DIR}/session.log" &
 else
-	x2goagent $X2GODPIOPTION_ "$XDMCPOPT" -$SESSION_TYPE -auth "$XAUTHORITY" -geometry ${X2GO_GEOMETRY} -name "${SESSION_WINDOW_TITLE}"  "${NX_AGENT}" 2>"${SESSION_DIR}/session.log" &
+	x2goagent $X2GODPIOPTION_ $XDMCPOPT -$SESSION_TYPE -auth "$XAUTHORITY" -geometry ${X2GO_GEOMETRY} -name "${SESSION_WINDOW_TITLE}"  "${NX_AGENT}" 2>"${SESSION_DIR}/session.log" &
 fi
 
 
