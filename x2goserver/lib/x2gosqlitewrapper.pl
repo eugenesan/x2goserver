@@ -324,8 +324,9 @@ sub check_user
 	my $sid=shift or die "argument \"session_id\" missed";
 	return if $realuser eq "root";
 	# session id looks like someuser-51-1304005895_stDgnome-session_dp24
-	my ( $user, $rest ) = split('-', $sid, 2);
-	$user eq $realuser or die "$realuser is not authorized (should be $user)";
+	my $user = "$sid";
+	$user =~ s/$realuser-[0-9]+-[0-9]+.*/$realuser/;
+	$user eq $realuser or die "$realuser is not authorized";
 }
 
 sub fetchrow_printall_array
