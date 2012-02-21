@@ -322,10 +322,24 @@ sub checkroot
 sub check_user
 {
 	my $sid=shift or die "argument \"session_id\" missed";
-	return if $realuser eq "root";
 	# session id looks like someuser-51-1304005895_stDgnome-session_dp24
-	my ( $user, $rest ) = split('-', $sid, 2);
+	$sid = standardize_sid($sid);
+	return if $realuser eq "root";
+	# pass $sid backwards so that we can tolerate "-" chars in user names
+	my ($f4, $f3, $f2, @user) = reverse(split('-', $sid,));
+	my $user = join('-', reverse(@user));
 	$user eq $realuser or die "$realuser is not authorized (should be $user)";
+}
+
+sub standardize_sid
+{
+	my $sid=shift;
+	my @sid_fields = split('-', $sid);
+	while (@sid_fields <= 4)
+	{
+		push(@sid_fields, ('DUMMY'));
+	}
+	return join('-', @sid_fields);
 }
 
 sub fetchrow_printall_array
