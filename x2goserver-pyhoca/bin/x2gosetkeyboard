@@ -38,11 +38,11 @@ test -f ${X2GO_CLIENT_KBD_FILE} || exit 0
 read_keyboard_file() {
 
 	# retrieve keyboard settings from keyboard file in X2Go session dir
-	XKB_RULES=$(cat ${X2GO_CLIENT_KBD_FILE}  | egrep "^rules.*" | head -n1 | cut -d "=" -f2 | cut -d" " -f1)
-	XKB_MODEL=$(cat ${X2GO_CLIENT_KBD_FILE}  | egrep "^model.*" | head -n1 | cut -d "=" -f2 | cut -d" " -f1)
-	XKB_LAYOUT=$(cat ${X2GO_CLIENT_KBD_FILE} | egrep "^layout.*" | head -n1 | cut -d "=" -f2 | cut -d" " -f1)
-	XKB_VARIANT=$(cat ${X2GO_CLIENT_KBD_FILE} | egrep "^variant.*" | head -n1 | cut -d "=" -f2 | cut -d" " -f1)
-	XKB_OPTIONS=$(cat ${X2GO_CLIENT_KBD_FILE} | egrep "^options.*" | head -n1 | cut -d "=" -f2 | cut -d" " -f1)
+	XKB_RULES="$(cat ${X2GO_CLIENT_KBD_FILE}  | egrep "^rules.*" | head -n1 | cut -d "=" -f2 | cut -d" " -f1)"
+	XKB_MODEL="$(cat ${X2GO_CLIENT_KBD_FILE}  | egrep "^model.*" | head -n1 | cut -d "=" -f2 | cut -d" " -f1)"
+	XKB_LAYOUT="$(cat ${X2GO_CLIENT_KBD_FILE} | egrep "^layout.*" | head -n1 | cut -d "=" -f2 | cut -d" " -f1)"
+	XKB_VARIANT="$(cat ${X2GO_CLIENT_KBD_FILE} | egrep "^variant.*" | head -n1 | cut -d "=" -f2 | cut -d" " -f1)"
+	XKB_OPTIONS="$(cat ${X2GO_CLIENT_KBD_FILE} | egrep "^options.*" | head -n1 | cut -d "=" -f2 | cut -d" " -f1)"
 
 }
 

@@ -20,25 +20,25 @@
 # Copyright (C) 2007-2012  Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
 # Copyright (C) 2007-2012  Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
 
-SESSION_NAME=$1
-X2GO_GEOMETRY=$2
-X2GO_LINK=$3
-X2GO_PACK=$4
-X2GO_KBD_LAYOUT=$5
-X2GO_KBD_TYPE=$6
-X2GO_SET_KBD=$7
+SESSION_NAME="$1"
+X2GO_GEOMETRY="$2"
+X2GO_LINK="$3"
+X2GO_PACK="$4"
+X2GO_KBD_LAYOUT="$5"
+X2GO_KBD_TYPE="$6"
+X2GO_SET_KBD="$7"
 
 X2GO_LIB_PATH=`echo -n \$(x2gobasepath)/lib/x2go`
 X2GO_AGENT_PID=`$X2GO_LIB_PATH/x2gogetagent $SESSION_NAME`
 
-X2GO_ROOT=${HOME}/.x2go
+X2GO_ROOT="${HOME}/.x2go"
 X2GO_RESIZE=0
 X2GO_FULLSCREEN=0
 
-NX_XINERAMA_CONF=$X2GO_ROOT/C-$SESSION_NAME/xinerama.conf
-if [ -e $NX_XINERAMA_CONF ]
+NX_XINERAMA_CONF="$X2GO_ROOT/C-$SESSION_NAME/xinerama.conf"
+if [ -e "$NX_XINERAMA_CONF" ]
 then
-	rm $NX_XINERAMA_CONF
+	rm "$NX_XINERAMA_CONF"
 fi
 
 $X2GO_LIB_PATH/x2gosyslog "$0" "info" "$(basename $0) called with options: $@"
@@ -70,17 +70,17 @@ SYSTEM_PORTS=`netstat -nt -all | awk '{ n=split($0,lines,"\n"); for(i=1;i<=n;i++
 #check if saved in DB ports free
 if grep -q "|${GR_PORT}|" <<<$SYSTEM_PORTS ; then
 	$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "port $GR_PORT is already in use"
-	$X2GO_LIB_PATH/x2gormport $HOSTNAME $SESSION_NAME $GR_PORT
+	$X2GO_LIB_PATH/x2gormport "$HOSTNAME" "$SESSION_NAME" "$GR_PORT"
 	GR_PORT=""
 fi
 if grep -q "|${SOUND_PORT}|" <<<$SYSTEM_PORTS ; then
 	$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "port $SOUND_PORT is already in use"
-	$X2GO_LIB_PATH/x2gormport $HOSTNAME $SESSION_NAME $SOUND_PORT
+	$X2GO_LIB_PATH/x2gormport "$HOSTNAME" "$SESSION_NAME" "$SOUND_PORT"
 	SOUND_PORT=""
 fi
 if grep -q "|${FS_PORT}|" <<<$SYSTEM_PORTS ; then
-	$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "port $FS_PORT is already in use"
-	$X2GO_LIB_PATH/x2gormport $HOSTNAME $SESSION_NAME $FS_PORT
+	$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "port "$FS_PORT" is already in use"
+	$X2GO_LIB_PATH/x2gormport "$HOSTNAME" "$SESSION_NAME" "$FS_PORT"
 	FS_PORT=""
 fi
 
@@ -104,16 +104,16 @@ while [ "$GR_PORT" == "" ] || [ "$SOUND_PORT" == "" ] || [ "$FS_PORT" == "" ]; d
 		fi
 	done
 	if [ "$GR_PORT" == "" ]; then
-		GR_PORT=$SSH_PORT
+		GR_PORT="$SSH_PORT"
 	elif [ "$SOUND_PORT" == "" ]; then
-		SOUND_PORT=$SSH_PORT
+		SOUND_PORT="$SSH_PORT"
 	else
-		FS_PORT=$SSH_PORT
+		FS_PORT="$SSH_PORT"
 	fi
 done
 
 
-SESSION_DIR=${X2GO_ROOT}/C-${SESSION_NAME}
+SESSION_DIR="${X2GO_ROOT}/C-${SESSION_NAME}"
 OPTIONS=`cat ${SESSION_DIR}/options`
 
 GSTR=`echo "$OPTIONS" | awk -F, {'print $13'}`
@@ -144,24 +144,24 @@ NEWOPTIONS=`echo "$OPTIONS" | sed  -e  "s/$LSTR/link=$X2GO_LINK/"\
 X2GO_CLIENT=`echo $SSH_CLIENT | awk '{print $1}'`
 if [ "$X2GO_CLIENT" == "" ]
 then
-	X2GO_CLIENT=$HOSTNAME
+	X2GO_CLIENT="$HOSTNAME"
 fi
 
-echo "$NEWOPTIONS" >${SESSION_DIR}/options
+echo "$NEWOPTIONS" >"${SESSION_DIR}/options"
 
-$X2GO_LIB_PATH/x2goresume  $X2GO_CLIENT $SESSION_NAME  $GR_PORT $SOUND_PORT $FS_PORT > /dev/null
+$X2GO_LIB_PATH/x2goresume  "$X2GO_CLIENT" "$SESSION_NAME"  "$GR_PORT" "$SOUND_PORT" "$FS_PORT" > /dev/null
 
 # run x2goserver-extensions for pre-resume
-x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME pre-resume || true
+x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions "$SESSION_NAME" pre-resume || true
 
 kill -HUP $X2GO_AGENT_PID &>/dev/null && {
 	$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "client $X2GO_CLIENT has successfully resumed session with ID $SESSION_NAME"
 
 	# resume x2godesktopsharing, if it has been in use before the session got suspended
-	x2gofeature X2GO_DESKTOPSHARING &>/dev/null && x2goresume-desktopsharing $SESSION_NAME || true
+	x2gofeature X2GO_DESKTOPSHARING &>/dev/null && x2goresume-desktopsharing "$SESSION_NAME" || true
 
 	# run x2goserver-extensions for post-resume
-	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME post-resume || true
+	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions "$SESSION_NAME" post-resume || true
 
 } || {
 	err_msg="ERROR: failed to resume session with ID $SESSION_NAME"
@@ -170,10 +170,10 @@ kill -HUP $X2GO_AGENT_PID &>/dev/null && {
 
 	# If we reach here it means that the x2goagent process of the session has vanisshed
 	# If this happens than we mark the session as finished...
-	$X2GO_LIB_PATH/x2gochangestatus 'F' $SESSION_NAME  > /dev/null
+	$X2GO_LIB_PATH/x2gochangestatus 'F' "$SESSION_NAME"  > /dev/null
 
 	# run x2goserver-extensions for fail-resume
-	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME fail-resume || true
+	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions "$SESSION_NAME" fail-resume || true
 
 }
 

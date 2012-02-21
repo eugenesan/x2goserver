@@ -21,9 +21,9 @@
 # Copyright (C) 2007-2012  Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
 
 if [ $# -eq 1   ]; then
-	SESSION_NAME=$1
+	SESSION_NAME="$1"
 else 
-	SESSION_NAME=$X2GO_SESSION
+	SESSION_NAME="$X2GO_SESSION"
 fi
 
 X2GO_LIB_PATH=`echo -n \$(x2gobasepath)/lib/x2go`
@@ -33,19 +33,19 @@ $X2GO_LIB_PATH/x2gosyslog "$0" "info" "$(basename $0) called with options: $@"
 X2GO_AGENT_PID=`$X2GO_LIB_PATH/x2gogetagent $SESSION_NAME` 
 X2GO_AGENT_PID=`echo "$X2GO_AGENT_PID"| awk {'print $1'}`
 
-$X2GO_LIB_PATH/x2gochangestatus 'F' $SESSION_NAME  > /dev/null
+$X2GO_LIB_PATH/x2gochangestatus 'F' "$SESSION_NAME"  > /dev/null
 
 # stop x2godesktopsharing process gracefully...
-x2gofeature X2GO_DESKTOPSHARING &>/dev/null && x2goterminate-desktopsharing $SESSION_NAME || true
+x2gofeature X2GO_DESKTOPSHARING &>/dev/null && x2goterminate-desktopsharing "$SESSION_NAME" || true
 
 # run x2goserver-extensions for pre-terminate
-x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME pre-terminate || true
+x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions "$SESSION_NAME" pre-terminate || true
 
 kill -TERM $X2GO_AGENT_PID &>/dev/null && {
-	$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "session with ID $SESSION_NAME has been terminated successfully"
+	$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "session with ID "$SESSION_NAME" has been terminated successfully"
 
 	# run x2goserver-extensions for post-terminate
-	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME post-terminate || true
+	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions "$SESSION_NAME" post-terminate || true
 
 } || {
 	err_msg="ERROR: failed to terminate session with ID $SESSION_NAME"
@@ -56,14 +56,14 @@ kill -TERM $X2GO_AGENT_PID &>/dev/null && {
 	$X2GO_LIB_PATH/x2gosyslog "$0" "err" "$err_msg"
 
 	# run x2goserver-extensions for fail-terminate
-	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME fail-terminate || true
+	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions "$SESSION_NAME" fail-terminate || true
 
 }
 
 export HOSTNAME
-x2goumount-session $SESSION_NAME
+x2goumount-session "$SESSION_NAME"
 
 # if we are not running in log level debug (=7) then clean up session dir
 if [ "$($X2GO_LIB_PATH/x2gologlevel)" != "7" ]; then
-	(sleep 10; rm -Rf $HOME/.x2go/C-$X2GO_SESSION)&
+	(sleep 10; rm -Rf "$HOME/.x2go/C-$X2GO_SESSION")&
 fi

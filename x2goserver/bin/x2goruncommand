@@ -36,11 +36,11 @@ export X2GO_AGENT_PID
 export X2GO_SESSION
 cmd=`echo $cmd |sed 's/X2GO_SPACE_CHAR/ /g'`
 
-X2GO_ROOT=${HOME}/.x2go
-MESSAGE_FILE=$X2GO_ROOT/C-$X2GO_SESSION/cmdoutput
-echo "exec $cmd" >> $MESSAGE_FILE
+X2GO_ROOT="${HOME}/.x2go"
+MESSAGE_FILE="$X2GO_ROOT/C-$X2GO_SESSION/cmdoutput"
+echo "exec $cmd" >> "$MESSAGE_FILE"
 
-NX_XINERAMA_CONF=$X2GO_ROOT/C-$X2GO_SESSION/xinerama.conf
+NX_XINERAMA_CONF="$X2GO_ROOT/C-$X2GO_SESSION/xinerama.conf"
 export NX_XINERAMA_CONF
 
 # make Kerberos's ticket cache known inside the X2Go session
@@ -52,7 +52,7 @@ export QT_GRAPHICSSYSTEM=native
 IMEXIT="false"
 
 NX_XINERAMA_LIBS=/usr/lib/nx/X11/Xinerama
-test -n $LD_LIBRARY_PATH && LD_LIBRARY_PATH=$NX_XINERAMA_LIBS:$LD_LIBRARY_PATH || LD_LIBRARY_PATH=$NX_XINERAMA_LIBS
+test -n "$LD_LIBRARY_PATH" && LD_LIBRARY_PATH=$NX_XINERAMA_LIBS:$LD_LIBRARY_PATH || LD_LIBRARY_PATH="$NX_XINERAMA_LIBS"
 export LD_LIBRARY_PATH
 
 if [ "$sndsys" == "esd" ]; then
@@ -123,7 +123,7 @@ then
 fi
 
 # run x2goserver-extensions for pre-runcommand
-x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME pre-runcommand || true
+x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions "$SESSION_NAME" pre-runcommand || true
 
 sucessful_run=false
 if [ "$EXEC" != "" ] && [ -x $EXEC ]; then
@@ -148,26 +148,26 @@ if [ "$EXEC" != "" ] && [ -x $EXEC ]; then
 	successful_run=true
 
 	# run x2goserver-extensions for post-runcommand
-	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME post-runcommand || true
+	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions "$SESSION_NAME" post-runcommand || true
 
 else
 	$X2GO_LIB_PATH/x2gosyslog "$0" "err" "ERROR: command $EXEC failed to execute"
-	echo "X2GORUNCOMMAND ERR NOEXEC:$cmd" > $MESSAGE_FILE
+	echo "X2GORUNCOMMAND ERR NOEXEC:$cmd" > "$MESSAGE_FILE"
 
 	# run x2goserver-extensions for fail-runcommand
-	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME fail-runcommand || true
+	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions "$SESSION_NAME" fail-runcommand || true
 
 fi
 
 # stop x2godesktopsharing process gracefully...
-x2gofeature X2GO_DESKTOPSHARING >/dev/null && x2godesktopsharing-terminate $X2GO_SESSION || true
+x2gofeature X2GO_DESKTOPSHARING >/dev/null && x2godesktopsharing-terminate "$X2GO_SESSION" || true
 
 kill -TERM  $X2GO_AGENT_PID
-$X2GO_LIB_PATH/x2gochangestatus 'F' $X2GO_SESSION  > /dev/null
+$X2GO_LIB_PATH/x2gochangestatus 'F' "$X2GO_SESSION"  > /dev/null
 export HOSTNAME
-x2goumount-session $X2GO_SESSION
+x2goumount-session "$X2GO_SESSION"
 
 # clean up session dir if not in debug mode and if session has been successful
 if [ "$($X2GO_LIB_PATH/x2gologlevel)" != "7" ] && [ "x$successful_run" = "xtrue" ]; then
-	(sleep 10; rm -Rf $HOME/.x2go/C-$X2GO_SESSION)&
+	(sleep 10; rm -Rf "$HOME/.x2go/C-$X2GO_SESSION")&
 fi

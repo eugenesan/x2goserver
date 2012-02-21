@@ -27,21 +27,21 @@ $X2GO_LIB_PATH/x2gosyslog "$0" "info" "$(basename $0) called with options: $@"
 X2GO_PORT=49 #First port for X2GO=50
 SSH_PORT=30000 #First ssh port 30001
 
-X2GO_ROOT=${HOME}/.x2go
+X2GO_ROOT="${HOME}/.x2go"
 REMOTE=localhost
 
 X2GO_CLIENT=`echo $SSH_CLIENT | awk '{print $1}'`
 $X2GO_LIB_PATH/x2gosyslog "$0" "debug" "client announced itself as ,,$X2GO_CLIENT''"
 
-X2GO_GEOMETRY=$1; shift
-X2GO_LINK=$1; shift
-X2GO_PACK=$1; shift
-X2GO_TYPE=$1; shift
-X2GO_KBD_LAYOUT=$1; shift
-X2GO_KBD_TYPE=$1; shift
-X2GO_SET_KBD=$1; shift
-X2GO_STYPE=$1; shift
-X2GO_CMD=$1; shift
+X2GO_GEOMETRY="$1"; shift
+X2GO_LINK="$1"; shift
+X2GO_PACK="$1"; shift
+X2GO_TYPE="$1"; shift
+X2GO_KBD_LAYOUT="$1"; shift
+X2GO_KBD_TYPE="$1"; shift
+X2GO_SET_KBD="$1"; shift
+X2GO_STYPE="$1"; shift
+X2GO_CMD="$1"; shift
 X2GO_RESIZE=0
 X2GO_FULLSCREEN=0
 
@@ -60,7 +60,7 @@ if [ "$X2GO_STYPE" == "S" ]; then
 
 		$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "shadow session requested: mode $SHADOW_MODE, user: $SHADOW_USER, desktop: $SHADOW_DESKTOP"
 	} || {
-		SHADREQ_USER=$1; shift
+		SHADREQ_USER="$1"; shift
 		$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "preparing shadow session request for user $SHADREQ_USER, agent starts for user ${USER}"
 	}
 
@@ -78,8 +78,8 @@ if [ "$X2GO_STYPE" == "S" ]; then
 		X2GO_COOKIE=`echo $OUTPUT | awk '{print $2}'`
 		X2GO_PORT=`echo $OUTPUT | awk '{print $1}'`
 		$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "received shadow session information: cookie: $X2GO_COOKIE, port: $X2GO_PORT"
-		xauth -f $XAUTHORITY add ${HOSTNAME}/unix:${X2GO_PORT} MIT-MAGIC-COOKIE-1 ${X2GO_COOKIE}
-		xauth -f $XAUTHORITY add ${HOSTNAME}:${X2GO_PORT} MIT-MAGIC-COOKIE-1 ${X2GO_COOKIE}
+		xauth -f "$XAUTHORITY" add "${HOSTNAME}/unix:${X2GO_PORT}" MIT-MAGIC-COOKIE-1 "${X2GO_COOKIE}"
+		xauth -f "$XAUTHORITY" add "${HOSTNAME}:${X2GO_PORT}" MIT-MAGIC-COOKIE-1 "${X2GO_COOKIE}"
 
 		echo $X2GO_PORT
 		echo $X2GO_COOKIE
@@ -100,7 +100,7 @@ if [ "$LWORD" == "LIMIT" ]; then
 	exit -1
 fi
 
-export NX_CLIENT=$X2GO_LIB_PATH/x2gosuspend-agent
+export NX_CLIENT="$X2GO_LIB_PATH/x2gosuspend-agent"
 
 COLORDEPTH=`echo "$X2GO_TYPE"|awk '{split($0,a,"-depth_"); print a[2]}'`
 
@@ -113,7 +113,7 @@ elif  [ "$X2GO_STYPE" == "S" ]; then
 fi
 
 if [ "$X2GO_CLIENT" == "" ]; then
-	X2GO_CLIENT=$HOSTNAME
+	X2GO_CLIENT="$HOSTNAME"
 fi
 
 USED_DISPLAYS=`$X2GO_LIB_PATH/x2gogetdisplays $HOSTNAME`
@@ -133,9 +133,9 @@ while [ "$OUTPUT"  != "inserted" ]; do
 		grep -q "|${NX_PORT}|" <<<$USED_PORTS ; then
 		OUTPUT="XXX"
 	else
-		SESSION_NAME=${USER}-${X2GO_PORT}-`date +"%s"`
+		SESSION_NAME="${USER}-${X2GO_PORT}-`date +\"%s\"`"
 		if [ "$COLORDEPTH" != "" ]; then
-			SESSION_NAME="$SESSION_NAME"_st${SESSION_TYPE}${X2GO_CMD}_dp${COLORDEPTH}
+			SESSION_NAME="${SESSION_NAME}_st${SESSION_TYPE}${X2GO_CMD}_dp${COLORDEPTH}"
 			SESSION_NAME=`echo "$SESSION_NAME" | sed  -e  "s/:/PP/g"`
 		fi
 		OUTPUT=`$X2GO_LIB_PATH/x2goinsertsession $X2GO_PORT $HOSTNAME $SESSION_NAME`
@@ -158,11 +158,11 @@ while [ "$GR_PORT" == "" ] || [ "$SOUND_PORT" == "" ] || [ "$FS_PORT" == "" ]; d
 		fi
 	done
 	if [ "$GR_PORT" == "" ]; then
-		GR_PORT=$SSH_PORT
+		GR_PORT="$SSH_PORT"
 	elif [ "$SOUND_PORT" == "" ]; then
-		SOUND_PORT=$SSH_PORT
+		SOUND_PORT="$SSH_PORT"
 	else
-		FS_PORT=$SSH_PORT
+		FS_PORT="$SSH_PORT"
 	fi
 done
 
@@ -182,18 +182,18 @@ if [ "$X2GO_STYPE" == "S" ]; then
 	X2GO_GEOMETRY=`echo "$X2GO_GEOMETRY" | sed  -e  "s/-geometry//"`
 fi
 
-SESSION_DIR=${X2GO_ROOT}/C-${SESSION_NAME}
+SESSION_DIR="${X2GO_ROOT}/C-${SESSION_NAME}"
 
-if [ ! -d $X2GO_ROOT ]; then
-	mkdir $X2GO_ROOT
+if [ ! -d "$X2GO_ROOT" ]; then
+	mkdir "$X2GO_ROOT"
 fi
 
-if [ ! -d $X2GO_ROOT/ssh ]; then
-	mkdir $X2GO_ROOT/ssh
+if [ ! -d "$X2GO_ROOT/ssh" ]; then
+	mkdir "$X2GO_ROOT/ssh"
 fi
 
-if [ ! -d $SESSION_DIR ]; then
-	mkdir $SESSION_DIR
+if [ ! -d "$SESSION_DIR" ]; then
+	mkdir "$SESSION_DIR"
 fi
 
 X2GO_COOKIE=`mcookie`
@@ -204,8 +204,8 @@ PATH="${PATH}:${X2GO_BIN}/"
 export PATH
 
 
-xauth -f $XAUTHORITY add ${HOSTNAME}/unix:${X2GO_PORT} MIT-MAGIC-COOKIE-1 ${X2GO_COOKIE}
-xauth -f $XAUTHORITY add ${HOSTNAME}:${X2GO_PORT} MIT-MAGIC-COOKIE-1 ${X2GO_COOKIE}
+xauth -f "$XAUTHORITY" add "${HOSTNAME}/unix:${X2GO_PORT}" MIT-MAGIC-COOKIE-1 "${X2GO_COOKIE}"
+xauth -f "$XAUTHORITY" add "${HOSTNAME}:${X2GO_PORT}" MIT-MAGIC-COOKIE-1 "${X2GO_COOKIE}"
 
 
 if [ "$X2GO_SET_KBD" == "0" ]
@@ -216,7 +216,7 @@ else
 fi
 
 
-echo "${X2GO_HOST}:${X2GO_PORT}" >${SESSION_DIR}/options
+echo "${X2GO_HOST}:${X2GO_PORT}" >"${SESSION_DIR}/options"
 
 NX_AGENT=":${X2GO_PORT}"
 SAVED_DISPLAY="$DISPLAY"
@@ -237,14 +237,14 @@ else
 fi
 
 # run x2goserver-extensions for pre-start
-x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME pre-start || true
+x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions "$SESSION_NAME" pre-start || true
 
 SESSION_WINDOW_TITLE="X2GO-${SESSION_NAME}"
 
 if  [ "$X2GO_STYPE" == "S" ]; then
-	x2goagent $X2GODPIOPTION_ -$SESSION_TYPE -auth $XAUTHORITY -shadow $SHADOW_DESKTOP -shadowmode $SHADOW_MODE -geometry ${X2GO_GEOMETRY} -name "${SESSION_WINDOW_TITLE}"  ${NX_AGENT} 2>${SESSION_DIR}/session.log &
+	x2goagent $X2GODPIOPTION_ -$SESSION_TYPE -auth "$XAUTHORITY" -shadow $SHADOW_DESKTOP -shadowmode $SHADOW_MODE -geometry ${X2GO_GEOMETRY} -name "${SESSION_WINDOW_TITLE}"  "${NX_AGENT}" 2>"${SESSION_DIR}/session.log" &
 else
-	x2goagent $X2GODPIOPTION_ $XDMCPOPT -$SESSION_TYPE -auth $XAUTHORITY -geometry ${X2GO_GEOMETRY} -name "${SESSION_WINDOW_TITLE}"  ${NX_AGENT} 2>${SESSION_DIR}/session.log &
+	x2goagent $X2GODPIOPTION_ "$XDMCPOPT" -$SESSION_TYPE -auth "$XAUTHORITY" -geometry ${X2GO_GEOMETRY} -name "${SESSION_WINDOW_TITLE}"  "${NX_AGENT}" 2>"${SESSION_DIR}/session.log" &
 fi
 
 
@@ -254,19 +254,19 @@ test $X2GO_AGENT_RETVAL && {
 	$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "successfully started X2Go agent session with ID $SESSION_NAME"
 
 	# run x2goserver-extensions for post-start
-	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME post-start || true
+	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions "$SESSION_NAME" post-start || true
 
 } || {
 	$X2GO_LIB_PATH/x2gosyslog "$0" "err" "ERROR: failed to start X2Go agent session with ID $SESSION_NAME"
 
 	# run x2goserver-extensions for fail-start
-	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions $SESSION_NAME fail-start || true
+	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions "$SESSION_NAME" fail-start || true
 
 }
 
 X2GO_SND_PORT=1024
 
-$X2GO_LIB_PATH/x2gocreatesession $X2GO_COOKIE $X2GO_AGENT_PID $X2GO_CLIENT $GR_PORT $SOUND_PORT $FS_PORT $SESSION_NAME > /dev/null
+$X2GO_LIB_PATH/x2gocreatesession "$X2GO_COOKIE" "$X2GO_AGENT_PID" "$X2GO_CLIENT" "$GR_PORT" "$SOUND_PORT" "$FS_PORT" "$SESSION_NAME" > /dev/null
 
 echo $X2GO_PORT
 echo $X2GO_COOKIE
