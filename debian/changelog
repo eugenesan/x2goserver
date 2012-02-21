@@ -37,7 +37,6 @@ x2goserver (3.1.0.0-0~x2go1) UNRELEASED; urgency=low
       /tmp. Use ENV{'TMP'} instead, unless it is empty. Then use /tmp.
     - Place quotations where appropriate into shell scripts.
     - Fix call to x2goterminate-desktopsharing in x2goruncommand.
-    - Tolerate user names containing "-" characters (SQLite DB backend).
   * Let x2goserver package suggest x2goserver-fmbindings.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Wed, 01 Feb 2012 13:45:00 +0100
