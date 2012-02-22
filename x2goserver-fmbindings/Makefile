@@ -39,14 +39,14 @@ build-indep: build_man2html
 build-arch:
 
 build_man2html:
-#	mkdir -p $(MAN2HTML_DEST)
-#	for man_page in $(man_pages); do mkdir -p `dirname $(MAN2HTML_DEST)/$$man_page`; done
-#	for man_page in $(man_pages); do $(MAN2HTML_BIN) $(MAN2HTML_SRC)/$$man_page > $(MAN2HTML_DEST)/$$man_page.html; done
+	mkdir -p $(MAN2HTML_DEST)
+	for man_page in $(man_pages); do mkdir -p `dirname $(MAN2HTML_DEST)/$$man_page`; done
+	for man_page in $(man_pages); do $(MAN2HTML_BIN) $(MAN2HTML_SRC)/$$man_page > $(MAN2HTML_DEST)/$$man_page.html; done
 
 clean: clean_man2html
 
 clean_man2html:
-#	rm -rf `dirname $(MAN2HTML_DEST)`
+	rm -rf `dirname $(MAN2HTML_DEST)`
 
 install: install_scripts install_config install_man install_version
 
@@ -58,10 +58,10 @@ install_scripts:
 install_config:
 
 install_man:
-#	$(INSTALL_DIR) $(DESTDIR)$(MANDIR)
-#	$(INSTALL_DIR) $(DESTDIR)$(MANDIR)/man8
-#	$(INSTALL_FILE) man/man8/*.8           $(DESTDIR)$(MANDIR)/man8
-#	gzip -f $(DESTDIR)$(MANDIR)/man8/x2go*.8
+	$(INSTALL_DIR) $(DESTDIR)$(MANDIR)
+	$(INSTALL_DIR) $(DESTDIR)$(MANDIR)/man8
+	$(INSTALL_FILE) man/man8/*.8           $(DESTDIR)$(MANDIR)/man8
+	gzip -f $(DESTDIR)$(MANDIR)/man8/x2go*.8
 
 install_version:
 	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)
@@ -76,9 +76,9 @@ uninstall_scripts:
 uninstall_config:
 
 uninstall_man:
-#	for file in $(BIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(MANDIR)/man8/$$file.8.gz; done
-#	for file in $(SBIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(MANDIR)/man8/$$file.8.gz; done
-#	$(RM_DIR)  $(DESTDIR)$(MANDIR) || true
+	for file in $(BIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(MANDIR)/man8/$$file.8.gz; done
+	for file in $(SBIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(MANDIR)/man8/$$file.8.gz; done
+	$(RM_DIR)  $(DESTDIR)$(MANDIR) || true
 
 uninstall_version:
 	$(RM_FILE) $(DESTDIR)$(SHAREDIR)/versions/VERSION.x2goserver-extensions
