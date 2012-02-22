@@ -86,9 +86,8 @@ elsif ($pid != 0)
 }
 elsif ($pid == 0 )
 {
-	close(STDIN);
-	close(STDOUT);
-	close(STDERR);
+	# close any open file descriptor left open by our parent before the fork
+	for (glob "/proc/$$/fd/*") { POSIX::close($1) if m{/(\d+)$}; }
 
 	$SIG{TERM}=\&catch_term;
 
