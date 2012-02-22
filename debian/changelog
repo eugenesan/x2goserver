@@ -47,6 +47,7 @@ x2goserver (3.1.0.0-0~x2go1) UNRELEASED; urgency=low
   * Let x2goserver package suggest x2goserver-fmbindings.
   * Add package upgrade warning for installation using PostgreSQL. The
     upgrade warning refers to README.upgrade-pgsql-database.
+  * x2goserver-fmbindings does not have to depend on ${shlibs:Depends}.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Wed, 01 Feb 2012 13:45:00 +0100
 

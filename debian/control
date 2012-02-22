@@ -170,7 +170,7 @@ Description: X2Go server daemon scripts (Xsession runner)
 
 Package: x2goserver-fmbindings
 Architecture: all
-Depends: ${shlibs:Depends},
+Depends:
  ${misc:Depends},
  x2goserver (>= ${source:Version}), x2goserver (<< ${source:Version}.1~),
  desktop-file-utils,
