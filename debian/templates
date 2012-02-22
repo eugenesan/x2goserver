@@ -1,0 +1,9 @@
+Template: x2goserver/postgresql-upgrade-3_1_0_0
+Type: text
+_Description: X2Go Server / PostgreSQL Upgrade
+ You have configured X2Go Server with PostgreSQL as session DB backend and
+ you are upgrading x2goserver from a version minor to 3.1.0.0.
+ .
+ Please follow these PostgreSQL DB upgrade instructions before you continue
+ using your X2Go Server:
+ /usr/share/doc/x2goserver/README.upgrade-pgsql-database

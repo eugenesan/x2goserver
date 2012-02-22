@@ -1,0 +1,44 @@
+
+#######################################
+###
+### X2Go DB maintenance after upgrades
+###
+#######################################
+
+UPGRADING
+=========
+
+Normally no DB upgrades are necessary on x2goserver package upgrades. However, there are some
+exceptions for some specific version of the x2goserver package.
+
+
+Upgrading to x2goserver 3.1.0.0
+-------------------------------
+
+From: x2goserver (<= 3.0.99.10)
+To: x2goserver (>= 3.1.0.0)
+
+A new column has been added to the database: ,,used_ports''.
+
+X2Go users in the PostgreSQL database need access to this new column.
+
+Alternative 1: recreate all X2Go db users
+
+  x2godbadmin --rmuser <username>
+  x2godbadmin --adduser <username>
+
+Alternative 2:
+
+  Run this SQL command for each x2gouser_<user> in the X2Go PostgreSQL database
+
+   $ su - postgres
+   $ psql 
+   psql (<YOUR-PSQL-VERSION)
+   Type "help" for help.
+   .
+   postgres=# \connect x2go_sessions
+   x2go_sessions=# GRANT SELECT ON used_ports TO "x2gouser_<username1>";
+   x2go_sessions=# GRANT SELECT ON used_ports TO "x2gouser_<username2>";
+   ...
+
+
