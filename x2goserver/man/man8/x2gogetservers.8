@@ -1,0 +1,25 @@
+'\" -*- coding: utf-8 -*-
+.if \n(.g .ds T< \\FC
+.if \n(.g .ds T> \\F[\n[.fam]]
+.de URL
+\\$2 \(la\\$1\(ra\\$3
+..
+.if \n(.g .mso www.tmac
+.TH x2gogetservers 8 "Sep 2011" "Version 3.0.99.x" "X2Go Server Tool"
+.SH NAME
+x2gogetservers \- Retrieve list of available X2Go servers
+.SH SYNOPSIS
+'nh
+.fi
+.ad l
+x2gogetservers
+
+.SH DESCRIPTION
+\fBx2gogetservers\fR retrieves a list of available X2Go servers. This command is
+only used by \fIx2goclient\fR if it runs in LDAP mode.
+.PP
+The \fBx2gogetservers\fR is run with X2Go user privileges.
+
+.SH AUTHOR
+This manual has been written by Mike Gabriel <mike.gabriel@das-netzwerkteam.de> for the X2Go project
+(http://www.x2go.org).
