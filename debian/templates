@@ -6,4 +6,4 @@ _Description: X2Go Server / PostgreSQL Upgrade
  .
  Please follow these PostgreSQL DB upgrade instructions before you continue
  using your X2Go Server:
- /usr/share/doc/x2goserver/README.upgrade-pgsql-database
+ /usr/share/doc/x2goserver/README.upgrade-pgsql-database.gz

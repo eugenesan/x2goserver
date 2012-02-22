@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: x2goserver@packages.debian.org\n"
-"POT-Creation-Date: 2012-02-06 21:20+0100\n"
-"PO-Revision-Date: 2012-02-06 21:25+0100\n"
+"POT-Creation-Date: 2012-02-22 13:45+0100\n"
+"PO-Revision-Date: 2012-02-22 13:52+0100\n"
 "Last-Translator: Mike Gabriel <mike.gabriel@das-netzwerkteam.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -34,11 +34,15 @@ msgstr "X2Go Server / PostgreSQL Upgrade"
 #. Description
 #: ../templates:1001
 msgid "You have configured X2Go Server with PostgreSQL as session DB backend and you are upgrading x2goserver from a version minor to 3.1.0.0."
-msgstr "Ihr X2Go Server nutzt eine PostgreSQL Datenbank, um X2Go Sitzungsdaten zu verwalten und Sie aktualisieren gerade das Paket x2goserver von einer Version kleiner als 3.1.0.0."
+msgstr "Ihr X2Go Server nutzt eine PostgreSQL Datenbank, um X2Go Sitzungsdaten zu verwalten, und Sie aktualisieren gerade das Paket x2goserver von einer Version kleiner als 3.1.0.0."
 
 #. Type: text
 #. Description
 #: ../templates:1001
-msgid "Please follow these PostgreSQL DB upgrade instructions before you continue using your X2Go Server: /usr/share/doc/x2goserver/README.upgrade-pgsql-database"
-msgstr "Bitte befolgen Sie daher die PostgreSQL-Aktualisierungshinweise bevor sie mit der Weiternutzung Ihres X2Go Servers fortfahren: /usr/share/x2goserver/README.upgrade-pgsl-database"
+#| msgid ""
+#| "Please follow these PostgreSQL DB upgrade instructions before you "
+#| "continue using your X2Go Server: /usr/share/doc/x2goserver/README.upgrade-"
+#| "pgsql-database"
+msgid "Please follow these PostgreSQL DB upgrade instructions before you continue using your X2Go Server: /usr/share/doc/x2goserver/README.upgrade-pgsql-database.gz"
+msgstr "Bitte befolgen Sie daher die PostgreSQL-Aktualisierungshinweise bevor sie mit der Weiternutzung Ihres X2Go Servers fortfahren: /usr/share/doc/x2goserver/README.upgrade-pgsl-database.gz"
 
