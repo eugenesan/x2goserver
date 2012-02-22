@@ -42,6 +42,7 @@ x2goserver (3.1.0.0-0~x2go1) UNRELEASED; urgency=low
       forking as a daemon.
     - Add copyright header for x2gofm script.
     - Add man page for x2gogetservers script.
+    - Add man page for x2gofm wrapper script.
   * Let x2goserver package suggest x2goserver-fmbindings.
   * Add package upgrade warning for installation using PostgreSQL. The
     upgrade warning refers to README.upgrade-pgsql-database.
