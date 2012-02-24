@@ -1,0 +1,11 @@
+# /etc/x2go/x2go_logout: system-wide .x2go_logout file for X2Go sessions
+# for Bash and Bash compatible shells (bash(1), ksh(1), ash(1), ...).
+
+if [ -d /etc/x2go/x2go_logout.d ]; then
+  for subscript in /etc/x2go_logout.d/*; do
+    if [ -r $subscript ]; then
+      . $subscript
+    fi
+  done
+  unset subscript
+fi

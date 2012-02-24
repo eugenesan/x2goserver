@@ -1,6 +1,7 @@
 x2goserver (3.1.0.1-0~x2go1) UNRELEASED; urgency=low
 
-  * Continue development...
+  * New upstream version (3.1.0.1):
+    - Provide infrastructure for on-logout script calls.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Wed, 22 Feb 2012 15:10:12 +0100
 

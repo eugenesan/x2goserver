@@ -63,6 +63,9 @@ kill -TERM $X2GO_AGENT_PID &>/dev/null && {
 export HOSTNAME
 x2goumount-session "$SESSION_NAME"
 
+# run logout scripts
+test -r /etc/x2go/x2go_logout && . /etc/x2go/x2go_logout
+
 # if we are not running in log level debug (=7) then clean up session dir
 if [ "$($X2GO_LIB_PATH/x2gologlevel)" != "7" ]; then
 	(sleep 10; rm -Rf "$HOME/.x2go/C-$X2GO_SESSION")&
