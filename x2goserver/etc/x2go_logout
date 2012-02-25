@@ -4,7 +4,8 @@
 if [ -d /etc/x2go/x2go_logout.d ]; then
   for subscript in /etc/x2go_logout.d/*; do
     if [ -r $subscript ]; then
-      . $subscript
+      # subscripts may fail, we ignore that here...
+      . $subscript || true
     fi
   done
   unset subscript
