@@ -2,6 +2,8 @@ x2goserver (3.1.0.1-0~x2go1) UNRELEASED; urgency=low
 
   * New upstream version (3.1.0.1):
     - Provide infrastructure for on-logout script calls.
+    - Do only run session cleanup scripts from within
+      x2goruncommand. Dropping them from x2goterminate-session.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Wed, 22 Feb 2012 15:10:12 +0100
 
