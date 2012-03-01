@@ -22,7 +22,7 @@ SHAREDIR=$(PREFIX)/share/x2go
 BIN_SCRIPTS=$(shell cd bin && ls)
 #SBIN_SCRIPTS=$(shell cd sbin && ls)
 #LIB_FILES=$(shell cd lib && ls)
-FEATURE_SCRIPTS=$(shell cd share/x2gofeature.d && ls *.features)
+FEATURE_SCRIPTS=$(shell cd share/x2go/x2gofeature.d && ls *.features)
 
 man_pages = `cd man && find * -type f`
 
@@ -53,7 +53,7 @@ install: install_scripts install_config install_man install_version
 install_scripts:
 	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)
 	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)/x2gofeature.d
-	$(INSTALL_PROGRAM) share/x2gofeature.d/*.features $(DESTDIR)$(SHAREDIR)/x2gofeature.d/
+	$(INSTALL_PROGRAM) share/x2go/x2gofeature.d/*.features $(DESTDIR)$(SHAREDIR)/x2gofeature.d/
 
 install_config:
 
@@ -66,7 +66,7 @@ install_man:
 install_version:
 	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)
 	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)/versions
-	$(INSTALL_FILE) VERSION.x2goserver-extensions     $(DESTDIR)$(SHAREDIR)/versions/VERSION.x2goserver-extensions
+	$(INSTALL_FILE) VERSION.x2goserver-fmbindings     $(DESTDIR)$(SHAREDIR)/versions/VERSION.x2goserver-fmbindings
 
 uninstall: uninstall_scripts uninstall_config uninstall_man uninstall_version
 
@@ -81,5 +81,5 @@ uninstall_man:
 	$(RM_DIR)  $(DESTDIR)$(MANDIR) || true
 
 uninstall_version:
-	$(RM_FILE) $(DESTDIR)$(SHAREDIR)/versions/VERSION.x2goserver-extensions
+	$(RM_FILE) $(DESTDIR)$(SHAREDIR)/versions/VERSION.x2goserver-fmbindings
 	$(RM_DIR)  $(DESTDIR)$(SHAREDIR)/versions || true

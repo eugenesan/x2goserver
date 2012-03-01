@@ -22,7 +22,7 @@ SHAREDIR=$(PREFIX)/share/x2go
 BIN_SCRIPTS=$(shell cd bin && ls)
 #SBIN_SCRIPTS=$(shell cd sbin && ls)
 #LIB_FILES=$(shell cd lib && ls)
-FEATURE_SCRIPTS=$(shell cd share/x2gofeature.d && ls *.features)
+FEATURE_SCRIPTS=$(shell cd share/x2gofeature.d && ls *.features .placeholder)
 
 man_pages = `cd man && find * -type f`
 
@@ -110,6 +110,30 @@ uninstall_scripts:
 #	for file in $(SBIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(SBINDIR)/$$file; done
 #	for file in $(LIB_FILES); do $(RM_FILE) $(DESTDIR)$(LIBDIR)/$$file; done
 	$(RM_DIR) $(DESTDIR)$(LIBDIR)/extensions/ || true
+	$(RM_FILE) $(DESTDIR)$(LIBDIR)/extensions/pre-start.d/.placeholder
+	$(RM_FILE) $(DESTDIR)$(LIBDIR)/extensions/post-start.d/.placeholder
+	$(RM_FILE) $(DESTDIR)$(LIBDIR)/extensions/fail-start.d/.placeholder
+	$(RM_FILE) $(DESTDIR)$(LIBDIR)/extensions/pre-resume.d/.placeholder
+	$(RM_FILE) $(DESTDIR)$(LIBDIR)/extensions/post-resume.d/.placeholder
+	$(RM_FILE) $(DESTDIR)$(LIBDIR)/extensions/fail-resume.d/.placeholder
+	$(RM_FILE) $(DESTDIR)$(LIBDIR)/extensions/pre-suspend.d/.placeholder
+	$(RM_FILE) $(DESTDIR)$(LIBDIR)/extensions/post-suspend.d/.placeholder
+	$(RM_FILE) $(DESTDIR)$(LIBDIR)/extensions/fail-suspend.d/.placeholder
+	$(RM_FILE) $(DESTDIR)$(LIBDIR)/extensions/pre-terminate.d/.placeholder
+	$(RM_FILE) $(DESTDIR)$(LIBDIR)/extensions/post-terminate.d/.placeholder
+	$(RM_FILE) $(DESTDIR)$(LIBDIR)/extensions/fail-terminate.d/.placeholder
+	$(RM_DIR) $(DESTDIR)$(LIBDIR)/extensions/pre-start.d/
+	$(RM_DIR) $(DESTDIR)$(LIBDIR)/extensions/post-start.d/
+	$(RM_DIR) $(DESTDIR)$(LIBDIR)/extensions/fail-start.d/
+	$(RM_DIR) $(DESTDIR)$(LIBDIR)/extensions/pre-resume.d/
+	$(RM_DIR) $(DESTDIR)$(LIBDIR)/extensions/post-resume.d/
+	$(RM_DIR) $(DESTDIR)$(LIBDIR)/extensions/fail-resume.d/
+	$(RM_DIR) $(DESTDIR)$(LIBDIR)/extensions/pre-suspend.d/
+	$(RM_DIR) $(DESTDIR)$(LIBDIR)/extensions/post-suspend.d/
+	$(RM_DIR) $(DESTDIR)$(LIBDIR)/extensions/fail-suspend.d/
+	$(RM_DIR) $(DESTDIR)$(LIBDIR)/extensions/pre-terminate.d/
+	$(RM_DIR) $(DESTDIR)$(LIBDIR)/extensions/post-terminate.d/
+	$(RM_DIR) $(DESTDIR)$(LIBDIR)/extensions/fail-terminate.d/
 	for file in $(FEATURE_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(SHAREDIR)/x2gofeature.d/$$file; done
 
 uninstall_config:
