@@ -1,5 +1,5 @@
 #!/bin/sh
-# postinst script for x2gognomebindings
+# postinst script for x2goserver-fmbindings
 #
 # see: dh_installdeb(1)
 
