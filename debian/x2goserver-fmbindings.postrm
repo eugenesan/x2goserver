@@ -1,5 +1,5 @@
 #!/bin/sh
-# postrm script for x2go-fmbindings
+# postrm script for x2goserver-fmbindings
 #
 # see: dh_installdeb(1)
 
