@@ -1,4 +1,4 @@
-x2goserver (3.1.0.1-0~x2go1) UNRELEASED; urgency=low
+x2goserver (3.1.0.1-0~x2go1) unstable; urgency=low
 
   * New upstream version (3.1.0.1):
     - Provide infrastructure for on-logout script calls.
@@ -8,7 +8,7 @@ x2goserver (3.1.0.1-0~x2go1) UNRELEASED; urgency=low
     - Fix Makefile of x2goserver-fmbindings (thanks to Oliver Burger),
       improve uninstall code in Makefiles.
 
- -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Wed, 22 Feb 2012 15:10:12 +0100
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Wed, 07 Mar 2012 21:05:28 +0100
 
 x2goserver (3.1.0.0-0~x2go1) unstable; urgency=low
 
