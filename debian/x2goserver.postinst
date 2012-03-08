@@ -98,6 +98,11 @@ case "$1" in
 		    dpkg-statoverride --add --update root x2gouser 2755 /usr/lib/x2go/x2gosqlitewrapper
 		fi
 
+		# create /etc/x2go/applications symlink if not already there (as link or as dir)
+		if ! test -e /etc/x2go/applications; then
+			ln -s /etc/x2go/applications /usr/share/applications
+		fi
+
 		;;
 
 	abort-upgrade|abort-remove|abort-deconfigure)
