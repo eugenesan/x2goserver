@@ -12,8 +12,8 @@ x2goserver (3.1.0.2-0~x2go1.1) UNRELEASED; urgency=low
 
   [ Oleksandr Shneyder ]
   * New upstream version (3.1.0.2):
-    - support for "published applications".
-      Sponsored by Stefan Baur <postmaster@stefanbaur.de>
+    - Support for "published applications".
+      Sponsored by Stefan Baur (http://www.baur-itcs.de).
 
  -- Oleksandr Shneyder <oleksandr.shneyder@treuchtlingen.de>  Thu, 08 Mar 2012 13:24:10 +0100
 
