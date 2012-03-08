@@ -36,7 +36,7 @@ find /usr/lib/x2go/extensions/${X2GO_MODALITY}.d/ -maxdepth 1 -mindepth 1 | egre
 	$x2go_extension "$X2GO_SESSION" &>/dev/null && {
 		$X2GO_LIB_PATH/x2gosyslog "$0" "info" "$x2go_extension$(basename $0) for session $X2GO_SESSION has finished sucessfully"
 	} || {
-		$X2GO_LIB_PATH/x2gosyslog "$0" "warn" "$x2go_extension$(basename $0) for session $X2GO_SESSION returned a non-zero exit code, continuing..."
+		$X2GO_LIB_PATH/x2gosyslog "$0" "warning" "$x2go_extension$(basename $0) for session $X2GO_SESSION returned a non-zero exit code, continuing..."
 	}
 done
 
