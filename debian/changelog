@@ -1,7 +1,7 @@
-x2goserver (3.1.0.2-0~x2go1.1) UNRELEASED; urgency=low
+x2goserver (3.1.1.0-0~x2go1) UNRELEASED; urgency=low
 
   [ Mike Gabriel ]
-  * New upstream version (3.1.0.2):
+  * New upstream version (3.1.1.0):
     - Syslog warnings have to be named ,,warning'' not ,,warn''. 
     - Add usage output to x2goserver-run-extensions.
     - Fix syslog output of x2goserver-run-exentions.
@@ -11,7 +11,7 @@ x2goserver (3.1.0.2-0~x2go1.1) UNRELEASED; urgency=low
     (if empty after purge) on package purge.
 
   [ Oleksandr Shneyder ]
-  * New upstream version (3.1.0.2):
+  * New upstream version (3.1.1.0):
     - Support for "published applications".
       Sponsored by Stefan Baur (http://www.baur-itcs.de).
 
