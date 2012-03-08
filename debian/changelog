@@ -4,6 +4,7 @@ x2goserver (3.1.0.2-0~x2go1) UNRELEASED; urgency=low
     - Syslog warnings have to be named ,,warning'' not ,,warn''. 
     - Add usage output to x2goserver-run-extensions.
     - Fix syslog output of x2goserver-run-exentions.
+    - Fix x2goserver extension calls in x2goruncommand.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Wed, 07 Mar 2012 21:08:33 +0100
 
