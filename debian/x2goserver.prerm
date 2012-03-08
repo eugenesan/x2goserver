@@ -19,7 +19,7 @@ set -e
 case "$1" in
 	remove)
 		# The package is being removed in its own right.
-		if test -s /etc/x2go/applications; then
+		if test -L /etc/x2go/applications; then
 			rm -f /etc/x2go/applications
 		fi
 		;;
