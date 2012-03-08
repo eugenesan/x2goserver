@@ -105,9 +105,13 @@ export NX_CLIENT="$X2GO_LIB_PATH/x2gosuspend-agent"
 COLORDEPTH=`echo "$X2GO_TYPE"|awk '{split($0,a,"-depth_"); print a[2]}'`
 
 SESSION_TYPE="D"
+NOEXITPARAM=""
 
 if [ "$X2GO_STYPE" == "R" ]; then
 	SESSION_TYPE="R"
+elif  [ "$X2GO_STYPE" == "P" ]; then
+	SESSION_TYPE="R"
+	NOEXITPARAM="-norootlessexit"
 elif  [ "$X2GO_STYPE" == "S" ]; then
 	SESSION_TYPE="S"
 fi
@@ -244,7 +248,7 @@ SESSION_WINDOW_TITLE="X2GO-${SESSION_NAME}"
 if  [ "$X2GO_STYPE" == "S" ]; then
 	x2goagent $X2GODPIOPTION_ -$SESSION_TYPE -auth "$XAUTHORITY" -shadow $SHADOW_DESKTOP -shadowmode $SHADOW_MODE -geometry ${X2GO_GEOMETRY} -name "${SESSION_WINDOW_TITLE}"  "${NX_AGENT}" 2>"${SESSION_DIR}/session.log" &
 else
-	x2goagent $X2GODPIOPTION_ $XDMCPOPT -$SESSION_TYPE -auth "$XAUTHORITY" -geometry ${X2GO_GEOMETRY} -name "${SESSION_WINDOW_TITLE}"  "${NX_AGENT}" 2>"${SESSION_DIR}/session.log" &
+	x2goagent $X2GODPIOPTION_ $XDMCPOPT -$SESSION_TYPE $NOEXITPARAM -auth "$XAUTHORITY" -geometry ${X2GO_GEOMETRY} -name "${SESSION_WINDOW_TITLE}"  "${NX_AGENT}" 2>"${SESSION_DIR}/session.log" &
 fi
 
 

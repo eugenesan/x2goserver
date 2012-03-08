@@ -122,6 +122,13 @@ then
 	IMEXIT="true"
 fi
 
+if [ "$X2GO_SESS_TYPE" == "P" ]
+then
+	IMEXIT="false"
+	EXEC="/bin/true"
+	X2GO_SESS_TYPE="R"
+fi
+
 # run x2goserver-extensions for pre-runcommand
 x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions "$X2GO_SESSION" pre-runcommand || true
 

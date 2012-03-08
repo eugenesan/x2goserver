@@ -1,0 +1,192 @@
+#!/usr/bin/perl
+
+# Copyright (C) 2007-2012 X2Go Project - http://wiki.x2go.org
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the
+# Free Software Foundation, Inc.,
+# 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
+#
+# Copyright (C) 2007-2012  Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
+# Copyright (C) 2007-2012  Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
+
+use strict;
+use Sys::Syslog qw( :standard :macros );
+use MIME::Base64 qw(encode_base64);
+
+use lib `echo -n \$(x2gobasepath)/lib/x2go`;
+use x2gologlevel;
+
+my @iconext=("png","svg","jpeg","jpg","xpm","bmp");
+
+my @icondirs=(
+"/usr/share/icons/hicolor/22x22/apps",
+"/usr/share/icons/hicolor/24x24/apps",
+"/usr/share/icons/hicolor/32x32/apps",
+"/usr/share/icons/hicolor/36x36/apps",
+"/usr/share/icons/hicolor/48x48/apps",
+"/usr/share/icons/hicolor/64x64/apps",
+"/usr/share/icons/hicolor/72x72/apps",
+"/usr/share/icons/hicolor/96x96/apps",
+"/usr/share/icons/hicolor/128x128/apps",
+"/usr/share/icons/hicolor/256x256/apps",
+"/usr/share/icons/hicolor/scalable/apps",
+"/usr/share/pixmaps",
+"/usr/share/icons/default.kde/22x22/apps",
+"/usr/share/icons/default.kde/24x24/apps",
+"/usr/share/icons/default.kde/32x32/apps",
+"/usr/share/icons/default.kde/36x36/apps",
+"/usr/share/icons/default.kde/48x48/apps",
+"/usr/share/icons/default.kde/64x64/apps",
+"/usr/share/icons/default.kde/72x72/apps",
+"/usr/share/icons/default.kde/96x96/apps",
+"/usr/share/icons/default.kde/128x128/apps",
+"/usr/share/icons/default.kde/256x256/apps",
+"/usr/share/icons/default.kde4/22x22/apps",
+"/usr/share/icons/default.kde4/24x24/apps",
+"/usr/share/icons/default.kde4/32x32/apps",
+"/usr/share/icons/default.kde4/36x36/apps",
+"/usr/share/icons/default.kde4/48x48/apps",
+"/usr/share/icons/default.kde4/64x64/apps",
+"/usr/share/icons/default.kde4/72x72/apps",
+"/usr/share/icons/default.kde4/96x96/apps",
+"/usr/share/icons/default.kde4/128x128/apps",
+"/usr/share/icons/default.kde4/256x256/apps"
+);
+
+sub findicon
+{
+	my $file=shift;
+	foreach(@iconext)
+	{
+		my $icon=findicon_ext("$file.$_");
+		if( $icon ne "" )
+		{
+			return "$icon";
+		}
+	}
+	return "";
+}
+
+sub findicon_ext
+{
+	my $file=shift;
+	foreach(@icondirs)
+	{
+		if( -e "$_/$file" )
+		{
+			return "$_/$file";
+		}
+	}
+	return "";
+}
+
+sub printicon
+{
+	my $file=shift;
+	if (open(I,"<$file"))
+	{
+		my $buf;
+		print "<icon>\n";
+		while (read(I, $buf, 60*57)) 
+		{
+			print encode_base64($buf);
+		}
+		print "</icon>\n";
+		close(I);
+	}
+	else
+	{
+		syslog ('info', "x2gogetapps:printicon - can't open file $file: $!");
+	}
+}
+
+sub proc_desktop_file
+{
+	my $file=shift;
+	if (open(F,"<$file"))
+	{
+		print("<desktop>\n");
+		while(!eof(F))
+		{
+			my $line=<F>;
+			if( $line=~m/^Categories/i || $line=~m/^Name/i || $line=~m/^Comment/i ||  $line=~m/^Exec/i)
+			{
+				print $line;
+			}
+			if( $line =~ m/^Icon/ )
+			{
+				my $icon=$line;
+				$icon =~ s/Icon=//;
+				chop($icon);
+				#$line is absolute path
+				if($icon =~ m/\//)
+				{
+					$icon=$icon;
+				}
+				#$line have format ext.
+				elsif ($line =~ m/\./)
+				{
+					$icon=findicon_ext($icon);
+				}
+				else
+				{
+					$icon=findicon($icon);
+				}
+				printicon($icon);
+			}
+		}
+		close (F);
+		print("</desktop>\n");
+	}
+	else
+	{
+		syslog ('info', "x2gogetapps:proc_desktop_file - can't open file $file: $!");
+	}
+}
+
+openlog($0,'cons,pid','user');
+setlogmask( LOG_UPTO(x2gologlevel()) );
+
+if ( @ARGV ) {
+	syslog('info', "x2gogetapps has been called with options: @ARGV");
+} else {
+	syslog('info', "x2gogetapps has been called without options");
+}
+
+my $file;
+my @dirs;
+@dirs[0]="/etc/x2go/applications";
+my ($name, $pass, $uid, $gid, $quota, $comment, $gcos, $homedir, $shell, $expire) = getpwnam(getlogin || getpwuid($<));
+@dirs[1]="$homedir/.x2go/applications";
+foreach(@dirs)
+{
+	my $dirname=$_;
+	if( opendir(DIR, $dirname))
+	{
+		while (defined($file = readdir(DIR))) 
+		{
+			if($file =~ m/.desktop/)
+			{
+				proc_desktop_file("$dirname/$file");
+			}
+		}
+		closedir(DIR);
+	}
+	else
+	{
+		syslog ('info', "x2gogetapps - can't opendir $dirname: $!");
+	}
+}
+# closing syslog 
+closelog;
