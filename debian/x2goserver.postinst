@@ -100,7 +100,7 @@ case "$1" in
 
 		# create /etc/x2go/applications symlink if not already there (as link or as dir)
 		if ! test -e /etc/x2go/applications; then
-			ln -s /etc/x2go/applications /usr/share/applications
+			ln -s /usr/share/applications /etc/x2go/applications 
 		fi
 
 		;;
