@@ -23,6 +23,8 @@
 
 set -e
 
+test -z $2 && { echo "usage: $(basename $0) <X2GO_SESSION_ID> <MODALITY>"; exit -1; }
+
 X2GO_LIB_PATH=`echo -n \$(x2gobasepath)/lib/x2go`
 
 $X2GO_LIB_PATH/x2gosyslog "$0" "info" "$(basename $0) called with options: $@"
