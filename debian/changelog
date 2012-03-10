@@ -6,6 +6,7 @@ x2goserver (3.1.1.0-0~x2go1) UNRELEASED; urgency=low
     - Add usage output to x2goserver-run-extensions.
     - Fix syslog output of x2goserver-run-exentions.
     - Fix x2goserver extension calls in x2goruncommand.
+    - Add feature name ,,X2GO_PUBLISHED_APPLICATIONS''.
   * Remove /etc/x2go/applications on package removal if it is a
     symlink, keep it, if it is a directory. Remove /etc/x2go
     (if empty after purge) on package purge.
