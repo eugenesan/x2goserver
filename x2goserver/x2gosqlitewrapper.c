@@ -60,7 +60,7 @@ int main( int argc, char *argv[] ) {
 		}
 
 		// derive the full path of x2gosqlitewrapper.pl from path of this binary
-		rvap = asprintf(&x2gosqlitewrapper, "%s/%s", dirname(buffer), "x2gosqlitewrapper.pl");
+		rvap = asprintf(&x2gosqlitewrapper, "PATH=/usr/local/bin:/usr/bin/:/bin %s/%s", dirname(buffer), "x2gosqlitewrapper.pl");
 		if(rvap == -1){
 			fprintf(stderr, "Failed to allocate memory calling asprintf\n");
 			exit(EXIT_FAILURE);
