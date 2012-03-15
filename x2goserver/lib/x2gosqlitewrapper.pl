@@ -39,15 +39,17 @@ my $realuser=$uname;
 my $dbh=DBI->connect("dbi:SQLite:dbname=$dbfile","","",{AutoCommit => 1}) or die $_;
 
 my $cmd=shift or die "command not specified";
-my $rc=0
+my $rc=0;
 
 if($cmd eq  "rmsessionsroot")
 {
 	checkroot();
 	my $sid=shift or die "argument \"session_id\" missed";
 	my $sth=$dbh->prepare("delete from sessions  where session_id=?");
-	$rc = $sth->execute($sid) or {
-		syslog('error', "rmsessionsroot (SQLite3 session db backend) failed with exitcode: $rc");
+	$sth->execute($sid);
+	if ($sth->err())
+	{
+		syslog('error', "rmsessionsroot (SQLite3 session db backend) failed with exitcode: $sth->err()");
 		die;
 	}
 	$sth->finish();
@@ -65,9 +67,10 @@ elsif($cmd eq  "listsessionsroot")
 	                       uname,
 	                       strftime('%s','now','localtime') - strftime('%s',init_time),fs_port from  sessions
 	                       where server=?  order by status desc");
-	$rc = $sth->execute($server) or {
-		syslog('error', "listsessionsroot (SQLite3 session db backend) failed with exitcode: $rc");
-		die;
+	$sth->execute($server);
+	if ($sth->err()) {
+		syslog('error', "listsessionsroot (SQLite3 session db backend) failed with exitcode: $sth->err()");
+		die();
 	}
 	fetchrow_printall_array($sth);
 }
@@ -83,9 +86,11 @@ elsif($cmd eq  "listsessionsroot_all")
 	                       uname,
 	                       strftime('%s','now','localtime') - strftime('%s',init_time),fs_port from  sessions
 	                       order by status desc");
-	$rc = $sth->execute() or {
-		syslog('error', "listsessionsroot_all (SQLite3 session db backend) failed with exitcode: $rc");
-		die;
+	$sth->execute();
+	if ($sth->err())
+	{
+		syslog('error', "listsessionsroot_all (SQLite3 session db backend) failed with exitcode: $sth->err()");
+		die();
 	}
 	fetchrow_printall_array($sth);
 }
@@ -96,8 +101,10 @@ elsif($cmd eq  "getmounts")
 	check_user($sid);
 	my @strings;
 	my $sth=$dbh->prepare("select client, path from mounts where session_id=?");
-	$rc = $sth->execute($sid) or {
-		syslog('error', "getmounts (SQLite3 session db backend) failed with exitcode: $rc");
+	$sth->execute($sid);
+	if ($sth->err())
+	{
+		syslog('error', "getmounts (SQLite3 session db backend) failed with exitcode: $sth->err()");
 		die;
 	}
 	fetchrow_printall_array($sth);
@@ -109,9 +116,11 @@ elsif($cmd eq  "deletemount")
 	my $path=shift or die "argument \"path\" missed";
 	check_user($sid);
 	my $sth=$dbh->prepare("delete from mounts where session_id=? and path=?");
-	$rc = $sth->execute($sid, $path) or {
-		syslog('error', "deletemount (SQLite3 session db backend) failed with exitcode: $rc");
-		die;
+	$sth->execute($sid, $path);
+	if ($sth->err())
+	{
+		syslog('error', "deletemount (SQLite3 session db backend) failed with exitcode: $sth->err()");
+		die();
 	}
 	$sth->finish();
 }
@@ -124,11 +133,11 @@ elsif($cmd eq  "insertmount")
 	check_user($sid);
 	my $sth=$dbh->prepare("insert into mounts (session_id,path,client) values  (?, ?, ?)");
 	$sth->execute($sid, $path, $client);
-	if(!$sth->err())
+	if(! $sth->err())
 	{
 		print "ok";
 	} else {
-		syslog('debug', "insertmount (SQLite3 session db backend) failed with exitcode: $rc, this issue will be interpreted as: SSHFS share already mounted");
+		syslog('debug', "insertmount (SQLite3 session db backend) failed with exitcode: $sth->err(), this issue will be interpreted as: SSHFS share already mounted");
 	}
 	$sth->finish();
 }
@@ -158,9 +167,11 @@ elsif($cmd eq  "createsession")
 	check_user($sid);
 	my $sth=$dbh->prepare("update sessions set status='R',last_time=datetime('now','localtime'),cookie=?,agent_pid=?,
 	                       client=?,gr_port=?,sound_port=?,fs_port=? where session_id=? and uname=?");
-	$sth->execute($cookie, $pid, $client, $gr_port, $snd_port, $fs_port, $sid, $realuser) or {
-		syslog('error', "createsession (SQLite3 session db backend) failed with exitcode: $rc");
-		die;
+	$sth->execute($cookie, $pid, $client, $gr_port, $snd_port, $fs_port, $sid, $realuser);
+	if ($sth->err())
+	{
+		syslog('error', "createsession (SQLite3 session db backend) failed with exitcode: $sth->err()");
+		die();
 	}
 	$sth->finish();
 	print "ok";
@@ -173,9 +184,11 @@ elsif($cmd eq  "insertport")
 	my $sshport=shift or die "argument \"port\" missed";
 	my $sth=$dbh->prepare("insert into used_ports (server,session_id,port) values  (?, ?, ?)");
 	check_user($sid);
-	$sth->execute($server, $sid, $sshport) or {
-		syslog('error', "insertport (SQLite3 session db backend) failed with exitcode: $rc");
-		die;
+	$sth->execute($server, $sid, $sshport);
+	if ($sth-err())
+	{
+		syslog('error', "insertport (SQLite3 session db backend) failed with exitcode: $sth->err()");
+		die();
 	}
 	$sth->finish();
 }
@@ -187,9 +200,10 @@ elsif($cmd eq  "rmport")
 	my $sshport=shift or die "argument \"port\" missed";
 	my $sth=$dbh->prepare("delete from used_ports where server=? and session_id=? and port=?");
 	check_user($sid);
-	$sth->execute($server, $sid, $sshport) or {
-		syslog('error', "rmport (SQLite3 session db backend) failed with exitcode: $rc");
-		die;
+	$sth->execute($server, $sid, $sshport);
+	if ($sth->err()) {
+		syslog('error', "rmport (SQLite3 session db backend) failed with exitcode: $sth->err()");
+		die();
 	}
 	$sth->finish();
 }
@@ -204,9 +218,11 @@ elsif($cmd eq  "resume")
 	check_user($sid);
 	my $sth=$dbh->prepare("update sessions set last_time=datetime('now','localtime'),status='R',
 	                       client=?,gr_port=?,sound_port=?,fs_port=? where session_id = ? and uname=?");
-	$sth->execute($client, $gr_port, $sound_port, $fs_port, $sid, $realuser) or {
-		syslog('error', "resume (SQLite3 session db backend) failed with exitcode: $rc");
-		die;
+	$sth->execute($client, $gr_port, $sound_port, $fs_port, $sid, $realuser);
+	if ($sth->err())
+	{
+		syslog('error', "resume (SQLite3 session db backend) failed with exitcode: $sth->err()");
+		die();
 	}
 	$sth->finish();
 }
@@ -218,9 +234,11 @@ elsif($cmd eq  "changestatus")
 	check_user($sid);
 	my $sth=$dbh->prepare("update sessions set last_time=datetime('now','localtime'),
 	                       status=? where session_id = ? and uname=?");
-	$sth->execute($status, $sid, $realuser) or {
-		syslog('error', "changestatus (SQLite3 session db backend) failed with exitcode: $rc");
-		die;
+	$sth->execute($status, $sid, $realuser);
+	if ($sth->err())
+	{
+		syslog('error', "changestatus (SQLite3 session db backend) failed with exitcode: $sth->err()");
+		die();
 	}
 	$sth->finish();
 }
@@ -230,9 +248,11 @@ elsif($cmd eq  "getdisplays")
 	#ignore $server
 	my @strings;
 	my $sth=$dbh->prepare("select display from sessions");
-	$sth->execute() or {
-		syslog('error', "getdisplays (SQLite3 session db backend) failed with exitcode: $rc");
-		die;
+	$sth->execute();
+	if ($sth->err())
+	{
+		syslog('error', "getdisplays (SQLite3 session db backend) failed with exitcode: $sth->err()");
+		die();
 	}
 	my @data;
 	my $i=0;
@@ -251,9 +271,11 @@ elsif($cmd eq  "getports")
 	my $server=shift or die "argument \"server\" missed";
 	my @strings;
 	my $sth=$dbh->prepare("select port from used_ports");
-	$sth->execute() or {
-		syslog('error', "getports (SQLite3 session db backend) failed with exitcode: $rc");
-		die;
+	$sth->execute();
+	if ($sth->err())
+	{
+		syslog('error', "getports (SQLite3 session db backend) failed with exitcode: $sth->err()");
+		die();
 	}
 	my @data;
 	my $i=0;
@@ -269,9 +291,11 @@ elsif($cmd eq  "getservers")
 {
 	my @strings;
 	my $sth=$dbh->prepare("select server,count(*) from sessions where status != 'F' group by server");
-	$sth->execute() or {
-		syslog('error', "getservers (SQLite3 session db backend) failed with exitcode: $rc");
-		die;
+	$sth->execute();
+	if ($sth->err())
+	{
+		syslog('error', "getservers (SQLite3 session db backend) failed with exitcode: $sth->err()");
+		die();
 	}
 	my @data;
 	my $i=0;
@@ -290,9 +314,11 @@ elsif($cmd eq  "getagent")
 	check_user($sid);
 	my $sth=$dbh->prepare("select agent_pid from sessions
 	                       where session_id=?");
-	$sth->execute($sid) or {
-		syslog('error', "getagent (SQLite3 session db backend) failed with exitcode: $rc");
-		die;
+	$sth->execute($sid);
+	if ($sth->err())
+	{
+		syslog('error', "getagent (SQLite3 session db backend) failed with exitcode: $sth->err()");
+		die();
 	}
 	my @data;
 	my $i=0;
@@ -311,9 +337,11 @@ elsif($cmd eq  "getdisplay")
 	check_user($sid);
 	my $sth=$dbh->prepare("select display from sessions
 	                       where session_id =?");
-	$sth->execute($sid) or {
-		syslog('error', "getdisplay (SQLite3 session db backend) failed with exitcode: $rc");
-		die;
+	$sth->execute($sid);
+	if ($sth->err())
+	{
+		syslog('error', "getdisplay (SQLite3 session db backend) failed with exitcode: $sth->err()");
+		die();
 	}
 	my @data;
 	my $i=0;
@@ -337,9 +365,11 @@ elsif($cmd eq  "listsessions")
 	                       strftime('%s','now','localtime') - strftime('%s',init_time),fs_port from  sessions
 	                       where status !='F' and server=? and uname=?
 	                       and  (  session_id not like '%XSHAD%')  order by status desc");
-	$sth->execute($server, $realuser) or {
-		syslog('error', "listsessions (SQLite3 session db backend) failed with exitcode: $rc");
-		die;
+	$sth->execute($server, $realuser);
+	if ($sth->err())
+	{
+		syslog('error', "listsessions (SQLite3 session db backend) failed with exitcode: $sth->err()");
+		die();
 	}
 	fetchrow_printall_array($sth);
 }
@@ -355,9 +385,11 @@ elsif($cmd eq  "listsessions_all")
 	                       strftime('%s','now','localtime') - strftime('%s',init_time),fs_port from  sessions 
 	                       where status !='F' and uname=? and  (  session_id not like '%XSHAD%')  order by status desc");
 	
-	$sth->execute($realuser) or {
-		syslog('error', "listsessions_all (SQLite3 session db backend) failed with exitcode: $rc");
-		die;
+	$sth->execute($realuser);
+	if ($sth->err())
+	{
+		syslog('error', "listsessions_all (SQLite3 session db backend) failed with exitcode: $sth->err()");
+		die();
 	}
 	fetchrow_printall_array($sth);
 }
