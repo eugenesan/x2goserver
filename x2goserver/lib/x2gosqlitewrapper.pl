@@ -24,8 +24,34 @@ use strict;
 use DBI;
 use POSIX;
 use Sys::Syslog qw( :standard :macros );
-use lib `echo -n \$(x2gobasepath)/lib/x2go`;
-use x2gologlevel;
+
+#### NOTE: this script is run setgid <group> and it cannot do system() calls.
+
+####
+#### One consequence of this is...
+#### This first part of code that handles syslogging is duplicated from
+#### x2gologlevel.pm. This is because we are not able to detect the
+#### installation path automatically via the x2gobasepath in this
+#### script.
+####
+
+my $Config = new Config::Simple(syntax=>'ini');
+$Config->read('/etc/x2go/x2goserver.conf' );
+my $strloglevel = $Config->param("log.loglevel");
+my $loglevel = LOG_NOTICE;
+if    ( $strloglevel eq "emerg" )  { $loglevel = LOG_EMERG; }
+elsif ( $strloglevel eq "alert" )  { $loglevel = LOG_ALERT; }
+elsif ( $strloglevel eq "crit" )   { $loglevel = LOG_CRIT; }
+elsif ( $strloglevel eq "err" )    { $loglevel = LOG_ERR; }
+elsif ( $strloglevel eq "warning" )   { $loglevel = LOG_WARNING; }
+elsif ( $strloglevel eq "notice" ) { $loglevel = LOG_NOTICE; }
+elsif ( $strloglevel eq "info" )   { $loglevel = LOG_INFO; }
+elsif ( $strloglevel eq "debug" )  { $loglevel = LOG_DEBUG; }
+setlogmask( LOG_UPTO(x2gologlevel()) );
+
+####
+#### end of duplicated syslogging code
+####
 
 # retrieve home dir of x2gouser
 my $x2gouser='x2gouser';
