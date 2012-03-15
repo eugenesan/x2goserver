@@ -34,7 +34,7 @@ my $status;
 my $sid=shift or die;
 
 $status = db_getstatus($sid);
-print "$status\n";
+print "$status";
 
 # closing syslog 
 closelog;
