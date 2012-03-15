@@ -23,7 +23,6 @@
 use strict;
 use DBI;
 use POSIX;
-use Sys::Syslog qw( :standard :macros );
 
 #### NOTE: this script is run setgid <group> and it cannot do system() calls.
 
@@ -35,6 +34,8 @@ use Sys::Syslog qw( :standard :macros );
 #### script.
 ####
 
+use Config::Simple;
+use Sys::Syslog qw( :standard :macros );
 my $Config = new Config::Simple(syntax=>'ini');
 $Config->read('/etc/x2go/x2goserver.conf' );
 my $strloglevel = $Config->param("log.loglevel");
