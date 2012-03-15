@@ -149,7 +149,18 @@ fi
 
 echo "$NEWOPTIONS" >"${SESSION_DIR}/options"
 
-$X2GO_LIB_PATH/x2goresume  "$X2GO_CLIENT" "$SESSION_NAME"  "$GR_PORT" "$SOUND_PORT" "$FS_PORT" > /dev/null
+# we really have to make sure the session database got this write operation
+# this may just be an SQLite issue so...
+# FIXME: probably migrate this piece of code to the SQLite db backend...
+while True; do 
+	$X2GO_LIB_PATH/x2goresume  "$X2GO_CLIENT" "$SESSION_NAME"  "$GR_PORT" "$SOUND_PORT" "$FS_PORT" > /dev/null
+	if [ $($X2GO_LIB_PATH/x2gogetstatus "$SESSION_NAME") == "R" ]; then
+		break;
+	else
+		$X2GO_LIB_PATH/x2gosyslog "$0" "warning" "failed to write to X2Go db, will try again..."
+		sleep 1;
+	fi
+done
 
 # run x2goserver-extensions for pre-resume
 x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions "$SESSION_NAME" pre-resume || true

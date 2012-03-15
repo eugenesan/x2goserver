@@ -270,6 +270,27 @@ elsif($cmd eq  "changestatus")
 	$sth->finish();
 }
 
+elsif($cmd eq  "getstatus")
+{
+	my $sid=shift or die "argument \"session_id\" missed";
+	check_user($sid);
+	my $sth=$dbh->prepare("select status from sessions where session_id = ?");
+	$sth->execute($sid);
+	if ($sth->err())
+	{
+		syslog('error', "changestatus (SQLite3 session db backend) failed with exitcode: $sth->err()");
+		die();
+	}
+	my @data;
+	my $status;
+	@data = $sth->fetchrow_array;
+	{
+		$status = @data[0];
+	}
+	$sth->finish();
+	print $status;
+}
+
 elsif($cmd eq  "getdisplays")
 {
 	#ignore $server

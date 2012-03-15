@@ -85,7 +85,7 @@ if ($backend eq 'postgres')
 
 use base 'Exporter';
 
-our @EXPORT=('db_listsessions','db_listsessions_all', 'db_getservers', 'db_getagent', 'db_resume', 'db_changestatus', 
+our @EXPORT=('db_listsessions','db_listsessions_all', 'db_getservers', 'db_getagent', 'db_resume', 'db_changestatus', 'db_getstatus', 
              'db_getdisplays', 'db_insertsession', 'db_getports', 'db_insertport', 'db_rmport', 'db_createsession', 'db_insertmount', 
              'db_getmounts', 'db_deletemount', 'db_getdisplay', 'dbsys_getmounts', 'dbsys_listsessionsroot', 
              'dbsys_listsessionsroot_all', 'dbsys_rmsessionsroot');
@@ -408,6 +408,31 @@ sub db_changestatus
 		`$x2go_lib_path/x2gosqlitewrapper changestatus $status $sid`;
 	}
 	syslog('debug', "db_changestatus called, session ID: $sid, new status: $status");
+}
+
+sub db_getstatus
+{
+	my $sid=shift or die "argument \"session_id\" missed";
+	my $status='';
+	if ($backend eq 'postgres')
+	{
+		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
+		my $sth=$dbh->prepare("select status from sessions_view where session_id = '$sid'");
+		$sth->execute($sid) or die;
+		my @data;
+		if (@data = $sth->fetchrow_array) 
+		{
+			$status=@data[0];
+		}
+		$sth->finish();
+		$dbh->disconnect();
+	}
+	if ($backend eq 'sqlite')
+	{
+		$status=`$x2go_lib_path/x2gosqlitewrapper getstatus $sid`;
+	}
+	syslog('debug', "db_getstatus called, session ID: $sid, return value: $status");
+	return $status;
 }
 
 sub db_getdisplays
