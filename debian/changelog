@@ -20,6 +20,7 @@ x2goserver (3.1.1.0-0~x2go1) UNRELEASED; urgency=low
     - Add/enable debugging of x2gocleansessions.
     - Silence error messages if the agent's session.log file is not accessible
       (e.g. on NFSv4+Krb5-mounted homes).
+    - Improve concurrent database access with session db backend SQLite.
   * Remove /etc/x2go/applications on package removal if it is a
     symlink, keep it, if it is a directory. Remove /etc/x2go
     (if empty after purge) on package purge.
