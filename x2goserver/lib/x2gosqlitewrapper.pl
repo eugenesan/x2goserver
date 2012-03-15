@@ -48,7 +48,7 @@ elsif ( $strloglevel eq "warning" )   { $loglevel = LOG_WARNING; }
 elsif ( $strloglevel eq "notice" ) { $loglevel = LOG_NOTICE; }
 elsif ( $strloglevel eq "info" )   { $loglevel = LOG_INFO; }
 elsif ( $strloglevel eq "debug" )  { $loglevel = LOG_DEBUG; }
-setlogmask( LOG_UPTO(x2gologlevel()) );
+setlogmask( LOG_UPTO($loglevel) );
 
 ####
 #### end of duplicated syslogging code
