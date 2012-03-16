@@ -1,0 +1,3 @@
+etc/X11/Xresources etc/x2go/Xresources
+etc/X11/Xsession.d etc/x2go/Xsession.d
+etc/X11/Xsession.options etc/x2go/Xsession.options
