@@ -16,6 +16,8 @@ x2goserver (3.1.1.0-0~x2go1) UNRELEASED; urgency=low
       the new session state to the session.log file, the x2gocleansessions
       script will mark the session as suspended during the session
       resuming process.
+    - Wait one second for x2goagent to write to session.log before updating
+      the session state from 'S' to 'R' in the X2Go session database.
     - Add X2Go server script x2gogetstatus.
     - Add/enable debugging of x2gocleansessions.
     - Silence error messages if the agent's session.log file is not accessible

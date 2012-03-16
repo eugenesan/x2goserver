@@ -169,7 +169,7 @@ kill -HUP $X2GO_AGENT_PID &>/dev/null && {
 	#		sleep 1;
 	#	fi
 	#done
-	$X2GO_LIB_PATH/x2goresume  "$X2GO_CLIENT" "$SESSION_NAME"  "$GR_PORT" "$SOUND_PORT" "$FS_PORT" > /dev/null
+	(sleep 1; $X2GO_LIB_PATH/x2goresume  "$X2GO_CLIENT" "$SESSION_NAME"  "$GR_PORT" "$SOUND_PORT" "$FS_PORT" > /dev/null;)
 
 	# resume x2godesktopsharing, if it has been in use before the session got suspended
 	x2gofeature X2GO_DESKTOPSHARING &>/dev/null && x2goresume-desktopsharing "$SESSION_NAME" || true
