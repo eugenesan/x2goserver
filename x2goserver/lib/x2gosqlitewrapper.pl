@@ -213,7 +213,7 @@ elsif($cmd eq  "insertport")
 	my $sth=$dbh->prepare("insert into used_ports (server,session_id,port) values  (?, ?, ?)");
 	check_user($sid);
 	$sth->execute($server, $sid, $sshport);
-	if ($sth-err())
+	if ($sth->err())
 	{
 		syslog('error', "insertport (SQLite3 session db backend) failed with exitcode: $sth->err()");
 		die();
