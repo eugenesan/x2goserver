@@ -12,10 +12,10 @@ x2goserver (3.1.1.0-0~x2go1) UNRELEASED; urgency=low
       supported X2Go features.
     - Update date and version number in man pages.
     - Fix race condition between session.log of x2goagent and
-      x2gocleansessions. If x2goagent is now fast enough with appending
-      the new session state to the session.log file, the x2gocleansessions
-      script will mark the session as suspended during the session
-      resuming process.
+      x2gocleansessions. The old situation was: in cases that x2goagent
+      was not fast enough with appending the new session state to the
+      session.log file, the x2gocleansessions script marked the session
+      as suspended during the session resuming process.
     - Wait one second for x2goagent to write to session.log before updating
       the session state from 'S' to 'R' in the X2Go session database.
     - Add X2Go server script x2gogetstatus.
