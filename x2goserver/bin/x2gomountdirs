@@ -232,7 +232,8 @@ for (my $i=0;$i<@dirs;$i++)
 		}
 		$p=~s/\//_/g;
 		$p=~s/ /_/g;
-		$p=~s/_cygdrive_//g;
+		$p=~s/~_cygdrive_//;
+		$p=~s/~_windrive_//;
 		$p=~s/~//g;
 		mkdir("$mdir/$p");
 		$mntpath="$mdir/$p";
@@ -283,7 +284,8 @@ for (my $i=0;$i<@dirs;$i++)
 				}
 
 				my $p=@dirs[$i];
-				$p=~s/\/cygdrive\///g;
+				$p=~s/\/cygdrive\///;
+				$p=~s/\/windrive\///;
 				$p=~s/\//_/g;
 				$fname="$fname/$p";
 				if ("$current_desktop" ne "NONE")

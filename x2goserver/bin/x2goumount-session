@@ -44,12 +44,19 @@ my $serv=hostname;
 if ($only_path)
 {
 	$only_path=~s/\/ramdrive\/mnt\///;
+
+	# rewrite local unix path
 	$only_path=~ s/\//_/g;
+
+	# rewrite local Windows path
+	$only_path=~ s/^([a-zA-Z]:)/_cygdrive_\1/;
+	$only_path=~ s/://;
+	$only_path=~ s/\\/_/g;
 	
 	### FIXME: handle CDROM and Removable Media mounts here, as well!!!
 
 	$only_path="$tmp_dir/$ENV{'USER'}_media/disk/$only_path";
-	#                                   ^^^^
+	#                                       ^^^^
 	syslog('debug',"x2goumount-session unmounting $only_path only");
 }
 
@@ -84,8 +91,19 @@ for ($i=0;$i<@outp;$i++)
 	{
 		if (@line[1] ne $only_path)
 		{
-			syslog('debug', "skipping non-requested path @line[1]");
-			goto cont;
+			# this is for Python X2Go, the base of Windows mounted shares starts with _windrive, not _cygdrive
+			my $only_path_windrive=$only_path;
+			$only_path_windrive=~ s/_cygdrive_/_windrive_/;
+
+			if (@line[1] ne $only_path_windrive)
+			{
+				syslog('debug', "skipping non-requested path @line[1]");
+				goto cont;
+			}
+			else
+			{
+				$only_path = $only_path_windrive;
+			}
 		}
 	}
 	my $j;
@@ -126,7 +144,8 @@ break:
 	if (! $found)
 	{
 
-		$remote=~s/\/cygdrive\///g;
+		$remote=~s/\/cygdrive\///;
+		$remote=~s/\/windrive\///;
 		$remote=~s/\//_/g;
 		$remote=(split(":","$remote"))[1];
 		$remote="$ENV{'HOME'}/Desktop/$remote";
