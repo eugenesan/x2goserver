@@ -286,6 +286,7 @@ for (my $i=0;$i<@dirs;$i++)
 				my $p=@dirs[$i];
 				$p=~s/\/cygdrive\///;
 				$p=~s/\/windrive\///;
+				$p=~s/ /_/g;
 				$p=~s/\//_/g;
 				$fname="$fname/$p";
 				if ("$current_desktop" ne "NONE")
