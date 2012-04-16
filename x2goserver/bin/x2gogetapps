@@ -120,7 +120,7 @@ sub proc_desktop_file
 		while(!eof(F))
 		{
 			my $line=<F>;
-			if( $line=~m/^Categories/i || $line=~m/^Name/i || $line=~m/^Comment/i ||  $line=~m/^Exec/i)
+			if( $line=~m/^Categories/i || $line=~m/^Name/i || $line=~m/^GenericName/i || $line=~m/^Terminal/i || $line=~m/^Comment/i ||  $line=~m/^Exec/i)
 			{
 				print $line;
 			}
