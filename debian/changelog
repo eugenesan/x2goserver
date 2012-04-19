@@ -6,6 +6,8 @@ x2goserver (3.1.1.1-0~x2go1) UNRELEASED; urgency=low
     - Handle whitespace in folder names appropriately.
     - Allow .desktop file parameter Terminal=... to pass through to X2Go
       client-side.
+    - Avoid error messages in x2gocmdexistmessage if cmdoutput file could
+      not be found.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Wed, 04 Apr 2012 11:44:14 +0200
 
