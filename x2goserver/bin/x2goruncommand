@@ -79,7 +79,7 @@ if [ "$cmd" == "GNOME" ] || [ "$cmd" == "gnome-session" ]; then
 	else
 		cmd="/usr/bin/gnome-session"
 	fi
-elif ([ "$cmd" == "UNITY" ] || [ "$cmd" == "unity-2d-launcher" ]) && [ "$DISTRIB_ID" == "Ubuntu" ] && echo "$DISTRIB_CODENAME" | egrep -v "^[a-o].*" >/dev/null; then
+elif ([ "$cmd" == "UNITY" ] || [ "$cmd" == "unity" ]) && [ "$DISTRIB_ID" == "Ubuntu" ] && echo "$DISTRIB_CODENAME" | egrep -v "^[a-o].*" >/dev/null; then
 	cmd="/usr/bin/gnome-session"
 
 elif [ "$cmd" == "KDE" ]; then
