@@ -69,7 +69,7 @@ if [ -e "/etc/lsb-release" ]; then
 fi
 
 # let x2goruncommand choose what command to use for a given desktop shell name (GNOME, UNITY, KDE, XFCE4, LXDE, TRINITY)
-if [ "$cmd" == "GNOME" ]; then
+if [ "$cmd" == "GNOME" ] || [ "$cmd" == "gnome-session" ]; then
 
 	# Ubuntu starting with 12.04 (precise) launches Unity when calling gnome-session.
 	# GNOME (Ubuntu classic) gets launched when calling gnome-session-fallback.
@@ -79,7 +79,7 @@ if [ "$cmd" == "GNOME" ]; then
 	else
 		$cmd="/usr/bin/gnome-session"
 	fi
-elif [ "$cmd" == "UNITY" ] && [ "$DISTRIB_ID" == "Ubuntu" ] && echo "$DISTRIB_CODENAME" | egrep -v "^[a-o].*" >/dev/null; then
+elif ([ "$cmd" == "UNITY" ] || [ "$cmd" == "unity-2d-launcher" ]) && [ "$DISTRIB_ID" == "Ubuntu" ] && echo "$DISTRIB_CODENAME" | egrep -v "^[a-o].*" >/dev/null; then
 	$cmd="/usr/bin/gnome-session"
 
 elif [ "$cmd" == "KDE" ]; then
