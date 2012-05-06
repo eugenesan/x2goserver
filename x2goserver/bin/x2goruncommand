@@ -35,6 +35,7 @@ export DISPLAY
 export X2GO_AGENT_PID
 export X2GO_SESSION
 cmd=`echo $cmd |sed 's/X2GO_SPACE_CHAR/ /g'`
+args=''
 
 X2GO_ROOT="${HOME}/.x2go"
 MESSAGE_FILE="$X2GO_ROOT/C-$X2GO_SESSION/cmdoutput"
@@ -71,16 +72,19 @@ fi
 # let x2goruncommand choose what command to use for a given desktop shell name (GNOME, UNITY, KDE, XFCE4, LXDE, TRINITY)
 if [ "$cmd" == "GNOME" ] || [ "$cmd" == "gnome-session" ]; then
 
-	# Ubuntu starting with 12.04 (precise) launches Unity when calling gnome-session.
-	# GNOME (Ubuntu classic) gets launched when calling gnome-session-fallback.
+	cmd="/usr/bin/gnome-session"
+	# Ubuntu starting with 12.04 (precise) launches Unity when calling gnome-session --session=ubuntu-2d.
+	# GNOME (Ubuntu classic) gets launched when calling gnome-session --session=gnome-fallback.
 
 	if [ "$DISTRIB_ID" == "Ubuntu" ] && echo "$DISTRIB_CODENAME" | egrep -v "^[a-o].*" >/dev/null; then
-		cmd="/usr/bin/gnome-session-fallback"
-	else
-		cmd="/usr/bin/gnome-session"
+		export DESKTOP_SESSION="gnome-fallback"
+		args="--session=$DESKTOP_SESSION"
 	fi
+
 elif ([ "$cmd" == "UNITY" ] || [ "$cmd" == "unity" ]) && [ "$DISTRIB_ID" == "Ubuntu" ] && echo "$DISTRIB_CODENAME" | egrep -v "^[a-o].*" >/dev/null; then
 	cmd="/usr/bin/gnome-session"
+	export DESKTOP_SESSION="ubuntu-2d"
+	args="--session=$DESKTOP_SESSION"
 
 elif [ "$cmd" == "KDE" ]; then
 	cmd="/usr/bin/startkde"
@@ -168,12 +172,12 @@ if [ "$EXEC" != "" ] && [ -x $EXEC ]; then
 	$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "running command $EXEC"
 
 	x2gofeature X2GO_XSESSION &>/dev/null && [ "x$X2GO_SESS_TYPE" = "xD" ] && {
-		STARTUP=$cmd
+		STARTUP="$cmd $args"
 		$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "launching session with Xsession-x2go mechanism, using STARTUP=\"$STARTUP\""
-		STARTUP="$STARTUP" /etc/x2go/Xsession
+		/etc/x2go/Xsession "$STARTUP"
 	} || {
-		$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "executing command $EXEC..."
-		$cmd
+		$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "executing command \"$cmd $args\"..."
+		$cmd $args
 	}
 
 	#### some applications can quit immediately, we will wait here as long as x2goagent exists

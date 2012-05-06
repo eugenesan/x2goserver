@@ -12,8 +12,7 @@ x2goserver (3.1.1.1-0~x2go1) UNRELEASED; urgency=low
     - Add feature X2GO_SERVERSIDE_DESKTOPCOMMANDS. Let client provide a generic
       desktop shell command (GNOME, UNITRY, KDE, etc.) which then gets
       translated into an executable command by x2goruncommand.
-    - Additionally to X2GO_SERVERSIDE_DESKTOPCOMMANDS allow rewriting of the
-      commands ,,gnome-session'' and ,,unity-2d-launcher'' in x2goruncommand.
+    - Detect desktop session mode to use for Ubuntu precise and later.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Wed, 04 Apr 2012 11:44:14 +0200
 
