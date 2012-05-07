@@ -70,21 +70,50 @@ if [ -e "/etc/lsb-release" ]; then
 fi
 
 # let x2goruncommand choose what command to use for a given desktop shell name (GNOME, UNITY, KDE, XFCE4, LXDE, TRINITY)
+
+# NOTES on GNOME startup behaviour in different distributions
+# ===========================================================
+
+# Debian launches GNOME3 (in accelerated mode) when calling gnome-session
+
+# Ubuntu launches Unity (in accelerated mode) when calling gnome-session.
+# To make the GNOME variants start up properly on Debian/Ubuntu we have to make the following differentiations
+
+# before and with Ubuntu 10.10 (maverick): GNOME -> gnome-session (would start GNOME2)
+# Ubuntu 11.04 (natty): GNOME -> gnome-session --session=2d-gnome, UNITY -> gnome-session --session=2d-ubuntu (GNOME3 based desktop shells)
+# Ubuntu 11.10 (oneiric) or later: GNOME -> gnome-session --session=gnome-fallback, UNITY -> gnome-session --session=ubuntu-2d (GNOME3 based desktop shells)
+
+# before and with Debian squeeze: GNOME -> gnome-session (would start GNOME2)
+# Debian wheezy: GNOME -> gnome-session --session=gnome-fallback, UNITY: not available (GNOME3 based desktop shells)
+
 if [ "$cmd" == "GNOME" ] || [ "$cmd" == "gnome-session" ]; then
 
 	cmd="/usr/bin/gnome-session"
-	# Ubuntu starting with 12.04 (precise) launches Unity when calling gnome-session --session=ubuntu-2d.
-	# GNOME (Ubuntu classic) gets launched when calling gnome-session --session=gnome-fallback.
-
-	if [ "$DISTRIB_ID" == "Ubuntu" ] && echo "$DISTRIB_CODENAME" | egrep -v "^[a-o].*" >/dev/null; then
+	if [ "$DISTRIB_ID" == "Ubuntu" ] && echo "$DISTRIB_CODENAME" | egrep "^[a-m].*" >/dev/null; then
+		export DESKTOP_SESSION="gnome"
+	elif [ "$DISTRIB_ID" == "Ubuntu" ] && echo "$DISTRIB_CODENAME" | egrep "^n.*" >/dev/null; then
+		export DESKTOP_SESSION="2d-gnome"
+		args="--session=$DESKTOP_SESSION"
+	elif [ "$DISTRIB_ID" == "Ubuntu" ] && echo "$DISTRIB_CODENAME" | egrep -v "^[a-n].*" >/dev/null; then
+		export DESKTOP_SESSION="gnome-fallback"
+		args="--session=$DESKTOP_SESSION"
+	elif [ cat /etc/debian_version | egrep "^(squeeze|6\.).*" >/dev/null; then
+		export DESKTOP_SESSION="gnome"
+	elif [ cat /etc/debian_version | egrep "^(wheezy|7\.).*" >/dev/null; then
 		export DESKTOP_SESSION="gnome-fallback"
 		args="--session=$DESKTOP_SESSION"
 	fi
 
-elif ([ "$cmd" == "UNITY" ] || [ "$cmd" == "unity" ]) && [ "$DISTRIB_ID" == "Ubuntu" ] && echo "$DISTRIB_CODENAME" | egrep -v "^[a-o].*" >/dev/null; then
+elif ([ "$cmd" == "UNITY" ] || [ "$cmd" == "unity" ]); then
 	cmd="/usr/bin/gnome-session"
-	export DESKTOP_SESSION="ubuntu-2d"
-	args="--session=$DESKTOP_SESSION"
+	if [ "$DISTRIB_ID" == "Ubuntu" ] && echo "$DISTRIB_CODENAME" | egrep -v "^[a-n].*" >/dev/null; then
+		export DESKTOP_SESSION="ubuntu-2d"
+		args="--session=$DESKTOP_SESSION"
+	elif [ "$DISTRIB_ID" == "Ubuntu" ] && echo "$DISTRIB_CODENAME" | egrep -v "^n.*" >/dev/null; then
+		export DESKTOP_SESSION="2d-ubuntu"
+		args="--session=$DESKTOP_SESSION"
+	fi
+	# on earlier Ubuntu versions or with non-Ubuntu Distros the ,,UNITY'' command in X2Go will launch the GNOME2 desktop shell
 
 elif [ "$cmd" == "KDE" ]; then
 	cmd="/usr/bin/startkde"
