@@ -93,25 +93,25 @@ if [ "$cmd" == "GNOME" ] || [ "$cmd" == "gnome-session" ]; then
 		export DESKTOP_SESSION="gnome"
 	elif [ "$DISTRIB_ID" == "Ubuntu" ] && echo "$DISTRIB_CODENAME" | egrep "^n.*" >/dev/null; then
 		export DESKTOP_SESSION="2d-gnome"
-		args="--session=$DESKTOP_SESSION"
+		args=" --session=$DESKTOP_SESSION"
 	elif [ "$DISTRIB_ID" == "Ubuntu" ] && echo "$DISTRIB_CODENAME" | egrep -v "^[a-n].*" >/dev/null; then
 		export DESKTOP_SESSION="gnome-fallback"
-		args="--session=$DESKTOP_SESSION"
-	elif [ cat /etc/debian_version | egrep "^(squeeze|6\.).*" >/dev/null; then
+		args=" --session=$DESKTOP_SESSION"
+	elif cat /etc/debian_version | egrep "^(squeeze|6\.).*" >/dev/null; then
 		export DESKTOP_SESSION="gnome"
-	elif [ cat /etc/debian_version | egrep "^(wheezy|7\.).*" >/dev/null; then
+	elif cat /etc/debian_version | egrep "^(wheezy|7\.).*" >/dev/null; then
 		export DESKTOP_SESSION="gnome-fallback"
-		args="--session=$DESKTOP_SESSION"
+		args=" --session=$DESKTOP_SESSION"
 	fi
 
 elif ([ "$cmd" == "UNITY" ] || [ "$cmd" == "unity" ]); then
 	cmd="/usr/bin/gnome-session"
 	if [ "$DISTRIB_ID" == "Ubuntu" ] && echo "$DISTRIB_CODENAME" | egrep -v "^[a-n].*" >/dev/null; then
 		export DESKTOP_SESSION="ubuntu-2d"
-		args="--session=$DESKTOP_SESSION"
+		args=" --session=$DESKTOP_SESSION"
 	elif [ "$DISTRIB_ID" == "Ubuntu" ] && echo "$DISTRIB_CODENAME" | egrep -v "^n.*" >/dev/null; then
 		export DESKTOP_SESSION="2d-ubuntu"
-		args="--session=$DESKTOP_SESSION"
+		args=" --session=$DESKTOP_SESSION"
 	fi
 	# on earlier Ubuntu versions or with non-Ubuntu Distros the ,,UNITY'' command in X2Go will launch the GNOME2 desktop shell
 
@@ -201,12 +201,12 @@ if [ "$EXEC" != "" ] && [ -x $EXEC ]; then
 	$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "running command $EXEC"
 
 	x2gofeature X2GO_XSESSION &>/dev/null && [ "x$X2GO_SESS_TYPE" = "xD" ] && {
-		STARTUP="$cmd $args"
+		STARTUP="$cmd$args"
 		$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "launching session with Xsession-x2go mechanism, using STARTUP=\"$STARTUP\""
-		/etc/x2go/Xsession "$STARTUP"
+		STARTUP="$STARTUP" /etc/x2go/Xsession
 	} || {
-		$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "executing command \"$cmd $args\"..."
-		$cmd $args
+		$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "executing command \"$cmd$args\"..."
+		$cmd$args
 	}
 
 	#### some applications can quit immediately, we will wait here as long as x2goagent exists
