@@ -172,7 +172,7 @@ kill -HUP $X2GO_AGENT_PID &>/dev/null && {
 	(sleep 1; $X2GO_LIB_PATH/x2goresume  "$X2GO_CLIENT" "$SESSION_NAME"  "$GR_PORT" "$SOUND_PORT" "$FS_PORT" > /dev/null;)
 
 	# set client-side keyboard model, type, variant, etc.
-	if [ "$X2GO_SET_KBD" != "0" ]
+	if [ "$X2GO_SET_KBD" != "0" ]; then
 		X2GO_DISPLAY=$(echo $X2GO_SESSION | cut -d"-" -f2)
 		(sleep 1; DISPLAY=:$X2GO_DISPLAY.0 x2gosetkeyboard;)
 	fi
