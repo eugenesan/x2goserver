@@ -28,6 +28,8 @@ X2GO_PORT=49 #First port for X2GO=50
 SSH_PORT=30000 #First ssh port 30001
 
 X2GO_ROOT="${HOME}/.x2go"
+export NX_ROOT=$X2GO_ROOT
+
 REMOTE=localhost
 
 X2GO_CLIENT=`echo "$SSH_CLIENT" | awk '{print $1}'`

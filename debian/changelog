@@ -16,6 +16,8 @@ x2goserver (3.1.1.1-0~x2go1) UNRELEASED; urgency=low
     - Complete UNITY/GNOME support for Ubuntu/Debian.
     - Use ,,-nolisten tcp'' option when evoking x2goagent from within
       x2gostartagent.
+    - Export NX_ROOT=$HOME/.x2go in x2gostartagent. Makes the keyboard file
+      in X2Go session cache directory.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Wed, 04 Apr 2012 11:44:14 +0200
 
