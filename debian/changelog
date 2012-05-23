@@ -18,6 +18,8 @@ x2goserver (3.1.1.1-0~x2go1) UNRELEASED; urgency=low
       x2gostartagent.
     - Export NX_ROOT=$HOME/.x2go in x2gostartagent. Makes the keyboard file
       in X2Go session cache directory.
+    - Add support for client-side keyboard detection. Moved script
+      x2gosetkeyboard from x2goserver-pyhoca into x2goserver package.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Wed, 04 Apr 2012 11:44:14 +0200
 

@@ -251,8 +251,12 @@ if  [ "$X2GO_STYPE" == "S" ]; then
 	x2goagent -nolisten tcp $X2GODPIOPTION_ -$SESSION_TYPE -auth "$XAUTHORITY" -shadow $SHADOW_DESKTOP -shadowmode $SHADOW_MODE -geometry ${X2GO_GEOMETRY} -name "${SESSION_WINDOW_TITLE}"  "${NX_AGENT}" 2>"${SESSION_DIR}/session.log" &
 else
 	x2goagent -nolisten tcp $X2GODPIOPTION_ $XDMCPOPT -$SESSION_TYPE $NOEXITPARAM -auth "$XAUTHORITY" -geometry ${X2GO_GEOMETRY} -name "${SESSION_WINDOW_TITLE}"  "${NX_AGENT}" 2>"${SESSION_DIR}/session.log" &
-fi
 
+	# if we do not enforce a special keybaord type/layout/variant, use the one detected on the client-side
+	if [ "$X2GO_SET_KBD" != "0" ]
+		(sleep 1; x2gosetkeyboard; )
+	fi
+fi
 
 X2GO_AGENT_PID=$!
 X2GO_AGENT_RETVAL=$?

@@ -48,12 +48,15 @@ read_keyboard_file() {
 
 update_keymap() {
 
+	if [ "$XKB_RULES" = "evdev" ]; then
+		XKB_RULES="xfree86"
+	fi
 	# prepare for setxkbmap call
 	[ -n "$XKB_RULES" ] && XKB_RULES="-rules $XKB_RULES"
 	[ -n "$XKB_MODEL" ] && XKB_MODEL="-model $XKB_MODEL"
 	[ -n "$XKB_LAYOUT" ] && XKB_LAYOUT="-layout $XKB_LAYOUT"
 	[ -n "$XKB_VARIANT" ] && XKB_VARIANT="-variant $XKB_VARIANT"
-	[ -n "$XKB_OPTIONS" ] && XKB_OPTIONS="-options $XKB_OPTIONS"
+	[ -n "$XKB_OPTIONS" ] && XKB_OPTIONS="-option $XKB_OPTIONS"
 
 	# update keyboard map
 	setxkbmap $XKB_RULES $XKB_MODEL $XKB_LAYOUT $XKB_VARIANT $XKB_OPTIONS
