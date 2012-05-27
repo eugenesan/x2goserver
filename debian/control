@@ -17,7 +17,7 @@ Architecture: any
 Depends:
  ${shlibs:Depends},
  ${misc:Depends},
- x2goagent,
+ x2goagent (>= 2:3.5.0.12),
  lsof,
  openssh-client,
  openssh-server,

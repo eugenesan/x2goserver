@@ -22,6 +22,9 @@ x2goserver (3.1.1.1-0~x2go1) UNRELEASED; urgency=low
       x2gosetkeyboard from x2goserver-pyhoca into x2goserver package.
     - Make x2gosetkeyboard set the client-side keyboard on sessino start and
       resume.
+  * Depend on x2goagent (>= 2:3.5.0.12), make sure that x2goagent has the patch
+    105_nxagent_export-remote-keyboard-config.full.patch included.
+
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Wed, 04 Apr 2012 11:44:14 +0200
 
