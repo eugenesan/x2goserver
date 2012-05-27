@@ -17,23 +17,41 @@
 # Free Software Foundation, Inc.,
 # 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
 #
+# Copyright (C) 2011-2012  Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
 # Copyright (C) 2011-2012  Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
 # Copyright (C) 2011-2012  Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
-
-set -e
 
 X2GO_LIB_PATH=`echo -n \$(x2gobasepath)/lib/x2go`
 
 $X2GO_LIB_PATH/x2gosyslog "$0" "info" "$(basename $0) called with options: $@"
 
+SESSION_NAME=${1:-$X2GO_SESSION}
+
 # set up paths
 X2GO_SESSION_ROOT=${HOME}/.x2go
-X2GO_SESSION_DIR=${X2GO_SESSION_ROOT}/C-${X2GO_SESSION}
+X2GO_SESSION_DIR=${X2GO_SESSION_ROOT}/C-${SESSION_NAME}
 
 # client keyboard configuration
 X2GO_CLIENT_KBD_FILE=${X2GO_SESSION_DIR}/keyboard
 
-test -f ${X2GO_CLIENT_KBD_FILE} || exit 0
+# if there is a directory at the location of the keyboard file, we consider this as blocking this script
+if [ -d ${X2GO_CLIENT_KBD_FILE} ]; then
+	$X2GO_LIB_PATH/x2gosyslog "$0" "info" "${X2GO_CLIENT_KBD_FILE} is blocked, not setting keyboard parameters from client-side settings"
+	rm -Rf ${X2GO_CLIENT_KBD_FILE}
+	exit 0
+fi
+
+# wait for the keyboard file to appear
+i=0
+while ! [ -f ${X2GO_CLIENT_KBD_FILE} ] && [ $i -lt 30 ]; do
+	$X2GO_LIB_PATH/x2gosyslog "$0" "info" "Waiting for ${X2GO_CLIENT_KBD_FILE} to appear"
+	sleep 1
+	i=$((i+1))
+done
+if  ! [ -f ${X2GO_CLIENT_KBD_FILE} ]; then
+	$X2GO_LIB_PATH/x2gosyslog "$0" "warning" "${X2GO_CLIENT_KBD_FILE} did not appear within 30s after agent startup"
+	exit 0
+fi
 
 read_keyboard_file() {
 
@@ -63,5 +81,7 @@ update_keymap() {
 }
 
 ### main ###
+$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "Setting X keyboard according to ${X2GO_CLIENT_KBD_FILE}"
 read_keyboard_file
 update_keymap
+

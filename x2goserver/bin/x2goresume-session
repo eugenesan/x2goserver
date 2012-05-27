@@ -152,6 +152,9 @@ echo "$NEWOPTIONS" >"${SESSION_DIR}/options"
 # run x2goserver-extensions for pre-resume
 x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions "$SESSION_NAME" pre-resume || true
 
+# clear old keyboard file
+rm -Rf $SESSION_DIR/keyboard
+
 kill -HUP $X2GO_AGENT_PID &>/dev/null && {
 	$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "client $X2GO_CLIENT has successfully resumed session with ID $SESSION_NAME"
 
@@ -170,12 +173,6 @@ kill -HUP $X2GO_AGENT_PID &>/dev/null && {
 	#	fi
 	#done
 	(sleep 1; $X2GO_LIB_PATH/x2goresume  "$X2GO_CLIENT" "$SESSION_NAME"  "$GR_PORT" "$SOUND_PORT" "$FS_PORT" > /dev/null;)
-
-	# set client-side keyboard model, type, variant, etc.
-	if [ "$X2GO_SET_KBD" != "0" ]; then
-		X2GO_DISPLAY=$(echo $X2GO_SESSION | cut -d"-" -f2)
-		(sleep 1; DISPLAY=:$X2GO_DISPLAY.0 x2gosetkeyboard;)
-	fi
 
 	# resume x2godesktopsharing, if it has been in use before the session got suspended
 	x2gofeature X2GO_DESKTOPSHARING &>/dev/null && x2goresume-desktopsharing "$SESSION_NAME" || true
@@ -201,3 +198,9 @@ echo "gr_port=$GR_PORT"
 echo "sound_port=$SOUND_PORT"
 echo "fs_port=$FS_PORT"
 
+# set client-side keyboard model, type, variant, etc.
+if [ "$X2GO_SET_KBD" == "0" ]; then
+	X2GO_DISPLAY=$(echo $SESSION_NAME | cut -d"-" -f2)
+	export DISPLAY=:$X2GO_DISPLAY.0
+	x2gosetkeyboard "$SESSION_NAME" >/dev/null 2>/dev/null &
+fi
