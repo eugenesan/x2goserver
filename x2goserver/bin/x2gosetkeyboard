@@ -64,6 +64,10 @@ read_keyboard_file() {
 
 }
 
+reset_keymap() {
+	setxkbmap -layout us -option "" -model pc104
+}
+
 update_keymap() {
 
 	if [ "$XKB_RULES" = "evdev" ]; then
@@ -83,5 +87,6 @@ update_keymap() {
 ### main ###
 $X2GO_LIB_PATH/x2gosyslog "$0" "notice" "Setting X keyboard according to ${X2GO_CLIENT_KBD_FILE}"
 read_keyboard_file
+reset_keymap
 update_keymap
 
