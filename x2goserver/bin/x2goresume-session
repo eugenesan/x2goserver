@@ -128,8 +128,7 @@ LISTSTR=`echo "$OPTIONS" | awk -F, {'print $17'}`
 KTSTR=`echo "$KTSTR" | sed "s/\//\\\\\\\\\//"`
 X2GO_KBD_TYPE=`echo "$X2GO_KBD_TYPE" | sed "s/\//\\\\\\\\\//"`
 
-if [ "$X2GO_SET_KBD" == "0" ]
-then
+if [ "$X2GO_SET_KBD" == "0" ] || [ "$X2GO_KBD_TYPE" == "auto" ]; then
 	X2GO_KBD_TYPE="null\/null"
 fi
 
@@ -175,7 +174,7 @@ kill -HUP $X2GO_AGENT_PID &>/dev/null && {
 	(sleep 1; $X2GO_LIB_PATH/x2goresume  "$X2GO_CLIENT" "$SESSION_NAME"  "$GR_PORT" "$SOUND_PORT" "$FS_PORT" > /dev/null;)
 
 	# set client-side keyboard model, type, variant, etc.
-	if [ "$X2GO_SET_KBD" == "0" ]; then
+	if [ "$X2GO_SET_KBD" != "0" ] && [ "$X2GO_KBD_TYPE" == "auto" ]; then
 		X2GO_DISPLAY=$(echo $SESSION_NAME | cut -d"-" -f2)
 		export DISPLAY=:$X2GO_DISPLAY.0
 		x2gosetkeyboard "$SESSION_NAME" >/dev/null 2>/dev/null &
