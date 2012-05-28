@@ -20,7 +20,7 @@ x2goserver (3.1.1.1-0~x2go1) UNRELEASED; urgency=low
       in X2Go session cache directory.
     - Add support for client-side keyboard detection. Moved script
       x2gosetkeyboard from x2goserver-pyhoca into x2goserver package.
-    - Make x2gosetkeyboard set the client-side keyboard on sessino start and
+    - Make x2gosetkeyboard set the client-side keyboard on session start and
       resume if usekbd is set to True and the keyboard type is set ,,auto''.
     - Reset keyboard settings to pc104/us before setting client-side keyboard
       parameters.
