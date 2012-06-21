@@ -124,7 +124,7 @@ for ($i=0;$i<@outp;$i++)
 break:
 	if ($found)
 	{
-		if (system( "fusermount -u @line[1]" ) == 0)
+		if (system( "cd $tmp_dir && fusermount -u @line[1] && cd - >/dev/null" ) == 0)
 		{
 			syslog('notice', "successfully unmounted @line[1]");
 			$found=0;

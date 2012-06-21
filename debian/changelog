@@ -26,6 +26,8 @@ x2goserver (3.1.1.1-0~x2go1) UNRELEASED; urgency=low
       parameters.
     - For finished sessions purge all mount points that still hover in the
       DB's mounts table.
+    - Make sure we run fusermount from within a directory that the user has read
+      access to.
   * Depend on x2goagent (>= 2:3.5.0.12), make sure that x2goagent has the patch
     105_nxagent_export-remote-keyboard-config.full.patch included.
 
