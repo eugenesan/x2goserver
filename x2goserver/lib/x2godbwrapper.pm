@@ -88,11 +88,12 @@ use base 'Exporter';
 our @EXPORT=('db_listsessions','db_listsessions_all', 'db_getservers', 'db_getagent', 'db_resume', 'db_changestatus', 'db_getstatus', 
              'db_getdisplays', 'db_insertsession', 'db_getports', 'db_insertport', 'db_rmport', 'db_createsession', 'db_insertmount', 
              'db_getmounts', 'db_deletemount', 'db_getdisplay', 'dbsys_getmounts', 'dbsys_listsessionsroot', 
-             'dbsys_listsessionsroot_all', 'dbsys_rmsessionsroot');
+             'dbsys_listsessionsroot_all', 'dbsys_rmsessionsroot', 'dbsys_deletemounts');
 
 sub dbsys_rmsessionsroot
 {
 	my $sid=shift or die "argument \"session_id\" missed";
+	dbsys_deletemounts($sid);
 	if($backend eq 'postgres')
 	{
 		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", 
@@ -107,6 +108,24 @@ sub dbsys_rmsessionsroot
 	{
 		`$x2go_lib_path/x2gosqlitewrapper rmsessionsroot $sid`;
 	}
+}
+
+sub dbsys_deletemounts
+{
+        my $sid=shift or die "argument \"session_id\" missed";
+        if ($backend eq 'postgres')
+        {
+                my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
+                my $sth=$dbh->prepare("delete from mounts where session_id='$sid'");
+                $sth->execute();
+                $sth->finish();
+                $dbh->disconnect();
+        }
+        if ($backend eq 'sqlite')
+        {
+                `$x2go_lib_path/x2gosqlitewrapper deletemounts $sid`;
+        }
+        syslog('debug', "dbsys_deletemounts called, session ID: $sid");
 }
 
 sub dbsys_listsessionsroot

@@ -153,6 +153,20 @@ elsif($cmd eq  "deletemount")
 	$sth->finish();
 }
 
+elsif($cmd eq  "deletemounts")
+{
+        my $sid=shift or die "argument \"session_id\" missed";
+        check_user($sid);
+        my $sth=$dbh->prepare("delete from mounts where session_id=?");
+        $sth->execute($sid);
+        if ($sth->err())
+        {
+                syslog('error', "deletemounts (SQLite3 session db backend) failed with exitcode: $sth->err()");
+                die();
+        }
+        $sth->finish();
+}
+
 elsif($cmd eq  "insertmount")
 {
 	my $sid=shift or die "argument \"session_id\" missed";

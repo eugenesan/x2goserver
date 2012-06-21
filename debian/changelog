@@ -24,6 +24,8 @@ x2goserver (3.1.1.1-0~x2go1) UNRELEASED; urgency=low
       resume if usekbd is set to True and the keyboard type is set ,,auto''.
     - Reset keyboard settings to pc104/us before setting client-side keyboard
       parameters.
+    - For finished sessions purge all mount points that still hover in the
+      DB's mounts table.
   * Depend on x2goagent (>= 2:3.5.0.12), make sure that x2goagent has the patch
     105_nxagent_export-remote-keyboard-config.full.patch included.
 
