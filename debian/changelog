@@ -1,4 +1,4 @@
-x2goserver (3.1.1.1-0~x2go1) UNRELEASED; urgency=low
+x2goserver (3.1.1.1-0~x2go1) unstable; urgency=low
 
   [ Mike Gabriel ]
   * New upstream version (3.1.1.1):
@@ -31,7 +31,7 @@ x2goserver (3.1.1.1-0~x2go1) UNRELEASED; urgency=low
   * Depend on x2goagent (>= 2:3.5.0.12), make sure that x2goagent has the patch
     105_nxagent_export-remote-keyboard-config.full.patch included.
 
- -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Wed, 04 Apr 2012 11:44:14 +0200
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Thu, 21 Jun 2012 14:16:08 +0200
 
 x2goserver (3.1.1.0-0~x2go1) unstable; urgency=low
 
