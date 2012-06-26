@@ -1,6 +1,10 @@
 x2goserver (3.1.1.2-0~x2go1) UNRELEASED; urgency=low
 
-  * Continue development...
+  [ Mike Gabriel ]
+  * New upstream version (3.1.1.2):
+    - Place session.log into /tmp directory, make x2gocleansessions and
+      x2golistsessions_root work even if home directories are mounted
+      via NFSv4+Krb5 and not accessible by root. 
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 26 Jun 2012 09:32:31 +0200
 

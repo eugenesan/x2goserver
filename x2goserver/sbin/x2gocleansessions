@@ -55,7 +55,7 @@ sub check_stat
 {
 	my $sess=shift;
 	my $user=shift;
-	my $log="~$user/.x2go/C-$sess/session.log";
+	my $log="/tmp/.x2go-${user}/session-C-${sess}.log";
 	my $text=`tail -1 $log 2>/dev/null`;
 	if ($text =~ m/Session suspended/)
 	{

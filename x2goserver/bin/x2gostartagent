@@ -190,6 +190,14 @@ fi
 
 SESSION_DIR="${X2GO_ROOT}/C-${SESSION_NAME}"
 
+# do not use $TMP or $TEMP here, the session.log file location has to be accessible by root
+SESSION_LOG="/tmp/.x2go-${USER}/session-C-${SESSION_NAME}.log"
+mkdir -p $(dirname "${SESSION_LOG}")
+chmod -f 0700 $(dirname "${SESSION_LOG}")
+touch "${SESSION_LOG}"
+chmod -f 0600 "${SESSION_LOG}"
+ln -s "${SESSION_DIR}/session.log" "${SESSION_LOG}"
+
 if [ ! -d "$X2GO_ROOT" ]; then
 	mkdir "$X2GO_ROOT"
 fi
@@ -215,9 +223,9 @@ xauth -f "$XAUTHORITY" add "${HOSTNAME}:${X2GO_PORT}" MIT-MAGIC-COOKIE-1 "${X2GO
 
 
 if [ "$X2GO_SET_KBD" == "0" ] || [ "$X2GO_KBD_TYPE" == "auto" ];then
-    X2GO_HOST="nx/nx,link=${X2GO_LINK},pack=${X2GO_PACK},limit=0,root=${SESSION_DIR},cache=8M,images=32M,type=${X2GO_TYPE},id=${SESSION_NAME},cookie=$X2GO_COOKIE,errors=${SESSION_DIR}/session.log,kbtype=null/null,geometry=${X2GO_GEOMETRY},resize=${X2GO_RESIZE},fullscreen=${X2GO_FULLSCREEN},accept=${REMOTE},listen=${GR_PORT},client=linux,menu=0"
+    X2GO_HOST="nx/nx,link=${X2GO_LINK},pack=${X2GO_PACK},limit=0,root=${SESSION_DIR},cache=8M,images=32M,type=${X2GO_TYPE},id=${SESSION_NAME},cookie=$X2GO_COOKIE,errors=${SESSION_LOG},kbtype=null/null,geometry=${X2GO_GEOMETRY},resize=${X2GO_RESIZE},fullscreen=${X2GO_FULLSCREEN},accept=${REMOTE},listen=${GR_PORT},client=linux,menu=0"
 else
-    X2GO_HOST="nx/nx,link=${X2GO_LINK},pack=${X2GO_PACK},limit=0,root=${SESSION_DIR},cache=8M,images=32M,type=${X2GO_TYPE},id=${SESSION_NAME},cookie=$X2GO_COOKIE,errors=${SESSION_DIR}/session.log,kbtype=${X2GO_KBD_TYPE},geometry=${X2GO_GEOMETRY},resize=${X2GO_RESIZE},fullscreen=${X2GO_FULLSCREEN},accept=${REMOTE},listen=${GR_PORT},client=linux,menu=0"
+    X2GO_HOST="nx/nx,link=${X2GO_LINK},pack=${X2GO_PACK},limit=0,root=${SESSION_DIR},cache=8M,images=32M,type=${X2GO_TYPE},id=${SESSION_NAME},cookie=$X2GO_COOKIE,errors=${SESSION_LOG},kbtype=${X2GO_KBD_TYPE},geometry=${X2GO_GEOMETRY},resize=${X2GO_RESIZE},fullscreen=${X2GO_FULLSCREEN},accept=${REMOTE},listen=${GR_PORT},client=linux,menu=0"
 fi
 
 
@@ -247,9 +255,9 @@ x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions "$SESSI
 SESSION_WINDOW_TITLE="X2GO-${SESSION_NAME}"
 
 if  [ "$X2GO_STYPE" == "S" ]; then
-	x2goagent -nolisten tcp $X2GODPIOPTION_ -$SESSION_TYPE -auth "$XAUTHORITY" -shadow $SHADOW_DESKTOP -shadowmode $SHADOW_MODE -geometry ${X2GO_GEOMETRY} -name "${SESSION_WINDOW_TITLE}"  "${NX_AGENT}" 2>"${SESSION_DIR}/session.log" &
+	x2goagent -nolisten tcp $X2GODPIOPTION_ -$SESSION_TYPE -auth "$XAUTHORITY" -shadow $SHADOW_DESKTOP -shadowmode $SHADOW_MODE -geometry ${X2GO_GEOMETRY} -name "${SESSION_WINDOW_TITLE}"  "${NX_AGENT}" 2>"${SESSION_LOG}" &
 else
-	x2goagent -nolisten tcp $X2GODPIOPTION_ $XDMCPOPT -$SESSION_TYPE $NOEXITPARAM -auth "$XAUTHORITY" -geometry ${X2GO_GEOMETRY} -name "${SESSION_WINDOW_TITLE}"  "${NX_AGENT}" 2>"${SESSION_DIR}/session.log" &
+	x2goagent -nolisten tcp $X2GODPIOPTION_ $XDMCPOPT -$SESSION_TYPE $NOEXITPARAM -auth "$XAUTHORITY" -geometry ${X2GO_GEOMETRY} -name "${SESSION_WINDOW_TITLE}"  "${NX_AGENT}" 2>"${SESSION_LOG}" &
 fi
 
 X2GO_AGENT_PID=$!
