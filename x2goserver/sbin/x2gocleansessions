@@ -93,7 +93,6 @@ elsif ($pid == 0 )
 
 	while(sleep 5)
 	{
-		$serv=`hostname`;
 		my $outp=`$x2go_lib_path/x2golistsessions_sql $serv 2>/dev/null`;
 		my @outp=split("\n","$outp");
 		for (my $i=0;$i<@outp;$i++)
