@@ -7,6 +7,7 @@ x2goserver (3.1.1.2-0~x2go1) UNRELEASED; urgency=low
       via NFSv4+Krb5 and not accessible by root. 
     - Use -fPIE gcc (position independed executable) for building
       x2gosqlitewrapper.c (as suggested by Jan Engelhardt).
+    - Clean up session.log tmp directory if empty.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 26 Jun 2012 09:32:31 +0200
 
