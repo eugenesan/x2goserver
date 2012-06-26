@@ -119,8 +119,8 @@ elsif ($pid == 0 )
 					if (!check_stat(@sinfo[1],@sinfo[11]))
 					{
 						system("su @sinfo[11] -c  \"$x2go_lib_path/x2gochangestatus 'S' @sinfo[1] \" > /dev/null");
-						syslog("@sinfo[1] is suspended, changing status from @sinfo[4] to S");
-						syslog("@sinfo[1]: unmounting all shares");
+						syslog('debug', "@sinfo[1] is suspended, changing status from @sinfo[4] to S");
+						syslog('debug', "@sinfo[1]: unmounting all shares");
 						system( "su @sinfo[11] -c \"export HOSTNAME && x2goumount-session @sinfo[1]\" 2> /dev/null");
 					}
 				}
