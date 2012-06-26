@@ -34,12 +34,16 @@ setlogmask( LOG_UPTO(x2gologlevel()) );
 
 syslog('info', "x2goumount-session has been called with options: @ARGV");
 
-my $tmp_dir = $ENV{'TMP'} || '/tmp';
+my $tmp_dir = '/tmp';
 
 my $session=shift;
 my $only_path=shift;
 my $uname=$ENV{'USER'};
 my $serv=hostname;
+
+my $mdir="$tmp_dir/.x2go-$ENV{'USER'}/media";
+my $spooldir="$tmp_dir/.x2go-$ENV{'USER'}/spool";
+my $mimeboxdir="$tmp_dir/.x2go-$ENV{'USER'}/mimebox";
 
 if ($only_path)
 {
@@ -57,8 +61,8 @@ if ($only_path)
 
 	### FIXME: handle CDROM and Removable Media mounts here, as well!!!
 
-	$only_path="$tmp_dir/$ENV{'USER'}_media/disk/$only_path";
-	#                                       ^^^^
+	$only_path="$tmp_dir/.x2go-$ENV{'USER'}/media/disk/$only_path";
+	#                                             ^^^^
 	syslog('debug',"x2goumount-session unmounting $only_path only");
 }
 
@@ -192,6 +196,20 @@ break:
 	}
 cont:
 }
+
+# try to eliminate parent directory of mountpoints
+rmdir ("$mdir/disk");
+rmdir ("$mdir/cd");
+rmdir ("$mdir/rm");
+rmdir ("$mdir");
+if (( ! -d "$mdir" ) && ( -l "$ENV{'HOME'}/media" ))
+{
+	system("rm -f $ENV{'HOME'}/media");
+}
+rmdir ("$spooldir/C-$session");
+rmdir ("$spooldir");
+rmdir ("$mimeboxdir/C-$session");
+rmdir ("$mimeboxdir");
 
 # closing syslog 
 closelog;

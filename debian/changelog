@@ -8,6 +8,10 @@ x2goserver (3.1.1.2-0~x2go1) UNRELEASED; urgency=low
     - Use -fPIE gcc (position independed executable) for building
       x2gosqlitewrapper.c (as suggested by Jan Engelhardt).
     - Clean up session.log tmp directory if empty.
+    - Move all X2Go tmp folders (mount points) to /tmp/.x2go-<user>.
+      Make sure all tmp folders get removed if not used any more. Drop
+      symlink ~/media if no client-side folders are mounted into a
+      session.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 26 Jun 2012 09:32:31 +0200
 
