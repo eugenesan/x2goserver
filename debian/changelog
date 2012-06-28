@@ -14,7 +14,8 @@ x2goserver (3.1.1.2-0~x2go1) UNRELEASED; urgency=low
       session.
     - Fix crashes of x2gocleansessions due to faulty syslog calls.
     - Drop redundant hostname calls in x2gocleansessions.
-    - Launch x2goagent with $TEMP=/tmp, otherwise it will fail.
+    - Launch x2goagent with $NX_TEMP=/tmp, otherwise it will fail to
+      create the X11 Unix domain sockets.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 26 Jun 2012 09:32:31 +0200
 

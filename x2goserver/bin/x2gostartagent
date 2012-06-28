@@ -255,9 +255,11 @@ x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions "$SESSI
 SESSION_WINDOW_TITLE="X2GO-${SESSION_NAME}"
 
 if  [ "$X2GO_STYPE" == "S" ]; then
-	TEMP=/tmp x2goagent -nolisten tcp $X2GODPIOPTION_ -$SESSION_TYPE -auth "$XAUTHORITY" -shadow $SHADOW_DESKTOP -shadowmode $SHADOW_MODE -geometry ${X2GO_GEOMETRY} -name "${SESSION_WINDOW_TITLE}"  "${NX_AGENT}" 2>"${SESSION_LOG}" &
+	# set NX_TEMP to /tmp, make sure x2goagent starts when pam_tmpdir.so is in use
+	NX_TEMP=/tmp x2goagent -nolisten tcp $X2GODPIOPTION_ -$SESSION_TYPE -auth "$XAUTHORITY" -shadow $SHADOW_DESKTOP -shadowmode $SHADOW_MODE -geometry ${X2GO_GEOMETRY} -name "${SESSION_WINDOW_TITLE}"  "${NX_AGENT}" 2>"${SESSION_LOG}" &
 else
-	TEMP=/tmp x2goagent -nolisten tcp $X2GODPIOPTION_ $XDMCPOPT -$SESSION_TYPE $NOEXITPARAM -auth "$XAUTHORITY" -geometry ${X2GO_GEOMETRY} -name "${SESSION_WINDOW_TITLE}"  "${NX_AGENT}" 2>"${SESSION_LOG}" &
+	# set NX_TEMP to /tmp, make sure x2goagent starts when pam_tmpdir.so is in use
+	NX_TEMP=/tmp x2goagent -nolisten tcp $X2GODPIOPTION_ $XDMCPOPT -$SESSION_TYPE $NOEXITPARAM -auth "$XAUTHORITY" -geometry ${X2GO_GEOMETRY} -name "${SESSION_WINDOW_TITLE}"  "${NX_AGENT}" 2>"${SESSION_LOG}" &
 fi
 
 X2GO_AGENT_PID=$!
