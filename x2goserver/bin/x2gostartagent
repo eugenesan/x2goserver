@@ -32,6 +32,9 @@ export NX_ROOT=$X2GO_ROOT
 
 REMOTE=localhost
 
+# make sure the user's temporary directory exists...
+test -d "$TMP"  || mkdir -p "$TMP"
+
 X2GO_CLIENT=`echo "$SSH_CLIENT" | awk '{print $1}'`
 $X2GO_LIB_PATH/x2gosyslog "$0" "debug" "client announced itself as ,,$X2GO_CLIENT''"
 
