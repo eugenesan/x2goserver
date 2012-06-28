@@ -33,7 +33,8 @@ export NX_ROOT=$X2GO_ROOT
 REMOTE=localhost
 
 # make sure the user's temporary directory exists...
-test -d "$TMP"  || mkdir -p "$TMP"
+test -n "$TMP" && test -d "$TMP"  || mkdir -p "$TMP"
+test -n "$TEMP" && test -d "$TEMP"  || mkdir -p "$TEMP"
 
 X2GO_CLIENT=`echo "$SSH_CLIENT" | awk '{print $1}'`
 $X2GO_LIB_PATH/x2gosyslog "$0" "debug" "client announced itself as ,,$X2GO_CLIENT''"
@@ -258,9 +259,9 @@ x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions "$SESSI
 SESSION_WINDOW_TITLE="X2GO-${SESSION_NAME}"
 
 if  [ "$X2GO_STYPE" == "S" ]; then
-	x2goagent -nolisten tcp $X2GODPIOPTION_ -$SESSION_TYPE -auth "$XAUTHORITY" -shadow $SHADOW_DESKTOP -shadowmode $SHADOW_MODE -geometry ${X2GO_GEOMETRY} -name "${SESSION_WINDOW_TITLE}"  "${NX_AGENT}" 2>"${SESSION_LOG}" &
+	TEMP=/tmp x2goagent -nolisten tcp $X2GODPIOPTION_ -$SESSION_TYPE -auth "$XAUTHORITY" -shadow $SHADOW_DESKTOP -shadowmode $SHADOW_MODE -geometry ${X2GO_GEOMETRY} -name "${SESSION_WINDOW_TITLE}"  "${NX_AGENT}" 2>"${SESSION_LOG}" &
 else
-	x2goagent -nolisten tcp $X2GODPIOPTION_ $XDMCPOPT -$SESSION_TYPE $NOEXITPARAM -auth "$XAUTHORITY" -geometry ${X2GO_GEOMETRY} -name "${SESSION_WINDOW_TITLE}"  "${NX_AGENT}" 2>"${SESSION_LOG}" &
+	TEMP=/tmp x2goagent -nolisten tcp $X2GODPIOPTION_ $XDMCPOPT -$SESSION_TYPE $NOEXITPARAM -auth "$XAUTHORITY" -geometry ${X2GO_GEOMETRY} -name "${SESSION_WINDOW_TITLE}"  "${NX_AGENT}" 2>"${SESSION_LOG}" &
 fi
 
 X2GO_AGENT_PID=$!
