@@ -64,7 +64,6 @@ install_scripts:
 install_config:
 	$(INSTALL_DIR) $(DESTDIR)$(ETCDIR)
 #       provide target dirs for X11 related symlinks
-	mkdir -p $(DESTDIR)/etc/X11/Xresources
 	mkdir -p $(DESTDIR)/etc/X11/Xsession.d
 	touch $(DESTDIR)/etc/X11/Xsession.options
 	$(INSTALL_FILE) etc/Xsession                    $(DESTDIR)$(ETCDIR)/
