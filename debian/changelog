@@ -3,6 +3,7 @@ x2goserver (3.1.1.3-0~x2go1) UNRELEASED; urgency=low
   [ Jan Engelhardt ]
   * New upstream version (3.1.1.3):
     - Do not block /etc/X11/Xresources with a directory (in Makefile).
+    - Avoid using archaic tools during free port detection.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 29 Jun 2012 17:49:04 +0200
 

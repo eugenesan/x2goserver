@@ -64,8 +64,12 @@ SERVER=`echo "$SESSIONINFO" | awk -F, {'print $4'}`
 
 $X2GO_LIB_PATH/x2gosyslog "$0" "debug" "old ports: $GR_PORT, $SOUND_PORT, $FS_PORT"
 
-#Get all used in system ports from netstat output
-SYSTEM_PORTS=`netstat -nt -all | awk '{ n=split($0,lines,"\n"); for(i=1;i<=n;i++){split (lines[i],words," ");delim=split(words[4],ports,":"); if(delim>1)printf ("|%s|\n",ports[delim])} }'`
+#Get all used in system ports from ss output
+ss=$(PATH="$PATH:/usr/sbin:/sbin" type -P ss);
+USED_PORTS=$(
+	"$ss" -lnt |
+	perl -lne 'print$d{$2}="|$2|"if/^(\S+\s+){2}\S+:(\d+)/&&!exists$d{$2}';
+);
 
 #check if saved in DB ports free
 if grep -q "|${GR_PORT}|" <<<$SYSTEM_PORTS ; then
