@@ -93,7 +93,7 @@ syslog('notice', "x2goprint is processing $printdir/$pdfFile with print job titl
 ($tm,$tm,$uid,$gid,$tm,$tm,$tm,$homedir)=getpwnam($user);
 
 my $spoolbase="/tmp/.x2go-$user/spool";
-my $spooldir="$spoolbase/$session";
+my $spooldir="$spoolbase/C-$session";
 my $spooltmp="$spoolbase/tmp";
 mkpath($spooltmp);
 chown $uid, $gid, "$spooltmp";
