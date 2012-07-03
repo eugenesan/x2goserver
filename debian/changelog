@@ -7,6 +7,9 @@ x2goserver (3.1.1.3-0~x2go1) UNRELEASED; urgency=low
     - Avoid using ls in Makefiles.
 
   [ Mike Gabriel ]
+  * New upstream version (3.1.1.3):
+    - Fix broken X2Go client-side printing. Adapt x2goprint to new spool job
+      directory.
   * /debian/x2goserver.init:
     + Orthography fix: X2Go instead of x2go.
 
