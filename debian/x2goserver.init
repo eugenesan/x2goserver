@@ -12,7 +12,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
 case "$1" in
 	start)
-		echo "Cleaning up stale x2go sessions."
+		echo "Cleaning up stale X2Go sessions."
 		/usr/sbin/x2gocleansessions
 	;;
 	stop)
@@ -22,7 +22,7 @@ case "$1" in
 	reload|force-reload|restart)
 		# kill x2gocleansessions, ignore on failure
 		killall x2gocleansessions || true
-		echo "Cleaning up stale x2go sessions."
+		echo "Cleaning up stale X2Go sessions."
 		/usr/sbin/x2gocleansessions
 	;;
 	*)
