@@ -71,12 +71,12 @@ if($strlimit ne "")
 		print "0\n";
 		exit 0;
 	}
-	if ($strlimit <= $scount)
+	if ($scount < $strlimit)
 	{
 		print "$strlimit\n";
 		exit 0;
 	}
-	print "$strlimit\n";
+	print "LIMIT\n";
 	exit 0;
 }
 
@@ -99,12 +99,12 @@ while (my ($name, $passwd, $gid, $members)  = getgrent())
 	}
 }
 
-if ($maxlimit <= $scount)
+if ($scount < $maxlimit)
 {
 	print "$maxlimit\n";
 	exit 0;
 }
-print "$maxlimit\n";
+print "LIMIT\n";
 
 # closing syslog 
 closelog;

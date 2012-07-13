@@ -1,6 +1,7 @@
 x2goserver (3.1.1.4-0~x2go1) UNRELEASED; urgency=low
 
-  * Continue development...
+  * New upstream version (3.1.1.3):
+    - Fix x2gosessionlimit script.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 03 Jul 2012 10:03:28 +0200
 
