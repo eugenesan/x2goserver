@@ -33,7 +33,7 @@ setlogmask( LOG_UPTO(x2gologlevel()) );
 
 syslog('info', "x2gosessionlimit has been called");
 
-my $maxlimit=0;
+my $maxlimit=-1;
 my $Config = new Config::Simple(syntax=>'ini');
 $Config->read('/etc/x2go/x2goserver.conf' );
 
@@ -69,11 +69,13 @@ if($strlimit ne "")
 	if ($strlimit == 0)
 	{
 		print "0\n";
+		closelog;
 		exit 0;
 	}
 	if ($scount < $strlimit)
 	{
 		print "$strlimit\n";
+		closelog;
 		exit 0;
 	}
 	print "LIMIT\n";
@@ -99,12 +101,20 @@ while (my ($name, $passwd, $gid, $members)  = getgrent())
 	}
 }
 
+
 if ($scount < $maxlimit)
 {
 	print "$maxlimit\n";
+	closelog;
 	exit 0;
 }
-print "LIMIT\n";
+
+if ($maxlimit != -1) {
+	print "LIMIT\n";
+	closelog;
+	exit 0;
+}
 
 # closing syslog 
 closelog;
+
