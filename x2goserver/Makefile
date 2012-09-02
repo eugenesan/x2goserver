@@ -37,7 +37,7 @@ build: build-arch build-indep
 build-arch: build_setgidwrappers
 
 build_setgidwrappers:
-	gcc -fPIE -o x2gosqlitewrapper x2gosqlitewrapper.c
+	gcc -fPIE -pie -o x2gosqlitewrapper x2gosqlitewrapper.c
 
 build-indep: build_man2html
 

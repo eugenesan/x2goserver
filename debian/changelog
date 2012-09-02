@@ -1,5 +1,12 @@
 x2goserver (3.1.1.4-0~x2go1) UNRELEASED; urgency=low
 
+  [ Jan Engelhardt ]
+  * New upstream version (3.1.1.4):
+    - Add -pie as linker flag. Fixes non-position-independent-executable
+      (x2gosqlitewrapper.c). The executable is now completely position
+      independent.
+
+  [ Mike Gabriel ]
   * New upstream version (3.1.1.4):
     - Fix x2gosessionlimit script.
   * /debian/control:
