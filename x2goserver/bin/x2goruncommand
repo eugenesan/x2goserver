@@ -179,11 +179,13 @@ if [ "$cmd" == "TERMINAL" ]; then
 fi
 
 EXEC=`which $cmd`
+EXEC_WRAPPER=""
 
 BNAME=`basename "$EXEC"`
 if [ "$BNAME" == "rdesktop" ]
 then
 	IMEXIT="true"
+	which padsp >/dev/null && EXEC_WRAPPER="padsp"
 fi
 
 if [ "$X2GO_SESS_TYPE" == "P" ]
@@ -208,7 +210,7 @@ if [ "$EXEC" != "" ] && [ -x $EXEC ]; then
 		STARTUP="$STARTUP" /etc/x2go/Xsession
 	} || {
 		$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "executing command \"$cmd$args\"..."
-		$cmd$args
+		$EXEC_WRAPPER $cmd$args
 	}
 
 	#### some applications can quit immediately, we will wait here as long as x2goagent exists

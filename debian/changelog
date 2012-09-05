@@ -9,6 +9,7 @@ x2goserver (3.1.1.4-0~x2go1) UNRELEASED; urgency=low
   [ Mike Gabriel ]
   * New upstream version (3.1.1.4):
     - Fix x2gosessionlimit script.
+    - Wrap padsp around rdesktop calls if pulse is used as audio protocol.
   * /debian/control:
     + Fix x2goagent dependency.
 
