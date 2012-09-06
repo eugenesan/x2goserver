@@ -185,7 +185,10 @@ BNAME=`basename "$EXEC"`
 if [ "$BNAME" == "rdesktop" ]
 then
 	IMEXIT="true"
-	which padsp >/dev/null && EXEC_WRAPPER="padsp"
+	which padsp >/dev/null && {
+		EXEC_WRAPPER="padsp"
+		args=" -r sound:local"
+	}
 fi
 
 if [ "$X2GO_SESS_TYPE" == "P" ]
