@@ -13,6 +13,7 @@ x2goserver (3.1.1.4-0~x2go1) UNRELEASED; urgency=low
     - Add option ,,-r sound:local'' to rdesktop calls if pulse is enabled.
   * /debian/control:
     + Fix x2goagent dependency.
+    + Add rdesktop and pulseaudio-utils to Suggests.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 03 Jul 2012 10:03:28 +0200
 
