@@ -185,13 +185,13 @@ BNAME=`basename "$EXEC"`
 if [ "$BNAME" == "rdesktop" ]
 then
 	IMEXIT="true"
-	which padsp >/dev/null && {
+	if which padsp >/dev/null; then
 		EXEC_WRAPPER="padsp"
 		args=" -r sound:local"
-	}
-        test -d "$HOME/media" && {
-                args+=" -r disk:X2GoMedia=$HOME/media"
-        }
+	fi
+	if [ -d "$HOME/media" ]; then
+		args+=" -r disk:X2GoMedia=$HOME/media"
+	fi
 fi
 
 if [ "$X2GO_SESS_TYPE" == "P" ]
