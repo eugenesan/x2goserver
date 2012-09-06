@@ -189,6 +189,9 @@ then
 		EXEC_WRAPPER="padsp"
 		args=" -r sound:local"
 	}
+        test -d "$HOME/media" && {
+                args+=" -r disk:X2GoMedia=$HOME/media"
+        }
 fi
 
 if [ "$X2GO_SESS_TYPE" == "P" ]

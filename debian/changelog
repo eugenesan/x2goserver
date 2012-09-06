@@ -11,6 +11,7 @@ x2goserver (3.1.1.4-0~x2go1) UNRELEASED; urgency=low
     - Fix x2gosessionlimit script.
     - Wrap padsp around rdesktop calls if pulse is used as audio protocol.
     - Add option ,,-r sound:local'' to rdesktop calls if pulse is enabled.
+    - Proxy X2Go client-side shares into remote desktop session.
   * /debian/control:
     + Fix x2goagent dependency.
     + Add rdesktop and pulseaudio-utils to Suggests.
