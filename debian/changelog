@@ -16,6 +16,9 @@ x2goserver (3.1.1.4-0~x2go1) UNRELEASED; urgency=low
     + Fix x2goagent dependency.
     + Add rdesktop and pulseaudio-utils to Suggests.
 
+  [ Oleksandr Shneyder ]
+  * remove "-nolisten tcp" option with XDMCP sessions
+
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 03 Jul 2012 10:03:28 +0200
 
 x2goserver (3.1.1.3-0~x2go1) unstable; urgency=low
