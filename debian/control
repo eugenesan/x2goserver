@@ -44,7 +44,7 @@ Suggests:
  x2goserver-compat (= ${source:Version}),
  x2goserver-xsession (= ${source:Version}),
  x2goserver-fmbindings (= ${source:Version}),
- x2goserver-pyhoca (= ${source:Version})
+ x2goserver-pyhoca (= ${source:Version}),
  rdesktop,
  pulseaudio-utils
 Breaks:
