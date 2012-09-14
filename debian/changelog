@@ -14,6 +14,8 @@ x2goserver (3.1.1.4-0~x2go1) UNRELEASED; urgency=low
     - Proxy X2Go client-side shares into remote desktop session.
     - For applications inside of a session, use NX's Xrandr library instead
       of Xorg's Xrandr library (partially closes #28).
+    - Make sure when launching desktop session through the Xsession mechanism
+      that the LD_LIBRARY_PATH variable stays intact. Closes #29.
   * /debian/control:
     + Fix x2goagent dependency.
     + Add rdesktop and pulseaudio-utils to Suggests.
