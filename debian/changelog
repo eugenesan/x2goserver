@@ -17,6 +17,7 @@ x2goserver (3.1.1.4-0~x2go1) UNRELEASED; urgency=low
   * /debian/control:
     + Fix x2goagent dependency.
     + Add rdesktop and pulseaudio-utils to Suggests.
+    + Depend on nx-libs (>=3.5.0.15-0~) which has the Xrandr symlinks folder.
 
   [ Oleksandr Shneyder ]
   * remove "-nolisten tcp" option with XDMCP sessions
