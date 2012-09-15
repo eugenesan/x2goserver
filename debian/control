@@ -57,7 +57,7 @@ Replaces:
 Description: X2Go server daemon scripts
  X2Go is a server based computing environment with
     - session resuming
-    - low bandwith support
+    - low bandwidth support
     - LDAP support
     - client side mass storage mounting support
     - audio support
@@ -89,7 +89,7 @@ Suggests:
 Description: X2Go server daemon scripts (printing)
  X2Go is a server based computing environment with
     - session resuming
-    - low bandwith support
+    - low bandwidth support
     - LDAP support
     - client side mass storage mounting support
     - audio support
@@ -116,7 +116,7 @@ Depends:
 Description: X2Go server daemon scripts (backwards compatitbity to old client versions)
  X2Go is a server based computing environment with
     - session resuming
-    - low bandwith support
+    - low bandwidth support
     - LDAP support
     - client side mass storage mounting support
     - audio support
@@ -134,7 +134,7 @@ Depends:
 Description: X2Go server daemon scripts (extensions)
  X2Go is a server based computing environment with
     - session resuming
-    - low bandwith support
+    - low bandwidth support
     - LDAP support
     - client side mass storage mounting support
     - audio support
@@ -157,7 +157,7 @@ Depends:
 Description: X2Go server daemon scripts (Xsession runner)
  X2Go is a server based computing environment with
     - session resuming
-    - low bandwith support
+    - low bandwidth support
     - LDAP support
     - client side mass storage mounting support
     - audio support
@@ -181,7 +181,7 @@ Depends:
 Description: Generic (freedesktop-based) file manager bindings for X2Go
  X2Go is a server based computing environment with
     - session resuming
-    - low bandwith support
+    - low bandwidth support
     - LDAP support
     - client side mass storage mounting support
     - audio support
@@ -206,7 +206,7 @@ Depends:
 Description: X2Go server daemon scripts (add-ons for pyhoca client)
  X2Go is a server based computing environment with
     - session resuming
-    - low bandwith support
+    - low bandwidth support
     - LDAP support
     - client side mass storage mounting support
     - audio support
