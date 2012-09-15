@@ -20,6 +20,7 @@ x2goserver (3.1.1.4-0~x2go1) UNRELEASED; urgency=low
     + Maintainer change in package: X2Go Developers <x2go-dev@lists.berlios.de>.
     + Depend on nx-libs (>=3.5.0.15-0~) which has the Xrandr symlinks folder.
     + Add rdesktop and pulseaudio-utils to Suggests.
+    + Priority: optional.
 
   [ Oleksandr Shneyder ]
   * remove "-nolisten tcp" option with XDMCP sessions
