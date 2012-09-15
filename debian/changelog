@@ -17,9 +17,9 @@ x2goserver (3.1.1.4-0~x2go1) UNRELEASED; urgency=low
     - Make sure when launching desktop session through the Xsession mechanism
       that the LD_LIBRARY_PATH variable stays intact. Closes #29.
   * /debian/control:
-    + Fix x2goagent dependency.
-    + Add rdesktop and pulseaudio-utils to Suggests.
+    + Maintainer change in package: X2Go Developers <x2go-dev@lists.berlios.de>.
     + Depend on nx-libs (>=3.5.0.15-0~) which has the Xrandr symlinks folder.
+    + Add rdesktop and pulseaudio-utils to Suggests.
 
   [ Oleksandr Shneyder ]
   * remove "-nolisten tcp" option with XDMCP sessions
