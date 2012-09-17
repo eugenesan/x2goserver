@@ -23,7 +23,7 @@
 use strict;
 use Sys::Syslog qw( :standard :macros );
 use Getopt::Long;
-use Config::Simple;   
+use Config::Simple;
 use DBI;
 
 use X2Go::Log qw(loglevel);
