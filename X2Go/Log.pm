@@ -37,14 +37,14 @@ use Config::Simple;
 use Sys::Syslog qw( :standard :macros );
 
 use base 'Exporter';
-our @EXPORT = ( 'x2gologlevel' );
+our @EXPORT = ( 'loglevel' );
 
 my $Config = new Config::Simple(syntax=>'ini');
 $Config->read('/etc/x2go/x2goserver.conf' );
 
 my $strloglevel = $Config->param("log.loglevel");
 
-sub x2gologlevel {
+sub loglevel {
 	my $loglevel = LOG_NOTICE;
 	if    ( $strloglevel eq "emerg" )  { $loglevel = LOG_EMERG; }
 	elsif ( $strloglevel eq "alert" )  { $loglevel = LOG_ALERT; }
