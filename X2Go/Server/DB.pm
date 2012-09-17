@@ -22,7 +22,7 @@ package X2Go::Server::DB;
 
 =head1 NAME
 
-X2Go::DB - X2Go Session Database package for Perl
+X2Go::Server::DB - X2Go Session Database package for Perl
 
 =head1 DESCRIPTION
 
