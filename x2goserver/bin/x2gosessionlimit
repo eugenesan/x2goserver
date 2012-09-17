@@ -30,7 +30,6 @@ use X2Go::Log qw(loglevel);
 openlog($0,'cons,pid','user');
 setlogmask( LOG_UPTO(loglevel()) );
 
-
 syslog('info', "x2gosessionlimit has been called");
 
 my $maxlimit=-1;

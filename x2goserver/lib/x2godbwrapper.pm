@@ -28,8 +28,9 @@ use Sys::Syslog qw( :standard :macros );
 
 my $x2go_lib_path=`echo -n \$(x2gobasepath)/lib/x2go`;
 use lib `echo -n \$(x2gobasepath)/lib/x2go`;
-use x2gologlevel;
+use X2Go::Log qw(loglevel);
 
+setlogmask( LOG_UPTO(loglevel()) );
 
 my ($uname, $pass, $uid, $pgid, $quota, $comment, $gcos, $homedir, $shell, $expire) = getpwuid(getuid());
 

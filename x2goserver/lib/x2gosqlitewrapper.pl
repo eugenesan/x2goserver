@@ -26,14 +26,6 @@ use POSIX;
 
 #### NOTE: this script is run setgid <group> and it cannot do system() calls.
 
-####
-#### One consequence of this is...
-#### This first part of code that handles syslogging is duplicated from
-#### x2gologlevel.pm. This is because we are not able to detect the
-#### installation path automatically via the x2gobasepath in this
-#### script.
-####
-
 use Config::Simple;
 use Sys::Syslog qw( :standard :macros );
 use X2Go::Log qw(loglevel);
