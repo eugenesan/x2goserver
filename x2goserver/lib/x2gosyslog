@@ -23,7 +23,6 @@
 use strict;
 use Sys::Syslog qw( :standard :macros );
 
-use lib `echo -n \$(x2gobasepath)/lib/x2go`;
 use X2Go::Log qw(loglevel);
 
 setlogmask( LOG_UPTO(loglevel()) );

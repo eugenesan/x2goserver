@@ -25,7 +25,6 @@ use Sys::Hostname;
 use Sys::Syslog qw( :standard :macros );
 
 my $x2go_lib_path=`echo -n \$(x2gobasepath)/lib/x2go`;
-use lib `echo -n \$(x2gobasepath)/lib/x2go`;
 use X2Go::Log qw(loglevel);
 
 openlog($0,'cons,pid','user');

@@ -23,8 +23,7 @@
 use strict;
 use Sys::Syslog qw( :standard :macros );
 
-use lib `echo -n \$(x2gobasepath)/lib/x2go`;
-use x2godbwrapper; 
+use X2Go::Server::DB;
 use X2Go::Log qw(loglevel);
 
 openlog($0,'cons,pid','user');

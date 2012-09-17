@@ -1,2 +1,2 @@
-usr/share/perl5/X2Go
-usr/share/man/man3
+usr/share/perl5/X2Go/Log.pm
+usr/share/man/man3/X2Go::Log*

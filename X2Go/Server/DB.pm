@@ -18,7 +18,17 @@
 # Copyright (C) 2007-2012  Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
 # Copyright (C) 2007-2012  Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
 
-package x2godbwrapper;
+package X2Go::DB;
+
+=head1 NAME
+
+X2Go::DB - X2Go Session Database modules for Perl
+
+=head1 DESCRIPTION
+
+X2Go Session Database modules for X2Go Server.
+
+=cut
 
 use strict;
 use Config::Simple;
@@ -26,8 +36,6 @@ use DBI;
 use POSIX;
 use Sys::Syslog qw( :standard :macros );
 
-my $x2go_lib_path=`echo -n \$(x2gobasepath)/lib/x2go`;
-use lib `echo -n \$(x2gobasepath)/lib/x2go`;
 use X2Go::Log qw(loglevel);
 
 setlogmask( LOG_UPTO(loglevel()) );
@@ -35,6 +43,8 @@ setlogmask( LOG_UPTO(loglevel()) );
 my ($uname, $pass, $uid, $pgid, $quota, $comment, $gcos, $homedir, $shell, $expire) = getpwuid(getuid());
 
 my $Config = new Config::Simple(syntax=>'ini');
+my $x2go_lib_path=`echo -n \$(x2gobasepath)/lib/x2go`;
+
 $Config->read('/etc/x2go/x2gosql/sql' ) or die "Can't read config file /etc/x2go/x2gosql/sql";
 my $backend=$Config->param("backend");
 
