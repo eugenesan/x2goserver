@@ -19,6 +19,8 @@ x2goserver (3.2.0.0-0~x2go1) UNRELEASED; urgency=low
       that the LD_LIBRARY_PATH variable stays intact. Closes #29.
     - Transform x2gologlevel.pm into proper Perl module X2Go::Log.
     - Transform x2godbwrapper.pm into proper Perl module X2Go::Server::DB.
+    - Transform x2gosqlitewrapper.pl into small wrapper script and move the
+      SQLite3 into Perl package X2Go::Server::DB::SQLite3.
   * /debian/control:
     + Maintainer change in package: X2Go Developers <x2go-dev@lists.berlios.de>.
     + Depend on nx-libs (>=3.5.0.15-0~) which has the Xrandr symlinks folder.
