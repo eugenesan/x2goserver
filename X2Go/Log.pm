@@ -24,11 +24,11 @@ package X2Go::Log;
 
 =head1 NAME
 
-X2Go::Log - X2Go Logging modules for Perl
+X2Go::Log - X2Go Logging package for Perl
 
 =head1 DESCRIPTION
 
-X2Go Log module X2Go components.
+X2Go::Log Perl package for X2Go components.
 
 =cut
 
