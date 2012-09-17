@@ -23,7 +23,7 @@
 use strict;
 use Sys::Syslog qw( :standard :macros );
 
-use X2Go::Server::DB;
+use X2Go::Server::DB qw(db_getservers);
 use X2Go::Log qw(loglevel);
 
 openlog($0,'cons,pid','user');

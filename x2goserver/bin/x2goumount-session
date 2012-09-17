@@ -24,7 +24,7 @@ use strict;
 use Sys::Hostname;
 use Sys::Syslog qw( :standard :macros );
 
-use X2Go::Server::DB;
+use X2Go::Server::DB qw(db_getdisplay db_getmounts db_deletemount);
 use X2Go::Log qw(loglevel);
 
 openlog($0,'cons,pid','user');
