@@ -22,7 +22,6 @@
 
 use strict;
 
-use lib `echo -n \$(x2gobasepath)/lib/x2go`;
-use x2gologlevel;
+use X2Go::Log qw(loglevel);
 
-print x2gologlevel();
+print loglevel();

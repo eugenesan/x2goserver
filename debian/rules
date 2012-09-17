@@ -3,8 +3,12 @@
 %:
 	dh $@
 
+override_dh_auto_build:
+	PERL_INSTALLDIRS=vendor dh_auto_build
+
 override_dh_auto_install:
-	make -f Makefile build-arch
+	$(MAKE) -f Makefile build-arch
+	PREFIX=/usr dh_auto_install
 
 override_dh_auto_clean:
 	rm -fv x2gosqlitewrapper

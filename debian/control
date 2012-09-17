@@ -13,11 +13,29 @@ Homepage: http://code.x2go.org/releases/source/x2goserver
 Vcs-Git: git://code.x2go.org/x2goserver.git
 Vcs-Browser: http://code.x2go.org/gitweb?p=x2goserver.git;a=summary
 
+Package: libx2go-log-perl
+Architecture: any
+Section: perl
+Depends:
+ ${perl:Depends},
+ ${misc:Depends},
+Description: X2Go server daemon scripts
+ X2Go is a server based computing environment with
+    - session resuming
+    - low bandwidth support
+    - LDAP support
+    - client side mass storage mounting support
+    - audio support
+    - authentication by smartcard and USB stick
+ .
+ This package contains the X2Go::Log Perl module.
+
 Package: x2goserver
 Architecture: any
 Depends:
  ${shlibs:Depends},
  ${misc:Depends},
+ libx2go-log-perl (>= ${source:Version}), libx2go-perl-log (<< ${source:Version}.1~),
  x2goagent (>= 2:3.5.0.15-0~),
  lsof,
  openssh-client,

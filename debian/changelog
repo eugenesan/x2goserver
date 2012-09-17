@@ -1,13 +1,14 @@
-x2goserver (3.1.1.4-0~x2go1) UNRELEASED; urgency=low
+x2goserver (3.2.0.0-0~x2go1) UNRELEASED; urgency=low
 
   [ Jan Engelhardt ]
-  * New upstream version (3.1.1.4):
+  * New upstream version (3.2.0.0):
     - Add -pie as linker flag. Fixes non-position-independent-executable
       (x2gosqlitewrapper.c). The executable is now completely position
       independent.
 
   [ Mike Gabriel ]
-  * New upstream version (3.1.1.4):
+  * Bump next upstream version to 3.2.0.0.
+  * New upstream version (3.2.0.0):
     - Fix x2gosessionlimit script.
     - Wrap padsp around rdesktop calls if pulse is used as audio protocol.
     - Add option ,,-r sound:local'' to rdesktop calls if pulse is enabled.
@@ -16,14 +17,17 @@ x2goserver (3.1.1.4-0~x2go1) UNRELEASED; urgency=low
       of Xorg's Xrandr library (partially closes #28).
     - Make sure when launching desktop session through the Xsession mechanism
       that the LD_LIBRARY_PATH variable stays intact. Closes #29.
+    - Transform x2gologlevel.pm into proper Perl module X2Go::Log
   * /debian/control:
     + Maintainer change in package: X2Go Developers <x2go-dev@lists.berlios.de>.
     + Depend on nx-libs (>=3.5.0.15-0~) which has the Xrandr symlinks folder.
     + Add rdesktop and pulseaudio-utils to Suggests.
     + Priority: optional.
+    + Package X2Go::Log in separate package: libx2go-log-perl.
 
   [ Oleksandr Shneyder ]
-  * remove "-nolisten tcp" option with XDMCP sessions
+  * New upstream version (3.2.0.0):
+    - Remove "-nolisten tcp" option with XDMCP sessions.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 03 Jul 2012 10:03:28 +0200
 

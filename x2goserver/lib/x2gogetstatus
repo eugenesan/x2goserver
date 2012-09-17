@@ -25,10 +25,10 @@ use Sys::Syslog qw( :standard :macros );
 
 use lib `echo -n \$(x2gobasepath)/lib/x2go`;
 use x2godbwrapper; 
-use x2gologlevel;
+use X2Go::Log qw(loglevel);
 
 openlog($0,'cons,pid','user');
-setlogmask( LOG_UPTO(x2gologlevel()) );
+setlogmask( LOG_UPTO(loglevel()) );
 
 my $status;
 my $sid=shift or die;

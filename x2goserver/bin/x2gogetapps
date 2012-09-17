@@ -25,7 +25,10 @@ use Sys::Syslog qw( :standard :macros );
 use MIME::Base64 qw(encode_base64);
 
 use lib `echo -n \$(x2gobasepath)/lib/x2go`;
-use x2gologlevel;
+use X2Go::Log qw(loglevel);
+
+openlog($0,'cons,pid','user');
+setlogmask( LOG_UPTO(loglevel()) );
 
 my @iconext=("png","svg","jpeg","jpg","xpm","bmp");
 

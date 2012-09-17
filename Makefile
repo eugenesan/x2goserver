@@ -4,10 +4,13 @@ RM_FILE=rm -f
 RM_DIR=rmdir -p --ignore-fail-on-non-empty
 
 DESTDIR=
-PREFIX=/usr/local
+PREFIX ?= /usr/local
 ETCDIR=/etc/x2go
 LIBDIR=$(PREFIX)/lib/x2go
 SHAREDIR=$(PREFIX)/share/x2go
+
+PERL ?= /usr/bin/perl
+PERL_INSTALLDIRS ?=
 
 all: build
 
@@ -24,6 +27,7 @@ build_man2html:
 	$(MAKE) -C x2goserver-pyhoca $@
 
 clean:
+	-$(MAKE) -f Makefile.perl clean
 	$(MAKE) -C x2goserver $@
 	$(MAKE) -C x2goserver-printing $@
 	$(MAKE) -C x2goserver-compat $@
@@ -31,6 +35,16 @@ clean:
 	$(MAKE) -C x2goserver-xsession $@
 	$(MAKE) -C x2goserver-fmbindings $@
 	$(MAKE) -C x2goserver-pyhoca $@
+
+distclean:
+	-$(MAKE) -f Makefile.perl realclean
+	$(MAKE) -C x2goserver clean
+	$(MAKE) -C x2goserver-printing clean
+	$(MAKE) -C x2goserver-compat clean
+	$(MAKE) -C x2goserver-extensions clean
+	$(MAKE) -C x2goserver-xsession clean
+	$(MAKE) -C x2goserver-fmbindings clean
+	$(MAKE) -C x2goserver-pyhoca clean
 
 build-arch:
 	$(MAKE) -C x2goserver $@
@@ -42,6 +56,8 @@ build-arch:
 	$(MAKE) -C x2goserver-pyhoca $@
 
 build-indep:
+	$(PERL) Makefile.PL INSTALLDIRS=$(PERL_INSTALLDIRS)
+	$(MAKE) -f Makefile.perl
 	$(MAKE) -C x2goserver $@
 	$(MAKE) -C x2goserver-printing $@
 	$(MAKE) -C x2goserver-compat $@
@@ -51,6 +67,7 @@ build-indep:
 	$(MAKE) -C x2goserver-pyhoca $@
 
 install:
+	$(MAKE) -f Makefile.perl install
 	$(MAKE) -C x2goserver $@
 	$(MAKE) -C x2goserver-printing $@
 	$(MAKE) -C x2goserver-compat $@
@@ -60,6 +77,7 @@ install:
 	$(MAKE) -C x2goserver-pyhoca $@
 
 uninstall:
+	$(MAKE) -f Makefile.perl uninstall
 	$(MAKE) -C x2goserver-printing $@
 	$(MAKE) -C x2goserver-compat $@
 	$(MAKE) -C x2goserver-xsession $@

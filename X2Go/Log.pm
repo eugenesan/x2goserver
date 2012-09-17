@@ -20,7 +20,17 @@
 # Copyright (C) 2007-2012  Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
 # Copyright (C) 2007-2012  Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
 
-package x2gologlevel;
+package X2Go::Log;
+
+=head1 NAME
+
+X2Go::Log - X2Go Logging modules for Perl
+
+=head1 DESCRIPTION
+
+X2Go Log module X2Go components.
+
+=cut
 
 use strict;
 use Config::Simple;

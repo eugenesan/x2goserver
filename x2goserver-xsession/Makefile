@@ -12,7 +12,7 @@ RM_FILE=rm -f
 RM_DIR=rmdir -p --ignore-fail-on-non-empty
 
 DESTDIR=
-PREFIX=/usr/local
+PREFIX ?= /usr/local
 ETCDIR=/etc/x2go
 #BINDIR=$(PREFIX)/bin
 #SBINDIR=$(PREFIX)/sbin
