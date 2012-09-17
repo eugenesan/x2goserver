@@ -52,6 +52,7 @@ Architecture: any
 Depends:
  ${shlibs:Depends},
  ${misc:Depends},
+ libx2go-server-db-perl (>= ${source:Version}), libx2go-server-db-perl (<< ${source:Version}.1~),
  libx2go-log-perl (>= ${source:Version}), libx2go-log-perl (<< ${source:Version}.1~),
  x2goagent (>= 2:3.5.0.15-0~),
  lsof,

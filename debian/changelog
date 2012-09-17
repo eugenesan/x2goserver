@@ -26,6 +26,7 @@ x2goserver (3.2.0.0-0~x2go1) UNRELEASED; urgency=low
     + Priority: optional.
     + Package X2Go::Log in separate package: libx2go-log-perl.
     + Package X2Go::Server::DB in separate package: libx2go-server-db-perl.
+    + x2goserver package: Depend on libx2go-log-perl, libx2go-server-db-perl.
 
   [ Oleksandr Shneyder ]
   * New upstream version (3.2.0.0):
