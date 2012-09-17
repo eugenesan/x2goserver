@@ -41,37 +41,34 @@ sub print_result
 	}
 }
 
-sub print_array
+sub print_result_list
 {
-	# print all arrays separated by the pipe symbol
-	local $, = '|';
-	print "THIS IS AN ARRAY!!!!";
-	while (<>)
+	while ( shift )
 	{
-		print $_, "\n";
+		print @_, "\n";
 	}
 }
 
 my $result;
+my @result_list;
 my $cmd=shift or die "command not specified";
 
 # call the corresponding function in the X2Go::Server:DB:SQLite3 package
 switch ($cmd)
 {
-	case /.*root/ { $result = eval("X2Go::Server::DB::SQLite3::dbsys_$cmd(\@ARGV)") }
-	else          { $result = eval("X2Go::Server::DB::SQLite3::db_$cmd(\@ARGV)") }
+	case /.*list.*root/ { @result_list = eval("X2Go::Server::DB::SQLite3::dbsys_$cmd(\@ARGV)") }
+	case /.*list.*/	    { @result_list = eval("X2Go::Server::DB::SQLite3::db_$cmd(\@ARGV)") }
+	case /.*root/       { $result = eval("X2Go::Server::DB::SQLite3::dbsys_$cmd(\@ARGV)") }
+	else                { $result = eval("X2Go::Server::DB::SQLite3::db_$cmd(\@ARGV)") } 
 }
 
-# depending on the type of $result we do different things...
-print $result;
-if ( defined($result) )
+if ( defined(@result_list) )
 {
-	if ( ref($result) eq "ARRAY" )
-	{
-		print_array($result);
-	} else {
-		print_result($result);
-	}
+	print_result_list(@result_list);
+}
+elsif ( defined($result) )
+{
+	print_result($result);
 }
 
 exit (0);
