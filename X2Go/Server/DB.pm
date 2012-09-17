@@ -18,7 +18,7 @@
 # Copyright (C) 2007-2012  Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
 # Copyright (C) 2007-2012  Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
 
-package X2Go::DB;
+package X2Go::Server::DB;
 
 =head1 NAME
 
