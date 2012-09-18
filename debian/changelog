@@ -26,6 +26,8 @@ x2goserver (3.2.0.0-0~x2go1) UNRELEASED; urgency=low
     - Move X2Go SQL configuration files (/etc/x2go/x2gosql) into package
       libx2go-server-db-perl.
     - Only extend LD_LIBRARY_PATH by Xrandr extension for KDE. Breaks GNOME.
+    - Install /etc/x2go/x2go_logout with its directory x2go_logout.d via Makefile
+      installation.
   * /debian/control:
     + Maintainer change in package: X2Go Developers <x2go-dev@lists.berlios.de>.
     + Depend on nx-libs (>=3.5.0.15-0~) which has the Xrandr symlinks folder.
