@@ -55,54 +55,34 @@ clean_man2html:
 install: install_scripts install_config install_man install_version
 
 install_scripts:
-	$(INSTALL_DIR) $(DESTDIR)$(BINDIR)
-	$(INSTALL_DIR) $(DESTDIR)$(SBINDIR)
-	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)
-	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)/x2gofeature.d
-	$(INSTALL_PROGRAM) bin/*                $(DESTDIR)$(BINDIR)/
-	$(INSTALL_PROGRAM) sbin/*               $(DESTDIR)$(SBINDIR)/
-	$(INSTALL_PROGRAM) lib/*                   $(DESTDIR)$(LIBDIR)/
-	$(INSTALL_PROGRAM) share/x2gofeature.d/*.features $(DESTDIR)$(SHAREDIR)/x2gofeature.d/
 
 install_config:
 	$(INSTALL_DIR) $(DESTDIR)$(ETCDIR)
-	$(INSTALL_DIR) $(DESTDIR)$(ETCDIR)/x2go_logout.d
-	$(INSTALL_FILE) etc/x2go_logout     $(DESTDIR)$(ETCDIR)/
-	$(INSTALL_FILE) etc/x2go_logout.d/* $(DESTDIR)$(ETCDIR)/x2go_logout.d/
+	$(INSTALL_FILE) etc/x2goserver.conf     $(DESTDIR)$(ETCDIR)/
 
 install_man:
-	$(INSTALL_DIR) $(DESTDIR)$(MANDIR)
-	$(INSTALL_DIR) $(DESTDIR)$(MANDIR)/man8
-	$(INSTALL_FILE) man/man8/*.8           $(DESTDIR)$(MANDIR)/man8
-	gzip -f $(DESTDIR)$(MANDIR)/man8/x2go*.8
+	$(INSTALL_DIR) $(DESTDIR)$(MANDIR)/man5
+	$(INSTALL_FILE) man/man5/*.5           $(DESTDIR)$(MANDIR)/man5
+	gzip -f $(DESTDIR)$(MANDIR)/man8/x2go*.5
 
 install_version:
 	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)
 	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)/versions
-	$(INSTALL_FILE) VERSION.x2goserver     $(DESTDIR)$(SHAREDIR)/versions/VERSION.x2goserver
+	$(INSTALL_FILE) VERSION.x2goserver-common     $(DESTDIR)$(SHAREDIR)/versions/VERSION.x2goserver-common
 
 uninstall: uninstall_scripts uninstall_config uninstall_man uninstall_version
 
 uninstall_scripts:
-	for file in $(BIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(BINDIR)/$$file; done
-	for file in $(SBIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(SBINDIR)/$$file; done
-	for file in $(LIB_FILES); do $(RM_FILE) $(DESTDIR)$(LIBDIR)/$$file; done
-	for file in $(FEATURE_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(SHAREDIR)/x2gofeature.d/$$file; done
-	$(RM_DIR) $(DESTDIR)$(LIBDIR) || true
-	$(RM_DIR) $(DESTDIR)$(SHAREDIR)/x2gofeature.d || true
-	$(RM_DIR) $(DESTDIR)$(SHAREDIR) || true
 
 uninstall_config:
-	$(RM_FILE) $(DESTDIR)$(ETCDIR)/x2go_logout.d/*
-	$(RM_FILE) $(DESTDIR)$(ETCDIR)/x2go_logout
-	$(RM_DIR)  $(DESTDIR)$(ETCDIR)/x2go_logout.d || true
+	$(RM_FILE) $(DESTDIR)$(ETCDIR)/x2goserver.conf
 	$(RM_DIR)  $(DESTDIR)$(ETCDIR) || true
 
 uninstall_man:
-	for file in $(BIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(MANDIR)/man8/$$file.8.gz; done
-	for file in $(SBIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(MANDIR)/man8/$$file.8.gz; done
+	for file in $(BIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(MANDIR)/man5/$$file.5.gz; done
+	for file in $(SBIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(MANDIR)/man5/$$file.5.gz; done
 	$(RM_DIR)  $(DESTDIR)$(MANDIR) || true
 
 uninstall_version:
-	$(RM_FILE) $(DESTDIR)$(SHAREDIR)/versions/VERSION.x2goserver
+	$(RM_FILE) $(DESTDIR)$(SHAREDIR)/versions/VERSION.x2goserver-common
 	$(RM_DIR)  $(DESTDIR)$(SHAREDIR)/versions || true

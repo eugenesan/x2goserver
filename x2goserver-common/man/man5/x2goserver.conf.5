@@ -1,0 +1,73 @@
+'\" -*- coding: utf-8 -*-
+.if \n(.g .ds T< \\FC
+.if \n(.g .ds T> \\F[\n[.fam]]
+.de URL
+\\$2 \(la\\$1\(ra\\$3
+..
+.if \n(.g .mso www.tmac
+.TH x2goserver.conf 5 "Sep 2012" "Version 3.2.x.y" "X2Go Server Configuration"
+.SH NAME
+x2goserver.conf \- X2Go Server Main Configuration File
+.SH SYNOPSIS
+'nh
+.fi
+.ad 1
+x2goserver.conf
+
+.SH DESCRIPTION
+\fBx2goserver.conf\fR is the main configuration file for X2Go Server and the \fBX2Go::Server\fR Perl API.
+.SH SECTIONS
+The \fBx2goserver.conf\fR's configuration file format is an INI-based configuration format. It falls
+apart into sections and options with their values.
+
+    [section1]
+    sec1option1 = valueA
+    sec1option2 = valueB
+    ...
+
+    [section2]
+    sec2option1 = valueC
+    sec2option2 = valueD
+    ...
+
+.SH SECTION [limit users]
+In this section you can list up Posix users known to the system and specify the max. number of allowed
+simultaneous X2Go sessions in an X2Go Server farm.
+.PP
+.SH SECTION [limit groups]
+In this section you can list up Posix group names known to the system and specify the max. number of allowed
+simultaneous X2Go sessions in an X2Go Server farm. The session limitation applies to all users in the specified
+groups.
+.PP
+If individual users are listed in section \fI[limit users]\fR and some of their groups are listed in
+section \fI[limit groups]\fR, then the maximum value of allowed sessions will be chosen.
+.PP
+If a user is a member of several of the specified groups under section \fI[limit groups]\fR, then the number
+of allowed simultaneous X2Go sessions for a certain user will be derived from the group with the
+most allowed sessions found under this section.
+.PP
+.SH SECTION [log]
+The \fI[log]\fR's section only option is the \fIloglevel\fR option. Allowed values are:
+.TP 5
+    emerg, alert, crit, err, warning, notice, info, debug.
+.PP
+The \fIloglevel\fR option controls the verbosity of the X2Go::Server Perl functions. The log output
+appears via LOCAL7 (normally: /var/log/syslog).
+.PP
+.SH EXAMPLE
+The below configuration file is the default after installation of X2Go Server:
+
+    [limit users]
+    #user-foo=1
+
+    [limit groups]
+    #bar-group=1
+
+    [log]
+    # possible levels are:
+    #   emerg, alert, crit, err, warning, notice, info, debug
+    loglevel=notice
+
+.SH AUTHOR
+This manual has been written by Mike Gabriel <mike.gabriel@das-netzwerkteam.de> for the X2Go project
+(http://www.x2go.org).

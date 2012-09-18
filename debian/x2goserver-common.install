@@ -1,0 +1,2 @@
+x2goserver/etc/x2go*                    /etc/x2go/
+x2goserver/VERSION.x2goserver-common    /usr/share/x2go/versions/

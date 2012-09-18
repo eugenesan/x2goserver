@@ -13,12 +13,29 @@ Homepage: http://code.x2go.org/releases/source/x2goserver
 Vcs-Git: git://code.x2go.org/x2goserver.git
 Vcs-Browser: http://code.x2go.org/gitweb?p=x2goserver.git;a=summary
 
+Package: x2goserver-common
+Architecture: any
+Depends:
+ ${misc:Depends},
+Description: X2Go Server (common files)
+ X2Go is a server based computing environment with
+    - session resuming
+    - low bandwidth support
+    - LDAP support
+    - client side mass storage mounting support
+    - audio support
+    - authentication by smartcard and USB stick
+ .
+ This package contains files needed by the X2Go Server
+ and the X2Go::Server Perl API.
+
 Package: libx2go-server-perl
 Architecture: any
 Section: perl
 Depends:
  ${perl:Depends},
  ${misc:Depends},
+ x2goserver-common (>= ${source:Version}), x2goserver-common (<< ${source:Version}.1~),
 Description: Perl X2Go::Server package
  X2Go is a server based computing environment with
     - session resuming
@@ -38,6 +55,7 @@ Depends:
  ${misc:Depends},
  ${shlibs:Depends},
  libx2go-server-perl (>= ${source:Version}), libx2go-server-perl (<< ${source:Version}.1~),
+ x2goserver-common (>= ${source:Version}), x2goserver-common (<< ${source:Version}.1~),
 Description: Perl X2Go::Server:DB package
  X2Go is a server based computing environment with
     - session resuming
@@ -55,6 +73,7 @@ Section: perl
 Depends:
  ${perl:Depends},
  ${misc:Depends},
+ x2goserver-common (>= ${source:Version}), x2goserver-common (<< ${source:Version}.1~),
 Description: Perl X2Go::Log package
  X2Go is a server based computing environment with
     - session resuming
