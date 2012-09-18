@@ -66,10 +66,7 @@ install_scripts:
 
 install_config:
 	$(INSTALL_DIR) $(DESTDIR)$(ETCDIR)
-	$(INSTALL_DIR) $(DESTDIR)$(ETCDIR)/x2gosql
-	$(INSTALL_DIR) $(DESTDIR)$(ETCDIR)/x2gosql/passwords
 	$(INSTALL_FILE) etc/x2goserver.conf     $(DESTDIR)$(ETCDIR)/
-	$(INSTALL_FILE) etc/x2gosql/sql         $(DESTDIR)$(ETCDIR)/x2gosql
 
 install_man:
 	$(INSTALL_DIR) $(DESTDIR)$(MANDIR)
@@ -95,10 +92,7 @@ uninstall_scripts:
 
 uninstall_config:
 	$(RM_FILE) $(DESTDIR)$(ETCDIR)/x2goserver.conf
-	$(RM_FILE) $(DESTDIR)$(ETCDIR)/x2gosql/sql
 	$(RM_DIR)  $(DESTDIR)$(ETCDIR) || true
-	$(RM_DIR)  $(DESTDIR)$(ETCDIR)/x2gosql/passwords || true
-	$(RM_DIR)  $(DESTDIR)$(ETCDIR)/x2gosql || true
 
 uninstall_man:
 	for file in $(BIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(MANDIR)/man8/$$file.8.gz; done

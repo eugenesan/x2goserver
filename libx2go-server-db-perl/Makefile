@@ -46,11 +46,27 @@ clean-arch:
 
 clean-indep:
 
-install:
+install: install_scripts install_config
+
+install_scripts:
 	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)
 	$(INSTALL_PROGRAM) lib/*                   $(DESTDIR)$(LIBDIR)/
 	getent group x2gouser &>/dev/null && chown root:x2gouser $(DESTDIR)$(LIBDIR)/libx2go-server-db-sqlite3-wrapper || true
 	chmod 2755 $(DESTDIR)$(LIBDIR)/libx2go-server-db-sqlite3-wrapper
 
-uninstall:
+install_config:
+	$(INSTALL_DIR) $(DESTDIR)$(ETCDIR)
+	$(INSTALL_DIR) $(DESTDIR)$(ETCDIR)/x2gosql
+	$(INSTALL_DIR) $(DESTDIR)$(ETCDIR)/x2gosql/passwords
+	$(INSTALL_FILE) etc/x2gosql/sql         $(DESTDIR)$(ETCDIR)/x2gosql
+
+uninstall: uninstall_scripts uninstall_config
+
+uninstall_scripts:
 	for file in $(LIB_FILES); do $(RM_FILE) $(DESTDIR)$(LIBDIR)/$$file; done
+
+uninstall_config:
+	$(RM_FILE) $(DESTDIR)$(ETCDIR)/x2gosql/sql
+	$(RM_DIR)  $(DESTDIR)$(ETCDIR)/x2gosql/passwords || true
+	$(RM_DIR)  $(DESTDIR)$(ETCDIR)/x2gosql || true
+	$(RM_DIR)  $(DESTDIR)$(ETCDIR) || true

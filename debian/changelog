@@ -23,6 +23,8 @@ x2goserver (3.2.0.0-0~x2go1) UNRELEASED; urgency=low
       SQLite3 into Perl package X2Go::Server::DB::SQLite3.
     - Move x2gosqlitewrapper into Perl package X2Go::Server::DB::SQLite3.
     - Move PostgreSQL DB code into Perl package X2Go::Server::DB::PostgreSQL.
+    - Move X2Go SQL configuration files (/etc/x2go/x2gosql) into package
+      libx2go-server-db-perl.
     - Only extend LD_LIBRARY_PATH by Xrandr extension for KDE. Breaks GNOME.
   * /debian/control:
     + Maintainer change in package: X2Go Developers <x2go-dev@lists.berlios.de>.
