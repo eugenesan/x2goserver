@@ -53,11 +53,10 @@ export QT_GRAPHICSSYSTEM=native
 IMEXIT="false"
 
 NX_XINERAMA_LIBS=/usr/lib/nx/X11/Xinerama
-NX_XRANDR_LIBS=/usr/lib/nx/X11/Xrandr
 NX_LIBS=/usr/lib/nx/X11
 test -n "$LD_LIBRARY_PATH" && \
-  LD_LIBRARY_PATH="$NX_XINERAMA_LIBS:$NX_XRANDR_LIBS:$NX_LIBS:$LD_LIBRARY_PATH" || \
-  LD_LIBRARY_PATH="$NX_XINERAMA_LIBS:$NX_XRANDR_LIBS:$NX_LIBS"
+  LD_LIBRARY_PATH="$NX_XINERAMA_LIBS:$NX_LIBS:$LD_LIBRARY_PATH" || \
+  LD_LIBRARY_PATH="$NX_XINERAMA_LIBS:$NX_LIBS"
 $X2GO_LIB_PATH/x2gosyslog "$0" "debug" "exporting LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
 export LD_LIBRARY_PATH
 
@@ -120,6 +119,10 @@ elif ([ "$cmd" == "UNITY" ] || [ "$cmd" == "unity" ]); then
 
 elif [ "$cmd" == "KDE" ]; then
 	cmd="/usr/bin/startkde"
+	NX_XRANDR_LIBS=/usr/lib/nx/X11/Xrandr
+	LD_LIBRARY_PATH="$NX_XRANDR_LIBS:$LD_LIBRARY_PATH"
+	$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "extending LD_LIBRARY_PATH=$LD_LIBRARY_PATH by Xrandr extension"
+	export LD_LIBRARY_PATH
 elif [ "$cmd" == "XFCE4" ]; then
 	cmd="/usr/bin/xfce4-session"
 elif [ "$cmd" == "LXDE" ]; then
