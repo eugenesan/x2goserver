@@ -492,3 +492,5 @@ sub db_listsessions_all
 	$dbh->disconnect();
 	return @sessions;
 }
+
+1;
