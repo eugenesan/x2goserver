@@ -11,7 +11,6 @@ override_dh_auto_install:
 	PREFIX=/usr dh_auto_install
 
 override_dh_auto_clean:
-	rm -fv x2gosqlitewrapper
 	rm -Rfv x2goserver/.build_html
 	rm -Rfv x2goserver-extensions/.build_html
 	dh_auto_clean

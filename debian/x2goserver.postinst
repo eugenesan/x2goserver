@@ -78,24 +78,25 @@ case "$1" in
 
 		### setgid section for x2gouser (SQLite DB access)
 
-		# we may be upgrading versions of x2goserver that had
-		# /usr/lib/x2go/x2gosqlitewrapper.pl set to setuid x2gouser.
+		# we may be upgrading from versions of x2goserver that had
+		# /usr/lib/x2go/x2gosqlitewrapper.pl set to setuid x2gouser. This script is
+		# not at that location anymore, we clear the dpkg-statoverride entry.
 		if dpkg-statoverride --list /usr/lib/x2go/x2gosqlitewrapper.pl >/dev/null; then
 			dpkg-statoverride --remove /usr/lib/x2go/x2gosqlitewrapper.pl
-			chown root:root /usr/lib/x2go/x2gosqlitewrapper.pl
-			chmod 0755 /usr/lib/x2go/x2gosqlitewrapper.pl
 		fi
 
-		# we may be upgrading versions of x2goserver that had
-		# /usr/bin/x2gosqlitewrapper set to setuid or setgid x2gouser, the script itself is
+		# we may be upgrading from versions of x2goserver that had
+		# /usr/bin/x2gosqlitewrapper set to setuid or setgid x2gouser, the script itself is not
 		# at this location anymore, we just clear the dpkg-statoverride config entry.
 		if dpkg-statoverride --list /usr/bin/x2gosqlitewrapper >/dev/null; then
 			dpkg-statoverride --remove /usr/bin/x2gosqlitewrapper
 		fi
 
-		# the sqlite db has to be accessed as uid x2gouser
-		if ! dpkg-statoverride --list /usr/lib/x2go/x2gosqlitewrapper >/dev/null; then
-		    dpkg-statoverride --add --update root x2gouser 2755 /usr/lib/x2go/x2gosqlitewrapper
+		# we may be upgrading from versions of x2goserver that had
+		# /usr/lib/x2go/x2gosqlitewrapper set to setgid x2gouser, the script itself is not
+		# at this location anymore, we just clear the dpkg-statoverride config entry.
+		if dpkg-statoverride --list /usr/lib/x2go/x2gosqlitewrapper >/dev/null; then
+		    dpkg-statoverride --remove /usr/lib/x2go/x2gosqlitewrapper
 		fi
 
 		# create /etc/x2go/applications symlink if not already there (as link or as dir)

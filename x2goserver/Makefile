@@ -34,10 +34,7 @@ all: clean build
 
 build: build-arch build-indep
 
-build-arch: build_setgidwrappers
-
-build_setgidwrappers:
-	gcc -fPIE -pie -o x2gosqlitewrapper x2gosqlitewrapper.c
+build-arch:
 
 build-indep: build_man2html
 
@@ -46,10 +43,11 @@ build_man2html:
 	for man_page in $(man_pages); do mkdir -p `dirname $(MAN2HTML_DEST)/$$man_page`; done
 	for man_page in $(man_pages); do $(MAN2HTML_BIN) $(MAN2HTML_SRC)/$$man_page > $(MAN2HTML_DEST)/$$man_page.html; done
 
-clean: clean_arch clean_man2html
+clean: clean-arch clean-indep
 
-clean_arch:
-	rm -f x2gosqlitewrapper
+clean-arch:
+
+clean-indep: clean_man2html
 
 clean_man2html:
 	rm -Rf `dirname $(MAN2HTML_DEST)`
@@ -63,11 +61,8 @@ install_scripts:
 	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)/x2gofeature.d
 	$(INSTALL_PROGRAM) bin/*                $(DESTDIR)$(BINDIR)/
 	$(INSTALL_PROGRAM) sbin/*               $(DESTDIR)$(SBINDIR)/
-	$(INSTALL_PROGRAM) x2gosqlitewrapper       $(DESTDIR)$(LIBDIR)/
 	$(INSTALL_PROGRAM) lib/*                   $(DESTDIR)$(LIBDIR)/
 	$(INSTALL_PROGRAM) share/x2gofeature.d/*.features $(DESTDIR)$(SHAREDIR)/x2gofeature.d/
-	getent group x2gouser &>/dev/null && chown root:x2gouser $(DESTDIR)$(LIBDIR)/x2gosqlitewrapper || true
-	chmod 2755 $(DESTDIR)$(LIBDIR)/x2gosqlitewrapper
 
 install_config:
 	$(INSTALL_DIR) $(DESTDIR)$(ETCDIR)
@@ -94,7 +89,6 @@ uninstall_scripts:
 	for file in $(SBIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(SBINDIR)/$$file; done
 	for file in $(LIB_FILES); do $(RM_FILE) $(DESTDIR)$(LIBDIR)/$$file; done
 	for file in $(FEATURE_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(SHAREDIR)/x2gofeature.d/$$file; done
-	$(RM_FILE) $(DESTDIR)$(LIBDIR)/x2gosqlitewrapper
 	$(RM_DIR) $(DESTDIR)$(LIBDIR) || true
 	$(RM_DIR) $(DESTDIR)$(SHAREDIR)/x2gofeature.d || true
 	$(RM_DIR) $(DESTDIR)$(SHAREDIR) || true

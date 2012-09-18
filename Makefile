@@ -19,6 +19,7 @@ build: build-arch build-indep
 # make man2html build available from project's base folder...
 build_man2html:
 	$(MAKE) -C x2goserver $@
+	$(MAKE) -C libx2go-server-db-perl $@
 	$(MAKE) -C x2goserver-printing $@
 	$(MAKE) -C x2goserver-compat $@
 	$(MAKE) -C x2goserver-extensions $@
@@ -29,6 +30,7 @@ build_man2html:
 clean:
 	-$(MAKE) -f Makefile.perl clean
 	$(MAKE) -C x2goserver $@
+	$(MAKE) -C libx2go-server-db-perl $@
 	$(MAKE) -C x2goserver-printing $@
 	$(MAKE) -C x2goserver-compat $@
 	$(MAKE) -C x2goserver-extensions $@
@@ -39,6 +41,7 @@ clean:
 distclean:
 	-$(MAKE) -f Makefile.perl realclean
 	$(MAKE) -C x2goserver clean
+	$(MAKE) -C libx2go-server-db-perl clean
 	$(MAKE) -C x2goserver-printing clean
 	$(MAKE) -C x2goserver-compat clean
 	$(MAKE) -C x2goserver-extensions clean
@@ -48,6 +51,7 @@ distclean:
 
 build-arch:
 	$(MAKE) -C x2goserver $@
+	$(MAKE) -C libx2go-server-db-perl $@
 	$(MAKE) -C x2goserver-printing $@
 	$(MAKE) -C x2goserver-compat $@
 	$(MAKE) -C x2goserver-extensions $@
@@ -59,6 +63,7 @@ build-indep:
 	$(PERL) Makefile.PL INSTALLDIRS=$(PERL_INSTALLDIRS)
 	$(MAKE) -f Makefile.perl
 	$(MAKE) -C x2goserver $@
+	$(MAKE) -C libx2go-server-db-perl $@
 	$(MAKE) -C x2goserver-printing $@
 	$(MAKE) -C x2goserver-compat $@
 	$(MAKE) -C x2goserver-extensions $@
@@ -69,6 +74,7 @@ build-indep:
 install:
 	$(MAKE) -f Makefile.perl install
 	$(MAKE) -C x2goserver $@
+	$(MAKE) -C libx2go-server-db-perl $@
 	$(MAKE) -C x2goserver-printing $@
 	$(MAKE) -C x2goserver-compat $@
 	$(MAKE) -C x2goserver-extensions $@
@@ -77,13 +83,14 @@ install:
 	$(MAKE) -C x2goserver-pyhoca $@
 
 uninstall:
-	$(MAKE) -f Makefile.perl uninstall
 	$(MAKE) -C x2goserver-printing $@
 	$(MAKE) -C x2goserver-compat $@
 	$(MAKE) -C x2goserver-xsession $@
 	$(MAKE) -C x2goserver-fmbindings $@
 	$(MAKE) -C x2goserver-pyhoca $@
 	$(MAKE) -C x2goserver-extensions $@
+	$(MAKE) -f Makefile.perl uninstall
+	$(MAKE) -C libx2go-server-db-perl $@
 	$(MAKE) -C x2goserver $@
 	if test -d $(DESTDIR)$(LIBDIR); then $(RM_DIR) $(DESTDIR)$(LIBDIR); fi
 	if test -d $(DESTDIR)$(SHAREDIR)/x2gofeature.d; then $(RM_DIR) $(DESTDIR)$(SHAREDIR)/x2gofeature.d; fi

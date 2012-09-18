@@ -23,20 +23,21 @@ already:
 -----------------------------
 Extract tarball and run 
 
- $ make && make install
+ $ make && sudo make install
 
 in base folder of the extracted tarball. 
 
 
 3.) SGID GROUP
 --------------
-Configure ownership, permissions and setgid group bits of x2gosqlitewrapper and x2goprint:
+Configure ownership, permissions and setgid group bits of
+libx2go-server-db-sqlite3-wrapper and x2goprint:
 
   NOTE: The described actions have already been performed by the Makefile 
   run, leaving this here for documentation only.
 
- $ chown root:x2gouser /usr/lib/x2go/x2gosqlitewrapper
- $ chmod 2755 /usr/lib/x2go/x2gosqlitewrapper
+ $ chown root:x2gouser /usr/lib/x2go/libx2go-server-db-sqlite3-wrapper
+ $ chmod 2755 /usr/lib/x2go/libx2go-server-db-sqlite3-wrapper
 
  $ chown root:x2goprint /usr/bin/x2goprint
  $ chmod 2755 /usr/bin/x2goprint
@@ -67,23 +68,24 @@ members of the server-side ,,fuse'' group (see above).
 
 As X2Go printing setups can be rather versatile, details on X2Go printing are explained in 
 the project's wiki:
-http://wiki.x2go.org/installing_x2go_printing_debian_ubuntu
+http://www.x2go.org/doku.php/wiki:components:printing
+http://www.x2go.org/doku.php/wiki:advanced:multi-node:x2goserver-printing
 
 
-7.) DATABASE SETUP (SQLite only)
---------------------------------
+7.) DATABASE SETUP (SQLite3 only)
+---------------------------------
 
  $ x2godbadmin --createdb
 
 
-7a.) DEFAULT: SQLite setup
---------------------------
+7a.) DEFAULT: SQLite3 setup
+---------------------------
 This variant is the default X2Go database setup. The X2Go database keeps track of
-running/suspended/finished X2Go sessions, mounted devices, etc. If you use SQLite
+running/suspended/finished X2Go sessions, mounted devices, etc. If you use SQLite3
 as DB backend, X2Go will run on one single server.
 
 For multi-X2goServer support use the PostgreSQL setup variant of X2Go server. All files
-should be present for this setup. If not, please report it as a bug.
+are already resent for this setup. If not, please report it as a bug.
 
 
 7b.) ALTERNATIVE: PostgreSQL setup
@@ -91,5 +93,5 @@ should be present for this setup. If not, please report it as a bug.
 This variant is for a setup of x2goserver that uses a PostgreSQL database backend...
 
 The exact installation of x2goserver with PostgreSQL support is described here:
-http://wiki.x2go.org/adding_x2go_server_postgresql_support
+http://www.x2go.org/doku.php/wiki:advanced:multi-node:x2goserver-pgsql
 

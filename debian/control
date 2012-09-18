@@ -36,6 +36,7 @@ Section: perl
 Depends:
  ${perl:Depends},
  ${misc:Depends},
+ ${shlibs:Depends},
  libx2go-server-perl (>= ${source:Version}), libx2go-server-perl (<< ${source:Version}.1~),
 Description: Perl X2Go::Server:DB package
  X2Go is a server based computing environment with
@@ -68,7 +69,6 @@ Description: Perl X2Go::Log package
 Package: x2goserver
 Architecture: any
 Depends:
- ${shlibs:Depends},
  ${misc:Depends},
  libx2go-server-db-perl (>= ${source:Version}), libx2go-server-db-perl (<< ${source:Version}.1~),
  libx2go-log-perl (>= ${source:Version}), libx2go-log-perl (<< ${source:Version}.1~),

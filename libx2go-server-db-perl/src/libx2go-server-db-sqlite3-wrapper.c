@@ -59,8 +59,8 @@ int main( int argc, char *argv[] ) {
 			exit(EXIT_FAILURE);
 		}
 
-		// derive the full path of x2gosqlitewrapper.pl from path of this binary
-		rvap = asprintf(&x2gosqlitewrapper, "%s/%s", dirname(buffer), "x2gosqlitewrapper.pl");
+		// derive the full path of libx2go-server-db-sqlite3-wrapper.pl from path of this binary
+		rvap = asprintf(&x2gosqlitewrapper, "%s/%s", dirname(buffer), "libx2go-server-db-sqlite3-wrapper.pl");
 		if(rvap == -1){
 			fprintf(stderr, "Failed to allocate memory calling asprintf\n");
 			exit(EXIT_FAILURE);
