@@ -22,6 +22,16 @@
 
 package X2Go::Server::DB::SQLite3;
 
+=head1 NAME
+
+X2Go::Server::DB::SQLite3 - X2Go Session Database package for Perl (SQLite3 backend)
+
+=head1 DESCRIPTION
+
+X2Go::Server::DB::SQLite3 Perl package for X2Go::Server.
+
+=cut
+
 use strict;
 use DBI;
 use POSIX;
