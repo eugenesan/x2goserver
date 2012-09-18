@@ -23,6 +23,7 @@ x2goserver (3.2.0.0-0~x2go1) UNRELEASED; urgency=low
       SQLite3 into Perl package X2Go::Server::DB::SQLite3.
     - Move x2gosqlitewrapper into package X2Go::Server::DB::SQLite3 Perl
       package.
+    - Move PostgreSQL DB code into Perl package X2Go::Server::DB::PostgreSQL.
   * /debian/control:
     + Maintainer change in package: X2Go Developers <x2go-dev@lists.berlios.de>.
     + Depend on nx-libs (>=3.5.0.15-0~) which has the Xrandr symlinks folder.

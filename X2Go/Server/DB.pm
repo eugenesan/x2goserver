@@ -37,6 +37,7 @@ use POSIX;
 use Sys::Syslog qw( :standard :macros );
 
 use X2Go::Log qw(loglevel);
+use X2Go::Server::DB::PostgreSQL;
 
 setlogmask( LOG_UPTO(loglevel()) );
 
@@ -60,40 +61,6 @@ if ($backend ne 'postgres' && $backend ne 'sqlite')
 	die "unknown backend $backend";
 }
 
-if ($backend eq 'postgres')
-{
-	$host=$Config->param("postgres.host");
-	$port=$Config->param("postgres.port");
-	if (!$host)
-	{
-		$host='localhost';
-	}
-	if (!$port)
-	{
-		$port='5432';
-	}
-	my $passfile;
-	if ($uname eq 'root')
-	{
-		$dbuser='x2godbuser';
-		$passfile="/etc/x2go/x2gosql/passwords/x2goadmin";
-	}
-	else
-	{
-		$dbuser="x2gouser_$uname";
-		$passfile="$homedir/.x2go/sqlpass";
-	}
-	$sslmode=$Config->param("postgres.ssl");
-	if (!$sslmode)
-	{
-		$sslmode="prefer";
-	}
-	open (FL,"< $passfile") or die "Can't read password file $passfile<br><b>Use x2godbadmin on server to configure database access for user $uname</b><br>";
-	$dbpass=<FL>;
-	close(FL);
-	chomp($dbpass);
-}
-
 use base 'Exporter';
 
 our @EXPORT=('db_listsessions','db_listsessions_all', 'db_getservers', 'db_getagent', 'db_resume', 'db_changestatus', 'db_getstatus', 
@@ -107,13 +74,7 @@ sub dbsys_rmsessionsroot
 	dbsys_deletemounts($sid);
 	if($backend eq 'postgres')
 	{
-		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", 
-		                     "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
-
-		my $sth=$dbh->prepare("delete from sessions  where session_id='$sid'");
-		$sth->execute() or die;
-		$sth=$dbh->prepare("delete from used_ports where session_id='$sid'");
-		$sth->execute() or die;
+		X2Go::Server::DB::PostgreSQL::dbsys_rmsessionsroot($sid);
 	}
 	if($backend eq 'sqlite')
 	{
@@ -123,20 +84,16 @@ sub dbsys_rmsessionsroot
 
 sub dbsys_deletemounts
 {
-        my $sid=shift or die "argument \"session_id\" missed";
-        if ($backend eq 'postgres')
-        {
-                my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
-                my $sth=$dbh->prepare("delete from mounts where session_id='$sid'");
-                $sth->execute();
-                $sth->finish();
-                $dbh->disconnect();
-        }
-        if ($backend eq 'sqlite')
-        {
-                `$x2go_lib_path/libx2go-server-db-sqlite3-wrapper deletemounts $sid`;
-        }
-        syslog('debug', "dbsys_deletemounts called, session ID: $sid");
+	my $sid=shift or die "argument \"session_id\" missed";
+	if ($backend eq 'postgres')
+	{
+		X2Go::Server::DB::PostgreSQL::dbsys_deletemounts($sid);
+	}
+	if ($backend eq 'sqlite')
+	{
+		`$x2go_lib_path/libx2go-server-db-sqlite3-wrapper deletemounts $sid`;
+	}
+	syslog('debug', "dbsys_deletemounts called, session ID: $sid");
 }
 
 sub dbsys_listsessionsroot
@@ -144,25 +101,7 @@ sub dbsys_listsessionsroot
 	my $server=shift or die "argument \"server\" missed";
 	if ($backend eq 'postgres')
 	{
-		my @strings;
-		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", 
-		                     "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
-
-		my $sth=$dbh->prepare("select agent_pid, session_id, display, server, status,
-		                      to_char(init_time,'YYYY-MM-DDTHH24:MI:SS'),cookie,client,gr_port,
-		                      sound_port,to_char(last_time,'YYYY-MM-DDTHH24:MI:SS'),uname,
-		                      to_char(now()-init_time,'SSSS'),fs_port  from  sessions
-		                      where server='$server'  order by status desc");
-		$sth->execute()or die;
-		my @data;
-		my $i=0;
-		while (@data = $sth->fetchrow_array) 
-		{
-			@strings[$i++]=join('|',@data);
-		}
-		$sth->finish();
-		$dbh->disconnect();
-		return @strings;
+		return X2Go::Server::DB::PostgreSQL::dbsys_listsessionsroot($server);
 	}
 	if($backend eq 'sqlite')
 	{
@@ -174,23 +113,7 @@ sub dbsys_listsessionsroot_all
 {
 	if ($backend eq 'postgres')
 	{
-		my @strings;
-		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
-		my $sth=$dbh->prepare("select agent_pid, session_id, display, server, status,
-		                      to_char(init_time,'YYYY-MM-DDTHH24:MI:SS'),cookie,client,gr_port,
-		                      sound_port,to_char(last_time,'YYYY-MM-DDTHH24:MI:SS'),uname,
-		                      to_char(now()-init_time,'SSSS'),fs_port  from  sessions
-		                      order by status desc");
-		$sth->execute()or die;
-		my @data;
-		my $i=0;
-		while (@data = $sth->fetchrow_array) 
-		{
-			@strings[$i++]=join('|',@data);
-		}
-		$sth->finish();
-		$dbh->disconnect();
-		return @strings;
+		return X2Go::Server::DB::PostgreSQL::dbsys_listsessionsroot_all();
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -204,19 +127,7 @@ sub dbsys_getmounts
 	my $sid=shift or die "argument \"session_id\" missed";
 	if ($backend eq 'postgres')
 	{
-		my @strings;
-		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
-		my $sth=$dbh->prepare("select client, path from mounts where session_id='$sid'");
-		$sth->execute()or die;
-		my @data;
-		my $i=0;
-		while (@data = $sth->fetchrow_array) 
-		{
-			@strings[$i++]=join("|",@data);
-		}
-		$sth->finish();
-		$dbh->disconnect();
-		@mounts = @strings;
+		@mounts = X2Go::Server::DB::PostgreSQL::dbsys_getmounts($sid);
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -233,19 +144,7 @@ sub db_getmounts
 	my $sid=shift or die "argument \"session_id\" missed";
 	if($backend eq 'postgres')
 	{
-		my @strings;
-		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
-		my $sth=$dbh->prepare("select client, path from mounts_view where session_id='$sid'");
-		$sth->execute()or die;
-		my @data;
-		my $i=0;
-		while (@data = $sth->fetchrow_array) 
-		{
-			@strings[$i++]=join("|",@data);
-		}
-		$sth->finish();
-		$dbh->disconnect();
-		@mounts = @strings;
+		@mounts = X2Go::Server::DB::PostgreSQL::db_getmounts($sid);
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -262,11 +161,7 @@ sub db_deletemount
 	my $path=shift or die "argument \"path\" missed";
 	if ($backend eq 'postgres')
 	{
-		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
-		my $sth=$dbh->prepare("delete from mounts_view where session_id='$sid' and path='$path'");
-		$sth->execute();
-		$sth->finish();
-		$dbh->disconnect();
+		X2Go::Server::DB::PostgreSQL::db_deletemount($sid, $path);
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -283,15 +178,7 @@ sub db_insertmount
 	my $res_ok=0;
 	if ($backend eq 'postgres')
 	{
-		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
-		my $sth=$dbh->prepare("insert into mounts (session_id,path,client) values  ('$sid','$path','$client')");
-		$sth->execute();
-		if (!$sth->err())
-		{
-			$res_ok=1;
-		}
-		$sth->finish();
-		$dbh->disconnect();
+		$res_ok = X2Go::Server::DB::PostgreSQL::db_insertmount($sid, $path, $client);
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -311,11 +198,7 @@ sub db_insertsession
 	my $sid=shift or die "argument \"session_id\" missed";
 	if ($backend eq 'postgres')
 	{
-		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
-		my $sth=$dbh->prepare("insert into sessions (display,server,uname,session_id) values ('$display','$server','$uname','$sid')");
-		$sth->execute()or die $_;
-		$sth->finish();
-		$dbh->disconnect();
+		X2Go::Server::DB::PostgreSQL::db_insertsession($display, $server, $sid);
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -339,13 +222,7 @@ sub db_createsession
 	my $sid=shift or die "argument \"session_id\" missed";
 	if ($backend eq 'postgres')
 	{
-		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
-		my $sth=$dbh->prepare("update sessions_view set status='R',last_time=now(),
-		                      cookie='$cookie',agent_pid='$pid',client='$client',gr_port='$gr_port',
-		                      sound_port='$snd_port',fs_port='$fs_port' where session_id='$sid'");
-		$sth->execute()or die;
-		$sth->finish();
-		$dbh->disconnect();
+		X2Go::Server::DB::PostgreSQL::db_createsession($cookie, $pid, $client, $gr_port, $snd_port, $fs_port, $sid);
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -365,11 +242,7 @@ sub db_insertport
 	my $sshport=shift or die "argument \"port\" missed";
 	if ($backend eq 'postgres')
 	{
-		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
-		my $sth=$dbh->prepare("insert into used_ports (server,session_id,port) values  ('$server','$sid','$sshport')");
-		$sth->execute()or die;
-		$sth->finish();
-		$dbh->disconnect();
+		X2Go::Server::DB::PostgreSQL::db_insertport($server, $sid, $sshport);
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -385,11 +258,7 @@ sub db_rmport
 	my $sshport=shift or die "argument \"port\" missed";
 	if ($backend eq 'postgres')
 	{
-		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
-		my $sth=$dbh->prepare("delete from used_ports where server='$server' and session_id='$sid' and port='$sshport'");
-		$sth->execute()or die;
-		$sth->finish();
-		$dbh->disconnect();
+		X2Go::Server::DB::PostgreSQL::db_rmport($server, $sid, $sshport);
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -403,22 +272,17 @@ sub db_resume
 	my $client=shift or die "argument \"client\" missed";
 	my $sid=shift or die "argument \"session_id\" missed";
 	my $gr_port=shift or die "argument \"gr_port\" missed";
-	my $sound_port=shift or die "argument \"sound_port\" missed";
+	my $snd_port=shift or die "argument \"snd_port\" missed";
 	my $fs_port=shift or die "argument \"fs_port\" missed";
 	if ($backend eq 'postgres')
 	{
-		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
-		my $sth=$dbh->prepare("update sessions_view set last_time=now(),status='R',client='$client',gr_port='$gr_port',
-			sound_port='$sound_port',fs_port='$fs_port' where session_id = '$sid'");
-		$sth->execute()or die;
-		$sth->finish();
-		$dbh->disconnect();
+		X2Go::Server::DB::PostgreSQL::db_resume($client, $sid, $gr_port, $snd_port, $fs_port);
 	}
 	if ($backend eq 'sqlite')
 	{
-		`$x2go_lib_path/libx2go-server-db-sqlite3-wrapper resume $client $sid $gr_port $sound_port $fs_port`;
+		`$x2go_lib_path/libx2go-server-db-sqlite3-wrapper resume $client $sid $gr_port $snd_port $fs_port`;
 	}
-	syslog('debug', "db_resume called, session ID: $sid, client: $client, gr_port: $gr_port, sound_port: $sound_port, fs_port: $fs_port");
+	syslog('debug', "db_resume called, session ID: $sid, client: $client, gr_port: $gr_port, sound_port: $snd_port, fs_port: $fs_port");
 }
 
 sub db_changestatus
@@ -427,11 +291,7 @@ sub db_changestatus
 	my $sid=shift or die "argument \"session_id\" missed";
 	if ($backend eq 'postgres')
 	{
-		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
-		my $sth=$dbh->prepare("update sessions_view set last_time=now(),status='$status' where session_id = '$sid'");
-		$sth->execute()or die;
-		$sth->finish();
-		$dbh->disconnect();
+		X2Go::Server::DB::PostgreSQL::db_changestatus($status, $sid);
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -446,16 +306,7 @@ sub db_getstatus
 	my $status='';
 	if ($backend eq 'postgres')
 	{
-		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
-		my $sth=$dbh->prepare("select status from sessions_view where session_id = '$sid'");
-		$sth->execute($sid) or die;
-		my @data;
-		if (@data = $sth->fetchrow_array) 
-		{
-			$status=@data[0];
-		}
-		$sth->finish();
-		$dbh->disconnect();
+		$status = X2Go::Server::DB::PostgreSQL::db_getstatus($sid);
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -472,19 +323,7 @@ sub db_getdisplays
 	my $server=shift or die "argument \"server\" missed";
 	if ($backend eq 'postgres')
 	{
-		my @strings;
-		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
-		my $sth=$dbh->prepare("select display from servers_view");
-		$sth->execute()or die;
-		my @data;
-		my $i=0;
-		while (@data = $sth->fetchrow_array) 
-		{
-			@strings[$i++]='|'.@data[0].'|';
-		}
-		$sth->finish();
-		$dbh->disconnect();
-		@displays = @strings;
+		@displays = X2Go::Server::DB::PostgreSQL::db_getdisplays($server);
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -502,19 +341,7 @@ sub db_getports
 	my $server=shift or die "argument \"server\" missed";
 	if ($backend eq 'postgres')
 	{
-		my @strings;
-		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
-		my $sth=$dbh->prepare("select port from ports_view");
-		$sth->execute()or die;
-		my @data;
-		my $i=0;
-		while (@data = $sth->fetchrow_array) 
-		{
-			@strings[$i++]='|'.@data[0].'|';
-		}
-		$sth->finish();
-		$dbh->disconnect();
-		@ports = @strings;
+		@ports = X2Go::Server::DB::PostgreSQL::db_getports($server);
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -530,19 +357,7 @@ sub db_getservers
 	my @servers;
 	if ($backend eq 'postgres')
 	{
-		my @strings;
-		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
-		my $sth=$dbh->prepare("select server,count(*) from servers_view where status != 'F' group by server");
-		$sth->execute()or die;
-		my @data;
-		my $i=0;
-		while (@data = $sth->fetchrow_array) 
-		{
-			@strings[$i++]=@data[0]." ".@data[1];
-		}
-		$sth->finish();
-		$dbh->disconnect();
-		@servers = @strings;
+		@servers = X2Go::Server::DB::PostgreSQL::db_getservers();
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -559,18 +374,7 @@ sub db_getagent
 	my $sid=shift or die "argument \"session_id\" missed";
 	if ($backend eq 'postgres')
 	{
-		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
-		my $sth=$dbh->prepare("select agent_pid from sessions_view
-		                      where session_id ='$sid'");
-		$sth->execute()or die;
-		my @data;
-		my $i=0;
-		if (@data = $sth->fetchrow_array) 
-		{
-			$agent=@data[0];
-		}
-		$sth->finish();
-		$dbh->disconnect();
+		$agent = X2Go::Server::DB::PostgreSQL::db_getagent($sid);
 	}
 	if($backend eq 'sqlite')
 	{
@@ -586,18 +390,7 @@ sub db_getdisplay
 	my $sid=shift or die "argument \"session_id\" missed";
 	if ($backend eq 'postgres')
 	{
-		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
-		my $sth=$dbh->prepare("select display from sessions_view
-		                      where session_id ='$sid'");
-		$sth->execute() or die;
-		my @data;
-		my $i=0;
-		if (@data = $sth->fetchrow_array) 
-		{
-			$display=@data[0];
-		}
-		$sth->finish();
-		$dbh->disconnect();
+		$display = X2Go::Server::DB::PostgreSQL::db_getdisplay($sid);
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -612,24 +405,7 @@ sub db_listsessions
 	my $server=shift or die "argument \"server\" missed";
 	if ($backend eq 'postgres')
 	{
-		my @strings;
-		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
-		my $sth=$dbh->prepare("select agent_pid, session_id, display, server, status,
-		                      to_char(init_time,'YYYY-MM-DDTHH24:MI:SS'), cookie, client, gr_port,
-		                      sound_port, to_char( last_time, 'YYYY-MM-DDTHH24:MI:SS'), uname,
-		                      to_char(now()- init_time,'SSSS'), fs_port from  sessions_view
-		                      where status !='F' and server='$server' and  
-		                      (session_id not like '%XSHAD%') order by status desc");
-		$sth->execute() or die;
-		my @data;
-		my $i=0;
-		while (@data = $sth->fetchrow_array) 
-		{
-			@strings[$i++]=join('|',@data);
-		}
-		$sth->finish();
-		$dbh->disconnect();
-		return @strings;
+		return X2Go::Server::DB::PostgreSQL::db_listsessions($server);
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -641,24 +417,7 @@ sub db_listsessions_all
 {
 	if($backend eq 'postgres')
 	{
-		my @strings;
-		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
-		my $sth=$dbh->prepare("select agent_pid, session_id, display, server, status,
-		                      to_char(init_time,'YYYY-MM-DDTHH24:MI:SS'), cookie, client, gr_port,
-		                      sound_port, to_char( last_time, 'YYYY-MM-DDTHH24:MI:SS'), uname,
-		                      to_char(now()- init_time,'SSSS'), fs_port from  sessions_view
-		                      where status !='F'  and  
-		                      (session_id not like '%XSHAD%') order by status desc");
-		$sth->execute()or die;
-		my @data;
-		my $i=0;
-		while (@data = $sth->fetchrow_array) 
-		{
-			@strings[$i++]=join('|',@data);
-		}
-		$sth->finish();
-		$dbh->disconnect();
-		return @strings;
+		return X2Go::Server::DB::PostgreSQL::db_listsessions_all();
 	}
 	if ($backend eq 'sqlite')
 	{
