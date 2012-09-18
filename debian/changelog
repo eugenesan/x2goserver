@@ -16,6 +16,7 @@ x2goserver (3.1.1.4-0~x2go1) UNRELEASED; urgency=low
       of Xorg's Xrandr library (partially closes #28).
     - Make sure when launching desktop session through the Xsession mechanism
       that the LD_LIBRARY_PATH variable stays intact. Closes #29.
+    - Only extend LD_LIBRARY_PATH by Xrandr extension for KDE. Breaks GNOME.
   * /debian/control:
     + Maintainer change in package: X2Go Developers <x2go-dev@lists.berlios.de>.
     + Depend on nx-libs (>=3.5.0.15-0~) which has the Xrandr symlinks folder.
