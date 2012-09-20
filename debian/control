@@ -34,13 +34,13 @@ Recommends:
  x11-xkb-utils,
  x11-xserver-utils,
  xinit,
- x2goserver-extensions (= ${source:Version})
- x2goserver-xsession (= ${source:Version}),
- x2goserver-fmbindings (= ${source:Version}),
- x2goserver-printing (= ${source:Version}),
+ x2goserver-extensions (>= ${source:Version}), x2goserver-extensions (<< ${source:Version}.1~),
+ x2goserver-xsession (>= ${source:Version}), x2goserver-xsession (<< ${source:Version}.1~),
+ x2goserver-fmbindings (>= ${source:Version}), x2goserver-fmbindings (<< ${source:Version}.1~),
+ x2goserver-printing (>= ${source:Version}), x2goserver-printing (<< ${source:Version}.1~),
 Suggests:
- x2goserver-compat (= ${source:Version}),
- x2goserver-pyhoca (= ${source:Version}),
+ x2goserver-compat (>= ${source:Version}), x2goserver-compat (<< ${source:Version}.1~),
+ x2goserver-pyhoca (>= ${source:Version}), x2goserver-pyhoca (<< ${source:Version}.1~),
  rdesktop,
  pulseaudio-utils
 Breaks:
