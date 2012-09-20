@@ -17,6 +17,10 @@ Package: x2goserver-common
 Architecture: any
 Depends:
  ${misc:Depends},
+Breaks:
+ x2goserver (<= 3.1.1.4),
+Replaces:
+ x2goserver (<= 3.1.1.4),
 Description: X2Go Server (common files)
  X2Go is a server based computing environment with
     - session resuming

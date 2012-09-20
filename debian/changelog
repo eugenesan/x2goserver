@@ -38,6 +38,8 @@ x2goserver (3.2.0.0-0~x2go1) UNRELEASED; urgency=low
     + x2goserver package: Depend on libx2go-log-perl, libx2go-server-db-perl.
     + Move x2goserver.conf into separate package: x2goserver-common. Provide
       man page for x2goserver.conf.
+    + Use Breaks/Replaces to exchange x2goserver.conf in x2goserver package by
+      x2goserver.conf in new x2goserver-common package.
 
   [ Oleksandr Shneyder ]
   * New upstream version (3.2.0.0):
