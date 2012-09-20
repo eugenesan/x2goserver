@@ -35,11 +35,11 @@ Recommends:
  x11-xserver-utils,
  xinit,
  x2goserver-extensions (= ${source:Version})
-Suggests:
- x2goserver-printing (= ${source:Version}),
- x2goserver-compat (= ${source:Version}),
  x2goserver-xsession (= ${source:Version}),
  x2goserver-fmbindings (= ${source:Version}),
+ x2goserver-printing (= ${source:Version}),
+Suggests:
+ x2goserver-compat (= ${source:Version}),
  x2goserver-pyhoca (= ${source:Version}),
  rdesktop,
  pulseaudio-utils
