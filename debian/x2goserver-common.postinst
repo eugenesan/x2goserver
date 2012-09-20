@@ -36,6 +36,9 @@ case "$1" in
 			adduser --system --no-create-home \
 			        --disabled-password --disabled-login \
 			        --shell /bin/false --group --home /var/lib/x2go x2gouser
+
+			# make sure the home directory belongs to x2gouser:x2gouser
+			chown x2gouser:x2gouser /var/lib/x2go -Rf
 		else
 			echo "User x2gouser already exists." >&2
 			# make sure all settings are appropriate
@@ -50,8 +53,10 @@ case "$1" in
 			fi
 			# we leave user shell alone. we have never set this wrongly
 			# and we need to respect the administrator's choices
-		fi
 
+			# make sure the home directory belongs to x2gouser:x2gouser
+			chown x2gouser:x2gouser /var/lib/x2go -Rf
+		fi
 		;;
 
 	abort-upgrade|abort-remove|abort-deconfigure)

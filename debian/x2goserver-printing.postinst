@@ -52,6 +52,7 @@ case "$1" in
 			fi
 			# we leave user shell alone. we have never set this wrongly
 			# and we need to respect the administrator's choices
+
 		fi
 
 		# make sure x2goprint spool dir permissions are set correctly
