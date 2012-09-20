@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: x2goserver@packages.debian.org\n"
-"POT-Creation-Date: 2012-02-22 13:45+0100\n"
-"PO-Revision-Date: 2012-02-22 13:52+0100\n"
+"POT-Creation-Date: 2012-09-20 23:46+0200\n"
+"PO-Revision-Date: 2012-09-20 23:48+0100\n"
 "Last-Translator: Mike Gabriel <mike.gabriel@das-netzwerkteam.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -39,10 +39,26 @@ msgstr "Ihr X2Go Server nutzt eine PostgreSQL Datenbank, um X2Go Sitzungsdaten z
 #. Type: text
 #. Description
 #: ../templates:1001
-#| msgid ""
-#| "Please follow these PostgreSQL DB upgrade instructions before you "
-#| "continue using your X2Go Server: /usr/share/doc/x2goserver/README.upgrade-"
-#| "pgsql-database"
 msgid "Please follow these PostgreSQL DB upgrade instructions before you continue using your X2Go Server: /usr/share/doc/x2goserver/README.upgrade-pgsql-database.gz"
 msgstr "Bitte befolgen Sie daher die PostgreSQL-Aktualisierungshinweise bevor sie mit der Weiternutzung Ihres X2Go Servers fortfahren: /usr/share/doc/x2goserver/README.upgrade-pgsl-database.gz"
+
+#. Type: text
+#. Description
+#: ../templates:2001
+#, fuzzy
+#| msgid "X2Go Server / PostgreSQL Upgrade"
+msgid "X2Go Server Upgrade"
+msgstr "X2Go Server / PostgreSQL Upgrade"
+
+#. Type: text
+#. Description
+#: ../templates:2001
+msgid "You are upgrading from an X2Go Server version (< 3.2.0.0). Between 3.2.0.0 and 3.1.1.x the package structure has undergone a major change."
+msgstr "Sie aktualisieren X2Go Server von einer Version (< 3.2.0.0). Seit 3.1.1.x wurde das Paket einigen strukturellen Änderungen unterzogen."
+
+#. Type: text
+#. Description
+#: ../templates:2001
+msgid "Note that most of the Perl code in X2Go Server has been moved into its own Perl API X2Go::Server."
+msgstr "Der größte Anteil des Perl Codes in X2Go Server ist migriert worden in die neue Perl API X2Go::Server."
 

@@ -20,8 +20,10 @@ set -e
 
 case "$1" in
 	install|upgrade)
-		# cleanup old x2goserver installations
-		rm -Rfv /var/db/x2go/
+		if getent group x2gousers >/dev/null; then 
+			echo "The group ,,x2gousers'' is no longer used by X2Go and can be"
+			echo "removed as soon as no users are members of this group anymore."
+		fi
 		;;
 	abort-upgrade)
 		;;

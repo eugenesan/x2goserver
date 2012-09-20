@@ -18,9 +18,9 @@ Architecture: any
 Depends:
  ${misc:Depends},
 Breaks:
- x2goserver (<= 3.1.1.4),
+ x2goserver (< 3.2.0.0-0~),
 Replaces:
- x2goserver (<= 3.1.1.4),
+ x2goserver (< 3.2.0.0-0~),
 Description: X2Go Server (common files)
  X2Go is a server based computing environment with
     - session resuming
@@ -30,7 +30,7 @@ Description: X2Go Server (common files)
     - audio support
     - authentication by smartcard and USB stick
  .
- This package contains files needed by the X2Go Server
+ This package contains common files needed by the X2Go Server
  and the X2Go::Server Perl API.
 
 Package: libx2go-server-perl
@@ -39,6 +39,8 @@ Section: perl
 Depends:
  ${perl:Depends},
  ${misc:Depends},
+ libx2go-log-perl (>= ${source:Version}), libx2go-log-perl (<< ${source:Version}.1~),
+ libx2go-server-db-perl (>= ${source:Version}), libx2go-server-db-perl (<< ${source:Version}.1~),
  x2goserver-common (>= ${source:Version}), x2goserver-common (<< ${source:Version}.1~),
 Description: Perl X2Go::Server package
  X2Go is a server based computing environment with
@@ -58,7 +60,7 @@ Depends:
  ${perl:Depends},
  ${misc:Depends},
  ${shlibs:Depends},
- libx2go-server-perl (>= ${source:Version}), libx2go-server-perl (<< ${source:Version}.1~),
+ libx2go-log-perl (>= ${source:Version}), libx2go-log-perl (<< ${source:Version}.1~),
  x2goserver-common (>= ${source:Version}), x2goserver-common (<< ${source:Version}.1~),
 Description: Perl X2Go::Server:DB package
  X2Go is a server based computing environment with

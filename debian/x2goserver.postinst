@@ -23,60 +23,8 @@ set -e
 
 case "$1" in
 	configure)
-		mkdir -p  /etc/x2go/x2gosql/passwords
-		chmod 700 /etc/x2go/x2gosql/passwords
-		touch     /etc/x2go/x2gosql/passwords/pgadmin
-		chmod 600 /etc/x2go/x2gosql/passwords/pgadmin
 
-		###
-		### X2Go session DB management
-		###
-
-		# setup x2gouser and group
-		if ! getent group x2gouser >/dev/null; then
-			echo "Creating x2gouser group." >&2
-			addgroup --system x2gouser
-		else
-			echo "Group x2gouser already exists." >&2
-		fi
-		if ! getent passwd x2gouser >/dev/null; then
-			echo "Creating x2gouser user." >&2
-			adduser --system --no-create-home \
-			        --disabled-password --disabled-login \
-			        --shell /bin/false --group --home /var/lib/x2go x2gouser
-		else
-			echo "User x2gouser already exists." >&2
-			# make sure all settings are appropriate
-			if [ "`id -gn x2gouser`" != "x2gouser" ]; then
-				usermod --gid x2gouser x2gouser
-				test -d /var/lib/x2go && \
-					usermod --home /var/lib/x2go x2gouser || \
-					usermod --move-home --home /var/lib/x2go x2gouser
-			fi
-			if [ "`ls -1d ~x2gouser`" != "/var/lib/x2go" ]; then
-				usermod --move-home --home /var/lib/x2go x2gouser
-			fi
-			# we leave user shell alone. we have never set this wrongly
-			# and we need to respect the administrator's choices
-		fi
-
-		if [ -f /etc/x2go/x2gosql/sql ] && egrep "^backend=sqlite.*" /etc/x2go/x2gosql/sql >/dev/null; then
-
-			if [ ! -f /var/lib/x2go/x2go_sessions ]; then
-				x2godbadmin --createdb
-			else
-				# make sure db permissions are set correctly
-				chown -R root:x2gouser /var/lib/x2go
-				# egid x2gouser needs write access to the db dir (for temporary db journal file)
-				chmod 0770 /var/lib/x2go
-				# ... and to the db file itself, of course
-				chmod 0660 /var/lib/x2go/x2go_sessions
-			fi
-		else
-			echo "X2Go is configured to use a non-SQLite DB backend, leaving the database alone."
-		fi
-
-		### setgid section for x2gouser (SQLite DB access)
+		### cleaning ab setgid stuff of older versions of package x2goserver
 
 		# we may be upgrading from versions of x2goserver that had
 		# /usr/lib/x2go/x2gosqlitewrapper.pl set to setuid x2gouser. This script is
@@ -101,7 +49,7 @@ case "$1" in
 
 		# create /etc/x2go/applications symlink if not already there (as link or as dir)
 		if ! test -e /etc/x2go/applications; then
-			ln -s /usr/share/applications /etc/x2go/applications 
+			ln -s /usr/share/applications /etc/x2go/applications
 		fi
 
 		;;
@@ -121,5 +69,3 @@ esac
 #DEBHELPER#
 
 exit 0
-
-

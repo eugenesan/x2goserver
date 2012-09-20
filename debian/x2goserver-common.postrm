@@ -1,5 +1,5 @@
 #! /bin/sh
-# postrm script for libx2go-server-db-perl
+# postrm script for x2goserver
 #
 # see: dh_installdeb(1)
 # summary of how this script can be called:
@@ -18,15 +18,10 @@ set -e
 
 case "$1" in
 	purge)
-		if dpkg-statoverride --list /usr/lib/x2go/libx2go-server-db-sqlite3-wrapper >/dev/null; then
-			dpkg-statoverride --remove /usr/lib/x2go/libx2go-server-db-sqlite3-wrapper
-		fi
+		getent passwd x2gouser >/dev/null && deluser x2gouser
+		getent group x2gouser >/dev/null && delgroup x2gouser
+		getent group x2gousers >/dev/null && delgroup x2gousers
 
-		echo "Removing X2Go session database" >&2
-		rm -vf /var/lib/x2go/x2go_sessions
-		rm -vf /etc/x2go/x2gosql/passwords/pgadmin
-
-		rm -Rf /etc/x2go/sql
 		rmdir --ignore-fail-on-non-empty /etc/x2go
 
 		;;

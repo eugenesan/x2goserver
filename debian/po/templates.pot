@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: x2goserver@packages.debian.org\n"
-"POT-Creation-Date: 2012-02-22 13:45+0100\n"
+"POT-Creation-Date: 2012-09-20 23:46+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -38,4 +38,26 @@ msgid ""
 "Please follow these PostgreSQL DB upgrade instructions before you continue "
 "using your X2Go Server: /usr/share/doc/x2goserver/README.upgrade-pgsql-"
 "database.gz"
+msgstr ""
+
+#. Type: text
+#. Description
+#: ../templates:2001
+msgid "X2Go Server Upgrade"
+msgstr ""
+
+#. Type: text
+#. Description
+#: ../templates:2001
+msgid ""
+"You are upgrading from an X2Go Server version (< 3.2.0.0). Between 3.2.0.0 "
+"and 3.1.1.x the package structure has undergone a major change."
+msgstr ""
+
+#. Type: text
+#. Description
+#: ../templates:2001
+msgid ""
+"Note that most of the Perl code in X2Go Server has been moved into its own "
+"Perl API X2Go::Server."
 msgstr ""
