@@ -8,7 +8,7 @@ _Description: X2Go Server / PostgreSQL Upgrade
  using your X2Go Server:
  /usr/share/doc/x2goserver/README.upgrade-pgsql-database.gz
 
-Template: x2goserver/postgresql-upgrade-3_2_0_0
+Template: x2goserver/upgrade-3_2_0_0
 Type: text
 _Description: X2Go Server Upgrade
  You are upgrading from an X2Go Server version (< 3.2.0.0). Between

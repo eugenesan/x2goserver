@@ -15,7 +15,6 @@
 
 set -e
 
-
 case "$1" in
 	purge)
 		getent passwd x2gouser >/dev/null && deluser x2gouser

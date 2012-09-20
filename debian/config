@@ -18,7 +18,7 @@ if dpkg --compare-versions "$LASTVERSION" lt "3.2.0.0" && \
    [ -e /etc/x2go/x2gosql/sql ] && \
    egrep "^backend=postgres.*" /etc/x2go/x2gosql/sql >/dev/null; then
 
-	db_input critical x2goserver/postgresql-upgrade-3_2_0_0 || true
+	db_input critical x2goserver/upgrade-3_2_0_0 || true
 	db_go
 
 fi
