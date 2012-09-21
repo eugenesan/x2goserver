@@ -43,10 +43,8 @@ sub print_result
 
 sub print_result_list
 {
-	foreach ( shift )
-	{
-		print @_, "\n";
-	}
+	my @list = @_;
+	print join("\n", @list);
 }
 
 my $result;
