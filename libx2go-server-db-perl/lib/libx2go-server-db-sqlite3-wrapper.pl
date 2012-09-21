@@ -43,7 +43,7 @@ sub print_result
 
 sub print_result_list
 {
-	while ( shift )
+	foreach ( shift )
 	{
 		print @_, "\n";
 	}
@@ -56,10 +56,10 @@ my $cmd=shift or die "command not specified";
 # call the corresponding function in the X2Go::Server:DB:SQLite3 package
 switch ($cmd)
 {
-	case /.*list.*root/ { @result_list = eval("X2Go::Server::DB::SQLite3::dbsys_$cmd(\@ARGV)") }
-	case /.*list.*/	    { @result_list = eval("X2Go::Server::DB::SQLite3::db_$cmd(\@ARGV)") }
-	case /.*root/       { $result = eval("X2Go::Server::DB::SQLite3::dbsys_$cmd(\@ARGV)") }
-	else                { $result = eval("X2Go::Server::DB::SQLite3::db_$cmd(\@ARGV)") } 
+	case /.*listsessions.*root/              { @result_list = eval("X2Go::Server::DB::SQLite3::dbsys_$cmd(\@ARGV)") }
+	case /.*(listsessions|getmounts).*/      { @result_list = eval("X2Go::Server::DB::SQLite3::db_$cmd(\@ARGV)") }
+	case /.*root/                            { $result = eval("X2Go::Server::DB::SQLite3::dbsys_$cmd(\@ARGV)") }
+	else                                     { $result = eval("X2Go::Server::DB::SQLite3::db_$cmd(\@ARGV)") }
 }
 
 if ( defined(@result_list) )
