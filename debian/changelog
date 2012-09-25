@@ -1,22 +1,8 @@
 x2goserver (3.2.0.0-0~x2go1) UNRELEASED; urgency=low
 
-  [ Jan Engelhardt ]
-  * New upstream version (3.2.0.0):
-    - Add -pie as linker flag. Fixes non-position-independent-executable
-      (x2gosqlitewrapper.c). The executable is now completely position
-      independent.
-
   [ Mike Gabriel ]
   * Bump next upstream version to 3.2.0.0.
   * New upstream version (3.2.0.0):
-    - Fix x2gosessionlimit script.
-    - Wrap padsp around rdesktop calls if pulse is used as audio protocol.
-    - Add option ,,-r sound:local'' to rdesktop calls if pulse is enabled.
-    - Proxy X2Go client-side shares into remote desktop session.
-    - For applications inside of a session, use NX's Xrandr library instead
-      of Xorg's Xrandr library (partially closes #28).
-    - Make sure when launching desktop session through the Xsession mechanism
-      that the LD_LIBRARY_PATH variable stays intact. Closes #29.
     - Transform x2gologlevel.pm into proper Perl module X2Go::Log.
     - Transform x2godbwrapper.pm into proper Perl module X2Go::Server::DB.
     - Transform x2gosqlitewrapper.pl into small wrapper script and move the
@@ -25,17 +11,12 @@ x2goserver (3.2.0.0-0~x2go1) UNRELEASED; urgency=low
     - Move PostgreSQL DB code into Perl package X2Go::Server::DB::PostgreSQL.
     - Move X2Go SQL configuration files (/etc/x2go/x2gosql) into package
       libx2go-server-db-perl.
-    - Only extend LD_LIBRARY_PATH by Xrandr extension for KDE. Breaks GNOME.
     - Install /etc/x2go/x2go_logout with its directory x2go_logout.d via
       Makefile installation.
     - Fix new SQLite3 wrapper for db_getmounts Perl call.
     - Fix list output in new SQLite3 wrapper.
     - Remove redundant setting of loglevel in x2gogetapps.
   * /debian/control:
-    + Maintainer change in package: X2Go Developers <x2go-dev@lists.berlios.de>.
-    + Depend on nx-libs (>=3.5.0.15-0~) which has the Xrandr symlinks folder.
-    + Add rdesktop and pulseaudio-utils to Suggests.
-    + Priority: optional.
     + Package X2Go::Log in separate package: libx2go-log-perl.
     + Package X2Go::Server::DB in separate package: libx2go-server-db-perl.
     + x2goserver package: Depend on libx2go-log-perl, libx2go-server-db-perl.
@@ -47,11 +28,44 @@ x2goserver (3.2.0.0-0~x2go1) UNRELEASED; urgency=low
   * Move code in pre/post+inst/rm scripts around (from x2goserver package
     to libx2go-server-db-perl and x2goserver-common).
 
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 03 Jul 2012 10:03:28 +0200
+
+x2goserver (3.1.1.5-0~x2go1) UNRELEASED; urgency=low
+
+  * Continue development...
+
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 25 Sep 2012 15:03:32 +0200
+
+x2goserver (3.1.1.4-0~x2go1) unstable; urgency=low
+
+  [ Jan Engelhardt ]
+  * New upstream version (3.1.1.4):
+    - Add -pie as linker flag. Fixes non-position-independent-executable
+      (x2gosqlitewrapper.c). The executable is now completely position
+      independent.
+
+  [ Mike Gabriel ]
+  * New upstream version (3.1.1.4):
+    - Fix x2gosessionlimit script.
+    - Wrap padsp around rdesktop calls if pulse is used as audio protocol.
+    - Add option ,,-r sound:local'' to rdesktop calls if pulse is enabled.
+    - Proxy X2Go client-side shares into remote desktop session.
+    - For applications inside of a session, use NX's Xrandr library instead
+      of Xorg's Xrandr library (partially closes #28).
+    - Make sure when launching desktop session through the Xsession mechanism
+      that the LD_LIBRARY_PATH variable stays intact. Closes #29.
+    - Only extend LD_LIBRARY_PATH by Xrandr extension for KDE. Breaks GNOME.
+  * /debian/control:
+    + Maintainer change in package: X2Go Developers <x2go-dev@lists.berlios.de>.
+    + Depend on nx-libs (>=3.5.0.15-0~) which has the Xrandr symlinks folder.
+    + Add rdesktop and pulseaudio-utils to Suggests.
+    + Priority: optional.
+
   [ Oleksandr Shneyder ]
-  * New upstream version (3.2.0.0):
+  * New upstream version (3.1.1.4):
     - Remove "-nolisten tcp" option with XDMCP sessions.
 
- -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 03 Jul 2012 10:03:28 +0200
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 25 Sep 2012 13:15:11 +0200
 
 x2goserver (3.1.1.3-0~x2go1) unstable; urgency=low
 
