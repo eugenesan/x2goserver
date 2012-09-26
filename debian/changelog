@@ -32,7 +32,10 @@ x2goserver (3.2.0.0-0~x2go1) UNRELEASED; urgency=low
 
 x2goserver (3.1.1.5-0~x2go1) UNRELEASED; urgency=low
 
-  * Continue development...
+  [ Stéphane Graber ]
+  * New upstream version (3.1.1.5):
+    - Add a very basic SIGCHLD handler to x2gocleansessions. on SIGCHLD
+      let the script wait for cleaning up after its children.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 25 Sep 2012 15:03:32 +0200
 

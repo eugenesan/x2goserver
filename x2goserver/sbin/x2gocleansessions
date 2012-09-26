@@ -88,6 +88,7 @@ elsif ($pid == 0 )
 	for (glob "/proc/$$/fd/*") { POSIX::close($1) if m{/(\d+)$}; }
 
 	$SIG{TERM}=\&catch_term;
+	$SIG{CHLD} = sub { wait };
 
 	while(sleep 5)
 	{
