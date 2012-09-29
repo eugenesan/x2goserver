@@ -5,6 +5,10 @@ x2goserver (3.1.1.5-0~x2go1) UNRELEASED; urgency=low
     - Add a very basic SIGCHLD handler to x2gocleansessions. on SIGCHLD
       let the script wait for cleaning up after its children.
 
+  [ Mike Gabriel ]
+  * New upstream version (3.1.1.5):
+    - Fix x2gogetapps when rendering multi-section .desktop files.
+
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 25 Sep 2012 15:03:32 +0200
 
 x2goserver (3.1.1.4-0~x2go1) unstable; urgency=low
