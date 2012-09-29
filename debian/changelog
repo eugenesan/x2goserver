@@ -3,11 +3,13 @@ x2goserver (3.1.1.5-0~x2go1) UNRELEASED; urgency=low
   [ Stéphane Graber ]
   * New upstream version (3.1.1.5):
     - Add a very basic SIGCHLD handler to x2gocleansessions. on SIGCHLD
-      let the script wait for cleaning up after its children.
+      let the script wait for cleaning up after its children. Closes
+      upstream issue #38.
 
   [ Mike Gabriel ]
   * New upstream version (3.1.1.5):
-    - Fix x2gogetapps when rendering multi-section .desktop files.
+    - Fix x2gogetapps when rendering multi-section .desktop files. Closes
+      upstream issue #43.
     - Remove redundant setting of syslog level.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 25 Sep 2012 15:03:32 +0200
