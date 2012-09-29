@@ -119,9 +119,24 @@ sub proc_desktop_file
 	if (open(F,"<$file"))
 	{
 		print("<desktop>\n");
+		my $is_desktop_entry = 0;
 		while(!eof(F))
 		{
 			my $line=<F>;
+			if ( $line=~m/^\[Desktop Entry\] */ )
+			{
+				$is_desktop_entry = 1;
+				next;
+			}
+			if ( ! $is_desktop_entry )
+			{
+				next;
+			}
+			if ( $line=~m/^\[.*\] */ )
+			{
+				$is_desktop_entry = 0;
+				next;
+			}
 			if( $line=~m/^Categories/i || $line=~m/^Name/i || $line=~m/^Terminal/i || $line=~m/^Comment/i ||  $line=~m/^Exec/i)
 			{
 				print $line;
