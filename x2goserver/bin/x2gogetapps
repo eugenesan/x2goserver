@@ -170,9 +170,6 @@ sub proc_desktop_file
 	}
 }
 
-openlog($0,'cons,pid','user');
-setlogmask( LOG_UPTO(x2gologlevel()) );
-
 if ( @ARGV ) {
 	syslog('info', "x2gogetapps has been called with options: @ARGV");
 } else {
