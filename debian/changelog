@@ -11,6 +11,8 @@ x2goserver (3.1.1.5-0~x2go1) UNRELEASED; urgency=low
     - Fix x2gogetapps when rendering multi-section .desktop files. Closes
       upstream issue #43.
     - Remove redundant setting of loglevel in x2gogetapps.
+    - Fix ,,Only extend LD_LIBRARY_PATH by Xrandr extension for KDE. Breaks
+      GNOME.'' from last release.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 25 Sep 2012 15:03:32 +0200
 
