@@ -108,7 +108,7 @@ sub dbsys_listsessionsroot
 	return @sessions;
 }
 
-sub listsessionsroot_all
+sub dbsys_listsessionsroot_all
 {
 	my $dbh = init_db();
 	check_root();
@@ -435,7 +435,7 @@ sub db_getagent
 	return $agent;
 }
 
-sub  db_getdisplay
+sub db_getdisplay
 {
 	my $dbh = init_db();
 	my $sid=shift or die "argument \"session_id\" missed";
@@ -485,7 +485,7 @@ sub db_listsessions
 	return @sessions;
 }
 
-sub listsessions_all
+sub db_listsessions_all
 {
 	my $dbh = init_db();
 	my @strings;
