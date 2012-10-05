@@ -102,7 +102,7 @@ sub dbsys_listsessionsroot
 		syslog('error', "listsessionsroot (SQLite3 session db backend) failed with exitcode: $sth->err()");
 		die();
 	}
-	my @sessions = fetchrow_array_session_entries($sth);
+	my @sessions = fetchrow_array_datasets($sth);
 	$sth->finish();
 	$dbh->disconnect();
 	return @sessions;
