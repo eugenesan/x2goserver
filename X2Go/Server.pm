@@ -20,37 +20,20 @@
 # Copyright (C) 2007-2012  Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
 # Copyright (C) 2007-2012  Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
 
-package X2Go::Utils;
+package X2Go::Server;
 
 =head1 NAME
 
-X2Go::Utils - X2Go utilities and helper functions for Perl
+X2Go::Server - X2Go Server package for Perl
 
 =head1 DESCRIPTION
 
-X2Go::Utils Perl package.
+X2Go::Server Perl package.
 
 =cut
 
 use strict;
 use base 'Exporter';
 
-OUR @EXPORT = ('source_environment');
-
-sub source_environment {
-    my $name = shift;
-
-    open my $fh, "<", $name
-        or die "could not open $name: $!";
-
-    while (<$fh>) {
-        chomp;
-        my ($k, $v) = split /=/, $_, 2;
-        $v =~ s/^(['"])(.*)\1/$2/; #' fix highlighter
-        $v =~ s/\$([a-zA-Z]\w*)/$ENV{$1}/g;
-        $v =~ s/`(.*?)`/`$1`/ge; #dangerous
-        $ENV{$k} = $v;
-    }
-}
 
 1;
