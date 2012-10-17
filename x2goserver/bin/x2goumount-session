@@ -23,6 +23,7 @@
 use strict;
 use Sys::Hostname;
 use Sys::Syslog qw( :standard :macros );
+use File::BaseDir qw( xdg_config_home );
 
 use lib `echo -n \$(x2gobasepath)/lib/x2go`;
 use x2godbwrapper; 
@@ -34,6 +35,24 @@ setlogmask( LOG_UPTO(x2gologlevel()) );
 
 syslog('info', "x2goumount-session has been called with options: @ARGV");
 
+# this function is a code duplication from x2gomountdirs and it will go away with
+# X2Go Server 3.2.0.0 (as the code has been moved into X2Go::Utils already in Vcs).
+sub source_environment {
+    my $name = shift;
+
+    open my $fh, "<", $name
+        or die "could not open $name: $!";
+
+    while (<$fh>) {
+        chomp;
+        my ($k, $v) = split /=/, $_, 2;
+        $v =~ s/^(['"])(.*)\1/$2/; #' fix highlighter
+        $v =~ s/\$([a-zA-Z]\w*)/$ENV{$1}/g;
+        $v =~ s/`(.*?)`/`$1`/ge; #dangerous
+        $ENV{$k} = $v;
+    }
+}
+
 my $tmp_dir = '/tmp';
 
 my $session=shift;
@@ -44,6 +63,8 @@ my $serv=hostname;
 my $mdir="$tmp_dir/.x2go-$ENV{'USER'}/media";
 my $spooldir="$tmp_dir/.x2go-$ENV{'USER'}/spool";
 my $mimeboxdir="$tmp_dir/.x2go-$ENV{'USER'}/mimebox";
+
+source_environment xdg_config_home(),"/user-dirs.dirs";
 
 if ($only_path)
 {
@@ -156,7 +177,14 @@ break:
 		$remote=~s/ /_/g;
 		$remote=~s/\\040/_/g;
 		$remote=(split(":","$remote"))[1];
-		$remote="$ENV{'HOME'}/Desktop/$remote";
+		my $desktopdir;
+		if ( $ENV{'XDG_DESKTOP_DIR'} )
+		{
+			$desktopdir="$ENV{'XDG_DESKTOP_DIR'}";
+		} else {
+			$desktopdir="$ENV{'HOME'}/Desktop";
+		}
+		$remote="$desktopdir/$remote";
 
 		my $current_desktop = 'NONE';
 		if (($session =~ m/_stDGNOME_dp/) && system("x2gofeature X2GO_GNOMEBINDINGS >/dev/null") == 0)

@@ -22,6 +22,7 @@
 
 use strict;
 use Sys::Syslog qw( :standard :macros );
+use File::BaseDir qw( xdg_config_home );
 
 use lib `echo -n \$(x2gobasepath)/lib/x2go`;
 use x2godbwrapper;
@@ -123,14 +124,7 @@ my $spooldir="$tmp_dir/.x2go-$ENV{'USER'}/spool";
 my $mimeboxdir_lnk="$ENV{'HOME'}/.x2go/C-$session/mimebox";
 my $mimeboxdir="$tmp_dir/.x2go-$ENV{'USER'}/mimebox";
 
-my $xdg_config;
-if ( $ENV{'XDG_CONFIG_HOME'} )
-{
-	$xdg_config = $ENV{'XDG_CONFIG_HOME'};
-} else {
-	$xdg_config = "$ENV{'HOME'}/.config";
-}
-source "$xdg_config/user-dirs.dirs";
+source_environment xdg_config_home(),"/user-dirs.dirs";
 
 if (! -e $mdir)
 {
@@ -296,7 +290,7 @@ for (my $i=0;$i<@dirs;$i++)
 				my $fname;
 				if ( $ENV{'XDG_DESKTOP_DIR'} )
 				{
-					$fname=$ENV{'XDG_DESKTOP_DIR'};
+					$fname="$ENV{'XDG_DESKTOP_DIR'}";
 				} else {
 					$fname="$ENV{'HOME'}/Desktop";
 				}
