@@ -15,8 +15,6 @@ x2goserver (3.2.0.0-0~x2go1) UNRELEASED; urgency=low
       Makefile installation.
     - Fix new SQLite3 wrapper for db_getmounts Perl call.
     - Fix list output in new SQLite3 wrapper.
-    - Detect i18n name of Desktop folder via XDG_DESKTOP_DIR environment
-      variable.
   * /debian/control:
     + Package X2Go::Log in separate package: libx2go-log-perl.
     + Package X2Go::Server::DB in separate package: libx2go-server-db-perl.
@@ -46,7 +44,9 @@ x2goserver (3.1.1.5-0~x2go1) UNRELEASED; urgency=low
     - Remove redundant setting of loglevel in x2gogetapps.
     - Fix ,,Only extend LD_LIBRARY_PATH by Xrandr extension for KDE. Breaks
       GNOME.'' from last release.
-
+    - Detect i18n name of Desktop folder via XDG_DESKTOP_DIR environment
+      variable.
+ 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 25 Sep 2012 15:03:32 +0200
 
 x2goserver (3.1.1.4-0~x2go1) unstable; urgency=low
