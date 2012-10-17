@@ -22,8 +22,10 @@
 
 use strict;
 use Sys::Syslog qw( :standard :macros );
+use File::BaseDir qw(xdg_config_home);
 
 use X2Go::Server::DB qw(db_insertmount db_deletemount);
+use X2Go::Utils qw(source_environment);
 use X2Go::Log qw(loglevel);
 
 openlog($0,'cons,pid','user');
@@ -31,22 +33,6 @@ setlogmask( LOG_UPTO(loglevel()) );
 
 
 syslog('info', "x2gomountdirs has been called with options: @ARGV");
-
-sub source {
-    my $name = shift;
-
-    open my $fh, "<", $name
-        or die "could not open $name: $!";
-
-    while (<$fh>) {
-        chomp;
-        my ($k, $v) = split /=/, $_, 2;
-        $v =~ s/^(['"])(.*)\1/$2/; #' fix highlighter
-        $v =~ s/\$([a-zA-Z]\w*)/$ENV{$1}/g;
-        $v =~ s/`(.*?)`/`$1`/ge; #dangerous
-        $ENV{$k} = $v;
-    }
-}
 
 my $tmp_dir = '/tmp';
 
@@ -122,14 +108,7 @@ my $spooldir="$tmp_dir/.x2go-$ENV{'USER'}/spool";
 my $mimeboxdir_lnk="$ENV{'HOME'}/.x2go/C-$session/mimebox";
 my $mimeboxdir="$tmp_dir/.x2go-$ENV{'USER'}/mimebox";
 
-my $xdg_config;
-if ( $ENV{'XDG_CONFIG_HOME'} )
-{
-	$xdg_config = $ENV{'XDG_CONFIG_HOME'};
-} else {
-	$xdg_config = "$ENV{'HOME'}/.config";
-}
-source "$xdg_config/user-dirs.dirs";
+source xdg_config_home(),"/user-dirs.dirs";
 
 if (! -e $mdir)
 {
