@@ -26,6 +26,7 @@ Depends:
  makepasswd,
  libdbd-pg-perl,
  libdbd-sqlite3-perl,
+ libfile-basedir-perl,
  adduser,
  xauth,
  psmisc,
