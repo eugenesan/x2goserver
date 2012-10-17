@@ -17,6 +17,7 @@ Package: x2goserver
 Architecture: any
 Depends:
  ${misc:Depends},
+ libfile-basedir-perl,
  libx2go-server-perl (>= ${source:Version}), libx2go-server-db-perl (<< ${source:Version}.1~),
  x2goagent (>= 2:3.5.0.15-0~),
  lsof,
