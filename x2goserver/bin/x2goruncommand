@@ -119,7 +119,7 @@ elif ([ "$cmd" == "UNITY" ] || [ "$cmd" == "unity" ]); then
 
 elif [ "$cmd" == "KDE" ]; then
 	cmd="/usr/bin/startkde"
-elif [ "$cmd" == "XFCE4" ]; then
+elif [ "$cmd" == "XFCE4" ] || [ "$cmd" == "XFCE" ]; then
 	cmd="/usr/bin/xfce4-session"
 elif [ "$cmd" == "LXDE" ]; then
 	cmd="/usr/bin/startlxde"
