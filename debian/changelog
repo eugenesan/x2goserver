@@ -15,7 +15,7 @@ x2goserver (3.1.1.5-0~x2go1) UNRELEASED; urgency=low
       GNOME.'' from last release.
     - Detect i18n name of Desktop folder via XDG_DESKTOP_DIR environment
       variable.
-    - Fix database call in x2gogetagent.
+    - Put option of database call in x2gogetagent into parantheses.
   * /debian/control:
     + Depend on libfile-basedir-perl.
 
