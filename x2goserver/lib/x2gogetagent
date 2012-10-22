@@ -31,7 +31,7 @@ openlog($0,'cons,pid','user');
 setlogmask( LOG_UPTO(x2gologlevel()) );
 
 my $sid=shift or die;
-my $agent = db_getagent $sid;
+my $agent = db_getagent($sid);
 print $agent;
 
 # closing syslog 
