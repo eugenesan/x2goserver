@@ -16,8 +16,6 @@ x2goserver (3.2.0.0-0~x2go1) UNRELEASED; urgency=low
     - Fix new SQLite3 wrapper for db_getmounts Perl call.
     - Fix list output in new SQLite3 wrapper.
     - Make session type label XFCE a valid session that starts xfce4-session.
-    - Fix typo fix in x2goagent introduced by an earlier commit (closes
-      upstream issue #50).
   * /debian/control:
     + Package X2Go::Log in separate package: libx2go-log-perl.
     + Package X2Go::Server::DB in separate package: libx2go-server-db-perl.
