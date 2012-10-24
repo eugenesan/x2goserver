@@ -23,6 +23,7 @@
 use strict;
 use Sys::Hostname;
 use Sys::Syslog qw( :standard :macros );
+use File::BaseDir qw(xdg_config_home);
 
 use X2Go::Utils qw(source_environment);
 use X2Go::Server::DB qw(db_getdisplay db_getmounts db_deletemount);
@@ -44,7 +45,7 @@ my $mdir="$tmp_dir/.x2go-$ENV{'USER'}/media";
 my $spooldir="$tmp_dir/.x2go-$ENV{'USER'}/spool";
 my $mimeboxdir="$tmp_dir/.x2go-$ENV{'USER'}/mimebox";
 
-source_environment(xdg_config_home(),"/user-dirs.dirs");
+source_environment(xdg_config_home() . "/user-dirs.dirs");
 
 if ($only_path)
 {

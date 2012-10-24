@@ -108,7 +108,7 @@ my $spooldir="$tmp_dir/.x2go-$ENV{'USER'}/spool";
 my $mimeboxdir_lnk="$ENV{'HOME'}/.x2go/C-$session/mimebox";
 my $mimeboxdir="$tmp_dir/.x2go-$ENV{'USER'}/mimebox";
 
-source_environment(xdg_config_home(),"/user-dirs.dirs");
+source_environment(xdg_config_home() . "/user-dirs.dirs");
 
 if (! -e $mdir)
 {
