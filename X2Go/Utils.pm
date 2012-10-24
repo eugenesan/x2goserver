@@ -38,19 +38,24 @@ use base 'Exporter';
 our @EXPORT = ('source_environment');
 
 sub source_environment {
-    my $name = shift;
+	my $name = shift;
 
-    open my $fh, "<", $name
-        or die "could not open $name: $!";
+	open my $fh, "<", $name
+	     or die "could not open $name: $!";
 
-    while (<$fh>) {
-        chomp;
-        my ($k, $v) = split /=/, $_, 2;
-        $v =~ s/^(['"])(.*)\1/$2/; #' fix highlighter
-        $v =~ s/\$([a-zA-Z]\w*)/$ENV{$1}/g;
-        $v =~ s/`(.*?)`/`$1`/ge; #dangerous
-        $ENV{$k} = $v;
-    }
+	while (<$fh>) {
+		chomp;
+		my $line = $_;
+		if ( $line =~ m/^#.*/ )
+		{
+			next;
+		}
+		my ($k, $v) = split /=/, $line, 2;
+		$v =~ s/^(['"])(.*)\1/$2/; #' fix highlighter
+		$v =~ s/\$([a-zA-Z]\w*)/$ENV{$1}/g;
+		$v =~ s/`(.*?)`/`$1`/ge; #dangerous
+		$ENV{$k} = $v;
+	}
 }
 
 1;
