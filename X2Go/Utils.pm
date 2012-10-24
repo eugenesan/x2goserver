@@ -35,7 +35,7 @@ X2Go::Utils Perl package.
 use strict;
 use base 'Exporter';
 
-OUR @EXPORT = ('source_environment');
+our @EXPORT = ('source_environment');
 
 sub source_environment {
     my $name = shift;
