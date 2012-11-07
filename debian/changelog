@@ -1,15 +1,15 @@
-x2goserver (3.1.1.5-0~x2go1) UNRELEASED; urgency=low
+x2goserver (3.1.1.5-0~x2go1) unstable; urgency=low
 
   [ Stéphane Graber ]
   * New upstream version (3.1.1.5):
     - Add a very basic SIGCHLD handler to x2gocleansessions. on SIGCHLD
-      let the script wait for cleaning up after its children. Closes
-      upstream issue #38.
+      let the script wait for cleaning up after its children. (Closes
+      upstream issue #38).
 
   [ Mike Gabriel ]
   * New upstream version (3.1.1.5):
-    - Fix x2gogetapps when rendering multi-section .desktop files. Closes
-      upstream issue #43.
+    - Fix x2gogetapps when rendering multi-section .desktop files. (Closes
+      upstream issue #43).
     - Remove redundant setting of loglevel in x2gogetapps.
     - Fix ,,Only extend LD_LIBRARY_PATH by Xrandr extension for KDE. Breaks
       GNOME.'' from last release.
@@ -19,7 +19,7 @@ x2goserver (3.1.1.5-0~x2go1) UNRELEASED; urgency=low
   * /debian/control:
     + Depend on libfile-basedir-perl.
 
- -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 25 Sep 2012 15:03:32 +0200
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Wed, 07 Nov 2012 16:36:36 +0100
 
 x2goserver (3.1.1.4-0~x2go1) unstable; urgency=low
 
