@@ -41,7 +41,7 @@ sub source_environment {
     my $name = shift;
 
     open my $fh, "<", $name
-        or die "could not open $name: $!";
+        or return -1;
 
     while (<$fh>) {
         chomp;
