@@ -35,6 +35,8 @@ x2goserver (3.1.1.7-0~x2go1) UNRELEASED; urgency=low
   * New upstream release (3.1.1.7):
     - Use DISTRIB_RELEASE to query Ubuntu release versions and detect Unity launch
       command.
+    - Detect GNOME and UNITY startup commands via DISTRIB_RELEASE version number
+      and by using the bc command for comparing versions.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Wed, 12 Nov 2012 09:28:32 +0100
 
