@@ -32,7 +32,7 @@ x2goserver (3.2.0.0-0~x2go1) UNRELEASED; urgency=low
 
 x2goserver (3.1.1.7-0~x2go1) UNRELEASED; urgency=low
 
-  * New upstream release (3.1.1.7):
+  * New upstream+bufix release (3.1.1.7):
     - Use DISTRIB_RELEASE to query Ubuntu release versions and detect Unity launch
       command.
     - Detect GNOME and UNITY startup commands via DISTRIB_RELEASE version number
