@@ -20,6 +20,7 @@ Depends:
  ${misc:Depends},
  x2goagent (>= 2:3.5.0.15-0~),
  lsof,
+ bc,
  openssh-client,
  openssh-server,
  libconfig-simple-perl,
