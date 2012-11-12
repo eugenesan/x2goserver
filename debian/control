@@ -21,6 +21,7 @@ Depends:
  libx2go-server-perl (>= ${source:Version}), libx2go-server-db-perl (<< ${source:Version}.1~),
  x2goagent (>= 2:3.5.0.15-0~),
  lsof,
+ bc,
  openssh-client,
  openssh-server,
  xauth,
