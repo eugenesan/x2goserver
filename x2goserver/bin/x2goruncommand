@@ -91,14 +91,14 @@ fi
 if [ "$cmd" == "GNOME" ] || [ "$cmd" == "gnome-session" ]; then
 
 	cmd="/usr/bin/gnome-session"
-	if [ "$DISTRIB_ID" == "Ubuntu" ] && echo "$DISTRIB_CODENAME" | egrep "^[a-m].*" >/dev/null; then
-		export DESKTOP_SESSION="gnome"
-	elif [ "$DISTRIB_ID" == "Ubuntu" ] && echo "$DISTRIB_CODENAME" | egrep "^n.*" >/dev/null; then
-		export DESKTOP_SESSION="2d-gnome"
-		args=" --session=$DESKTOP_SESSION"
-	elif [ "$DISTRIB_ID" == "Ubuntu" ] && echo "$DISTRIB_CODENAME" | egrep -v "^[a-n].*" >/dev/null; then
+	if [ "$DISTRIB_ID" == "Ubuntu" ] && $(echo $DISTRIB_RELEASE >= 11.10 | bc); then
 		export DESKTOP_SESSION="gnome-fallback"
 		args=" --session=$DESKTOP_SESSION"
+	elif [ "$DISTRIB_ID" == "Ubuntu" ] && $(echo $DISTRIB_RELEASE == 11.04 | bc); then
+		export DESKTOP_SESSION="2d-gnome"
+		args=" --session=$DESKTOP_SESSION"
+	elif [ "$DISTRIB_ID" == "Ubuntu" ] && $(echo $DISTRIB_RELEASE <= 10.10 | bc); then
+		export DESKTOP_SESSION="gnome"
 	elif cat /etc/debian_version | egrep "^(squeeze|6\.).*" >/dev/null; then
 		export DESKTOP_SESSION="gnome"
 	elif cat /etc/debian_version | egrep "^(wheezy|7\.).*" >/dev/null; then
