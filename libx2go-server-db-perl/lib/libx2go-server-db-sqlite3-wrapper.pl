@@ -30,7 +30,7 @@ use X2Go::Server::DB::SQLite3;
 sub print_result
 {
 	my $retval = shift;
-	if ( $retval =~ /^(0|1)/ )
+	if ( $retval =~ /^(0|1)$/ )
 	{
 		if ( $retval )
 		{
