@@ -32,7 +32,7 @@ x2goserver (3.2.0.0-0~x2go1) UNRELEASED; urgency=low
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 03 Jul 2012 10:03:28 +0200
 
-x2goserver (3.1.1.7-0~x2go1) UNRELEASED; urgency=low
+x2goserver (3.1.1.7-0~x2go1) unstable; urgency=low
 
   * New upstream+bufix release (3.1.1.7):
     - Use DISTRIB_RELEASE to query Ubuntu release versions and detect Unity launch
@@ -41,7 +41,7 @@ x2goserver (3.1.1.7-0~x2go1) UNRELEASED; urgency=low
       and by using the bc command for comparing versions.
     - Do not fail if source_environment() cannot find the file to be sourced.
 
- -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Wed, 12 Nov 2012 09:28:32 +0100
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Thu, 22 Nov 2012 18:11:15 +0100
 
 x2goserver (3.1.1.6-0~x2go1) unstable; urgency=low
 
