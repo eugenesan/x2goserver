@@ -32,7 +32,7 @@ export NX_ROOT=$X2GO_ROOT
 
 REMOTE=localhost
 
-X2GO_CLIENT=`echo "$SSH_CLIENT" | awk '{print $1}'`
+X2GO_CLIENT=`echo $SSH_CLIENT | awk '{print $1}'`
 $X2GO_LIB_PATH/x2gosyslog "$0" "debug" "client announced itself as ,,$X2GO_CLIENT''"
 
 X2GO_GEOMETRY="$1"; shift
@@ -51,9 +51,9 @@ XAUTHORITY=${XAUTHORITY:-"$HOME/.Xauthority"}
 
 if [ "$X2GO_STYPE" == "S" ]; then
 
-	SHADOW_MODE=`echo "$X2GO_CMD"|awk '{split($0,a,"XSHAD"); print a[1]}'`
-	SHADOW_USER=`echo "$X2GO_CMD"|awk '{split($0,a,"XSHAD"); print a[2]}'`
-	SHADOW_DESKTOP=`echo "$X2GO_CMD"|awk '{split($0,a,"XSHAD"); print a[3]}'`
+	SHADOW_MODE=`echo $X2GO_CMD |awk '{split($0,a,"XSHAD"); print a[1]}'`
+	SHADOW_USER=`echo $X2GO_CMD |awk '{split($0,a,"XSHAD"); print a[2]}'`
+	SHADOW_DESKTOP=`echo $X2GO_CMD |awk '{split($0,a,"XSHAD"); print a[3]}'`
 
 	test -z $1 && { 
 
@@ -77,8 +77,12 @@ if [ "$X2GO_STYPE" == "S" ]; then
 			$X2GO_LIB_PATH/x2gosyslog "$0" "err" "ERROR: user $SHADOW_USER denied desktop sharing session"
 			exit -1
 		fi
-		X2GO_COOKIE=`echo "$OUTPUT" | awk '{print $2}'`
-		X2GO_PORT=`echo "$OUTPUT" | awk '{print $1}'`
+		X2GO_COOKIE=`echo $OUTPUT | awk '{print $2}'`
+		X2GO_PORT=`echo $OUTPUT | awk '{print $1}'
+		echo "=================="
+		echo "X2GO_PORT: $X2GO_PORT"
+`		echo "=================="
+
 		$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "received shadow session information: cookie: $X2GO_COOKIE, port: $X2GO_PORT"
 		xauth -f "$XAUTHORITY" add "${HOSTNAME}/unix:${X2GO_PORT}" MIT-MAGIC-COOKIE-1 "${X2GO_COOKIE}"
 		xauth -f "$XAUTHORITY" add "${HOSTNAME}:${X2GO_PORT}" MIT-MAGIC-COOKIE-1 "${X2GO_COOKIE}"
@@ -95,7 +99,7 @@ if [ "$X2GO_STYPE" == "S" ]; then
 fi
 
 LIMIT=`x2gosessionlimit`
-LWORD=`echo "$LIMIT" | awk '{print $1}'`
+LWORD=`echo $LIMIT | awk '{print $1}'`
 
 if [ "$LWORD" == "LIMIT" ]; then
 	echo  $LIMIT 1>&2
@@ -104,7 +108,7 @@ fi
 
 export NX_CLIENT="$X2GO_LIB_PATH/x2gosuspend-agent"
 
-COLORDEPTH=`echo "$X2GO_TYPE"|awk '{split($0,a,"-depth_"); print a[2]}'`
+COLORDEPTH=`echo $X2GO_TYPE | awk '{split($0,a,"-depth_"); print a[2]}'`
 
 SESSION_TYPE="D"
 NOEXITPARAM=""
