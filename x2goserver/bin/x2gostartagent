@@ -78,10 +78,7 @@ if [ "$X2GO_STYPE" == "S" ]; then
 			exit -1
 		fi
 		X2GO_COOKIE=`echo $OUTPUT | awk '{print $2}'`
-		X2GO_PORT=`echo $OUTPUT | awk '{print $1}'
-		echo "=================="
-		echo "X2GO_PORT: $X2GO_PORT"
-`		echo "=================="
+		X2GO_PORT=`echo $OUTPUT | awk '{print $1}'`
 
 		$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "received shadow session information: cookie: $X2GO_COOKIE, port: $X2GO_PORT"
 		xauth -f "$XAUTHORITY" add "${HOSTNAME}/unix:${X2GO_PORT}" MIT-MAGIC-COOKIE-1 "${X2GO_COOKIE}"
