@@ -32,6 +32,14 @@ x2goserver (3.2.0.0-0~x2go1) UNRELEASED; urgency=low
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 03 Jul 2012 10:03:28 +0200
 
+x2goserver (3.1.1.9-0~x2go1) UNRELEASED; urgency=low
+
+  * New upstream release (3.1.1.9):
+    - Fix x2godesktopsharing, we had added to many quotation marks in
+      x2gostartagent.
+
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 23 Nov 2012 12:06:40 +0100
+
 x2goserver (3.1.1.8-0~x2go1) unstable; urgency=low
 
   * New bugfix release (3.1.1.8):
