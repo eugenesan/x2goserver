@@ -1,3 +1,10 @@
+x2goserver (3.1.1.8-0~x2go2) UNRELEASED; urgency=low
+
+  * New bugfix release (3.1.1.8):
+    - Fix startup of GNOME and UNITY sessions (issue introduced with 3.1.1.7).
+
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 23 Nov 2012 11:59:37 +0100
+
 x2goserver (3.1.1.7-0~x2go1) unstable; urgency=low
 
   * New upstream+bugfix release (3.1.1.7):

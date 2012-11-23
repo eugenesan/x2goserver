@@ -91,13 +91,13 @@ fi
 if [ "$cmd" == "GNOME" ] || [ "$cmd" == "gnome-session" ]; then
 
 	cmd="/usr/bin/gnome-session"
-	if [ "$DISTRIB_ID" == "Ubuntu" ] && $(echo $DISTRIB_RELEASE >= 11.10 | bc); then
+	if [ "$DISTRIB_ID" == "Ubuntu" ] && $(echo "$DISTRIB_RELEASE >= 11.10" | bc); then
 		export DESKTOP_SESSION="gnome-fallback"
 		args=" --session=$DESKTOP_SESSION"
-	elif [ "$DISTRIB_ID" == "Ubuntu" ] && $(echo $DISTRIB_RELEASE == 11.04 | bc); then
+	elif [ "$DISTRIB_ID" == "Ubuntu" ] && $(echo "$DISTRIB_RELEASE == 11.04" | bc); then
 		export DESKTOP_SESSION="2d-gnome"
 		args=" --session=$DESKTOP_SESSION"
-	elif [ "$DISTRIB_ID" == "Ubuntu" ] && $(echo $DISTRIB_RELEASE <= 10.10 | bc); then
+	elif [ "$DISTRIB_ID" == "Ubuntu" ] && $(echo "$DISTRIB_RELEASE <= 10.10" | bc); then
 		export DESKTOP_SESSION="gnome"
 	elif cat /etc/debian_version | egrep "^(squeeze|6\.).*" >/dev/null; then
 		export DESKTOP_SESSION="gnome"
@@ -108,13 +108,13 @@ if [ "$cmd" == "GNOME" ] || [ "$cmd" == "gnome-session" ]; then
 
 elif ([ "$cmd" == "UNITY" ] || [ "$cmd" == "unity" ]); then
 	cmd="/usr/bin/gnome-session"
-	if [ "$DISTRIB_ID" == "Ubuntu" ] && $(echo $DISTRIB_RELEASE >= 12.10 | bc); then
+	if [ "$DISTRIB_ID" == "Ubuntu" ] && $(echo "$DISTRIB_RELEASE" >= 12.10 | bc); then
 		export DESKTOP_SESSION="ubuntu"
 		args=" --session=$DESKTOP_SESSION"
-	elif [ "$DISTRIB_ID" == "Ubuntu" ] && [ $(echo $DISTRIB_RELEASE == 11.10 | bc) || $(echo $DISTRIB_RELEASE == 12.04 | bc) ]; then
+	elif [ "$DISTRIB_ID" == "Ubuntu" ] && [ $(echo "$DISTRIB_RELEASE" == 11.10 | bc) || $(echo $DISTRIB_RELEASE == 12.04 | bc) ]; then
 		export DESKTOP_SESSION="ubuntu-2d"
 		args=" --session=$DESKTOP_SESSION"
-	elif [ "$DISTRIB_ID" == "Ubuntu" ] && $(echo $DISTRIB_RELEASE == 11.04 | bc); then
+	elif [ "$DISTRIB_ID" == "Ubuntu" ] && $(echo "$DISTRIB_RELEASE" == 11.04 | bc); then
 		export DESKTOP_SESSION="2d-ubuntu"
 		args=" --session=$DESKTOP_SESSION"
 	fi
