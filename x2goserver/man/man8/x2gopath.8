@@ -1,0 +1,28 @@
+.TH x2gopath 8 "Feb 2012" "Version 3.1.0.x" "X2Go Server Tool"
+.SH Name
+.PP
+x2gopath - Show X2Go Server installation paths
+.SH Synopsis
+.PP
+\fBx2gopath\fP {\fBbase\fP|\fBlib\fP|\fBlibexec\fP|\fBshare\fP}
+.SH Description
+.PP
+\fBx2gopath\fP displays the paths of the selected X2Go installation directory.
+.TP
+\fBbase\fP
+The prefix under which X2Go was installed. This is generally \fB/usr\fP or
+\fB/usr/local\fP.
+.TP
+\fBlib\fP
+The location of X2Go architecture-dependent parts (e.g. libraries,
+but also Perl modules).
+.\" Possible examplares are /usr/lib64/x2go (traditional biarch) and
+.\" /usr/lib/x86_64-gnu-linux/x2go (Debian-style multiarch)
+.TP
+\fBlibexec\fP
+The location of private X2Go binaries.
+.\" Possible examples are /usr/libexec/x2go and /usr/lib/x2go.
+.TP
+\fBshare\fP
+The location of X2Go's data files.
+.\" prefix + /share/x2go

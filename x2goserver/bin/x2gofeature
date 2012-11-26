@@ -22,8 +22,8 @@
 
 [ -z $1 ] && { echo usage: "$(basename $0) <X2GO_FEATURE_NAME>"; exit -2; }
 
-X2GO_LIB_PATH=`echo -n \$(x2gobasepath)/lib/x2go`
-X2GO_SHARE_PATH=`echo -n \$(x2gobasepath)/share/x2go`
+X2GO_LIB_PATH="$(x2gopath libexec)";
+X2GO_SHARE_PATH="$(x2gopath share)";
 
 $X2GO_LIB_PATH/x2gosyslog "$0" "info" "$(basename $0) called with options: $@"
 

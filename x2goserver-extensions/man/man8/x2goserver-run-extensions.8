@@ -36,9 +36,9 @@ Calling X2Go Server core scripts currently are: \fBx2gostartagent(8)\fR, \fBx2go
 .PP
 The modality names all refer to a sub-directory of the path:
 
-  \fI<INSTALL_PREFIX>/lib/x2go/extensions\fR,
+  \fI<libexecdir>/x2go/extensions\fR,
 
-where <INSTALL_PREFIX> mostly is /usr on commonly-used GNU/Linux systems.
+where <libexecdir> is /usr/libexec/x2go or /usr/lib/x2go on commonly-used GNU/Linux systems.
 .PP
 In any of these sub-directories third-party X2Go extension packages can place scripts or binaries that will then get executed by the core X2Go server
 commands, either before or after the essential functionality (e.g. x2goagent startup, x2goagent suspension, x2goagent resumption, etc.) or on failure of that
