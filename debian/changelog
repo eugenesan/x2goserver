@@ -40,6 +40,11 @@ x2goserver (3.1.1.10-0~x2go1) UNRELEASED; urgency=low
       for distro packagers to tweak the installation paths of X2Go Server
       components.
 
+  [ Mike Gabriel ]
+  * New upstream version (3.1.1.10):
+    - Adapt Xinerama path in x2gopath: use $base for detecting the path to the
+      Xinerama libs, as well, as is done with all the other paths.
+
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 23 Nov 2012 15:35:48 +0100
 
 x2goserver (3.1.1.9-0~x2go1) unstable; urgency=low
