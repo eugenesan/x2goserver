@@ -36,7 +36,7 @@ case "$1" in
     lib) echo -n "$base/lib/x2go";;
     libexec) echo -n "$base/lib/x2go";;
     share) echo -n "$base/share/x2go";;
-    xinerama) echo -n "/usr/lib/nx/X11/Xinerama";;
+    xinerama) echo -n "$base/lib/nx/X11/Xinerama";;
     *) exit 1;;
 esac;
 
