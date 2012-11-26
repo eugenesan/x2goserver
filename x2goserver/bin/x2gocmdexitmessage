@@ -20,7 +20,7 @@
 # Copyright (C) 2007-2012  Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
 # Copyright (C) 2007-2012  Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
 
-X2GO_LIB_PATH=`echo -n \$(x2gobasepath)/lib/x2go`
+X2GO_LIB_PATH="$(x2gopath libexec)";
 X2GO_ROOT=${HOME}/.x2go
 MESSAGE_FILE=$X2GO_ROOT/C-$1/cmdoutput
 

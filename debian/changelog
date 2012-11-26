@@ -1,7 +1,10 @@
 x2goserver (3.1.1.10-0~x2go1) UNRELEASED; urgency=low
 
+  [ Jan Engelhardt ]
   * New upstream version (3.1.1.10):
-    - Continue development...
+    - Replace script x2gobasepath by script x2gopath that makes it much easier
+      for distro packagers to tweak the installation paths of X2Go Server
+      components.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 23 Nov 2012 15:35:48 +0100
 
