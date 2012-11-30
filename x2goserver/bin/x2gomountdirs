@@ -200,6 +200,7 @@ for (my $i=0;$i<@dirs;$i++)
 	my $printspool=0;
 	my $mimeboxspool=0;
 	my $mntpath;
+	my $this_mdir = $mdir;
 	if(@dirs[$i]=~m/__PRINT_SPOOL_/)
 	{
 		@dirs[$i]=~s/__PRINT_SPOOL_//;
@@ -222,24 +223,24 @@ for (my $i=0;$i<@dirs;$i++)
 			$p=~s/\/ramdrive\/mnt\///;
 			if ($p =~ m/CDROM/)
 			{
-				$mdir=$mdir."/cd";
+				$this_mdir=$this_mdir."/cd";
 			}
 			else
 			{
-				$mdir=$mdir."/rm";
+				$this_mdir=$this_mdir."/rm";
 			}
 		}
 		else
 		{
-			$mdir=$mdir."/disk";
+			$this_mdir=$this_mdir."/disk";
 		}
 		$p=~s/\//_/g;
 		$p=~s/ /_/g;
 		$p=~s/~_cygdrive_//;
 		$p=~s/~_windrive_//;
 		$p=~s/~//g;
-		mkdir("$mdir/$p");
-		$mntpath="$mdir/$p";
+		mkdir("$this_mdir/$p");
+		$mntpath="$this_mdir/$p";
 	}
 
 	if (db_insertmount( $session, $mntpath, $host))

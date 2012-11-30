@@ -44,6 +44,8 @@ x2goserver (3.1.1.10-0~x2go1) UNRELEASED; urgency=low
   * New upstream version (3.1.1.10):
     - Adapt Xinerama path in x2gopath: use $base for detecting the path to the
       Xinerama libs, as well, as is done with all the other paths.
+    - Fix mounting of multiple paths, thanks to Pascal Vibet. (Closes upstream
+      issue #67).
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 23 Nov 2012 15:35:48 +0100
 
