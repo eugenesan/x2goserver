@@ -206,14 +206,6 @@ then
 	X2GO_SESS_TYPE="R"
 fi
 
-if [ "$cmd" == "startkde" ]; then
-	NX_XRANDR_LIBS=/usr/lib/nx/X11/Xrandr
-	LD_LIBRARY_PATH="$NX_XRANDR_LIBS:$LD_LIBRARY_PATH"
-	$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "extending LD_LIBRARY_PATH=$LD_LIBRARY_PATH by Xrandr extension"
-	export LD_LIBRARY_PATH
-fi
-
-
 # run x2goserver-extensions for pre-runcommand
 x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions "$X2GO_SESSION" pre-runcommand || true
 
