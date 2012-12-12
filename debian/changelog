@@ -13,6 +13,11 @@ x2goserver (3.1.1.10-0~x2go1) UNRELEASED; urgency=low
     - Fix mounting of multiple paths, thanks to Pascal Vibet. (Closes upstream
       issue #67).
 
+  [ Orion Poplawski ]
+  * New upstream version (3.1.1.10):
+    - Honour CFLAGS when compiling the server's sgid wrapper script (closes
+      upstream.issue #83).
+
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 23 Nov 2012 15:35:48 +0100
 
 x2goserver (3.1.1.9-0~x2go1) unstable; urgency=low
