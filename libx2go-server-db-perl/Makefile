@@ -35,7 +35,7 @@ all: clean build
 build: build-arch build-indep
 
 build-arch:
-	gcc -fPIE -pie -o lib/libx2go-server-db-sqlite3-wrapper src/libx2go-server-db-sqlite3-wrapper.c
+	gcc -fPIE -pie $(CFLAGS) -o lib/libx2go-server-db-sqlite3-wrapper src/libx2go-server-db-sqlite3-wrapper.c
 
 build-indep:
 
