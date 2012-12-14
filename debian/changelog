@@ -30,6 +30,10 @@ x2goserver (3.2.0.0-0~x2go1) UNRELEASED; urgency=low
   * Move code in pre/post+inst/rm scripts around (from x2goserver package
     to libx2go-server-db-perl and x2goserver-common).
 
+  [ Orion Poplawski ]
+  * New upstream version (3.2.0.0):
+    - Use new script x2gopath in Perl::API. (Closes: #86).
+
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 03 Jul 2012 10:03:28 +0200
 
 x2goserver (3.1.1.10-0~x2go1) UNRELEASED; urgency=low

@@ -61,7 +61,7 @@ sub init_db
 	if ( ! ( $dbuser and $dbpass ) )
 	{
 		my $Config = new Config::Simple(syntax=>'ini');
-		my $x2go_lib_path=`echo -n \$(x2gobasepath)/lib/x2go`;
+		my $x2go_lib_path=`x2gopath libexec`;
 
 		$Config->read('/etc/x2go/x2gosql/sql' ) or die "Can't read config file /etc/x2go/x2gosql/sql";
 		my $backend=$Config->param("backend");
