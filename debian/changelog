@@ -10,13 +10,11 @@ x2goserver (3.1.1.10-0~x2go1) UNRELEASED; urgency=low
   * New upstream version (3.1.1.10):
     - Adapt Xinerama path in x2gopath: use $base for detecting the path to the
       Xinerama libs, as well, as is done with all the other paths.
-    - Fix mounting of multiple paths, thanks to Pascal Vibet. (Closes upstream
-      issue #67).
+    - Fix mounting of multiple paths, thanks to Pascal Vibet. (Fixes: #67).
 
   [ Orion Poplawski ]
   * New upstream version (3.1.1.10):
-    - Honour CFLAGS when compiling the server's sgid wrapper script (closes
-      upstream.issue #83).
+    - Honour CFLAGS when compiling the server's sgid wrapper script (Fixes: #83).
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 23 Nov 2012 15:35:48 +0100
 
@@ -58,13 +56,11 @@ x2goserver (3.1.1.5-0~x2go1) unstable; urgency=low
   [ Stéphane Graber ]
   * New upstream version (3.1.1.5):
     - Add a very basic SIGCHLD handler to x2gocleansessions. on SIGCHLD
-      let the script wait for cleaning up after its children. (Closes
-      upstream issue #38).
+      let the script wait for cleaning up after its children. (Fixes: #38).
 
   [ Mike Gabriel ]
   * New upstream version (3.1.1.5):
-    - Fix x2gogetapps when rendering multi-section .desktop files. (Closes
-      upstream issue #43).
+    - Fix x2gogetapps when rendering multi-section .desktop files. (Fixes: #43).
     - Remove redundant setting of loglevel in x2gogetapps.
     - Fix ,,Only extend LD_LIBRARY_PATH by Xrandr extension for KDE. Breaks
       GNOME.'' from last release.
@@ -91,9 +87,9 @@ x2goserver (3.1.1.4-0~x2go1) unstable; urgency=low
     - Add option ,,-r sound:local'' to rdesktop calls if pulse is enabled.
     - Proxy X2Go client-side shares into remote desktop session.
     - For applications inside of a session, use NX's Xrandr library instead
-      of Xorg's Xrandr library (partially closes #28).
+      of Xorg's Xrandr library (partially fixes #28).
     - Make sure when launching desktop session through the Xsession mechanism
-      that the LD_LIBRARY_PATH variable stays intact. Closes #29.
+      that the LD_LIBRARY_PATH variable stays intact. (Fixes: #29).
     - Only extend LD_LIBRARY_PATH by Xrandr extension for KDE. Breaks GNOME.
   * /debian/control:
     + Maintainer change in package: X2Go Developers <x2go-dev@lists.berlios.de>.
@@ -388,7 +384,7 @@ x2goserver (3.0.99.6-0~x2go1) unstable; urgency=low
     - Add lxterminal as possible TERMINAL to x2goruncommand.
     - Add LibreOffice.org as possible OFFICE application to x2goruncommand.
     - Fix for TERMINAL command execution if konsole (KDE4) is installed on the
-      server (closes upstream issue #87).
+      server.
     - Silence x2golistsessions on missing session.log files.
     - Add x2goprint user creation information to INSTALL howto.
     - Add sanity checks to x2goprint, script can only be run as root.
@@ -446,7 +442,7 @@ x2goserver (3.0.99.6-0~x2go1) unstable; urgency=low
 
 
 
-  * React to bug #627990, prefer man2html-base over man2html.
+  * React to Debian bug #627990, prefer man2html-base over man2html.
   * Do not depend on package perlsuid anymore.
   * Use source format 3.0 (native).
   * Fix of Debian clean rules, fix of Makefile's clean rules.
