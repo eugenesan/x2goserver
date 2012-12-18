@@ -116,7 +116,7 @@ print F $dsa_key;
 close(F);
 
 open (F,">$key.ident");
-print F "$host $rsa_identity";
+print F "\[$host\]:$port $rsa_identity";
 close(F);
 
 chmod(0600,"$key");

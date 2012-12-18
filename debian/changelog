@@ -16,6 +16,10 @@ x2goserver (3.1.1.10-0~x2go1) UNRELEASED; urgency=low
   * New upstream version (3.1.1.10):
     - Honour CFLAGS when compiling the server's sgid wrapper script (Fixes: #83).
 
+  [ Oleksandr Shneyder ]
+  * New upstream version (3.1.1.10):
+    - Fix SSHFS mounting from Ubuntu clients
+
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 23 Nov 2012 15:35:48 +0100
 
 x2goserver (3.1.1.9-0~x2go1) unstable; urgency=low
