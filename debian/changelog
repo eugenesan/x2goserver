@@ -36,6 +36,7 @@ x2goserver (3.2.0.0-0~x2go1) UNRELEASED; urgency=low
 
   [ Oleksandr Shneyder ]
   * Fix SSHFS mounting from Ubuntu clients
+  * create /tmp/.X11-unix if not exists
 
   [ Reinhard Tartler ]
   * Introduce /etc/x2go/nxagent.options to allow overriding nxagent options

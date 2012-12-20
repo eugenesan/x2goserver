@@ -9,21 +9,35 @@
 ### END INIT INFO
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+XSOCKDIR=/tmp/.X11-unix
+
+start()
+{
+		if [ ! -d $XSOCKDIR ]
+		then
+			mkdir $XSOCKDIR
+			chmod 1777 $XSOCKDIR
+		fi
+		echo "Cleaning up stale X2Go sessions."
+		/usr/sbin/x2gocleansessions
+}
+
+stop()
+{
+		# kill x2gocleansessions, ignore on failure
+		killall x2gocleansessions || true
+}
 
 case "$1" in
 	start)
-		echo "Cleaning up stale X2Go sessions."
-		/usr/sbin/x2gocleansessions
+		start
 	;;
 	stop)
-		# kill x2gocleansessions, ignore on failure
-		killall x2gocleansessions || true
+		stop
 	;;
 	reload|force-reload|restart)
-		# kill x2gocleansessions, ignore on failure
-		killall x2gocleansessions || true
-		echo "Cleaning up stale X2Go sessions."
-		/usr/sbin/x2gocleansessions
+		stop
+		start
 	;;
 	*)
 		N=/etc/init.d/x2goserver
