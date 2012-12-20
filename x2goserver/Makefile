@@ -75,7 +75,11 @@ install_config:
 	$(INSTALL_DIR) $(DESTDIR)$(ETCDIR)/x2gosql
 	$(INSTALL_DIR) $(DESTDIR)$(ETCDIR)/x2gosql/passwords
 	$(INSTALL_FILE) etc/x2goserver.conf     $(DESTDIR)$(ETCDIR)/
+	$(INSTALL_FILE) etc/nxagent.options $(DESTDIR)$(ETCDIR)/
 	$(INSTALL_FILE) etc/x2gosql/sql         $(DESTDIR)$(ETCDIR)/x2gosql
+	$(INSTALL_DIR) $(DESTDIR)$(ETCDIR)/x2go_logout.d
+	$(INSTALL_FILE) etc/x2go_logout     $(DESTDIR)$(ETCDIR)/
+	$(INSTALL_FILE) etc/x2go_logout.d/* $(DESTDIR)$(ETCDIR)/x2go_logout.d/
 
 install_man:
 	$(INSTALL_DIR) $(DESTDIR)$(MANDIR)

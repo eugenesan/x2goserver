@@ -1,3 +1,6 @@
+   -- Reinhard Tartler <siretart@tauware.de>  Thu, 20 Dec 2012 10:15:26 +0100
+
+>>>>>>> d7f1087... Introduce /etc/x2go/nxagent.options to allow overriding nxagent options
 x2goserver (3.1.1.10-0~x2go1) UNRELEASED; urgency=low
 
   [ Jan Engelhardt ]
@@ -19,6 +22,15 @@ x2goserver (3.1.1.10-0~x2go1) UNRELEASED; urgency=low
   [ Oleksandr Shneyder ]
   * New upstream version (3.1.1.10):
     - Fix SSHFS mounting from Ubuntu clients
+
+  [ Reinhard Tartler ]
+  * New upstream version (3.1.1.10):
+    - Introduce /etc/x2go/nxagent.options to allow overriding nxagent
+      options. This new configuration file specifies default options
+      that clients can override.
+    - Disable XFIXES and GLX. Both are known to cause certain
+      problems. Hopefully we find better solutions so that we can reenable
+      them soon.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 23 Nov 2012 15:35:48 +0100
 
