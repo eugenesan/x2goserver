@@ -36,7 +36,7 @@ x2goserver (4.1.0.0-0~x2go1) UNRELEASED; urgency=low
 
  -- Reinhard Tartler <siretart@tauware.de>  Thu, 20 Dec 2012 10:15:26 +0100
 
-x2goserver (4.0.0.0-0~x2go1) UNRELEASED; urgency=low
+x2goserver (4.0.0.0-0~x2go1) unstable; urgency=low
 
   [ Jan Engelhardt ]
   * New upstream version (4.0.0.0):
@@ -68,7 +68,7 @@ x2goserver (4.0.0.0-0~x2go1) UNRELEASED; urgency=low
       problems. Hopefully we find better solutions so that we can reenable
       them soon.
 
- -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 23 Nov 2012 15:35:48 +0100
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Sun, 30 Dec 2012 17:39:44 +0100
 
 x2goserver (3.1.1.9-0~x2go1) unstable; urgency=low
 
