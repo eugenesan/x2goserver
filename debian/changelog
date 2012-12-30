@@ -19,6 +19,7 @@ x2goserver (3.1.1.10-0~x2go1) UNRELEASED; urgency=low
   [ Oleksandr Shneyder ]
   * New upstream version (3.1.1.10):
     - Fix SSHFS mounting from Ubuntu clients
+    - Create /tmp/.X11-unix if not exists.
 
   [ Reinhard Tartler ]
   * New upstream version (3.1.1.10):
