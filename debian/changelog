@@ -23,7 +23,7 @@ x2goserver (3.1.1.10-0~x2go1) UNRELEASED; urgency=low
 
   [ Reinhard Tartler ]
   * New upstream version (3.1.1.10):
-    - Introduce /etc/x2go/nxagent.options to allow overriding nxagent
+    - Introduce /etc/x2go/x2goagent.options to allow overriding x2goagent
       options. This new configuration file specifies default options
       that clients can override.
     - Disable XFIXES and GLX. Both are known to cause certain

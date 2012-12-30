@@ -30,8 +30,8 @@ SSH_PORT=30000 #First ssh port 30001
 X2GO_ROOT="${HOME}/.x2go"
 export NX_ROOT=$X2GO_ROOT
 
-if [ -r /etc/x2go/nxagent.options ]; then
-    source /etc/x2go/nxagent.options
+if [ -r /etc/x2go/x2goagent.options ]; then
+    source /etc/x2go/x2goagent.options
 fi
 
 if [ -z "$X2GO_NXAGENT_OPTIONS" ]; then
