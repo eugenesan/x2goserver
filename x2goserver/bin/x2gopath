@@ -32,12 +32,12 @@ base=$(readlink -f "$base/..");
 
 # The following section is subject to substitution by distro packaging tools.
 case "$1" in
-    base) echo -n "$base";;
-    lib) echo -n "$base/lib/x2go";;
-    libexec) echo -n "$base/lib/x2go";;
-    share) echo -n "$base/share/x2go";;
-    xinerama) echo -n "$base/lib/nx/X11/Xinerama";;
-    *) exit 1;;
+	base) echo -n "$base";;
+	lib) echo -n "$base/lib/x2go";;
+	libexec) echo -n "$base/lib/x2go";;
+	share) echo -n "$base/share/x2go";;
+	xinerama) echo -n "$base/lib/nx/X11/Xinerama";;
+	*) exit 1;;
 esac;
 
 if test -t 1; then
