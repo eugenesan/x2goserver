@@ -34,18 +34,6 @@ x2goserver (3.2.0.0-0~x2go1) UNRELEASED; urgency=low
   * New upstream version (3.2.0.0):
     - Use new script x2gopath in Perl::API. (Fixes: #86).
 
-  [ Oleksandr Shneyder ]
-  * Fix SSHFS mounting from Ubuntu clients
-  * create /tmp/.X11-unix if not exists
-
-  [ Reinhard Tartler ]
-  * Introduce /etc/x2go/x2goagent.options to allow overriding x2goagent options
-    This new configuration file specifies default options that clients can
-    override.
-  * Disable XFIXES and GLX. Both are known to cause certain
-    problems. Hopefully we find better solutions so that we can reenable
-    them soon.
-
  -- Reinhard Tartler <siretart@tauware.de>  Thu, 20 Dec 2012 10:15:26 +0100
 
 x2goserver (3.1.1.10-0~x2go1) UNRELEASED; urgency=low
@@ -65,6 +53,20 @@ x2goserver (3.1.1.10-0~x2go1) UNRELEASED; urgency=low
   [ Orion Poplawski ]
   * New upstream version (3.1.1.10):
     - Honour CFLAGS when compiling the server's sgid wrapper script (Fixes: #83).
+
+  [ Oleksandr Shneyder ]
+  * New upstream version (3.1.1.10):
+    - Fix SSHFS mounting from Ubuntu clients.
+    - Create /tmp/.X11-unix if not exists.
+
+  [ Reinhard Tartler ]
+  * New upstream version (3.1.1.10):
+    - Introduce /etc/x2go/x2goagent.options to allow overriding x2goagent
+      options. This new configuration file specifies default options that
+      clients can override.
+    - Disable XFIXES and GLX. Both are known to cause certain
+      problems. Hopefully we find better solutions so that we can reenable
+      them soon.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 23 Nov 2012 15:35:48 +0100
 
