@@ -39,7 +39,7 @@ x2goserver (3.2.0.0-0~x2go1) UNRELEASED; urgency=low
   * create /tmp/.X11-unix if not exists
 
   [ Reinhard Tartler ]
-  * Introduce /etc/x2go/nxagent.options to allow overriding nxagent options
+  * Introduce /etc/x2go/x2goagent.options to allow overriding x2goagent options
     This new configuration file specifies default options that clients can
     override.
   * Disable XFIXES and GLX. Both are known to cause certain
