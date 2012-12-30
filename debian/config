@@ -14,11 +14,11 @@ if dpkg --compare-versions "$LASTVERSION" lt "3.1.0.0" && \
 
 fi
 
-if dpkg --compare-versions "$LASTVERSION" lt "3.2.0.0" && \
+if dpkg --compare-versions "$LASTVERSION" lt "4.1.0.0" && \
    [ -e /etc/x2go/x2gosql/sql ] && \
    egrep "^backend=postgres.*" /etc/x2go/x2gosql/sql >/dev/null; then
 
-	db_input critical x2goserver/upgrade-3_2_0_0 || true
+	db_input critical x2goserver/upgrade-4_1_0_0 || true
 	db_go
 
 fi

@@ -1,8 +1,8 @@
-x2goserver (3.2.0.0-0~x2go1) UNRELEASED; urgency=low
+x2goserver (4.1.0.0-0~x2go1) UNRELEASED; urgency=low
 
   [ Mike Gabriel ]
-  * Bump next upstream version to 3.2.0.0.
-  * New upstream version (3.2.0.0):
+  * Bump development upstream version to 4.1.0.0.
+  * New upstream version (4.1.0.0):
     - Transform x2gologlevel.pm into proper Perl module X2Go::Log.
     - Transform x2godbwrapper.pm into proper Perl module X2Go::Server::DB.
     - Transform x2gosqlitewrapper.pl into small wrapper script and move the
@@ -31,36 +31,36 @@ x2goserver (3.2.0.0-0~x2go1) UNRELEASED; urgency=low
     to libx2go-server-db-perl and x2goserver-common).
 
   [ Orion Poplawski ]
-  * New upstream version (3.2.0.0):
+  * New upstream version (4.1.0.0):
     - Use new script x2gopath in Perl::API. (Fixes: #86).
 
  -- Reinhard Tartler <siretart@tauware.de>  Thu, 20 Dec 2012 10:15:26 +0100
 
-x2goserver (3.1.1.10-0~x2go1) UNRELEASED; urgency=low
+x2goserver (4.0.0.0-0~x2go1) UNRELEASED; urgency=low
 
   [ Jan Engelhardt ]
-  * New upstream version (3.1.1.10):
+  * New upstream version (4.0.0.0):
     - Replace script x2gobasepath by script x2gopath that makes it much easier
       for distro packagers to tweak the installation paths of X2Go Server
       components.
 
   [ Mike Gabriel ]
-  * New upstream version (3.1.1.10):
+  * New upstream version (4.0.0.0):
     - Adapt Xinerama path in x2gopath: use $base for detecting the path to the
       Xinerama libs, as well, as is done with all the other paths.
     - Fix mounting of multiple paths, thanks to Pascal Vibet. (Fixes: #67).
 
   [ Orion Poplawski ]
-  * New upstream version (3.1.1.10):
+  * New upstream version (4.0.0.0):
     - Honour CFLAGS when compiling the server's sgid wrapper script (Fixes: #83).
 
   [ Oleksandr Shneyder ]
-  * New upstream version (3.1.1.10):
+  * New upstream version (4.0.0.0):
     - Fix SSHFS mounting from Ubuntu clients.
     - Create /tmp/.X11-unix if not exists.
 
   [ Reinhard Tartler ]
-  * New upstream version (3.1.1.10):
+  * New upstream version (4.0.0.0):
     - Introduce /etc/x2go/x2goagent.options to allow overriding x2goagent
       options. This new configuration file specifies default options that
       clients can override.

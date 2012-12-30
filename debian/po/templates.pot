@@ -50,8 +50,8 @@ msgstr ""
 #. Description
 #: ../templates:2001
 msgid ""
-"You are upgrading from an X2Go Server version (< 3.2.0.0). Between 3.2.0.0 "
-"and 3.1.1.x the package structure has undergone a major change."
+"You are upgrading from an X2Go Server version (< 4.1.0.0). Between 4.1.0.0 "
+"and 4.0.0.x the package structure has undergone a major change."
 msgstr ""
 
 #. Type: text

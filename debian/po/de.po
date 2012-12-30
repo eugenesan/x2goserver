@@ -51,8 +51,8 @@ msgstr "X2Go Server Upgrade"
 #. Type: text
 #. Description
 #: ../templates:2001
-msgid "You are upgrading from an X2Go Server version (< 3.2.0.0). Between 3.2.0.0 and 3.1.1.x the package structure has undergone a major change."
-msgstr "Sie aktualisieren X2Go Server von einer Version (< 3.2.0.0). Seit 3.1.1.x wurde das Paket einigen strukturellen Änderungen unterzogen."
+msgid "You are upgrading from an X2Go Server version (< 4.1.0.0). Between 4.1.0.0 and 4.0.0.x the package structure has undergone a major change."
+msgstr "Sie aktualisieren X2Go Server von einer Version (< 4.1.0.0). Seit 4.0.0.x wurde das Paket einigen strukturellen Änderungen unterzogen."
 
 #. Type: text
 #. Description

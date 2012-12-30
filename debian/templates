@@ -8,11 +8,11 @@ _Description: X2Go Server / PostgreSQL Upgrade
  using your X2Go Server:
  /usr/share/doc/x2goserver/README.upgrade-pgsql-database.gz
 
-Template: x2goserver/upgrade-3_2_0_0
+Template: x2goserver/upgrade-4_1_0_0
 Type: text
 _Description: X2Go Server Upgrade
- You are upgrading from an X2Go Server version (< 3.2.0.0). Between
- 3.2.0.0 and 3.1.1.x the package structure has undergone a major
+ You are upgrading from an X2Go Server version (< 4.1.0.0). Between
+ 4.1.0.0 and 4.0.0.x the package structure has undergone a major
  change.
  .
  Note that most of the Perl code in X2Go Server has been moved into
