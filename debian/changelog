@@ -57,7 +57,7 @@ x2goserver (4.0.0.0-0~x2go1) unstable; urgency=low
   [ Oleksandr Shneyder ]
   * New upstream version (4.0.0.0):
     - Fix SSHFS mounting from Ubuntu clients.
-    - Create /tmp/.X11-unix if not exists.
+    - Create /tmp/.X11-unix if not exists. (Fixes: #93).
 
   [ Reinhard Tartler ]
   * New upstream version (4.0.0.0):
