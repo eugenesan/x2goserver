@@ -19,7 +19,7 @@ start()
 			chmod 1777 $XSOCKDIR
 		fi
 		echo "Cleaning up stale X2Go sessions."
-		/usr/sbin/x2gocleansessions
+		x2gocleansessions
 }
 
 stop()
