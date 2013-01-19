@@ -1,4 +1,4 @@
-# Copyright (C) 2007-2012 X2Go Project - http://wiki.x2go.org
+# Copyright (C) 2007-2013 X2Go Project - http://wiki.x2go.org
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,8 +15,8 @@
 # Free Software Foundation, Inc.,
 # 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
 #
-# Copyright (C) 2007-2012  Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
-# Copyright (C) 2007-2012  Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
+# Copyright (C) 2007-2013  Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
+# Copyright (C) 2007-2013  Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
 
 package X2Go::Server::DB::PostgreSQL;
 
