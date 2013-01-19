@@ -54,8 +54,8 @@ use base 'Exporter';
 
 our @EXPORT=('db_listsessions','db_listsessions_all', 'db_getservers', 'db_getagent', 'db_resume', 'db_changestatus', 'db_getstatus', 
              'db_getdisplays', 'db_insertsession', 'db_getports', 'db_insertport', 'db_rmport', 'db_createsession', 'db_insertmount', 
-             'db_getmounts', 'db_deletemount', 'db_getdisplay', 'dbsys_getmounts', 'dbsys_listsessionsroot', 
-             'dbsys_listsessionsroot_all', 'dbsys_rmsessionsroot', 'dbsys_deletemounts');
+             'db_getmounts', 'db_deletemount', 'db_getdisplay', 'dbsys_getmounts', 'dbsys_listsessionsroot',.
+             'dbsys_listsessionsroot_all', 'dbsys_rmsessionsroot', 'dbsys_deletemounts', 'db_listshadowsessions','db_listshadowsessions_all', );
 
 sub init_db
 {
@@ -496,6 +496,55 @@ sub db_listsessions_all
 	                       uname,
 	                       strftime('%s','now','localtime') - strftime('%s',init_time),fs_port from  sessions 
 	                       where status !='F' and uname=? and  (  session_id not like '%XSHAD%')  order by status desc");
+	
+	$sth->execute($realuser);
+	if ($sth->err())
+	{
+		syslog('error', "listsessions_all (SQLite3 session db backend) failed with exitcode: $sth->err()");
+		die();
+	}
+	my @sessions = fetchrow_array_datasets($sth);
+	$sth->finish();
+	$dbh->disconnect();
+	return @sessions;
+}
+
+sub db_listshadowsessions
+{
+	my $dbh = init_db();
+	my $server=shift or die "argument \"server\" missed";
+	my @strings;
+	my $sth=$dbh->prepare("select agent_pid, session_id, display, server, status,
+	                       strftime('%Y-%m-%dT%H:%M:%S',init_time),
+	                       cookie,client,gr_port,sound_port,
+	                       strftime('%Y-%m-%dT%H:%M:%S',last_time),
+	                       uname,
+	                       strftime('%s','now','localtime') - strftime('%s',init_time),fs_port from  sessions
+	                       where status !='F' and server=? and uname=?
+	                       and  (  session_id like '%XSHAD%')  order by status desc");
+	$sth->execute($server, $realuser);
+	if ($sth->err())
+	{
+		syslog('error', "listsessions (SQLite3 session db backend) failed with exitcode: $sth->err()");
+		die();
+	}
+	my @sessions = fetchrow_array_datasets($sth);
+	$sth->finish();
+	$dbh->disconnect();
+	return @sessions;
+}
+
+sub db_listshadowsessions_all
+{
+	my $dbh = init_db();
+	my @strings;
+	my $sth=$dbh->prepare("select agent_pid, session_id, display, server, status,
+	                       strftime('%Y-%m-%dT%H:%M:%S',init_time),
+	                       cookie,client,gr_port,sound_port,
+	                       strftime('%Y-%m-%dT%H:%M:%S',last_time),
+	                       uname,
+	                       strftime('%s','now','localtime') - strftime('%s',init_time),fs_port from  sessions 
+	                       where status !='F' and uname=? and  (  session_id like '%XSHAD%')  order by status desc");
 	
 	$sth->execute($realuser);
 	if ($sth->err())

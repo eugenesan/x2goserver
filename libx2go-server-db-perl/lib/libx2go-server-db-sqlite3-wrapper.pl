@@ -55,7 +55,7 @@ my $cmd=shift or die "command not specified";
 switch ($cmd)
 {
 	case /.*listsessions.*root/              { @result_list = eval("X2Go::Server::DB::SQLite3::dbsys_$cmd(\@ARGV)") }
-	case /.*(listsessions|getmounts).*/      { @result_list = eval("X2Go::Server::DB::SQLite3::db_$cmd(\@ARGV)") }
+	case /.*(list.*sessions|getmounts).*/    { @result_list = eval("X2Go::Server::DB::SQLite3::db_$cmd(\@ARGV)") }
 	case /.*root/                            { $result = eval("X2Go::Server::DB::SQLite3::dbsys_$cmd(\@ARGV)") }
 	else                                     { $result = eval("X2Go::Server::DB::SQLite3::db_$cmd(\@ARGV)") }
 }

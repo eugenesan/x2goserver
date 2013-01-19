@@ -424,3 +424,28 @@ sub db_listsessions_all
 		return split("\n",`$x2go_lib_path/libx2go-server-db-sqlite3-wrapper listsessions_all`);
 	}
 }
+
+sub db_listshadowsessions
+{
+	my $server=shift or die "argument \"server\" missed";
+	if ($backend eq 'postgres')
+	{
+		return X2Go::Server::DB::PostgreSQL::db_listshadowsessions($server);
+	}
+	if ($backend eq 'sqlite')
+	{
+		return split("\n",`$x2go_lib_path/libx2go-server-db-sqlite3-wrapper listshadowsessions $server`);
+	}
+}
+
+sub db_listshadowsessions_all
+{
+	if($backend eq 'postgres')
+	{
+		return X2Go::Server::DB::PostgreSQL::db_listshadowsessions_all();
+	}
+	if ($backend eq 'sqlite')
+	{
+		return split("\n",`$x2go_lib_path/libx2go-server-db-sqlite3-wrapper listshadowsessions_all`);
+	}
+}

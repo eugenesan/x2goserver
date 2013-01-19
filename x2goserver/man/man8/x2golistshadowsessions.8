@@ -1,0 +1,55 @@
+'\" -*- coding: utf-8 -*-
+.if \n(.g .ds T< \\FC
+.if \n(.g .ds T> \\F[\n[.fam]]
+.de URL
+\\$2 \(la\\$1\(ra\\$3
+..
+.if \n(.g .mso www.tmac
+.TH x2golistshadowsessions 8 "Jan 2013" "Version 4.0.x.y" "X2Go Server Tool"
+.SH NAME
+x2golistshadowsessions \- List Available X2Go Shadow Sessions for User
+.SH SYNOPSIS
+'nh
+.fi
+.ad l
+x2golistshadowsessions [<server_hostname>|--all-servers]
+
+.SH DESCRIPTION
+\fBx2golistshadowsessions\fR returns a list of running or suspended X2Go shadow sessions
+(sessions that provide the X2Go Desktop Sharing feature) for X2Go server <server_hostname>.
+If no server hostname is given at the command line, the shadow session list query runs for the local system.
+.PP
+\fBx2golistshadowsessions\fR is run with normal user privileges and it is used by X2Go clients to render
+a list of available X2Go shadow sessions.
+.SH X2GO CLUSTER MODE
+If \fBx2golistshadowsessions\fR is executed with the \fI--all-servers\fR option then the central database
+of your X2Go cluster is queried for running/suspended shadow sessions belonging to the user executing this command.
+These sessions may be active on any of the X2Go servers within your cluster.
+.SH RETURN VALUES
+A line-by-line list of available X2Go sessions. Each line consists of several session attribute fields separated by the pipe
+symbol (,,|'').
+.PP
+The meaning of the session attributes of each output line are shown below:
+
+  field 01: <agent_pid>
+  field 02: <session_id>
+  field 03: <port>
+  field 04: <host>
+  field 05: <state>
+  field 06: <init_time>
+  field 07: <session_cookie>
+  field 08: <client_ip>
+  field 09: <gr_port>
+  field 10: <snd_port>
+  field 11: <last_time>
+  field 12: <user>
+  field 13: <age_in_secs>
+  field 14: <sshfs_port>
+
+.PP
+As exitcode \fBx2golistshadowsessions\fR always returns 0.
+.SH SEE ALSO
+x2golistsessions(8), x2golistdesktops(8), x2goresume-session(8), x2gosuspend-session(8), x2goterminate-session(8)
+.SH AUTHOR
+This manual has been written by Mike Gabriel <mike.gabriel@das-netzwerkteam.de> for the X2Go project
+(http://www.x2go.org).

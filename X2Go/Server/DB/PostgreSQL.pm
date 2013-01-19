@@ -45,7 +45,7 @@ use base 'Exporter';
 our @EXPORT=('db_listsessions','db_listsessions_all', 'db_getservers', 'db_getagent', 'db_resume', 'db_changestatus', 'db_getstatus', 
              'db_getdisplays', 'db_insertsession', 'db_getports', 'db_insertport', 'db_rmport', 'db_createsession', 'db_insertmount', 
              'db_getmounts', 'db_deletemount', 'db_getdisplay', 'dbsys_getmounts', 'dbsys_listsessionsroot', 
-             'dbsys_listsessionsroot_all', 'dbsys_rmsessionsroot', 'dbsys_deletemounts');
+             'dbsys_listsessionsroot_all', 'dbsys_rmsessionsroot', 'dbsys_deletemounts', 'db_listshadowsessions','db_listshadowsessions_all');
 
 my ($uname, $pass, $uid, $pgid, $quota, $comment, $gcos, $homedir, $shell, $expire) = getpwuid(getuid());
 
@@ -481,6 +481,53 @@ sub db_listsessions_all
 	                      to_char(now()- init_time,'SSSS'), fs_port from  sessions_view
 	                      where status !='F'  and  
 	                      (session_id not like '%XSHAD%') order by status desc");
+	$sth->execute()or die;
+	my @data;
+	my $i=0;
+	while (@data = $sth->fetchrow_array) 
+	{
+		@sessions[$i++]=join('|',@data);
+	}
+	$sth->finish();
+	$dbh->disconnect();
+	return @sessions;
+}
+
+sub db_listshadowsessions
+{
+	init_db();
+	my $server=shift or die "argument \"server\" missed";
+	my @sessions;
+	my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
+	my $sth=$dbh->prepare("select agent_pid, session_id, display, server, status,
+	                      to_char(init_time,'YYYY-MM-DDTHH24:MI:SS'), cookie, client, gr_port,
+	                      sound_port, to_char( last_time, 'YYYY-MM-DDTHH24:MI:SS'), uname,
+	                      to_char(now()- init_time,'SSSS'), fs_port from  sessions_view
+	                      where status !='F' and server='$server' and  
+	                      (session_id like '%XSHAD%') order by status desc");
+	$sth->execute() or die;
+	my @data;
+	my $i=0;
+	while (@data = $sth->fetchrow_array) 
+	{
+		@sessions[$i++]=join('|',@data);
+	}
+	$sth->finish();
+	$dbh->disconnect();
+	return @sessions;
+}
+
+sub db_listshadowsessions_all
+{
+	init_db();
+	my @sessions;
+	my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
+	my $sth=$dbh->prepare("select agent_pid, session_id, display, server, status,
+	                      to_char(init_time,'YYYY-MM-DDTHH24:MI:SS'), cookie, client, gr_port,
+	                      sound_port, to_char( last_time, 'YYYY-MM-DDTHH24:MI:SS'), uname,
+	                      to_char(now()- init_time,'SSSS'), fs_port from  sessions_view
+	                      where status !='F'  and  
+	                      (session_id is like '%XSHAD%') order by status desc");
 	$sth->execute()or die;
 	my @data;
 	my $i=0;
