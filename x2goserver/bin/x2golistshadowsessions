@@ -37,17 +37,17 @@ if ( @ARGV ) {
 	syslog('debug', "x2golistshadowsessions has been called with no option");
 }
 
-#sub check_stat
-#{
-#	my $sess=shift;
-#	my $log="$ENV{'HOME'}/.x2go/C-$sess/session.log";
-#	my $text=`tail -1 $log 2>/dev/null`;
-#	if ($text =~ m/Session suspended/)
-#	{
-#		return 0;
-#	}
-#	return 1;
-#}
+sub check_stat
+{
+	my $sess=shift;
+	my $log="$ENV{'HOME'}/.x2go/C-$sess/session.log";
+	my $text=`tail -1 $log 2>/dev/null`;
+	if ($text =~ m/Session suspended/)
+	{
+		return 0;
+	}
+	return 1;
+}
 
 my $serv=shift;
 if( ! $serv)
