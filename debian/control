@@ -5,6 +5,7 @@ Maintainer: X2Go Developers <x2go-dev@lists.berlios.de>
 Uploaders:
  Mike Gabriel <mike.gabriel@das-netzwerkteam.de>,
  Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>,
+ Reinhard Tartler <siretart@tauware.de>,
 Build-Depends: 
  debhelper (>= 7.0.50~),
  man2html-base | man2html
