@@ -3,6 +3,10 @@
 SRC_DIR=$(CURDIR)
 SHELL=/bin/bash
 
+CC      ?= gcc
+CFLAGS  += -fPIE
+LDFLAGS += -pie
+
 INSTALL_DIR=install -d -o root -g root -m 755
 INSTALL_FILE=install -o root -g root -m 644
 INSTALL_PROGRAM=install -o root -g root -m 755
@@ -35,7 +39,7 @@ all: clean build
 build: build-arch build-indep
 
 build-arch:
-	gcc -fPIE -pie $(CFLAGS) -o lib/libx2go-server-db-sqlite3-wrapper src/libx2go-server-db-sqlite3-wrapper.c
+	$(CC) $(CFLAGS) $(LDFLAGS) -o lib/libx2go-server-db-sqlite3-wrapper src/libx2go-server-db-sqlite3-wrapper.c
 
 build-indep:
 
