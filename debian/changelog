@@ -19,6 +19,7 @@ x2goserver (4.1.0.0-0~x2go1) UNRELEASED; urgency=low
     - Fix failures of x2gogetagent that was related to faulty regexp in
       SQLite3 DB wrapper script.
     - Add X2Go Server feature X2GO_LIST_SHADOWSESSIONS.
+    - Fix build-arch target in x2goserver/Makefile. (Fixes: #121).
   * /debian/control:
     + Package X2Go::Log in separate package: libx2go-log-perl.
     + Package X2Go::Server::DB in separate package: libx2go-server-db-perl.
