@@ -34,8 +34,6 @@ all: clean build
 
 build: build-arch build-indep
 
-build-arch:
-
 build-indep: build_man2html
 
 build_man2html:
