@@ -4,6 +4,10 @@ x2goserver (4.0.0.1-0~x2go1) UNRELEASED; urgency=low
   * New upstream version (4.0.0.1):
     - Make CFLAGS usable in x2goserver. (Fixes: #83).
 
+  [ Matthew L. Dailey ]
+  * New upstream version (4.0.0.1):
+    - Fix command/version detection for GNOME/Unity on Ubuntu. (Fixes: #105).
+
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Mon, 11 Feb 2013 11:42:32 +0100
 
 x2goserver (4.0.0.0-0~x2go1) unstable; urgency=low
