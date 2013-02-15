@@ -7,6 +7,8 @@ x2goserver (4.0.0.1-0~x2go1) UNRELEASED; urgency=low
   [ Matthew L. Dailey ]
   * New upstream version (4.0.0.1):
     - Fix command/version detection for GNOME/Unity on Ubuntu. (Fixes: #105).
+    - Allow for deploying X2Go Published Applications system-wide on a
+      per-user basis (in /etc/x2go/applications-per-user/<username>).
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Mon, 11 Feb 2013 11:42:32 +0100
 
