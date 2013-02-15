@@ -182,7 +182,8 @@ my $file;
 my @dirs;
 @dirs[0]="/etc/x2go/applications";
 my ($name, $pass, $uid, $gid, $quota, $comment, $gcos, $homedir, $shell, $expire) = getpwnam(getlogin || getpwuid($<));
-@dirs[1]="$homedir/.x2go/applications";
+@dirs[1]="/etc/x2go/applications-per-user/$name";
+@dirs[2]="$homedir/.x2go/applications";
 foreach(@dirs)
 {
 	my $dirname=$_;
