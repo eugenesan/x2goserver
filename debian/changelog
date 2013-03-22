@@ -1,4 +1,4 @@
-x2goserver (4.0.0.1-0~x2go1) UNRELEASED; urgency=low
+x2goserver (4.0.0.1-0~x2go1) unstable; urgency=low
 
   [ Bernard Cafarelli ]
   * New upstream version (4.0.0.1):
@@ -13,7 +13,7 @@ x2goserver (4.0.0.1-0~x2go1) UNRELEASED; urgency=low
     - Allow for deploying X2Go Published Applications system-wide on a
       per-user basis (in /etc/x2go/applications-per-user/<username>).
 
- -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Mon, 11 Feb 2013 11:42:32 +0100
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 22 Mar 2013 13:52:43 +0100
 
 x2goserver (4.0.0.0-0~x2go1) unstable; urgency=low
 
