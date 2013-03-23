@@ -17,6 +17,7 @@ Vcs-Browser: http://code.x2go.org/gitweb?p=x2goserver.git;a=summary
 Package: x2goserver
 Architecture: any
 Depends:
+ x2goserver-common (>= 4.1.0.0-0~),
  ${misc:Depends},
  libfile-basedir-perl,
  libx2go-server-perl (>= ${source:Version}), libx2go-server-db-perl (<< ${source:Version}.1~),
