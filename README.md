@@ -1,24 +1,24 @@
-# x2goserver  
-This document provides an overview of the sources of the x2goserver project and it's codebase.
-The most of different folder are documented with README.md files as well. The goal of this 
-documentation is to provice a quick overview of what is where how the differen components 
+# X2Go Server
+This document provides an overview of the sources of the X2Go Server project and its codebase.
+The most of different folders are documented with README.md files, as well. The goal of this
+documentation is to provide a quick overview of what is where and how the different components
 interact.
 
- * debian 
+ * debian
 
-   This folder contains all the stuff thats needed to build the debian package.
+   This folder contains all the stuff that is needed to build the Debian package.
 
  * x2goserver
 
-   This folder contains the x2goserver core component. Look into this folders README.md file.
+   This folder contains the X2Go Server core component. Look into this folder's README.md file.
 
  * x2goserver-compat
 
    This folder contains the compatibility scripts.
 
  * x2goserver-extensions
-   
-   This folder contains the extensions to the x2goservers core component. The x2goserver-run-extensions 
+
+   This folder contains the extensions to the X2Go Server's core component. The x2goserver-run-extensions
    is called from within a number of X2Go Server core scripts.
 
  * x2goserver-fmbindings
@@ -32,15 +32,17 @@ interact.
  * x2goserver-pyhoca
 
    This folder contains the pyhoca extension for including the pyhoca libraries from the pyhoca libraries.
+   The approach is to move everything provided in this package over to one of the other components (once
+   new ideas have been accepted by the other developers).
 
  * x2goserver-xsession
 
-   This folder contains the project for fiddling arround with Xsession files of your own system and 
-   the remote servers Xsession files.
+   This folder contains the project for fiddling arround with Xsession files of your own system and
+   the X2Go Server's Xsession files.
 
  * INSTALL
  
-   This File contains installation instructions for building and installing it from a tarball.
+   This file contains installation instructions for building and installing it from a tarball.
 
  * Makefile 
 
@@ -52,5 +54,5 @@ interact.
 
  * UNINSTALL
 
-   This file is used by [http://www.gnu.org/software/make/manual/make.html](make) to uninstall all previously installed components of the x2goserver.
+   This File contains instructions for uninstalling X2GO Server in case it was installed via tarball.
 
