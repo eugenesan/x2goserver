@@ -120,7 +120,7 @@ elif ([ "$cmd" == "UNITY" ] || [ "$cmd" == "unity" ]); then
 	fi
 	# on earlier Ubuntu versions or with non-Ubuntu Distros the ,,UNITY'' command in X2Go will launch the GNOME2 desktop shell
 
-elif [ "$cmd" == "CINNAMON" ]; then
+elif ([ "$cmd" == "CINNAMON" ] || [ "$cmd" == "cinnamon" ]); then
 	cmd="/usr/bin/gnome-session"
 	export DESKTOP_SESSION="cinnamon2d"
 	args=" --session=$DESKTOP_SESSION"
