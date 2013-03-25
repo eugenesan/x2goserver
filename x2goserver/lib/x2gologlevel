@@ -22,7 +22,7 @@
 
 use strict;
 
-use lib `echo -n \$(x2gobasepath)/lib/x2go`;
+use lib `x2gopath lib`;
 use x2gologlevel;
 
 print x2gologlevel();

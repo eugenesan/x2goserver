@@ -26,8 +26,8 @@ use DBI;
 use POSIX;
 use Sys::Syslog qw( :standard :macros );
 
-my $x2go_lib_path=`echo -n \$(x2gobasepath)/lib/x2go`;
-use lib `echo -n \$(x2gobasepath)/lib/x2go`;
+my $x2go_lib_path = `x2gopath libexec`;
+use lib `x2gopath lib`;
 use x2gologlevel;
 
 

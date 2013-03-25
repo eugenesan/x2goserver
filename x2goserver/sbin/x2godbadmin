@@ -26,7 +26,7 @@ use Getopt::Long;
 use Config::Simple;   
 use DBI;
 
-use lib `echo -n \$(x2gobasepath)/lib/x2go`;
+use lib `x2gopath lib`;
 use x2gologlevel;
 
 openlog($0,'cons,pid','user');

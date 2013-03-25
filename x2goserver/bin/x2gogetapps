@@ -24,7 +24,7 @@ use strict;
 use Sys::Syslog qw( :standard :macros );
 use MIME::Base64 qw(encode_base64);
 
-use lib `echo -n \$(x2gobasepath)/lib/x2go`;
+use lib `x2gopath lib`;
 use x2gologlevel;
 
 my @iconext=("png","svg","jpeg","jpg","xpm","bmp");

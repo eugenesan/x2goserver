@@ -26,7 +26,7 @@ use File::Copy;
 use File::Path;
 use Sys::Syslog qw( :standard :macros );
 
-use lib `echo -n \$(x2gobasepath)/lib/x2go`;
+use lib `x2gopath lib`;
 use x2godbwrapper;
 use x2gologlevel;
 
