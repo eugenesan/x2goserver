@@ -34,6 +34,9 @@ x2goserver (4.1.0.0-0~x2go1) UNRELEASED; urgency=low
     + Rely on $PATH when invoking x2gocleansessions.
   * Move code in pre/post+inst/rm scripts around (from x2goserver package
     to libx2go-server-db-perl and x2goserver-common).
+  * Break execution of x2gosuspend-session / x2goterminate-session if the
+    script is called without session as first argument and $X2GO_SESSION
+    not set. (Fixes: #82).
 
   [ Otto Kjell ]
   * New upstream version (4.1.0.0):

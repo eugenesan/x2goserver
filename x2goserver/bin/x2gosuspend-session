@@ -20,10 +20,21 @@
 # Copyright (C) 2007-2013  Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
 # Copyright (C) 2007-2013  Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
 
-if [ $# -eq 1   ]; then
+usage() {
+	echo "$(basename $0): needs <X2GO-SESSION> as first argument. Alternatively, you can set \$X2GO_SESSION with the correct session name" 1>&2
+        exit -1
+}
+
+if [ $# -eq 1 ]; then
 	SESSION_NAME="$1"
-else 
+elif
 	SESSION_NAME="$X2GO_SESSION"
+else
+	usage
+fi
+
+if [ -z $SESSION_NAME ]; then
+	usage
 fi
 
 X2GO_LIB_PATH="$(x2gopath libexec)";
