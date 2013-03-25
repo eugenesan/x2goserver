@@ -1,6 +1,8 @@
 x2goserver (4.0.0.2-0~x2go1) UNRELEASED; urgency=low
 
-  * Continue development...
+  [ Matthew L. Dailey ]
+  * New upstream version (4.0.0.2):
+    - Do parse profile/xprofile files in X2Go's Xsession file. (Fixes: #149).
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Mon, 25 Mar 2013 22:34:11 +0100
 
