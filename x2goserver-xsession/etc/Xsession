@@ -49,14 +49,6 @@ internal_errormsg () {
            "<x2go-dev@lists.x2go.org>."
 }
 
-# Load profile
-for file in "/etc/profile" "$HOME/.profile" "/etc/xprofile" "$HOME/.xprofile"; do
-    if [ -f "$file" ]; then
-        echo "Loading profile from $file";
-        . "$file"
-    fi
-done
-
 # initialize variables for use by all session scripts
 
 OPTIONFILE=/etc/x2go/Xsession.options
