@@ -27,7 +27,7 @@ usage() {
 
 if [ $# -eq 1 ]; then
 	SESSION_NAME="$1"
-elif
+elsif
 	SESSION_NAME="$X2GO_SESSION"
 else
 	usage
