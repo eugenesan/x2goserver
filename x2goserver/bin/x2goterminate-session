@@ -27,10 +27,8 @@ usage() {
 
 if [ $# -eq 1 ]; then
         SESSION_NAME="$1"
-elsif
-        SESSION_NAME="$X2GO_SESSION"
 else
-        usage
+        SESSION_NAME="$X2GO_SESSION"
 fi
 
 if [ -z $SESSION_NAME ]; then
