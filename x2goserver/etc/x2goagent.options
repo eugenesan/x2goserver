@@ -7,9 +7,7 @@ X2GO_NXAGENT_DEFAULT_OPTIONS=""
 # Disable XFIXES.
 # Workaround for https://bugs.launchpad.net/ubuntu/+source/libxfixes/+bug/985202
 #
-# As LP issue #985202 has been fixed, we revert back to keeping the XFIXES extension
-# enabled by default.
-#X2GO_NXAGENT_DEFAULT_OPTIONS+=" -extension XFIXES"
+X2GO_NXAGENT_DEFAULT_OPTIONS+=" -extension XFIXES"
 
 # Disable GLX, the old mesa version is hopelessly outdated anyways.
 # Unbreaks the gnome3 control center
