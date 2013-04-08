@@ -37,6 +37,8 @@ Recommends:
  x11-xfs-utils,
  x11-xkb-utils,
  x11-xserver-utils,
+ xfonts-base,
+ fontconfig,
  xinit,
  x2goserver-extensions (>= ${source:Version}), x2goserver-extensions (<< ${source:Version}.1~),
  x2goserver-xsession (>= ${source:Version}), x2goserver-xsession (<< ${source:Version}.1~),
