@@ -8,6 +8,11 @@ x2goserver (4.0.0.2-0~x2go1) UNRELEASED; urgency=low
   * New upstream version (4.0.0.2):
     - Use x2gopath in Perl scripts to set the lib path. (Fixes: #103).
 
+  [ Mike Gabriel ]
+  /debian/control:
+    + Let x2goserver bin:package depend on xfonts-base and fontconfig. (Fixes:
+      #163).
+
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Mon, 25 Mar 2013 22:34:11 +0100
 
 x2goserver (4.0.0.1-0~x2go1) unstable; urgency=low
