@@ -22,6 +22,7 @@
 
 use strict;
 use Sys::Syslog qw( :standard :macros );
+use File::Path qw( make_path );
 use Getopt::Long;
 use Config::Simple;
 use DBI;
@@ -81,7 +82,7 @@ my $user="x2gouser";
 	{
 		if (! -d "$dir" )
 		{
-			mkdir("$dir");
+			make_path("$dir");
 		}
 		if ( -e $dbfile)
 		{
@@ -341,7 +342,7 @@ sub add_user()
 
 	if (! -d "$dir/.x2go" )
 	{
-		mkdir("$dir/.x2go");
+		make_path("$dir/.x2go");
 	}
 
 	#save user password
