@@ -135,7 +135,8 @@ USED_DISPLAYS=`$X2GO_LIB_PATH/x2gogetdisplays $HOSTNAME`
 
 #Get all used in system ports from X2Go database and ss output
 ss=$(PATH="$PATH:/usr/sbin:/sbin" type -P ss);
-USED_NONSSH_PORTS=$(
+USED_PORTS=$(
+	"$X2GO_LIB_PATH/x2gogetports" "$HOSTNAME";
 	"$ss" -lnt |
 	perl -lne 'print$d{$2}="|$2|"if/^(\S+\s+){2}\S+:(\d+)/&&!exists$d{$2}';
 );
@@ -143,12 +144,12 @@ USED_NONSSH_PORTS=$(
 while [ "$OUTPUT"  != "inserted" ]; do
 	X2GO_PORT=$(($X2GO_PORT + 1))
 	X2GO_PORT=`echo "for(\\$i=$X2GO_PORT;\\$br ne \"true\";\\$i++){ if(\"$USED_DISPLAYS\" =~ m/\\|\\$i\\|/){\\$br=\"false\";}else{\\$br=\"true\";print \\$i;}}"|perl`
-
+	
 	#Test if the session is already in use. nxagent uses 6000+DISPLAY to open a port. Therefore this must be tested, too.
 	NX_PORT=$(($X2GO_PORT + 6000))
 	if  [ -e "/tmp/.X${X2GO_PORT}-lock" ] ||
 		[ -e "/tmp/.X11-unix/X${X2GO_PORT}" ] || 
-		grep -q "|${NX_PORT}|" <<<$USED_NONSSH_PORTS ; then
+		grep -q "|${NX_PORT}|" <<<$USED_PORTS ; then
 		OUTPUT="XXX"
 	else
 		SESSION_NAME="${USER}-${X2GO_PORT}-`date +\"%s\"`"
@@ -163,7 +164,6 @@ done
 
 while [ "$GR_PORT" == "" ] || [ "$SOUND_PORT" == "" ] || [ "$FS_PORT" == "" ]; do
 	OUTPUT=""
-	USED_PORTS=`echo -e "$($X2GO_LIB_PATH/x2gogetports \"$HOSTNAME\")\n$USED_NONSSH_PORTS"`
 	while [ "$OUTPUT"  != "inserted" ]; do
 		SSH_PORT=$(($SSH_PORT + 1))
 
@@ -209,6 +209,7 @@ mkdir -p $(dirname "${SESSION_LOG}")
 chmod -f 0700 $(dirname "${SESSION_LOG}")
 touch "${SESSION_LOG}"
 chmod -f 0600 "${SESSION_LOG}"
+ln -s "${SESSION_DIR}/session.log" "${SESSION_LOG}"
 
 if [ ! -d "$X2GO_ROOT" ]; then
 	mkdir "$X2GO_ROOT"
@@ -275,9 +276,6 @@ else
 	# set NX_TEMP to /tmp, make sure x2goagent starts when pam_tmpdir.so is in use
 	NX_TEMP=/tmp x2goagent $X2GO_NXAGENT_OPTIONS $NOLISTOPT $X2GODPIOPTION_ $XDMCPOPT -$SESSION_TYPE $NOEXITPARAM -auth "$XAUTHORITY" -geometry ${X2GO_GEOMETRY} -name "${SESSION_WINDOW_TITLE}"  "${NX_AGENT}" 2>"${SESSION_LOG}" &
 fi
-
-# link the session.log on /tmp into the session directory
-ln -s "${SESSION_LOG}" "${SESSION_DIR}/session.log"
 
 X2GO_AGENT_PID=$!
 X2GO_AGENT_RETVAL=$?
