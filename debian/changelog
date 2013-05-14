@@ -11,7 +11,7 @@ x2goserver (4.0.0.2-0~x2go1) UNRELEASED; urgency=low
   [ Mike Gabriel ]
   * New upstream version (4.0.0.2):
     - Use make_path from File::Path in x2godbadmin to create user directory if
-      not present. (Fixes: #200).
+      not present.
   /debian/control:
     + Let x2goserver bin:package depend on xfonts-base and fontconfig. (Fixes:
       #163).
