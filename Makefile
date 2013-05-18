@@ -4,7 +4,7 @@ RM_FILE=rm -f
 RM_DIR=rmdir -p --ignore-fail-on-non-empty
 
 DESTDIR=
-PREFIX=/usr/local
+PREFIX ?= /usr/local
 ETCDIR=/etc/x2go
 LIBDIR=$(PREFIX)/lib/x2go
 SHAREDIR=$(PREFIX)/share/x2go

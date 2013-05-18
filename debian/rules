@@ -1,10 +1,10 @@
 #!/usr/bin/make -f
 
 %:
-	dh $@
+	PREFIX=/usr dh $@
 
 override_dh_auto_install:
-	make -f Makefile build-arch
+	PREFIX=/usr make -f Makefile build-arch
 
 override_dh_auto_clean:
 	rm -fv x2gosqlitewrapper
