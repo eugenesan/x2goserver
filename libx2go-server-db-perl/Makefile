@@ -39,7 +39,8 @@ all: clean build
 build: build-arch build-indep
 
 build-arch:
-	$(CC) $(CFLAGS) $(LDFLAGS) -o lib/libx2go-server-db-sqlite3-wrapper src/libx2go-server-db-sqlite3-wrapper.c
+	echo $(PREFIX)
+	$(CC) $(CFLAGS) $(LDFLAGS) -DTRUSTED_BINARY=\"$(DESTDIR)$(LIBDIR)/libx2go-server-db-sqlite3-wrapper.pl\" -o lib/libx2go-server-db-sqlite3-wrapper src/libx2go-server-db-sqlite3-wrapper.c
 
 build-indep:
 

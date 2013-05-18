@@ -1,10 +1,10 @@
 #!/usr/bin/make -f
 
 %:
-	dh $@
+	PREFIX=/usr dh $@
 
 override_dh_auto_build:
-	PERL_INSTALLDIRS=vendor dh_auto_build
+	PREFIX=/usr PERL_INSTALLDIRS=vendor dh_auto_build
 
 override_dh_auto_install:
 	$(MAKE) -f Makefile build-arch

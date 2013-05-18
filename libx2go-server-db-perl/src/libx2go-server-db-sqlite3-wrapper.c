@@ -28,51 +28,11 @@
 #include <errno.h>
 
 int main( int argc, char *argv[] ) {
-	char * x2gosqlitewrapper = NULL;
-	size_t path_max;
-	
-/*
-	The following snippet is taken from the realpath manpage
-*/
-#ifdef PATH_MAX
-	path_max = PATH_MAX;
-#else
-	path_max = pathconf (".", _PC_PATH_MAX);
-	if (path_max <= 0){
-		path_max = 4096;
-	}
-#endif
-	{
-		// allocate dynamic buffer in stack: this needs C99 or gnu??
-		char buffer[path_max];
-		ssize_t rvrl;
-		int rvap;
 
-		// resolve link of /proc/self/exe to find out where we are
-		rvrl = readlink("/proc/self/exe", buffer, path_max);
-		if(rvrl == -1){
-			perror("readlink(\"/proc/self/exe\",buffer,path_max)");
-			exit(EXIT_FAILURE);
-		}
-		if(rvrl >= path_max){
-			fprintf(stderr, "Could not resolve the path of this file using \"/proc/self/exe\". The path is too long (> %i)", path_max);
-			exit(EXIT_FAILURE);
-		}
+	char x2gosqlitewrapper[] = TRUSTED_BINARY;
 
-		// derive the full path of libx2go-server-db-sqlite3-wrapper.pl from path of this binary
-		rvap = asprintf(&x2gosqlitewrapper, "%s/%s", dirname(buffer), "libx2go-server-db-sqlite3-wrapper.pl");
-		if(rvap == -1){
-			fprintf(stderr, "Failed to allocate memory calling asprintf\n");
-			exit(EXIT_FAILURE);
-		}
-
-		// execute the script, running with user-rights of this binary 
-		execv(x2gosqlitewrapper, argv);
-
-	}
-
-	// ...fail
-	fprintf(stderr, "Failed to execute %s: %s\n", x2gosqlitewrapper, strerror(errno));
-	return EXIT_FAILURE;
+	argv[0] = "libx2go-server-db-sqlite3-wrapper.pl";
+	// execute the script, running with user-rights of this binary
+	execv(x2gosqlitewrapper, argv);
 
 }
