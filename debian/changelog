@@ -38,9 +38,6 @@ x2goserver (4.1.0.0-0~x2go1) UNRELEASED; urgency=low
     script is called without session as first argument and $X2GO_SESSION
     not set. (Fixes: #82).
   * Make x2goruncommand aware of the Cinnamon desktop shell. (Fixes: #117).
-  * Security fix for setgid wrapper libx2go-server-db-sqlite3-wrapper.c. Hard-
-    code path to libx2go-server-db-sqlite3-wrapper.pl during build via
-    defining a macro in the Makefile.
 
   [ Otto Kjell ]
   * New upstream version (4.1.0.0):
@@ -67,6 +64,9 @@ x2goserver (4.0.0.2-0~x2go1) UNRELEASED; urgency=low
   * New upstream version (4.0.0.2):
     - Use make_path from File::Path in x2godbadmin to create user directory if
       not present. (Fixes: #200).
+    - Security fix for setgid wrapper x2gosqlitewrapper.c. Hard-code path to
+      x2gosqlitewrapper.pl during build via defining a macro in the Makefile.
+      Thanks to Richard Weinberger for spotting this!!!
   /debian/control:
     + Let x2goserver bin:package depend on xfonts-base and fontconfig. (Fixes:
       #163).
