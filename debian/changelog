@@ -70,6 +70,8 @@ x2goserver (4.0.0.2-0~x2go1) UNRELEASED; urgency=low
   /debian/control:
     + Let x2goserver bin:package depend on xfonts-base and fontconfig. (Fixes:
       #163).
+    + Create session log symlink after launching x2goagent. Fix order of target
+      and symlink name when executing the command.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Mon, 25 Mar 2013 22:34:11 +0100
 

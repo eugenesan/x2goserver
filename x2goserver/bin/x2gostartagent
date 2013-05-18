@@ -209,7 +209,6 @@ mkdir -p $(dirname "${SESSION_LOG}")
 chmod -f 0700 $(dirname "${SESSION_LOG}")
 touch "${SESSION_LOG}"
 chmod -f 0600 "${SESSION_LOG}"
-ln -s "${SESSION_DIR}/session.log" "${SESSION_LOG}"
 
 if [ ! -d "$X2GO_ROOT" ]; then
 	mkdir "$X2GO_ROOT"
@@ -276,6 +275,8 @@ else
 	# set NX_TEMP to /tmp, make sure x2goagent starts when pam_tmpdir.so is in use
 	NX_TEMP=/tmp x2goagent $X2GO_NXAGENT_OPTIONS $NOLISTOPT $X2GODPIOPTION_ $XDMCPOPT -$SESSION_TYPE $NOEXITPARAM -auth "$XAUTHORITY" -geometry ${X2GO_GEOMETRY} -name "${SESSION_WINDOW_TITLE}"  "${NX_AGENT}" 2>"${SESSION_LOG}" &
 fi
+
+ln -s "${SESSION_LOG}" "${SESSION_DIR}/session.log" 
 
 X2GO_AGENT_PID=$!
 X2GO_AGENT_RETVAL=$?
