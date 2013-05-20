@@ -14,7 +14,7 @@ INSTALL_PROGRAM=install -o root -g root -m 755
 RM_FILE=rm -f
 RM_DIR=rmdir -p --ignore-fail-on-non-empty
 
-DESTDIR=
+DESTDIR ?=
 PREFIX ?= /usr/local
 ETCDIR=/etc/x2go
 BINDIR=$(PREFIX)/bin
@@ -39,7 +39,7 @@ all: clean build
 build: build-arch build-indep
 
 build-arch:
-	$(CC) $(CFLAGS) $(LDFLAGS) -DTRUSTED_BINARY=\"$(DESTDIR)$(LIBDIR)/libx2go-server-db-sqlite3-wrapper.pl\" -o lib/libx2go-server-db-sqlite3-wrapper src/libx2go-server-db-sqlite3-wrapper.c
+	$(CC) $(CFLAGS) $(LDFLAGS) -DTRUSTED_BINARY=\"$(LIBDIR)/libx2go-server-db-sqlite3-wrapper.pl\" -o lib/libx2go-server-db-sqlite3-wrapper src/libx2go-server-db-sqlite3-wrapper.c
 
 build-indep:
 
