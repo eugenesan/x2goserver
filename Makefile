@@ -3,7 +3,7 @@
 RM_FILE=rm -f
 RM_DIR=rmdir -p --ignore-fail-on-non-empty
 
-DESTDIR=
+DESTDIR ?=
 PREFIX ?= /usr/local
 ETCDIR=/etc/x2go
 LIBDIR=$(PREFIX)/lib/x2go
