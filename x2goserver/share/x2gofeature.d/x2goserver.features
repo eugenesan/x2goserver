@@ -37,6 +37,7 @@ case "$X2GO_FEATURE" in
     "X2GO_SERVERSIDE_DESKTOPCOMMANDS") echo "ok"; exit 0;;
     "X2GO_SET_KEYBOARD") echo "ok"; exit 0;;
     "X2GO_LIST_SHADOWSESSIONS") echo "ok"; exit 0;;
+    "X2GO_MOUNT_UNCPATHS") echo "ok"; exit 0;;
     *) exit -1;;
 
 esac
