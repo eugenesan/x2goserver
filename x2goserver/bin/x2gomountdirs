@@ -259,6 +259,7 @@ for (my $i=0;$i<@dirs;$i++)
 		$p=~s/ /_/g;
 		$p=~s/~_cygdrive_//;
 		$p=~s/~_windrive_//;
+		$p=~s/~_uncpath_//;
 		$p=~s/~//g;
 		mkdir("$this_mdir/$p");
 		$mntpath="$this_mdir/$p";
@@ -317,6 +318,7 @@ for (my $i=0;$i<@dirs;$i++)
 				my $p=@dirs[$i];
 				$p=~s/\/cygdrive\///;
 				$p=~s/\/windrive\///;
+				$p=~s/\/uncpath\///;
 				$p=~s/ /_/g;
 				$p=~s/\//_/g;
 				$fname="$fname/$p";

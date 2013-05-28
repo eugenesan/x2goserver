@@ -123,18 +123,24 @@ for ($i=0;$i<@outp;$i++)
 	{
 		if (@line[1] ne $only_path)
 		{
-			# this is for Python X2Go, the base of Windows mounted shares starts with _windrive, not _cygdrive
+			# this is for Python X2Go, the base of Windows mounted shares starts with _windrive or _uncpath, not _cygdrive
 			my $only_path_windrive=$only_path;
+			my $only_path_uncpath=$only_path;
 			$only_path_windrive=~ s/_cygdrive_/_windrive_/;
+			$only_path_uncpath=~ s/_cygdrive_/_uncpath_/;
 
-			if (@line[1] ne $only_path_windrive)
+			if ((@line[1] ne $only_path_windrive) && (@line[1] ne $only_path_uncpath))
 			{
 				syslog('debug', "skipping non-requested path @line[1]");
 				goto cont;
 			}
-			else
+			if (@line[1] e $only_path_windrive)
 			{
 				$only_path = $only_path_windrive;
+			}
+			if (@line[1] e $only_path_uncpath)
+			{
+				$only_path = $only_path_uncpath;
 			}
 		}
 	}
@@ -178,6 +184,7 @@ break:
 
 		$remote=~s/\/cygdrive\///;
 		$remote=~s/\/windrive\///;
+		$remote=~s/\/uncpath\///;
 		$remote=~s/\//_/g;
 		$remote=~s/ /_/g;
 		$remote=~s/\\040/_/g;

@@ -3,6 +3,7 @@ x2goserver (4.0.0.3-0~x2go1) UNRELEASED; urgency=low
   * New upstream version (4.0.0.3):
     - Make pre-set DESTDIR and PREFIX traverse through all Makefiles.
       Do not include DESTDIR in Makefile-hard-coded path in x2gosqlitewrapper.
+    - Make x2gomountdirs / x2goumount-session UNC path aware.
     - Add support to x2gocleansessions to suspend session via state changes
       in the session DB.
 
