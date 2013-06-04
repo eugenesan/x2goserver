@@ -56,7 +56,7 @@ kill -HUP $X2GO_AGENT_PID &>/dev/null && {
 	$X2GO_LIB_PATH/x2gosyslog "$0" "err" "$err_msg"
 
 	# If we reach here it means that the x2goagent process of the session has vanisshed
-	# If this happens than we mark the session as finished...
+	# If this happens then we mark the session as finished...
 	$X2GO_LIB_PATH/x2gochangestatus 'F' "$SESSION_NAME"  > /dev/null
 
 	# run x2goserver-extensions for fail-suspend
