@@ -118,7 +118,7 @@ elsif ($pid == 0 )
 	$SIG{TERM}=\&catch_term;
 	$SIG{CHLD} = sub { wait };
 
-	while(sleep 5)
+	while(sleep 2)
 	{
 		my $outp=`$x2go_lib_path/x2golistsessions_sql $serv 2>/dev/null`;
 		my @outp=split("\n","$outp");
