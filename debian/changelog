@@ -58,6 +58,7 @@ x2goserver (4.0.0.3-0~x2go1) UNRELEASED; urgency=low
     - Make x2gomountdirs / x2goumount-session UNC path aware.
     - Add support to x2gocleansessions to suspend session via state changes
       in the session DB.
+    - Add support for terminating sessions via the session DB.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Sun, 19 May 2013 15:02:53 +0200
 
