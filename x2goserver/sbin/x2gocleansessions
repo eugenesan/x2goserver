@@ -51,7 +51,20 @@ sub check_pid
 	return 0;
 }
 
-sub check_stat
+sub has_terminated
+{
+	my $sess=shift;
+	my $user=shift;
+	my $log="/tmp/.x2go-${user}/session-C-${sess}.log";
+	my $text=`tail -1 $log 2>/dev/null`;
+	if ($text =~ m/Session terminated/)
+	{
+		return 1;
+	}
+	return 0;
+}
+
+sub is_suspended
 {
 	my $sess=shift;
 	my $user=shift;
@@ -59,9 +72,22 @@ sub check_stat
 	my $text=`tail -1 $log 2>/dev/null`;
 	if ($text =~ m/Session suspended/)
 	{
-		return 0;
+		return 1;
 	}
-	return 1;
+	return 0;
+}
+
+sub is_running
+{
+	my $sess=shift;
+	my $user=shift;
+	my $log="/tmp/.x2go-${user}/session-C-${sess}.log";
+	my $text=`tail -1 $log 2>/dev/null`;
+	if (!is_suspended($sess, $user) && !has_terminated($sess, $user))
+	{
+		return 1;
+	}
+	return 0;
 }
 
 sub catch_term
@@ -116,12 +142,22 @@ elsif ($pid == 0 )
 			{ 
 				if (@sinfo[4]eq 'R')
 				{
-					if (!check_stat(@sinfo[1],@sinfo[11]))
+					if (is_suspended(@sinfo[1],@sinfo[11]))
 					{
 						system("su @sinfo[11] -c  \"$x2go_lib_path/x2gochangestatus 'S' @sinfo[1] \" > /dev/null");
 						syslog('debug', "@sinfo[1] is suspended, changing status from @sinfo[4] to S");
 						syslog('debug', "@sinfo[1]: unmounting all shares");
 						system( "su @sinfo[11] -c \"export HOSTNAME && x2goumount-session @sinfo[1]\" 2> /dev/null");
+					}
+				}
+				if (@sinfo[4]eq 'S')
+				{
+					if (is_running(@sinfo[1],@sinfo[11]))
+					{
+						syslog('debug', "@sinfo[1]: unmounting all shares");
+						system( "su @sinfo[11] -c \"export HOSTNAME && x2goumount-session @sinfo[1]\" 2> /dev/null");
+						system("su @sinfo[11] -c  \"x2gosuspend-session @sinfo[1] \" > /dev/null");
+						syslog('debug', "@sinfo[1] was found running and has now been suspended");
 					}
 				}
 			}
