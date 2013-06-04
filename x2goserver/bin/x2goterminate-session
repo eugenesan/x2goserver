@@ -60,4 +60,3 @@ kill -TERM $X2GO_AGENT_PID &>/dev/null && {
 
 }
 
-

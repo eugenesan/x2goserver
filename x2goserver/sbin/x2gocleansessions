@@ -160,6 +160,16 @@ elsif ($pid == 0 )
 						syslog('debug', "@sinfo[1] was found running and has now been suspended");
 					}
 				}
+				if (@sinfo[4]eq 'T')
+				{
+					if (!has_terminated(@sinfo[1],@sinfo[11]))
+					{
+						syslog('debug', "@sinfo[1]: unmounting all shares");
+						system( "su @sinfo[11] -c \"export HOSTNAME && x2goumount-session @sinfo[1]\" 2> /dev/null");
+						system("su @sinfo[11] -c  \"x2goterminate-session @sinfo[1] \" > /dev/null");
+						syslog('debug', "@sinfo[1] has been requested for termination via the session DB");
+					}
+				}
 			}
 		}
 	}
