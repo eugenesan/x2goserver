@@ -138,7 +138,7 @@ elsif ($pid == 0 )
 			{
 
 				syslog('debug', "@sinfo[1] is blocked");
-				if defined $hash{ $key }
+				if (defined $blocked_sessions{ @sinfo[1] }
 				{
 					$blocked_sessions{@sinfo[1]} += 2;
 					if ($blocked_sessions{@sinfo[1]} >= 20) {
@@ -146,6 +146,7 @@ elsif ($pid == 0 )
 						# send SIGKILL to dangling X-server processes
 						syslog('warning', "@sinfo[1]: found stale X-server process (@sinfo[0]), sending SIGKILL");
 						qw(kill -9 @sinfo[0]);
+						delete $blocked_sessions{$session};
 					}
 				} else {
 					$blocked_sessions{@sinfo[1]} = 0;
