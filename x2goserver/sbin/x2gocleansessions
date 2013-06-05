@@ -116,18 +116,43 @@ elsif ($pid == 0 )
 	$SIG{TERM}=\&catch_term;
 	$SIG{CHLD} = sub { wait };
 
+	my %blocked_sessions = ();
+
 	while(sleep 2)
 	{
 		my $outp=`$x2go_lib_path/x2golistsessions_sql $serv 2>/dev/null`;
 		my @outp=split("\n","$outp");
+
+		# forget earlier remembered blocked sessions
+		while ( my ($session, $blocked_time) = each(%blocked_sessions) ) {
+			if (! join(',', @outp)=~m/$session/)
+			{
+				delete $blocked_sessions{$session}
+			}
+		}
+
 		for (my $i=0;$i<@outp;$i++)
 		{
 			my @sinfo=split('\\|',"@outp[$i]");
 			if (@sinfo[4]eq 'F')
 			{
+
 				syslog('debug', "@sinfo[1] is blocked");
-				syslog('debug', "@sinfo[1]: unmounting all shares");
-				system( "su @sinfo[11] -c \"export HOSTNAME && x2goumount-session @sinfo[1]\" 2> /dev/null");
+				if defined $hash{ $key }
+				{
+					$blocked_sessions{@sinfo[1]} += 2;
+					if ($blocked_sessions{@sinfo[1]} >= 20) {
+					{
+						# send SIGKILL to dangling X-server processes
+						syslog('warning', "@sinfo[1]: found stale X-server process (@sinfo[0]), sending SIGKILL");
+						qw(kill -9 @sinfo[0])
+					}
+				} else {
+					$blocked_sessions{@sinfo[1]} = 0;
+					syslog('debug', "@sinfo[1]: unmounting all shares");
+					system( "su @sinfo[11] -c \"export HOSTNAME && x2goumount-session @sinfo[1]\" 2> /dev/null");
+				}
+
 			}
 			elsif (! check_pid (@sinfo[0],@sinfo[1],@sinfo[12]))
 			{
