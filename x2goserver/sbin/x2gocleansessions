@@ -127,7 +127,7 @@ elsif ($pid == 0 )
 		while ( my ($session, $blocked_time) = each(%blocked_sessions) ) {
 			if (! join(',', @outp)=~m/$session/)
 			{
-				delete $blocked_sessions{$session}
+				delete $blocked_sessions{$session};
 			}
 		}
 
@@ -145,7 +145,7 @@ elsif ($pid == 0 )
 					{
 						# send SIGKILL to dangling X-server processes
 						syslog('warning', "@sinfo[1]: found stale X-server process (@sinfo[0]), sending SIGKILL");
-						qw(kill -9 @sinfo[0])
+						qw(kill -9 @sinfo[0]);
 					}
 				} else {
 					$blocked_sessions{@sinfo[1]} = 0;
