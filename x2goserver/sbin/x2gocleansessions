@@ -126,7 +126,8 @@ elsif ($pid == 0 )
 		my @outp=split("\n","$outp");
 
 		# forget earlier remembered blocked sessions
-		while ( my ($session, $blocked_time) = each(%blocked_sessions) ) {
+		while ( my ($session, $blocked_time) = each(%blocked_sessions) )
+		{
 			if (! join(',', @outp)=~m/$session/)
 			{
 				delete $blocked_sessions{$session};
@@ -143,7 +144,7 @@ elsif ($pid == 0 )
 				if (defined $blocked_sessions{ @sinfo[1] })
 				{
 					$blocked_sessions{@sinfo[1]} += 2;
-					if ($blocked_sessions{@sinfo[1]} >= 20) {
+					if ($blocked_sessions{@sinfo[1]} >= 20)
 					{
 						# send SIGKILL to dangling X-server processes
 						syslog('warning', "@sinfo[1]: found stale X-server process (@sinfo[0]), sending SIGKILL");
