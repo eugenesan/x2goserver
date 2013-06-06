@@ -31,20 +31,6 @@ openlog($0,'cons,pid','user');
 setlogmask( LOG_UPTO(x2gologlevel()) );
 
 
-sub check_pid
-{
-	my $pid=shift;
-	my $sess=shift;
-	open (F,"</proc/$pid/cmdline") or return 0;
-	my $text=<F>;
-	close (F);
-	if ($text =~ m/$sess/)
-	{
-		return 1;
-	}
-	return 0;
-}
-
 my $serv=shift;
 my @array;
 if($serv eq "--all-servers")
@@ -59,7 +45,7 @@ my $i;
 for ( $i=0;$i<@array;$i++) 
 {
 	my @ln=split('\|',@array[$i]);
-	if ((@ln[4] eq "F") && (check_pid(@ln[0], @ln[1]))
+	if (@ln[4] eq "F")
 	{
 		my $sid = @ln[1];
 		dbsys_rmsessionsroot($sid);

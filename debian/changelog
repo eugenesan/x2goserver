@@ -8,8 +8,6 @@ x2goserver (4.0.0.3-0~x2go1) UNRELEASED; urgency=low
       in the session DB.
     - Add support for terminating sessions via the session DB.
     - Raise the frequency of the x2gocleansessions loop to every two seconds.
-    - Send SIGKILL to blocked X-Server (x2goagent) processes, if they do not
-      disappear within 20secs. (Fixes: #32).
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Sun, 19 May 2013 15:02:53 +0200
 
