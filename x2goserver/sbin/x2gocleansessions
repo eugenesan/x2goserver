@@ -140,7 +140,7 @@ elsif ($pid == 0 )
 			{
 
 				syslog('debug', "@sinfo[1] is blocked");
-				if (defined $blocked_sessions{ @sinfo[1] })
+				if (defined $blocked_sessions{ @sinfo[1] }
 				{
 					$blocked_sessions{@sinfo[1]} += 2;
 					if ($blocked_sessions{@sinfo[1]} >= 20) {
