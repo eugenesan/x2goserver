@@ -1,15 +1,21 @@
-x2goserver (4.0.0.3-0~x2go1) UNRELEASED; urgency=low
+x2goserver (4.0.1.0-0~x2go1) UNRELEASED; urgency=low
 
-  * New upstream version (4.0.0.3):
-    - Make pre-set DESTDIR and PREFIX traverse through all Makefiles.
-      Do not include DESTDIR in Makefile-hard-coded path in x2gosqlitewrapper.
-    - Make x2gomountdirs / x2goumount-session UNC path aware.
+  * New upstream version (4.0.1.0):
     - Add support to x2gocleansessions to suspend session via state changes
       in the session DB.
     - Add support for terminating sessions via the session DB.
     - Raise the frequency of the x2gocleansessions loop to every two seconds.
     - Send SIGKILL to blocked X-Server (x2goagent) processes, if they do not
       disappear within 20secs. (Fixes: #32).
+
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Sun, 06 Jun 2013 13:36:23 +0200
+
+x2goserver (4.0.0.3-0~x2go1) UNRELEASED; urgency=low
+
+  * New upstream version (4.0.0.3):
+    - Make pre-set DESTDIR and PREFIX traverse through all Makefiles.
+      Do not include DESTDIR in Makefile-hard-coded path in x2gosqlitewrapper.
+    - Make x2gomountdirs / x2goumount-session UNC path aware.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Sun, 19 May 2013 15:02:53 +0200
 
