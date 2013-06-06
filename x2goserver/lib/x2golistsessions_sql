@@ -58,7 +58,7 @@ my $i;
 for ( $i=0;$i<@array;$i++) 
 {
 	my @ln=split('\|',@array[$i]);
-	if ((@ln[4] eq "F") && (!check_pid(@ln[0], @ln[1]))
+	if ((@ln[4] eq "F") && (!check_pid(@ln[0], @ln[1])))
 	{
 		my $sid = @ln[1];
 		dbsys_rmsessionsroot($sid);
