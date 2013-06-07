@@ -137,8 +137,8 @@ USED_DISPLAYS=`$X2GO_LIB_PATH/x2gogetdisplays $HOSTNAME`
 ss=$(PATH="$PATH:/usr/sbin:/sbin" type -P ss);
 USED_PORTS=$(
 	"$X2GO_LIB_PATH/x2gogetports" "$HOSTNAME";
-	"$ss" -lnt |
-	perl -lne 'print$d{$2}="|$2|"if/^(\S+\s+){2}\S+:(\d+)/&&!exists$d{$2}';
+	"$ss" -nt -all |
+	awk '{ n=split($0,lines,"\n"); for(i=1;i<=n;i++){split (lines[i],words," ");delim=split(words[4],ports,":"); if(delim>1)printf ("|%s|\n",ports[delim])} }';
 );
 
 while [ "$OUTPUT"  != "inserted" ]; do
