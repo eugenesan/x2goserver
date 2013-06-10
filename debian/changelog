@@ -11,6 +11,16 @@ x2goserver (4.0.1.0-0~x2go1) unstable; urgency=low
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 07 Jun 2013 23:07:40 +0200
 
+x2goserver (4.0.0.4-0~x2go1) UNRELEASED; urgency=low
+
+  [ Jan Engelhardt ]
+  * New upstream version (4.0.0.4):
+    - Fix Perl include path for X2Go related Perl packages (which do
+      not get installed to some system default path for this version
+      of x2goserver).
+
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Mon, 10 Jun 2013 21:24:02 +0200
+
 x2goserver (4.0.0.3-0~x2go1) unstable; urgency=low
 
   * New upstream version (4.0.0.3):
