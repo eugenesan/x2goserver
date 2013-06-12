@@ -42,7 +42,7 @@ if( ! $serv)
 	$serv=hostname;
 }
 
-my $rsess=`x2golistsessions x2goserver |grep _stR`;
+my $rsess=`x2golistsessions $serv |grep _stR`;
 my @rsess=split("\n","$rsess");
 my @rdisplays;
 for (my $i=0;$i<@rsess;$i++)
