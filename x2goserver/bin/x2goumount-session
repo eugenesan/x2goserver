@@ -134,11 +134,11 @@ for ($i=0;$i<@outp;$i++)
 				syslog('debug', "skipping non-requested path @line[1]");
 				goto cont;
 			}
-			if (@line[1] e $only_path_windrive)
+			if (@line[1] eq $only_path_windrive)
 			{
 				$only_path = $only_path_windrive;
 			}
-			if (@line[1] e $only_path_uncpath)
+			if (@line[1] eq $only_path_uncpath)
 			{
 				$only_path = $only_path_uncpath;
 			}
