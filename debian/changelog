@@ -51,12 +51,12 @@ x2goserver (4.1.0.0-0~x2go1) UNRELEASED; urgency=low
 
  -- Reinhard Tartler <siretart@tauware.de>  Thu, 20 Dec 2012 10:15:26 +0100
 
-x2goserver (4.0.1.1-0~x2go1) UNRELEASED; urgency=low
+x2goserver (4.0.1.1-0~x2go1) unstable; urgency=low
 
   * New upstream version (4.0.1.1):
     - Syntax fix in x2goumount-session.
 
- -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Mon, 10 Jun 2013 21:28:51 +0200
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Thu, 13 Jun 2013 13:12:54 +0200
 
 x2goserver (4.0.1.0-0~x2go1) unstable; urgency=low
 
