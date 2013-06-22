@@ -93,13 +93,12 @@ sub catch_term
 }
 
 my $uname;
-#my $serv=$ENV{'HOSTNAME'};
 my $serv = hostname;
 my $pid = fork();
 if (not defined $pid) 
 {
 	print "resources not avilable.\n";
-} 
+}
 elsif ($pid != 0) 
 {
 	open (F,">/var/run/x2goserver.pid");
@@ -114,7 +113,8 @@ elsif ($pid == 0 )
 	$SIG{TERM}=\&catch_term;
 	$SIG{CHLD} = sub { wait };
 
-	my %remembered_sessions = ();
+	my %remembered_sessions_status = ();
+	my %remembered_sessions_since = ();
 
 	while(sleep 2)
 	{
@@ -122,11 +122,12 @@ elsif ($pid == 0 )
 		my @outp=split("\n","$outp");
 
 		# forget earlier remembered blocked sessions
-		while ( my ($session, $remembered_time) = each(%remembered_sessions) )
+		while ( my ($session, $remembered_since) = each(%remembered_sessions_since) )
 		{
 			if (! join(',', @outp)=~m/$session/)
 			{
-				delete $remembered_sessions{$session};
+				delete $remembered_sessions_status{$session};
+				delete $remembered_sessions_since{$session};
 			}
 		}
 
@@ -135,22 +136,25 @@ elsif ($pid == 0 )
 
 			my @sinfo=split('\\|',"@outp[$i]");
 
-			if (defined $remembered_sessions{ @sinfo[1] })
+			if (defined $remembered_sessions_since{ @sinfo[1] } && ($remembered_sessions_status{ @sinfo[1] } =~m/@sinfo[4]/ ))
 			{
-				$remembered_sessions{ @sinfo[1] } += 2;
+				$remembered_sessions_since{ @sinfo[1] } += 2;
 			} else {
-				$remembered_sessions{ @sinfo[1] } = 0;
+				$remembered_sessions_status{ @sinfo[1] } = @sinfo[4];
+				$remembered_sessions_since{ @sinfo[1] } = 0;
 			}
+
+			#print @sinfo[1], ': ', $remembered_sessions_since{@sinfo[1]},' ',$remembered_sessions_status{@sinfo[1]},"\n";
 
 			if (@sinfo[4]eq 'F')
 			{
 				syslog('debug', "@sinfo[1] is blocked");
-				if ($remembered_sessions{@sinfo[1]} ge 20)
+				if ($remembered_sessions_since{@sinfo[1]} ge 20)
 				{
 					# send SIGKILL to dangling X-server processes
 					syslog('warning', "@sinfo[1]: found stale X-server process (@sinfo[0]), sending SIGKILL");
 					qw(kill -9 @sinfo[0]);
-					delete $remembered_sessions{@sinfo[1]};
+					delete $remembered_sessions_since{@sinfo[1]};
 				}
 				syslog('debug', "@sinfo[1]: unmounting all shares");
 				system( "su @sinfo[11] -c \"export HOSTNAME && x2goumount-session @sinfo[1]\" 2> /dev/null");
@@ -165,7 +169,7 @@ elsif ($pid == 0 )
 			}
 			else
 			{ 
-				if ( (@sinfo[4] eq 'R') && ( $remembered_sessions{ @sinfo[1] } ge 2 ))
+				if ( (@sinfo[4] eq 'R') && ( $remembered_sessions_since{ @sinfo[1] } ge 2 ))
 				{
 					if (is_suspended(@sinfo[1],@sinfo[11]))
 					{
