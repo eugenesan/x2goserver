@@ -79,8 +79,6 @@ sub is_running
 {
 	my $sess=shift;
 	my $user=shift;
-	my $log="/tmp/.x2go-${user}/session-C-${sess}.log";
-	my $text=`tail -1 $log 2>/dev/null`;
 	if (!is_suspended($sess, $user) && !has_terminated($sess, $user))
 	{
 		return 1;
@@ -116,7 +114,7 @@ elsif ($pid == 0 )
 	$SIG{TERM}=\&catch_term;
 	$SIG{CHLD} = sub { wait };
 
-	my %blocked_sessions = ();
+	my %remembered_sessions = ();
 
 	while(sleep 2)
 	{
@@ -124,74 +122,76 @@ elsif ($pid == 0 )
 		my @outp=split("\n","$outp");
 
 		# forget earlier remembered blocked sessions
-		while ( my ($session, $blocked_time) = each(%blocked_sessions) )
+		while ( my ($session, $remembered_time) = each(%remembered_sessions) )
 		{
 			if (! join(',', @outp)=~m/$session/)
 			{
-				delete $blocked_sessions{$session};
+				delete $remembered_sessions{$session};
 			}
 		}
 
 		for (my $i=0;$i<@outp;$i++)
 		{
+
 			my @sinfo=split('\\|',"@outp[$i]");
+
+			if (defined $remembered_sessions{ @sinfo[1] })
+			{
+				$remembered_sessions{ @sinfo[1] } += 2;
+			} else {
+				$remembered_sessions{ @sinfo[1] } = 0;
+			}
+
 			if (@sinfo[4]eq 'F')
 			{
-
 				syslog('debug', "@sinfo[1] is blocked");
-				if (defined $blocked_sessions{ @sinfo[1] })
+				if ($remembered_sessions{@sinfo[1]} ge 20)
 				{
-					$blocked_sessions{@sinfo[1]} += 2;
-					if ($blocked_sessions{@sinfo[1]} >= 20)
-					{
-						# send SIGKILL to dangling X-server processes
-						syslog('warning', "@sinfo[1]: found stale X-server process (@sinfo[0]), sending SIGKILL");
-						qw(kill -9 @sinfo[0]);
-						delete $blocked_sessions{@sinfo[1]};
-					}
-				} else {
-					$blocked_sessions{@sinfo[1]} = 0;
-					syslog('debug', "@sinfo[1]: unmounting all shares");
-					system( "su @sinfo[11] -c \"export HOSTNAME && x2goumount-session @sinfo[1]\" 2> /dev/null");
+					# send SIGKILL to dangling X-server processes
+					syslog('warning', "@sinfo[1]: found stale X-server process (@sinfo[0]), sending SIGKILL");
+					qw(kill -9 @sinfo[0]);
+					delete $remembered_sessions{@sinfo[1]};
 				}
-
+				syslog('debug', "@sinfo[1]: unmounting all shares");
+				system( "su @sinfo[11] -c \"export HOSTNAME && x2goumount-session @sinfo[1]\" 2> /dev/null");
 			}
+
 			elsif (! check_pid (@sinfo[0],@sinfo[1],@sinfo[12]))
 			{
-				system("su @sinfo[11] -c \"$x2go_lib_path/x2gochangestatus 'F' @sinfo[1] \" > /dev/null");
+				system("su @sinfo[11] -c \"$x2go_lib_path/x2gochangestatus 'F' @sinfo[1] \" 1> /dev/null 2> /dev/null");
 				syslog('debug', "@sinfo[1], pid @sinfo[0] does not exist, changing status from @sinfo[4] to F");
 				syslog('debug', "@sinfo[1]: unmounting all shares");
 				system( "su @sinfo[11] -c \"export HOSTNAME && x2goumount-session @sinfo[1]\" 2> /dev/null");
 			}
 			else
 			{ 
-				if (@sinfo[4]eq 'R')
+				if ( (@sinfo[4] eq 'R') && ( $remembered_sessions{ @sinfo[1] } ge 2 ))
 				{
 					if (is_suspended(@sinfo[1],@sinfo[11]))
 					{
-						system("su @sinfo[11] -c  \"$x2go_lib_path/x2gochangestatus 'S' @sinfo[1] \" > /dev/null");
+						system("su @sinfo[11] -c  \"$x2go_lib_path/x2gochangestatus 'S' @sinfo[1] \" 1> /dev/null 2>/dev/null");
 						syslog('debug', "@sinfo[1] is suspended, changing status from @sinfo[4] to S");
 						syslog('debug', "@sinfo[1]: unmounting all shares");
 						system( "su @sinfo[11] -c \"export HOSTNAME && x2goumount-session @sinfo[1]\" 2> /dev/null");
 					}
 				}
-				if (@sinfo[4]eq 'S')
+				if (@sinfo[4] eq 'S')
 				{
 					if (is_running(@sinfo[1],@sinfo[11]))
 					{
 						syslog('debug', "@sinfo[1]: unmounting all shares");
 						system( "su @sinfo[11] -c \"export HOSTNAME && x2goumount-session @sinfo[1]\" 2> /dev/null");
-						system("su @sinfo[11] -c  \"x2gosuspend-session @sinfo[1] \" > /dev/null");
+						system("su @sinfo[11] -c  \"x2gosuspend-session @sinfo[1] \" 1> /dev/null 2>/dev/null");
 						syslog('debug', "@sinfo[1] was found running and has now been suspended");
 					}
 				}
-				if (@sinfo[4]eq 'T')
+				if (@sinfo[4] eq 'T')
 				{
 					if (!has_terminated(@sinfo[1],@sinfo[11]))
 					{
 						syslog('debug', "@sinfo[1]: unmounting all shares");
 						system( "su @sinfo[11] -c \"export HOSTNAME && x2goumount-session @sinfo[1]\" 2> /dev/null");
-						system("su @sinfo[11] -c  \"x2goterminate-session @sinfo[1] \" > /dev/null");
+						system("su @sinfo[11] -c  \"x2goterminate-session @sinfo[1] \" 1> /dev/null 2>/dev/null");
 						syslog('debug', "@sinfo[1] has been requested for termination via the session DB");
 					}
 				}
