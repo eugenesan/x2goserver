@@ -159,9 +159,23 @@ x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions "$SESSI
 rm -Rf $SESSION_DIR/keyboard
 
 kill -HUP $X2GO_AGENT_PID &>/dev/null && {
-
-	$X2GO_LIB_PATH/x2goresume  "$X2GO_CLIENT" "$SESSION_NAME"  "$GR_PORT" "$SOUND_PORT" "$FS_PORT" > /dev/null
 	$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "client $X2GO_CLIENT has successfully resumed session with ID $SESSION_NAME"
+
+	# FIXME: the below code may not be necessary as we fixed a race condition between x2gocleansessions and x2goagent
+
+	# we really have to make sure the session database gets this write operation
+	# this may just be an SQLite issue so...
+	# FIXME: probably migrate this piece of code to the SQLite db backend...
+	#while true; do
+	#	$X2GO_LIB_PATH/x2goresume  "$X2GO_CLIENT" "$SESSION_NAME"  "$GR_PORT" "$SOUND_PORT" "$FS_PORT" > /dev/null
+	#	if [ $($X2GO_LIB_PATH/x2gogetstatus "$SESSION_NAME") == "R" ]; then
+	#		break;
+	#	else
+	#		$X2GO_LIB_PATH/x2gosyslog "$0" "warning" "failed to write to X2Go db, will try again..."
+	#		sleep 1;
+	#	fi
+	#done
+	(sleep 1; $X2GO_LIB_PATH/x2goresume  "$X2GO_CLIENT" "$SESSION_NAME"  "$GR_PORT" "$SOUND_PORT" "$FS_PORT" > /dev/null;)
 
 	# set client-side keyboard model, type, variant, etc.
 	if [ "$X2GO_SET_KBD" != "0" ] && [ "$X2GO_KBD_TYPE" == "auto" ]; then

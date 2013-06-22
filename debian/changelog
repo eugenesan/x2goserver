@@ -51,14 +51,6 @@ x2goserver (4.1.0.0-0~x2go1) UNRELEASED; urgency=low
 
  -- Reinhard Tartler <siretart@tauware.de>  Thu, 20 Dec 2012 10:15:26 +0100
 
-x2goserver (4.0.1.2-0~x2go1) UNRELEASED; urgency=low
-
-  * New upstream version (4.0.1.2):
-    - Accelerate resuming of sessions. Fix failures when resuming sessions that
-      result from the latest changes in x2gocleansessions.
-
- -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Sat, 22 Jun 2013 11:01:21 +0200
-
 x2goserver (4.0.1.1-0~x2go1) unstable; urgency=low
 
   * New upstream version (4.0.1.1):
