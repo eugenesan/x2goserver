@@ -131,17 +131,20 @@ if [ "$X2GO_CLIENT" == "" ]; then
 	X2GO_CLIENT="$HOSTNAME"
 fi
 
-USED_DISPLAYS=`$X2GO_LIB_PATH/x2gogetdisplays $HOSTNAME`
-
-#Get all used in system ports from X2Go database and ss output
+# define the full path to the ss utility
 ss=$(PATH="$PATH:/usr/sbin:/sbin" type -P ss);
-USED_PORTS=$(
-	"$X2GO_LIB_PATH/x2gogetports" "$HOSTNAME";
-	"$ss" -nt -all |
-	awk '{ n=split($0,lines,"\n"); for(i=1;i<=n;i++){split (lines[i],words," ");delim=split(words[4],ports,":"); if(delim>1)printf ("|%s|\n",ports[delim])} }';
-);
 
 while [ "$OUTPUT"  != "inserted" ]; do
+
+	USED_DISPLAYS=`$X2GO_LIB_PATH/x2gogetdisplays $HOSTNAME`
+
+	#Get all used in system ports from X2Go database and ss output
+	USED_PORTS=$(
+	    "$X2GO_LIB_PATH/x2gogetports" "$HOSTNAME";
+	    "$ss" -nt -all |
+	    awk '{ n=split($0,lines,"\n"); for(i=1;i<=n;i++){split (lines[i],words," ");delim=split(words[4],ports,":"); if(delim>1)printf ("|%s|\n",ports[delim])} }';
+	);
+
 	X2GO_PORT=$(($X2GO_PORT + 1))
 	X2GO_PORT=`echo "for(\\$i=$X2GO_PORT;\\$br ne \"true\";\\$i++){ if(\"$USED_DISPLAYS\" =~ m/\\|\\$i\\|/){\\$br=\"false\";}else{\\$br=\"true\";print \\$i;}}"|perl`
 	
@@ -167,6 +170,13 @@ while [ "$GR_PORT" == "" ] || [ "$SOUND_PORT" == "" ] || [ "$FS_PORT" == "" ]; d
 	while [ "$OUTPUT"  != "inserted" ]; do
 		SSH_PORT=$(($SSH_PORT + 1))
 
+		#Get all used in system ports from X2Go database and ss output
+		USED_PORTS=$(
+		    "$X2GO_LIB_PATH/x2gogetports" "$HOSTNAME";
+		    "$ss" -nt -all |
+		    awk '{ n=split($0,lines,"\n"); for(i=1;i<=n;i++){split (lines[i],words," ");delim=split(words[4],ports,":"); if(delim>1)printf ("|%s|\n",ports[delim])} }';
+		);
+
 		#get free port
 		SSH_PORT=`echo "for(\\$i=$SSH_PORT;\\$br ne \"true\";\\$i++){ if(\"$USED_PORTS\" =~ m/\\|\\$i\\|/){\\$br=\"false\";}else{\\$br=\"true\";print \\$i;}}"|perl`
 
@@ -176,6 +186,7 @@ while [ "$GR_PORT" == "" ] || [ "$SOUND_PORT" == "" ] || [ "$FS_PORT" == "" ]; d
 			OUTPUT=`$X2GO_LIB_PATH/x2goinsertport "$HOSTNAME" "$SESSION_NAME" "$SSH_PORT"`
 		fi
 	done
+
 	if [ "$GR_PORT" == "" ]; then
 		GR_PORT="$SSH_PORT"
 	elif [ "$SOUND_PORT" == "" ]; then
