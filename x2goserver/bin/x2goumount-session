@@ -81,7 +81,7 @@ close(F);
 
 my $use_zenity=0;
 
-if ($ENV{'GNOME_DESKTOP_SESSION_ID'} ne "")
+if (($ENV{'GNOME_DESKTOP_SESSION_ID'} ne "") || ($ENV{'MATE_DESKTOP_SESSION_ID'} ne ""))
 {
 	$use_zenity=1;
 }
@@ -178,6 +178,10 @@ break:
 		if (($session =~ m/_stDGNOME_dp/) && system("x2gofeature X2GO_GNOMEBINDINGS >/dev/null") == 0)
 		{
 			$current_desktop="-gnome";
+		}
+		elsif (($session =~ m/_stDMATE_dp/) && system("x2gofeature X2GO_MATEBINDINGS >/dev/null") == 0)
+		{
+			$current_desktop="-mate";
 		}
 		elsif (($session =~ m/_stDLXDE_dp/) && system("x2gofeature X2GO_LXDEBINDINGS >/dev/null") == 0)
 		{
