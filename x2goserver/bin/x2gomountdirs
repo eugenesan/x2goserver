@@ -306,6 +306,10 @@ for (my $i=0;$i<@dirs;$i++)
 				{
 					$current_desktop="-gnome";
 				}
+				elsif (($session =~ m/_stDMATE_dp/) && system("x2gofeature X2GO_MATEBINDINGS >/dev/null") == 0)
+				{
+					$current_desktop="-mate";
+				}
 				elsif (($session =~ m/_stDLXDE_dp/) && system("x2gofeature X2GO_LXDEBINDINGS >/dev/null") == 0)
 				{
 					$current_desktop="-lxde";

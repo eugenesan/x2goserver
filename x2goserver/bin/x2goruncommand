@@ -71,7 +71,7 @@ if [ -e "/etc/lsb-release" ]; then
 	source /etc/lsb-release
 fi
 
-# let x2goruncommand choose what command to use for a given desktop shell name (GNOME, UNITY, KDE, XFCE4, LXDE, TRINITY)
+# let x2goruncommand choose what command to use for a given desktop shell name (GNOME, UNITY, KDE, XFCE4, LXDE, TRINITY, MATE)
 
 # NOTES on GNOME startup behaviour in different distributions
 # ===========================================================
@@ -120,6 +120,8 @@ elif ([ "$cmd" == "UNITY" ] || [ "$cmd" == "unity" ]); then
 	fi
 	# on earlier Ubuntu versions or with non-Ubuntu Distros the ,,UNITY'' command in X2Go will launch the GNOME2 desktop shell
 
+elif [ "$cmd" == "MATE" ]; then
+	cmd=="/usr/bin/mate-session"
 elif [ "$cmd" == "KDE" ]; then
 	cmd="/usr/bin/startkde"
 elif [ "$cmd" == "XFCE4" ]; then
@@ -172,6 +174,8 @@ if [ "$cmd" == "TERMINAL" ]; then
 		cmd="/usr/bin/konsole"
 		# KDE4 konsole behaves differently from other terminals
 		IMEXIT="false"
+	elif  [ -e "/usr/bin/mate-terminal" ]; then
+		cmd="/usr/bin/mate-terminal"
 	elif  [ -e "/usr/bin/gnome-terminal" ]; then
 		cmd="/usr/bin/gnome-terminal"
 	elif  [ -e "/usr/bin/lxterminal" ]; then

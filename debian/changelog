@@ -3,6 +3,7 @@ x2goserver (4.0.1.4-0~x2go1) UNRELEASED; urgency=low
   * New upstream versino (4.0.1.4):
     - Multiply query USED_DISPLAYS and USED_PORTS in x2gostartagent to minimize
       race conditions in cases where many clients launch session simultaneously.
+    - Make X2Go Server aware of the MATE desktop environment.
 
  -- Mike Gabriel <mike.gabriel@das-netzwertkeam.de>  Fri, 19 Jul 2013 17:53:11 +0200
 
