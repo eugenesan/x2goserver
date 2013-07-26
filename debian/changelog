@@ -39,10 +39,6 @@ x2goserver (4.1.0.0-0~x2go1) UNRELEASED; urgency=low
     not set. (Fixes: #82).
   * Make x2goruncommand aware of the Cinnamon desktop shell. (Fixes: #117).
 
-  [ Rok Mandeljc ]
-  * New upstream version (4.1.0.0):
-    - x2golistsessions: Import db_changestatus into name space. (Fixes: #267).
-
   [ Otto Kjell ]
   * New upstream version (4.1.0.0):
     + Add markdown files for most of the X2Go Server project folders. (Fixes:
@@ -57,10 +53,17 @@ x2goserver (4.1.0.0-0~x2go1) UNRELEASED; urgency=low
 
 x2goserver (4.0.1.4-0~x2go1) UNRELEASED; urgency=low
 
-  * New upstream versino (4.0.1.4):
+  [ Mike Gabriel ]
+  * New upstream version (4.0.1.4):
     - Multiply query USED_DISPLAYS and USED_PORTS in x2gostartagent to minimize
       race conditions in cases where many clients launch session simultaneously.
     - Make X2Go Server aware of the MATE desktop environment.
+
+  [ Rok Mandeljc ]
+  * New upstream version (4.0.1.4):
+    - The gnome-terminal TERMINAL returns immediately and runs in background
+      starting with GNOME 3.8. Thus, set IMEXIT to false for gnome-terminal.
+      (Fixes: #268).
 
  -- Mike Gabriel <mike.gabriel@das-netzwertkeam.de>  Fri, 19 Jul 2013 17:53:11 +0200
 

@@ -183,6 +183,8 @@ if [ "$cmd" == "TERMINAL" ]; then
 		cmd="/usr/bin/mate-terminal"
 	elif  [ -e "/usr/bin/gnome-terminal" ]; then
 		cmd="/usr/bin/gnome-terminal"
+		# GNOME terminal starting with 3.8 also immediately exits
+		IMEXIT="false"
 	elif  [ -e "/usr/bin/lxterminal" ]; then
 		cmd="/usr/bin/lxterminal"
 	elif  [ -e "/usr/bin/rxvt" ]; then
