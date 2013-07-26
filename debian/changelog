@@ -5,6 +5,8 @@ x2goserver (4.0.1.4-0~x2go1) UNRELEASED; urgency=low
     - Multiply query USED_DISPLAYS and USED_PORTS in x2gostartagent to minimize
       race conditions in cases where many clients launch session simultaneously.
     - Make X2Go Server aware of the MATE desktop environment.
+    - x2goumount-session: allow args $X2GO_SESSION <server-mount-point> in
+      addition to $X2GO_SESSIOn <client-directory>.
 
   [ Rok Mandeljc ]
   * New upstream version (4.0.1.4):
