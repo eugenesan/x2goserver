@@ -51,7 +51,7 @@ x2goserver (4.1.0.0-0~x2go1) UNRELEASED; urgency=low
 
  -- Reinhard Tartler <siretart@tauware.de>  Thu, 20 Dec 2012 10:15:26 +0100
 
-x2goserver (4.0.1.4-0~x2go1) UNRELEASED; urgency=low
+x2goserver (4.0.1.4-0~x2go1) unstable; urgency=low
 
   [ Mike Gabriel ]
   * New upstream version (4.0.1.4):
@@ -67,7 +67,7 @@ x2goserver (4.0.1.4-0~x2go1) UNRELEASED; urgency=low
       starting with GNOME 3.8. Thus, set IMEXIT to false for gnome-terminal.
       (Fixes: #268).
 
- -- Mike Gabriel <mike.gabriel@das-netzwertkeam.de>  Fri, 19 Jul 2013 17:53:11 +0200
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Sat, 27 Jul 2013 00:08:15 +0200
 
 x2goserver (4.0.1.3-0~x2go1) unstable; urgency=low
 
