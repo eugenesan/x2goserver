@@ -39,6 +39,10 @@ x2goserver (4.1.0.0-0~x2go1) UNRELEASED; urgency=low
     not set. (Fixes: #82).
   * Make x2goruncommand aware of the Cinnamon desktop shell. (Fixes: #117).
 
+  [ Rok Mandeljc ]
+  * New upstream version (4.1.0.0):
+    - x2golistsessions: Import db_changestatus into name space. (Fixes: #267).
+
   [ Otto Kjell ]
   * New upstream version (4.1.0.0):
     + Add markdown files for most of the X2Go Server project folders. (Fixes:
