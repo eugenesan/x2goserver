@@ -51,13 +51,13 @@ x2goserver (4.1.0.0-0~x2go1) UNRELEASED; urgency=low
 
  -- Reinhard Tartler <siretart@tauware.de>  Thu, 20 Dec 2012 10:15:26 +0100
 
-x2goserver (4.0.1.5-0~x2go1) UNRELEASED; urgency=low
+x2goserver (4.0.1.5-0~x2go1) unstable; urgency=low
 
   * New upstream version (4.0.1.5):
     - Do not hard-code paths to NX code in x2goruncommand anymore. Use
       x2gopath instead. (Fixes: #273).
 
- -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Sun, 28 Jul 2013 01:50:57 +0200
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Sun, 28 Jul 2013 02:06:47 +0200
 
 x2goserver (4.0.1.4-0~x2go1) unstable; urgency=low
 
