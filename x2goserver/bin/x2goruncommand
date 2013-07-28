@@ -52,8 +52,8 @@ export QT_GRAPHICSSYSTEM=native
 
 IMEXIT="false"
 
-NX_XINERAMA_LIBS=/usr/lib/nx/X11/Xinerama
-NX_LIBS=/usr/lib/nx/X11
+NX_XINERAMA_LIBS=$(x2gopath xinerama)
+NX_LIBS=$(x2gopath nx-x11)
 test -n "$LD_LIBRARY_PATH" && \
   LD_LIBRARY_PATH="$NX_XINERAMA_LIBS:$NX_LIBS:$LD_LIBRARY_PATH" || \
   LD_LIBRARY_PATH="$NX_XINERAMA_LIBS:$NX_LIBS"
