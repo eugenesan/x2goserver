@@ -58,7 +58,7 @@ install_config:
 #       provide target dirs for X11 related symlinks
 	mkdir -p $(DESTDIR)/etc/X11/Xsession.d
 	touch $(DESTDIR)/etc/X11/Xsession.options
-	$(INSTALL_FILE) etc/Xsession                    $(DESTDIR)$(ETCDIR)/
+	$(INSTALL_PROGRAM) etc/Xsession                 $(DESTDIR)$(ETCDIR)/
 	$(INSTALL_SYMLINK) /etc/X11/Xresources          $(DESTDIR)$(ETCDIR)/
 	$(INSTALL_SYMLINK) /etc/X11/Xsession.d          $(DESTDIR)$(ETCDIR)/
 	$(INSTALL_SYMLINK) /etc/X11/Xsession.options    $(DESTDIR)$(ETCDIR)/
