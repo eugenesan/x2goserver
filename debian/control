@@ -62,8 +62,9 @@ Description: X2Go server daemon scripts
  X2Go is a server based computing environment with
     - session resuming
     - low bandwidth support
-    - LDAP support
-    - client side mass storage mounting support
+    - session brokerage support
+    - client-side mass storage mounting support
+    - client-side printing support
     - audio support
     - authentication by smartcard and USB stick
  .
@@ -94,8 +95,9 @@ Description: X2Go server daemon scripts (printing)
  X2Go is a server based computing environment with
     - session resuming
     - low bandwidth support
-    - LDAP support
-    - client side mass storage mounting support
+    - session brokerage support
+    - client-side mass storage mounting support
+    - client-side printing support
     - audio support
     - authentication by smartcard and USB stick
  .
@@ -121,8 +123,9 @@ Description: X2Go server daemon scripts (backwards compatitbity to old client ve
  X2Go is a server based computing environment with
     - session resuming
     - low bandwidth support
-    - LDAP support
-    - client side mass storage mounting support
+    - session brokerage support
+    - client-side mass storage mounting support
+    - client-side printing support
     - audio support
     - authentication by smartcard and USB stick
  .
@@ -139,7 +142,7 @@ Description: X2Go server daemon scripts (extensions)
  X2Go is a server based computing environment with
     - session resuming
     - low bandwidth support
-    - LDAP support
+    - session brokerage support
     - client side mass storage mounting support
     - audio support
     - authentication by smartcard and USB stick
@@ -162,8 +165,9 @@ Description: X2Go server daemon scripts (Xsession runner)
  X2Go is a server based computing environment with
     - session resuming
     - low bandwidth support
-    - LDAP support
-    - client side mass storage mounting support
+    - session brokerage support
+    - client-side mass storage mounting support
+    - client-side printing support
     - audio support
     - authentication by smartcard and USB stick
  .
@@ -186,8 +190,9 @@ Description: Generic (freedesktop-based) file manager bindings for X2Go
  X2Go is a server based computing environment with
     - session resuming
     - low bandwidth support
-    - LDAP support
-    - client side mass storage mounting support
+    - session brokerage support
+    - client-side mass storage mounting support
+    - client-side printing support
     - audio support
     - authentication by smartcard and USB stick
  .
@@ -211,8 +216,9 @@ Description: X2Go server daemon scripts (add-ons for pyhoca client)
  X2Go is a server based computing environment with
     - session resuming
     - low bandwidth support
-    - LDAP support
-    - client side mass storage mounting support
+    - session brokerage support
+    - client-side mass storage mounting support
+    - client-side printing support
     - audio support
     - authentication by smartcard and USB stick
  .
