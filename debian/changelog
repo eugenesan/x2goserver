@@ -1,7 +1,10 @@
 x2goserver (4.0.1.7-0~x2go1) UNRELEASED; urgency=low
 
+  [ Orion Poplawski ]
   * New upstream version (4.0.1.7):
-    - Continue development...
+    - Install Xsession file as executable.
+
+  [ Mike Gabriel ]
   * /debian/control:
     - Update LONG_DESCRIPTIONS.
 
