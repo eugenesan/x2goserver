@@ -2,7 +2,9 @@ x2goserver (4.0.1.7-0~x2go1) UNRELEASED; urgency=low
 
   [ Orion Poplawski ]
   * New upstream version (4.0.1.7):
-    - Install Xsession file as executable.
+    - Install Xsession file as executable, make Xsession.d directory location
+      configurable during build process, do not create unused Xsession.options.
+      (Fixes: #278).
 
   [ Mike Gabriel ]
   * /debian/control:

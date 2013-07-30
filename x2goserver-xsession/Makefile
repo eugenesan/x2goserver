@@ -20,6 +20,8 @@ ETCDIR=/etc/x2go
 MANDIR=$(PREFIX)/share/man
 SHAREDIR=$(PREFIX)/share/x2go
 
+XSESSIONDIR ?= /etc/X11/Xsession.d
+
 #BIN_SCRIPTS=$(shell cd bin && echo *)
 #SBIN_SCRIPTS=$(shell cd sbin && echo *)
 #LIB_FILES=$(shell cd lib && echo *)
@@ -64,12 +66,9 @@ install_scripts:
 install_config:
 	$(INSTALL_DIR) $(DESTDIR)$(ETCDIR)
 #       provide target dirs for X11 related symlinks
-	mkdir -p $(DESTDIR)/etc/X11/Xsession.d
-	touch $(DESTDIR)/etc/X11/Xsession.options
 	$(INSTALL_PROGRAM) etc/Xsession                 $(DESTDIR)$(ETCDIR)/
 	$(INSTALL_SYMLINK) /etc/X11/Xresources          $(DESTDIR)$(ETCDIR)/
-	$(INSTALL_SYMLINK) /etc/X11/Xsession.d          $(DESTDIR)$(ETCDIR)/
-	$(INSTALL_SYMLINK) /etc/X11/Xsession.options    $(DESTDIR)$(ETCDIR)/
+	$(INSTALL_SYMLINK) $(XSESSIONDIR)               $(DESTDIR)$(ETCDIR)/Xsession.d
 
 
 install_man:
