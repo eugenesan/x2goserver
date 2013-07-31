@@ -21,6 +21,7 @@ MANDIR=$(PREFIX)/share/man
 SHAREDIR=$(PREFIX)/share/x2go
 
 XSESSIONDIR ?= /etc/X11/Xsession.d
+XSESSIONOPTIONFILE ?= /etc/X11/Xsession.options
 
 #BIN_SCRIPTS=$(shell cd bin && echo *)
 #SBIN_SCRIPTS=$(shell cd sbin && echo *)
@@ -60,8 +61,8 @@ install_config:
 #       provide target dirs for X11 related symlinks
 	$(INSTALL_PROGRAM) etc/Xsession                 $(DESTDIR)$(ETCDIR)/
 	$(INSTALL_SYMLINK) /etc/X11/Xresources          $(DESTDIR)$(ETCDIR)/
-	$(INSTALL_SYMLINK) $(XSESSIONDIR)               $(DESTDIR)$(ETCDIR)/Xsession.d
-
+	if [ -e $(XSESSIONOPTIONFILE) ]; then $(INSTALL_SYMLINK) $(XSESSIONOPTIONFILE) $(DESTDIR)$(ETCDIR)/Xsession.options; else touch $(DESTDIR)$(ETCDIR)/Xsession.options; fi
+	if [ -d $(XSESSIONDIR) ]; then $(INSTALL_SYMLINK) $(XSESSIONDIR) $(DESTDIR)$(ETCDIR)/Xsession.d; else $(INSTALL_DIR) $(DESTDIR)$(ETCDIR)/Xsession.d; fi
 
 install_man:
 

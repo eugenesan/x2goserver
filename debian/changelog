@@ -61,6 +61,11 @@ x2goserver (4.0.1.7-0~x2go1) UNRELEASED; urgency=low
       (Fixes: #278).
 
   [ Mike Gabriel ]
+  * New upstream version (4.0.1.7):
+    - Fine-tune x2goserver-xsession/Makefile: if /etc/X11 has Xsession.d and/or
+      Xsession.options they get symlinked into /etc/x2go. Otherwise Xsession.d
+      and Xsession.options are created under /etc/x2go as empty dir/file.
+      (Fixes: #278).
   * /debian/control:
     - Update LONG_DESCRIPTIONS.
 
