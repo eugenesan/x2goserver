@@ -43,7 +43,8 @@ x2goserver (4.1.0.0-0~x2go1) UNRELEASED; urgency=low
   * New upstream version (4.1.0.0):
     + Add markdown files for most of the X2Go Server project folders. (Fixes:
       #102).
-  * Fix "server" command line option for x2golistsessions call in x2golistdesktops
+    - Fix "server" command line option for x2golistsessions call in
+      x2golistdesktops.
 
   [ Orion Poplawski ]
   * New upstream version (4.1.0.0):
