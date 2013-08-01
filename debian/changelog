@@ -68,6 +68,8 @@ x2goserver (4.0.1.7-0~x2go1) UNRELEASED; urgency=low
       (Fixes: #278).
   * /debian/control:
     - Update LONG_DESCRIPTIONS.
+    - Move xfonts-base from Recommends: field to Depends: field (bin:package
+      x2goserver).
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Sun, 28 Jul 2013 13:37:12 +0200
 
