@@ -133,12 +133,14 @@ KTSTR=`echo "$KTSTR" | sed "s/\//\\\\\\\\\//"`
 X2GO_KBD_TYPE=`echo "$X2GO_KBD_TYPE" | sed "s/\//\\\\\\\\\//"`
 
 if [ "$X2GO_SET_KBD" == "0" ] || [ "$X2GO_KBD_TYPE" == "auto" ]; then
-	X2GO_KBD_TYPE="null\/null"
+	keyboard_type="null\/null"
+else
+	keyboard_type="$X2GO_KBD_TYPE"
 fi
 
 NEWOPTIONS=`echo "$OPTIONS" | sed  -e  "s/$LSTR/link=$X2GO_LINK/"\
  -e "s/$PSTR/pack=$X2GO_PACK/"\
- -e "s/$KTSTR/kbtype=$X2GO_KBD_TYPE/"\
+ -e "s/$KTSTR/kbtype=$keyboard_type/"\
  -e "s/$GSTR/geometry=$X2GO_GEOMETRY/"\
  -e "s/$RSTR/resize=$X2GO_RESIZE/"\
  -e "s/$LISTSTR/listen=$GR_PORT/"\

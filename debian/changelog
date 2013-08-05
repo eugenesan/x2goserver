@@ -66,6 +66,8 @@ x2goserver (4.0.1.7-0~x2go1) UNRELEASED; urgency=low
       Xsession.options they get symlinked into /etc/x2go. Otherwise Xsession.d
       and Xsession.options are created under /etc/x2go as empty dir/file.
       (Fixes: #278).
+    - Fix automatic keyboard setup (via x2gosetkeyboard) while resuming a session.
+      (Fixes: #285).
   * /debian/control:
     - Update LONG_DESCRIPTIONS.
     - Move xfonts-base from Recommends: field to Depends: field (bin:package
