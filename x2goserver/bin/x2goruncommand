@@ -189,14 +189,14 @@ if [ "$cmd" == "TERMINAL" ]; then
 	fi
 fi
 
-EXEC=`which $cmd`
+EXEC=`type -P $cmd`
 EXEC_WRAPPER=""
 
 BNAME=`basename "$EXEC"`
 if [ "$BNAME" == "rdesktop" ]
 then
 	IMEXIT="true"
-	if which padsp >/dev/null; then
+	if type padsp >/dev/null; then
 		EXEC_WRAPPER="padsp"
 		args=" -r sound:local"
 	fi
