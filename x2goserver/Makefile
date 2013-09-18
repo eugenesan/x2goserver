@@ -70,7 +70,8 @@ install_config:
 	$(INSTALL_FILE) etc/x2goagent.options $(DESTDIR)$(ETCDIR)/
 	$(INSTALL_FILE) etc/x2go_logout       $(DESTDIR)$(ETCDIR)/
 	$(INSTALL_FILE) etc/x2go_logout.d/*   $(DESTDIR)$(ETCDIR)/x2go_logout.d/
-
+	$(INSTALL_DIR) $(DESTDIR)/etc/sudoers.d || true
+	$(INSTALL_FILE) etc/sudoers.d/x2goserver $(DESTDIR)/etc/sudoers.d/
 
 install_man:
 	$(INSTALL_DIR) $(DESTDIR)$(MANDIR)
@@ -99,6 +100,8 @@ uninstall_config:
 	$(RM_FILE) $(DESTDIR)$(ETCDIR)/x2go_logout
 	$(RM_DIR)  $(DESTDIR)$(ETCDIR)/x2go_logout.d || true
 	$(RM_DIR)  $(DESTDIR)$(ETCDIR) || true
+	$(RM_FILE) $(DESTDIR)/etc/sudoers.d/x2goserver
+	$(RM_DIR)  $(DESTDIR)/etc/sudoers.d || true
 
 uninstall_man:
 	for file in $(BIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(MANDIR)/man8/$$file.8.gz; done

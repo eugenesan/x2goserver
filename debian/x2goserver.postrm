@@ -18,6 +18,10 @@ set -e
 
 case "$1" in
 	purge)
+		if dpkg-statoverride --list /etc/sudoers.d/x2goserver >/dev/null; then
+			dpkg-statoverride --remove /etc/sudoers.d/x2goserver
+		fi
+
 		rm -Rf /etc/x2go/applications
 		rm -Rf /etc/x2go/x2go_logout.d
 		rmdir --ignore-fail-on-non-empty /etc/x2go

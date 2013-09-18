@@ -3,5 +3,6 @@ x2goserver/sbin/x2go*                   /usr/sbin/
 x2goserver/lib/x2go*                    /usr/lib/x2go/
 x2goserver/etc/x2go_logout*             /etc/x2go/
 x2goserver/etc/x2goagent.options        /etc/x2go/
+x2goserver/etc/sudoers.d/x2goserver     /etc/sudoers.d/
 x2goserver/VERSION.x2goserver           /usr/share/x2go/versions/
 x2goserver/share/x2gofeature.d          /usr/share/x2go/

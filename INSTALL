@@ -42,6 +42,7 @@ libx2go-server-db-sqlite3-wrapper and x2goprint:
  $ chown root:x2goprint /usr/bin/x2goprint
  $ chmod 2755 /usr/bin/x2goprint
 
+ $ chown 0440 /etc/sudoers.d/x2goserver
 
 4.) INIT SCRIPT
 ---------------

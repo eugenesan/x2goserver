@@ -68,6 +68,8 @@ x2goserver (4.0.1.7-0~x2go1) UNRELEASED; urgency=low
       (Fixes: #278).
     - Fix automatic keyboard setup (via x2gosetkeyboard) while resuming a session.
       (Fixes: #285).
+    - Provide sudoers.d/x2goserver file that allows sudoed commands under
+      KDE (by pertaining the env var QT_GRAPHICSSYSTEM. (Fixes: #276).
   * /debian/control:
     - Update LONG_DESCRIPTIONS.
     - Move xfonts-base from Recommends: field to Depends: field (bin:package
