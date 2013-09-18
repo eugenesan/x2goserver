@@ -98,6 +98,12 @@ case "$1" in
 		    dpkg-statoverride --add --update root x2gouser 2755 /usr/lib/x2go/x2gosqlitewrapper
 		fi
 
+		# sudoers.d files have to be installed 0440:root:root
+		if ! dpkg-statoverride --list /etc/sudoers.d/x2goserver >/dev/null; then
+		    dpkg-statoverride --add --update root root 0440 /etc/sudoers.d/x2goserver
+		fi
+
+
 		# create /etc/x2go/applications symlink if not already there (as link or as dir)
 		if ! test -e /etc/x2go/applications; then
 			ln -s /usr/share/applications /etc/x2go/applications 
