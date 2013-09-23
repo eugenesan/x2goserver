@@ -308,9 +308,12 @@ sub add_user()
 {
 	my $user=shift;
 	my ($name, $pass, $uid, $pgid, $quota, $comment, $gcos, $dir, $shell, $expire) = getpwnam($user);
-	if (! $uid)
+	if (! $name)
 	{
-		print "Can not find user ($user)\n";
+		print "Cannot find user ($user)\n";
+		return;
+	} elsif ($name == "root") {
+		print "The super-user \"root\" is not allowed to use X2Go\n";
 		return;
 	}
 	$pass=`makepasswd`;
