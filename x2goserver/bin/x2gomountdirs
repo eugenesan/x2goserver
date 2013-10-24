@@ -246,15 +246,28 @@ for (my $i=0;$i<@dirs;$i++)
 
 	if (db_insertmount( $session, $mntpath, $host))
 	{
+
+		my $Config = new Config::Simple(syntax=>'ini');
+		$Config->read('/etc/x2go/x2goserver.conf' );
+		my $umask=$Config->param("security.umask");
+		my $umaskstr="";
+
+		if ($umask ne "")
+		{
+			$umaskstr="umask=$umask";
+		} else {
+			$umaskstr="default_permissions";
+		}
 		my $code_conv=$ENV{'X2GO_ICONV'};
+
 		if ($code_conv ne "")
 		{
 			$code_conv="-o $code_conv";
 		}
-		$msg = "sshfs $code_conv -o idmap=user,uid=`id -u`,gid=`id -g`,ServerAliveInterval=300,Cipher=blowfish,IdentityFile=$key,UserKnownHostsFile=$key.ident \"$user\"\@$host:\"@dirs[$i]\" \"$mntpath\" -p $port";
+		$msg = "sshfs $code_conv -o idmap=user,uid=`id -u`,gid=`id -g`,$umaskstr,ServerAliveInterval=300,Cipher=blowfish,IdentityFile=$key,UserKnownHostsFile=$key.ident \"$user\"\@$host:\"@dirs[$i]\" \"$mntpath\" -p $port";
 		syslog('debug', "executing: $msg");
 		print "inserted, $msg\n";
-		if (system("sshfs  $code_conv -o idmap=user,uid=`id -u`,gid=`id -g`,ServerAliveInterval=300,Cipher=blowfish,IdentityFile=$key,UserKnownHostsFile=$key.ident \"$user\"\@$host:\"@dirs[$i]\" \"$mntpath\" -p $port 2>>~/mounts.log")==0)
+		if (system("sshfs  $code_conv -o idmap=user,uid=`id -u`,gid=`id -g`,$umaskstr,ServerAliveInterval=300,Cipher=blowfish,IdentityFile=$key,UserKnownHostsFile=$key.ident \"$user\"\@$host:\"@dirs[$i]\" \"$mntpath\" -p $port 2>>~/mounts.log")==0)
 		{
 			print "mount @dirs[$i] ok\n";
 			syslog('notice', "successfully mounted $user\@$host:$port@dirs[$i] to $mntpath");

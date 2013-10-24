@@ -78,6 +78,11 @@ x2goserver (4.0.1.7-0~x2go1) UNRELEASED; urgency=low
     - Move xfonts-base from Recommends: field to Depends: field (bin:package
       x2goserver).
 
+  [ Helmer Teles ]
+  * New upstream version (4.0.1.7):
+    - Make umask that is used when mounting client-side folders via SSHFS
+      configurable in x2goserver.conf. (Fixes: #331).
+
   [ Jürgen Hötzel ]
   * New upstream version (4.0.1.7):
     - Use bash-builtin 'type' instead of to be avoided 'which'. (Fixes: #305).
