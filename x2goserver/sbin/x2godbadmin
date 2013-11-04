@@ -63,7 +63,7 @@ $Config->read('/etc/x2go/x2gosql/sql' ) or die "Can't read config file /etc/x2go
 
 if ($Config->param("backend") eq 'sqlite')
 {
-my $user="x2gouser";
+	my $user="x2gouser";
 	my  ($name, $pass, $uid, $pgid, $quota, $comment, $gcos, $dir, $shell, $expire) = getpwnam($user);
 	my $dbfile="$dir/x2go_sessions";
 
