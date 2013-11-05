@@ -19,6 +19,7 @@ x2goserver (4.0.1.7-0~x2go1) UNRELEASED; urgency=low
     - With PostgreSQL as session db backend, prevent the root user from
       launching sessions. Also, prevent x2gouser_root from being added as a
       PostgreSQL user. (Fixes: #310).
+    - Execute DB status changes as late as possible during suspend / terminate.
   * /debian/control:
     + Update LONG_DESCRIPTIONS.
     + Move xfonts-base from Recommends: field to Depends: field (bin:package

@@ -33,8 +33,6 @@ $X2GO_LIB_PATH/x2gosyslog "$0" "info" "$(basename $0) called with options: $@"
 X2GO_AGENT_PID=`$X2GO_LIB_PATH/x2gogetagent "$SESSION_NAME"` 
 X2GO_AGENT_PID=`echo "$X2GO_AGENT_PID"| awk {'print $1'}`
 
-$X2GO_LIB_PATH/x2gochangestatus 'F' "$SESSION_NAME"  > /dev/null
-
 # stop x2godesktopsharing process gracefully...
 x2gofeature X2GO_DESKTOPSHARING &>/dev/null && x2goterminate-desktopsharing "$SESSION_NAME" || true
 
@@ -57,6 +55,6 @@ kill -TERM $X2GO_AGENT_PID &>/dev/null && {
 
 	# run x2goserver-extensions for fail-terminate
 	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions "$SESSION_NAME" fail-terminate || true
-
 }
 
+$X2GO_LIB_PATH/x2gochangestatus 'F' "$SESSION_NAME"  > /dev/null
