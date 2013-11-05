@@ -19,6 +19,8 @@
 #
 # Copyright (C) 2007-2013  Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
 # Copyright (C) 2007-2013  Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
+# Copyright (C) 2013 Guangzhou Nianguan Electronics Technology Co.Ltd. <opensource@gznianguan.com>
+# Copyright (C) 2013 Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
 
 package X2Go::Utils;
 
@@ -35,7 +37,7 @@ X2Go::Utils Perl package.
 use strict;
 use base 'Exporter';
 
-our @EXPORT = ('source_environment');
+our @EXPORT = ('source_environment', 'clups', 'sanitizer', );
 
 sub source_environment {
 	my $name = shift;
@@ -56,6 +58,50 @@ sub source_environment {
 		$v =~ s/`(.*?)`/`$1`/ge; #dangerous
 		$ENV{$k} = $v;
 	}
+}
+
+# Over-zealous string sanitizer that makes perl strict and  perl -T happy...
+sub sanitizer {
+	my $type   = $_[0];
+	my $string = $_[1];
+	if ($type eq "anumazcs") {
+		$string =~ s/[^a-zA-Z0-9]//g;
+		if ($string =~ /^([a-zA-Z0-9]*)$/) {
+			$string = $1;
+			return $string;
+		} else {return 0;}
+	} elsif ($type eq "anumazlc") {
+		$string = lc($string);
+		$string =~ s/[^a-z0-9]//g;
+		if ($string =~ /^([a-z0-9]*)$/) {
+			$string = $1;
+			return $string;
+		} else {return 0;}
+	} elsif ($type eq "num") {
+		$string =~ s/\D//g;
+		if ($string =~ /^([0-9]*)$/) {
+			$string = $1;
+			return $string;
+		} else {return 0;}
+	} elsif ($type eq "anumazcsdaus") {
+		$string =~ s/[^a-zA-Z0-9\_\-]//g;
+		if ($string =~ /^([a-zA-Z0-9\_\-]*)$/) {
+			$string = $1;
+			return $string;
+		} else {return 0;}
+	} elsif ($type eq "SOMETHINGELSE") {
+		return 0;
+	} else {
+		return 0;
+	}
+}
+
+sub clups {
+	my $string = "@_";
+	$string =~ s/\n//g;
+	$string =~ s/\ //g;
+	$string =~ s/\s//g;
+	return $string;
 }
 
 1;

@@ -21,11 +21,16 @@
 # Copyright (C) 2007-2013  Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
 
 use strict;
+
+$ENV{'PATH'} = "/bin:/sbin:/usr/bin:/usr/sbin";
+
 use Sys::Hostname;
 use Sys::Syslog qw( :standard :macros );
 
 my $x2go_lib_path = `x2gopath libexec`;
-use X2Go::Log qw(loglevel);
+use X2Go::Config qw( get_config );
+use X2Go::Log qw( loglevel );
+use X2Go::SupeReNicer qw( superenice );
 
 openlog($0,'cons,pid','user');
 setlogmask( LOG_UPTO(loglevel()) );
@@ -107,6 +112,30 @@ elsif ($pid != 0)
 }
 elsif ($pid == 0 )
 {
+
+	# check if we are to use the superenicer script for throttling does the nice level
+        # of suspended sessions...
+	my $Config = get_config();
+
+	my $superenice_enable=$Config->param("superenicer.enable");
+	my $superenice_forceuser=$Config->param("superenicer.force-user-renice");
+	my $superenice_normal=$Config->param("superenicer.normal-nice-level");
+	my $superenice_idle=$Config->param("superenicer.idle-nice-level");
+	my $superenice_ignoredusers=$Config->param("superenicer.ignored-users");
+
+	if ($superenice_enable =~ m/(1|yes|Yes|YES|on|On|ON|True|true|TRUE)/ )
+	{
+		$superenice_enable=1;
+	} else {
+		$superenice_enable=0;
+	}
+	if ($superenice_forceuser =~ m/(1|yes|Yes|YES|on|On|ON|True|true|TRUE)/ )
+	{
+		$superenice_forceuser=1;
+	} else {
+		$superenice_forceuser=0;
+	}
+
 	# close any open file descriptor left open by our parent before the fork
 	for (glob "/proc/$$/fd/*") { POSIX::close($1) if m{/(\d+)$}; }
 
@@ -115,6 +144,7 @@ elsif ($pid == 0 )
 
 	my %remembered_sessions_status = ();
 	my %remembered_sessions_since = ();
+	my $last_reniced = 0;
 
 	while(sleep 2)
 	{
@@ -201,5 +231,15 @@ elsif ($pid == 0 )
 				}
 			}
 		}
+
+		# call superenicer script if requested through x2goserver.conf every six seconds
+		if ( $superenice_enable ) {
+			$last_reniced += 2;
+			if ( $last_reniced ge 4 ) {
+				superenice($superenice_normal, $superenice_idle, $superenice_ignoredusers, $superenice_forceuser);
+				$last_reniced = 0;
+			}
+		}
+
 	}
 }
