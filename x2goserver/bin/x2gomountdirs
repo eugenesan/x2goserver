@@ -24,9 +24,10 @@ use strict;
 use Sys::Syslog qw( :standard :macros );
 use File::BaseDir qw(xdg_config_home);
 
-use X2Go::Server::DB qw(db_insertmount db_deletemount);
-use X2Go::Utils qw(source_environment);
-use X2Go::Log qw(loglevel);
+use X2Go::Config qw( get_config );
+use X2Go::Server::DB qw( db_insertmount db_deletemount );
+use X2Go::Utils qw( source_environment );
+use X2Go::Log qw( loglevel );
 
 openlog($0,'cons,pid','user');
 setlogmask( LOG_UPTO(loglevel()) );
@@ -247,8 +248,7 @@ for (my $i=0;$i<@dirs;$i++)
 	if (db_insertmount( $session, $mntpath, $host))
 	{
 
-		my $Config = new Config::Simple(syntax=>'ini');
-		$Config->read('/etc/x2go/x2goserver.conf' );
+		my $Config = get_config();
 		my $umask=$Config->param("security.umask");
 		my $umaskstr="";
 

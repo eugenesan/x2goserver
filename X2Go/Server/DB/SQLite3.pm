@@ -40,9 +40,8 @@ use POSIX;
 ####       via a setgid <group> wrapper (where <group> is group ,,x2gouser'').
 ####       It is intended that the code in this package cannot do system() calls.
 
-use Config::Simple;
 use Sys::Syslog qw( :standard :macros );
-use X2Go::Log qw(loglevel);
+use X2Go::Log qw( loglevel );
 
 openlog($0,'cons,pid','user');
 setlogmask( LOG_UPTO(loglevel()) );

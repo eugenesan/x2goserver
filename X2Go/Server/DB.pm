@@ -31,22 +31,21 @@ X2Go::Server::DB Perl package for X2Go::Server.
 =cut
 
 use strict;
-use Config::Simple;
 use DBI;
 use POSIX;
 use Sys::Syslog qw( :standard :macros );
 
-use X2Go::Log qw(loglevel);
+use X2Go::Config qw( get_sqlconfig );
+use X2Go::Log qw( loglevel );
 use X2Go::Server::DB::PostgreSQL;
 
 setlogmask( LOG_UPTO(loglevel()) );
 
 my ($uname, $pass, $uid, $pgid, $quota, $comment, $gcos, $homedir, $shell, $expire) = getpwuid(getuid());
 
-my $Config = new Config::Simple(syntax=>'ini');
+my $Config = get_sqlconfig();
 my $x2go_lib_path=`x2gopath libexec`;
 
-$Config->read('/etc/x2go/x2gosql/sql' ) or die "Can't read config file /etc/x2go/x2gosql/sql";
 my $backend=$Config->param("backend");
 
 my $host;

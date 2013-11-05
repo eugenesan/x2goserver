@@ -24,10 +24,10 @@ use strict;
 use Sys::Syslog qw( :standard :macros );
 use File::Path qw( make_path );
 use Getopt::Long;
-use Config::Simple;
 use DBI;
 
-use X2Go::Log qw(loglevel);
+use X2Go::Config qw( get_sqlconfig );
+use X2Go::Log qw( loglevel );
 
 openlog($0,'cons,pid','user');
 setlogmask( LOG_UPTO(loglevel()) );
@@ -58,8 +58,7 @@ if ($help  || ! ( $createdb || $adduser || $rmuser || $addgroup || $rmgroup || $
 	exit(0);
 }
 
-my $Config = new Config::Simple(syntax=>'ini');
-$Config->read('/etc/x2go/x2gosql/sql' ) or die "Can't read config file /etc/x2go/x2gosql/sql";
+my $Config = get_sqlconfig();
 
 if ($Config->param("backend") eq 'sqlite')
 {

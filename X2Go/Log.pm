@@ -33,15 +33,13 @@ X2Go::Log Perl package for X2Go components.
 =cut
 
 use strict;
-use Config::Simple;
 use Sys::Syslog qw( :standard :macros );
+use X2Go::Config qw( get_config );
 
 use base 'Exporter';
 our @EXPORT = ( 'loglevel' );
 
-my $Config = new Config::Simple(syntax=>'ini');
-$Config->read('/etc/x2go/x2goserver.conf' );
-
+my $Config = get_config();
 my $strloglevel = $Config->param("log.loglevel");
 
 sub loglevel {

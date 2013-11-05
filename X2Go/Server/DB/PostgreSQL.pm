@@ -31,12 +31,12 @@ X2Go::Server::DB::PostgreSQL Perl package for X2Go::Server.
 =cut
 
 use strict;
-use Config::Simple;
 use DBI;
 use POSIX;
 use Sys::Syslog qw( :standard :macros );
 
-use X2Go::Log qw(loglevel);
+use X2Go::Log qw( loglevel );
+use X2Go::Config qw( get_sqlconfig );
 
 setlogmask( LOG_UPTO(loglevel()) );
 
@@ -60,10 +60,9 @@ sub init_db
 {
 	if ( ! ( $dbuser and $dbpass ) )
 	{
-		my $Config = new Config::Simple(syntax=>'ini');
+		my $Config = get_sqlconfig;
 		my $x2go_lib_path=`x2gopath libexec`;
 
-		$Config->read('/etc/x2go/x2gosql/sql' ) or die "Can't read config file /etc/x2go/x2gosql/sql";
 		my $backend=$Config->param("backend");
 		if ( $backend ne "postgres" )
 		{
