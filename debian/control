@@ -9,7 +9,7 @@ Uploaders:
 Build-Depends: 
  debhelper (>= 7.0.50~),
  man2html-base | man2html
-Standards-Version: 3.9.3
+Standards-Version: 3.9.4
 Homepage: http://code.x2go.org/releases/source/x2goserver
 Vcs-Git: git://code.x2go.org/x2goserver.git
 Vcs-Browser: http://code.x2go.org/gitweb?p=x2goserver.git;a=summary
@@ -28,8 +28,7 @@ Depends:
  openssh-server,
  xauth,
  psmisc,
- net-tools
- xfonts-base,
+ net-tools,
 Recommends:
  sshfs,
  x11-apps,
@@ -44,6 +43,7 @@ Recommends:
  x2goserver-xsession (>= ${source:Version}), x2goserver-xsession (<< ${source:Version}.1~),
  x2goserver-fmbindings (>= ${source:Version}), x2goserver-fmbindings (<< ${source:Version}.1~),
  x2goserver-printing (>= ${source:Version}), x2goserver-printing (<< ${source:Version}.1~),
+ xfonts-base,
 Suggests:
  x2goserver-compat (>= ${source:Version}), x2goserver-compat (<< ${source:Version}.1~),
  x2goserver-pyhoca (>= ${source:Version}), x2goserver-pyhoca (<< ${source:Version}.1~),

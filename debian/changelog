@@ -77,6 +77,8 @@ x2goserver (4.0.1.7-0~x2go1) UNRELEASED; urgency=low
     - Update LONG_DESCRIPTIONS.
     - Move xfonts-base from Recommends: field to Depends: field (bin:package
       x2goserver).
+    - Raise Standards: to 3.9.4 (no changes needed).
+    - Move xfonts-base to Recommends: field of bin:package x2goserver.
 
   [ Helmer Teles ]
   * New upstream version (4.0.1.7):
