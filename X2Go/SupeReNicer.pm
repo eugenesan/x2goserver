@@ -20,15 +20,15 @@
 # Copyright (C) 2013 Guangzhou Nianguan Electronics Technology Co.Ltd. <opensource@gznianguan.com>
 # Copyright (C) 2013 Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
 
-package X2Go::SuperRenicer;
+package X2Go::SupeReNicer;
 
 =head1 NAME
 
-X2Go::SuperRenicer- X2Go SuperRenicer package for Perl
+X2Go::SupeReNicer- X2Go SupeReNicer package for Perl
 
 =head1 DESCRIPTION
 
-X2Go::SuperRenicer Perl package.
+X2Go::SupeReNicer Perl package.
 
 =cut
 
