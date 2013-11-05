@@ -19,6 +19,10 @@ x2goserver (4.1.0.0-0~x2go1) UNRELEASED; urgency=low
     - Fix failures of x2gogetagent that was related to faulty regexp in
       SQLite3 DB wrapper script.
     - Add X2Go Server feature X2GO_LIST_SHADOWSESSIONS.
+    - Break execution of x2gosuspend-session / x2goterminate-session if the
+      script is called without session as first argument and $X2GO_SESSION
+      not set. (Fixes: #82).
+    - Make x2goruncommand aware of the Cinnamon desktop shell. (Fixes: #117).
     - Fix build-arch target in x2goserver/Makefile. (Fixes: #121).
     - Load config files from a Perl package (X2Go::Config).
   * /debian/control:
@@ -35,10 +39,6 @@ x2goserver (4.1.0.0-0~x2go1) UNRELEASED; urgency=low
     + Rely on $PATH when invoking x2gocleansessions.
   * Move code in pre/post+inst/rm scripts around (from x2goserver package
     to libx2go-server-db-perl and x2goserver-common).
-  * Break execution of x2gosuspend-session / x2goterminate-session if the
-    script is called without session as first argument and $X2GO_SESSION
-    not set. (Fixes: #82).
-  * Make x2goruncommand aware of the Cinnamon desktop shell. (Fixes: #117).
 
   [ Guangzhou Nianguan Electronics Technology Co.Ltd. ]
   * New upstream version (4.1.0.0):
