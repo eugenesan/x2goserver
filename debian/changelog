@@ -41,7 +41,7 @@ x2goserver (4.1.0.0-0~x2go1) UNRELEASED; urgency=low
 
   [ Otto Kjell ]
   * New upstream version (4.1.0.0):
-    + Add markdown files for most of the X2Go Server project folders. (Fixes:
+    - Add markdown files for most of the X2Go Server project folders. (Fixes:
       #102).
     - Fix "server" command line option for x2golistsessions call in
       x2golistdesktops.
@@ -74,11 +74,11 @@ x2goserver (4.0.1.7-0~x2go1) UNRELEASED; urgency=low
       launching sessions. Also, prevent x2gouser_root from being added as a
       PostgreSQL user. (Fixes: #310).
   * /debian/control:
-    - Update LONG_DESCRIPTIONS.
-    - Move xfonts-base from Recommends: field to Depends: field (bin:package
+    + Update LONG_DESCRIPTIONS.
+    + Move xfonts-base from Recommends: field to Depends: field (bin:package
       x2goserver).
-    - Raise Standards: to 3.9.4 (no changes needed).
-    - Move xfonts-base to Recommends: field of bin:package x2goserver.
+    + Raise Standards: to 3.9.4 (no changes needed).
+    + Move xfonts-base to Recommends: field of bin:package x2goserver.
 
   [ Helmer Teles ]
   * New upstream version (4.0.1.7):
