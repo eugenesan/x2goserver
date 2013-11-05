@@ -45,8 +45,6 @@ X2GO_AGENT_PID=`echo "$X2GO_AGENT_PID"| awk {'print $1'}`
 # workaround for knotify, keep silent in case no knotify is running
 killall -HUP knotify &>/dev/null
 
-$X2GO_LIB_PATH/x2gochangestatus 'S' "$SESSION_NAME"  > /dev/null
-
 # terminate x2godesktopsharing instance and remember that it was running...
 x2gofeature X2GO_DESKTOPSHARING &>/dev/null && x2gosuspend-desktopsharing "$SESSION_NAME" || true
 
@@ -59,20 +57,20 @@ kill -HUP $X2GO_AGENT_PID &>/dev/null && {
 	# run x2goserver-extensions for post-suspend
 	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions "$SESSION_NAME" post-suspend || true
 
+	$X2GO_LIB_PATH/x2gochangestatus 'S' "$SESSION_NAME"  > /dev/null
+
 } || {
 	err_msg="ERROR: failed to suspend session with ID $SESSION_NAME"
 	echo "$err_msg" 1>&2
 	$X2GO_LIB_PATH/x2gosyslog "$0" "err" "$err_msg"
 
-	# If we reach here it means that the x2goagent process of the session has vanisshed
-	# If this happens then we mark the session as finished...
-	$X2GO_LIB_PATH/x2gochangestatus 'F' "$SESSION_NAME"  > /dev/null
-
 	# run x2goserver-extensions for fail-suspend
 	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions "$SESSION_NAME" fail-suspend || true
 
+	# If we reach here it means that the x2goagent process of the session has vanisshed
+	# If this happens then we mark the session as finished...
+	$X2GO_LIB_PATH/x2gochangestatus 'F' "$SESSION_NAME"  > /dev/null
 }
 
 export HOSTNAME
 x2goumount-session "$SESSION_NAME"
-
