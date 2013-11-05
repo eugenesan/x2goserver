@@ -25,6 +25,8 @@ x2goserver (4.0.1.7-0~x2go1) UNRELEASED; urgency=low
       x2goserver).
     + Raise Standards: to 3.9.4 (no changes needed).
     + Move xfonts-base to Recommends: field of bin:package x2goserver.
+  * /debian/x2goserver.init:
+    + Make init script LSB compliant.
 
   [ Helmer Teles ]
   * New upstream version (4.0.1.7):
