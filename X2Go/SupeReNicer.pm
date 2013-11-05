@@ -66,7 +66,7 @@ sub sanitizeNL {
 }
 
 
-sub superrenice {
+sub superenice {
 	# Normal: Nice LEVEL?
 	my $normalNL = shift; $normalNL = 0 unless defined $normalNL;
 	$normalNL = sanitizeNL($normalNL, 0);
