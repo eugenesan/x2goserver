@@ -11,6 +11,8 @@
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 XSOCKDIR=/tmp/.X11-unix
 
+. /lib/lsb/init-functions
+
 start()
 {
 		if [ ! -d $XSOCKDIR ]
@@ -18,7 +20,7 @@ start()
 			mkdir $XSOCKDIR
 			chmod 1777 $XSOCKDIR
 		fi
-		echo "Cleaning up stale X2Go sessions."
+		log_action_msg "Cleaning up stale X2Go sessions."
 		x2gocleansessions
 }
 
@@ -37,11 +39,11 @@ case "$1" in
 	;;
 	reload|force-reload|restart)
 		stop
+		sleep 1
 		start
 	;;
 	*)
 		N=/etc/init.d/x2goserver
-		# echo "Usage: $N {start|stop|restart|reload|force-reload}" >&2
 		echo "Usage: $N {start|stop|restart|force-reload}" >&2
 		exit 1
 	;;
