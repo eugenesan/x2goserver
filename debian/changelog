@@ -25,6 +25,7 @@ x2goserver (4.1.0.0-0~x2go1) UNRELEASED; urgency=low
     - Make x2goruncommand aware of the Cinnamon desktop shell. (Fixes: #117).
     - Fix build-arch target in x2goserver/Makefile. (Fixes: #121).
     - Load config files from a Perl package (X2Go::Config).
+    - Disable SupeReNicer by default.
   * /debian/control:
     + Package X2Go::Log in separate package: libx2go-log-perl.
     + Package X2Go::Server::DB in separate package: libx2go-server-db-perl.
