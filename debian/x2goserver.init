@@ -20,7 +20,7 @@ start()
 			mkdir $XSOCKDIR
 			chmod 1777 $XSOCKDIR
 		fi
-		log_action_msg "Cleaning up stale X2Go sessions."
+		log_action_msg "Cleaning up stale X2Go sessions"
 		x2gocleansessions
 }
 
