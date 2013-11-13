@@ -99,7 +99,7 @@ sub superenice {
 			my $line = clups($_);
 			my ($agentPid,$x2gosid,undef,undef,$x2goState,undef,undef,undef,undef,undef,undef,$userID,undef,undef) = split(/\|/,$line);
 			#syslog('debug', "$agentPid,$x2gosid,$x2goState,$userID");
-			unless ($ignore{$userID} eq 1) {
+			unless (($ignore{$userID} eq 1) || ($x2gosid =~ m/.*XSHAD.*XSHAD/)) {
 				push @x2goSessions, "$x2goState:$agentPid:$x2gosid:$userID";
 			}
 		}
@@ -178,7 +178,7 @@ sub superenice {
 			syslog('debug', "$agentPid,$x2gosid,,$x2goState,$userID");
 
 			# If user is in ignore list... we're not going a damn thing..
-			unless ($ignore{$userID} eq 1) {
+			unless (($ignore{$userID} eq 1) || ($x2gosid =~ m/.*XSHAD.*XSHAD/)) {
 				unless ($niceUsers{$userID} =~ /^R:/) {   # Basically if we got an R we're sticking with it...
 					$niceUsers{$userID} = "$x2goState:$agentPid";
 				}
