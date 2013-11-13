@@ -52,7 +52,7 @@ my $realuser=$uname;
 use base 'Exporter';
 
 our @EXPORT=('db_listsessions','db_listsessions_all', 'db_getservers', 'db_getagent', 'db_resume', 'db_changestatus', 'db_getstatus',
-             'db_getdisplays', 'db_insertsession', 'db_getports', 'db_insertport', 'db_rmport', 'db_createsession', 'db_insertmount',
+             'db_getdisplays', 'db_insertsession', 'db_insertshadowsession', 'db_getports', 'db_insertport', 'db_rmport', 'db_createsession', 'db_createshadowsession', 'db_insertmount',
              'db_getmounts', 'db_deletemount', 'db_getdisplay', 'dbsys_getmounts', 'dbsys_listsessionsroot',
              'dbsys_listsessionsroot_all', 'dbsys_rmsessionsroot', 'dbsys_deletemounts', 'db_listshadowsessions','db_listshadowsessions_all', );
 
@@ -219,6 +219,24 @@ sub db_insertsession
 	return 1;
 }
 
+sub db_insertshadowsession
+{
+	my $dbh = init_db();
+	my $display=shift or die "argument \"display\" missed";
+	my $server=shift or die "argument \"server\" missed";
+	my $sid=shift or die "argument \"session_id\" missed";
+	my $shadreq_user = shift or die "argument \"shadreq_user\" missed";
+	my $fake_sid = $sid;
+	$fake_sid =~ s/$shadreq_user-/$realuser-/;
+	check_user($fake_sid);
+	my $sth=$dbh->prepare("insert into sessions (display,server,uname,session_id, init_time, last_time) values
+	                       (?, ?, ?, ?, datetime('now','localtime'), datetime('now','localtime'))");
+	$sth->execute($display, $server, $shadreq_user, $sid) or die $_;
+	$sth->finish();
+	$dbh->disconnect();
+	return 1;
+}
+
 sub db_createsession
 {
 	my $dbh = init_db();
@@ -236,6 +254,33 @@ sub db_createsession
 	if ($sth->err())
 	{
 		syslog('error', "createsession (SQLite3 session db backend) failed with exitcode: $sth->err()");
+		die();
+	}
+	$sth->finish();
+	$dbh->disconnect();
+	return 1;
+}
+
+sub db_createshadowsession
+{
+	my $dbh = init_db();
+	my $cookie=shift or die"argument \"cookie\" missed";
+	my $pid=shift or die"argument \"pid\" missed";
+	my $client=shift or die"argument \"client\" missed";
+	my $gr_port=shift or die"argument \"gr_port\" missed";
+	my $snd_port=shift or die"argument \"snd_port\" missed";
+	my $fs_port=shift or die"argument \"fs_port\" missed";
+	my $sid=shift or die "argument \"session_id\" missed";
+	my $shadreq_user = shift or die "argument \"shadreq_user\" missed";
+	my $fake_sid = $sid;
+	$fake_sid =~ s/^$shadreq_user-/$realuser-/;
+	check_user($fake_sid);
+	my $sth=$dbh->prepare("update sessions set status='R',last_time=datetime('now','localtime'),cookie=?,agent_pid=?,
+	                       client=?,gr_port=?,sound_port=?,fs_port=? where session_id=? and uname=?");
+	$sth->execute($cookie, $pid, $client, $gr_port, $snd_port, $fs_port, $sid, $shadreq_user);
+	if ($sth->err())
+	{
+		syslog('error', "createshadowsession (SQLite3 session db backend) failed with exitcode: $sth->err()");
 		die();
 	}
 	$sth->finish();

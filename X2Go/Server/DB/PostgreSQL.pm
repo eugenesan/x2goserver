@@ -43,7 +43,7 @@ setlogmask( LOG_UPTO(loglevel()) );
 use base 'Exporter';
 
 our @EXPORT=('db_listsessions','db_listsessions_all', 'db_getservers', 'db_getagent', 'db_resume', 'db_changestatus', 'db_getstatus',
-             'db_getdisplays', 'db_insertsession', 'db_getports', 'db_insertport', 'db_rmport', 'db_createsession', 'db_insertmount',
+             'db_getdisplays', 'db_insertsession', 'db_insertshadowsession', 'db_getports', 'db_insertport', 'db_rmport', 'db_createsession', 'db_insertmount',
              'db_getmounts', 'db_deletemount', 'db_getdisplay', 'dbsys_getmounts', 'dbsys_listsessionsroot',
              'dbsys_listsessionsroot_all', 'dbsys_rmsessionsroot', 'dbsys_deletemounts', 'db_listshadowsessions','db_listshadowsessions_all');
 
@@ -251,6 +251,20 @@ sub db_insertsession
 	my $sid=shift or die "argument \"session_id\" missed";
 	my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 	my $sth=$dbh->prepare("insert into sessions (display,server,uname,session_id) values ('$display','$server','$uname','$sid')");
+	$sth->execute()or die $_;
+	$sth->finish();
+	$dbh->disconnect();
+}
+
+sub db_insertshadowsession
+{
+	init_db();
+	my $display=shift or die "argument \"display\" missed";
+	my $server=shift or die "argument \"server\" missed";
+	my $sid=shift or die "argument \"session_id\" missed";
+	my $shadreq_user=shift or die "argument \"shadreq_user\" missed";
+	my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
+	my $sth=$dbh->prepare("insert into sessions (display,server,uname,session_id) values ('$display','$server','$shadreq_user','$sid')");
 	$sth->execute()or die $_;
 	$sth->finish();
 	$dbh->disconnect();

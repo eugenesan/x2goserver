@@ -63,7 +63,7 @@ if ($backend ne 'postgres' && $backend ne 'sqlite')
 use base 'Exporter';
 
 our @EXPORT=('db_listsessions','db_listsessions_all', 'db_getservers', 'db_getagent', 'db_resume', 'db_changestatus', 'db_getstatus', 
-             'db_getdisplays', 'db_insertsession', 'db_getports', 'db_insertport', 'db_rmport', 'db_createsession', 'db_insertmount', 
+             'db_getdisplays', 'db_insertsession', 'db_insertshadowsession', 'db_getports', 'db_insertport', 'db_rmport', 'db_createsession', 'db_createshadowsession', 'db_insertmount', 
              'db_getmounts', 'db_deletemount', 'db_getdisplay', 'dbsys_getmounts', 'dbsys_listsessionsroot', 
              'dbsys_listsessionsroot_all', 'dbsys_rmsessionsroot', 'dbsys_deletemounts', 'db_listshadowsessions','db_listshadowsessions_all');
 
@@ -210,6 +210,27 @@ sub db_insertsession
 	syslog('debug', "db_insertsession called, session ID: $sid, server: $server, session ID: $sid");
 }
 
+sub db_insertshadowsession
+{
+	my $display=shift or die "argument \"display\" missed";
+	my $server=shift or die "argument \"server\" missed";
+	my $sid=shift or die "argument \"session_id\" missed";
+	my $shadreq_user=shift or die "argument \"shadreq_user\" missed";
+	if ($backend eq 'postgres')
+	{
+		X2Go::Server::DB::PostgreSQL::db_insertshadowsession($display, $server, $sid, $shadreq_user);
+	}
+	if ($backend eq 'sqlite')
+	{
+		my $err=`$x2go_lib_path/libx2go-server-db-sqlite3-wrapper insertshadowsession $display $server $sid $shadreq_user`;
+		if ($err ne "ok")
+		{
+			die "$err: $x2go_lib_path/libx2go-server-db-sqlite3-wrapper insertshadowsession $display $server $sid $shadreq_user";
+		}
+	}
+	syslog('debug', "db_insertshadowsession called, session ID: $sid, server: $server, session ID: $sid, shadowing requesting user: $shadreq_user");
+}
+
 sub db_createsession
 {
 	my $cookie=shift or die"argument \"cookie\" missed";
@@ -232,6 +253,32 @@ sub db_createsession
 		}
 	}
 	syslog('debug', "db_createsession called, session ID: $sid, cookie: $cookie, client: $client, pid: $pid, graphics port: $gr_port, sound port: $snd_port, file sharing port: $fs_port");
+}
+
+sub db_createshadowsession
+{
+	my $cookie=shift or die"argument \"cookie\" missed";
+	my $pid=shift or die"argument \"pid\" missed";
+	my $client=shift or die"argument \"client\" missed";
+	my $gr_port=shift or die"argument \"gr_port\" missed";
+	my $snd_port=shift or die"argument \"snd_port\" missed";
+	my $fs_port=shift or die"argument \"fs_port\" missed";
+	my $sid=shift or die "argument \"session_id\" missed";
+	my $shadreq_user=shift or die "argument \"shadreq_user\" missed";
+	if ($backend eq 'postgres')
+	{
+		# for PostgreSQL we can use the normal db_createsession code...
+		X2Go::Server::DB::PostgreSQL::db_createsession($cookie, $pid, $client, $gr_port, $snd_port, $fs_port, $sid);
+	}
+	if ($backend eq 'sqlite')
+	{
+		my $err= `$x2go_lib_path/libx2go-server-db-sqlite3-wrapper createshadowsession $cookie $pid $client $gr_port $snd_port $fs_port $sid $shadreq_user`;
+		if ($err ne "ok")
+		{
+			die $err;
+		}
+	}
+	syslog('debug', "db_createshadowsession called, session ID: $sid, cookie: $cookie, client: $client, pid: $pid, graphics port: $gr_port, sound port: $snd_port, file sharing port: $fs_port, shadowing requesting user: $shadreq_user");
 }
 
 sub db_insertport

@@ -26,6 +26,10 @@ x2goserver (4.1.0.0-0~x2go1) UNRELEASED; urgency=low
     - Fix build-arch target in x2goserver/Makefile. (Fixes: #121).
     - Load config files from a Perl package (X2Go::Config).
     - Disable SupeReNicer by default.
+    - Fix session handling for cross-user-account desktop sharing. Now session
+      names of desktop sharing session start with the username of the user who
+      is requesting the desktop sharing, rather than the username of the person
+      who shares his/her desktop.
   * /debian/control:
     + Package X2Go::Log in separate package: libx2go-log-perl.
     + Package X2Go::Server::DB in separate package: libx2go-server-db-perl.
