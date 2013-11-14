@@ -194,7 +194,8 @@ if [ "$cmd" == "TERMINAL" ]; then
 	fi
 fi
 
-EXEC=`type -P $cmd`
+WCMD=`echo $cmd | cut -d " " -f 1`
+EXEC=`type -P $WCMD`
 EXEC_WRAPPER=""
 
 BNAME=`basename "$EXEC"`
