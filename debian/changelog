@@ -41,6 +41,9 @@ x2goserver (4.1.0.0-0~x2go1) UNRELEASED; urgency=low
       x2goserver.conf in new x2goserver-common package.
     + Move several x2goserver-* package to x2goserver's Recommends field.
     + Add Reinhard Tartler to Uploaders.
+    + Start/resume rootless sessions without geometry parameter. Esp. using
+      X2GO_GEOMETRY=fullscreen for rootless sessions lead to an extra 1x1 px
+      session window (nxagentCreateIconWindow in nxagent's Window.c).
   * /debian/x2goserver.init:
     + Rely on $PATH when invoking x2gocleansessions.
   * Move code in pre/post+inst/rm scripts around (from x2goserver package
