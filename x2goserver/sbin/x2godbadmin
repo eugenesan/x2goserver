@@ -311,7 +311,7 @@ sub add_user()
 	{
 		print "Cannot find user ($user)\n";
 		return;
-	} elsif ($name == "root") {
+	} elsif ($name eq "root") {
 		print "The super-user \"root\" is not allowed to use X2Go\n";
 		return;
 	}
