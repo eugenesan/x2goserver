@@ -41,9 +41,6 @@ x2goserver (4.1.0.0-0~x2go1) UNRELEASED; urgency=low
       x2goserver.conf in new x2goserver-common package.
     + Move several x2goserver-* package to x2goserver's Recommends field.
     + Add Reinhard Tartler to Uploaders.
-    + Start/resume rootless sessions without geometry parameter. Esp. using
-      X2GO_GEOMETRY=fullscreen for rootless sessions lead to an extra 1x1 px
-      session window (nxagentCreateIconWindow in nxagent's Window.c).
   * /debian/x2goserver.init:
     + Rely on $PATH when invoking x2gocleansessions.
   * Move code in pre/post+inst/rm scripts around (from x2goserver package
@@ -88,6 +85,9 @@ x2goserver (4.0.1.7-0~x2go1) UNRELEASED; urgency=low
       launching sessions. Also, prevent x2gouser_root from being added as a
       PostgreSQL user. (Fixes: #310).
     - Execute DB status changes as late as possible during suspend / terminate.
+    - Start/resume rootless sessions without geometry parameter. Esp. using
+      X2GO_GEOMETRY=fullscreen for rootless sessions lead to an extra 1x1 px
+      session window (nxagentCreateIconWindow in nxagent's Window.c).
   * /debian/control:
     + Update LONG_DESCRIPTIONS.
     + Move xfonts-base from Recommends: field to Depends: field (bin:package
