@@ -12,8 +12,8 @@ x2goserver (4.0.1.7-0~x2go1) UNRELEASED; urgency=low
       Xsession.options they get symlinked into /etc/x2go. Otherwise Xsession.d
       and Xsession.options are created under /etc/x2go as empty dir/file.
       (Fixes: #278).
-    - Fix automatic keyboard setup (via x2gosetkeyboard) while resuming a session.
-      (Fixes: #285).
+    - Fix automatic keyboard setup (via x2gosetkeyboard) while resuming a
+      session. (Fixes: #285).
     - Provide sudoers.d/x2goserver file that allows sudoed commands under
       KDE (by pertaining the env var QT_GRAPHICSSYSTEM. (Fixes: #276).
     - With PostgreSQL as session db backend, prevent the root user from
