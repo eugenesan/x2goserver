@@ -32,7 +32,7 @@ X2GO_LIB_PATH="$(x2gopath libexec)";
 X2GO_AGENT_PID=`$X2GO_LIB_PATH/x2gogetagent "$SESSION_NAME"`
 
 X2GO_ROOT="${HOME}/.x2go"
-X2GO_RESIZE=0
+X2GO_RESIZE=1
 X2GO_FULLSCREEN=0
 
 NX_XINERAMA_CONF="$X2GO_ROOT/C-$SESSION_NAME/xinerama.conf"
@@ -44,11 +44,6 @@ fi
 $X2GO_LIB_PATH/x2gosyslog "$0" "info" "$(basename $0) called with options: $@"
 
 
-# rootless sessions require to be resizable
-if [ "$SESSION_TYPE" == "R" ]; then
-	X2GO_RESIZE=1
-fi
-
 # rootless sessions of geometry fullscreen are invalid
 if [ "$X2GO_GEOMETRY" == "fullscreen" ] && [ "$SESSION_TYPE" == "R" ]; then
 	X2GO_GEOMETRY=""
@@ -59,7 +54,6 @@ if [ "$X2GO_GEOMETRY" == "" ] && [ "$SESSION_TYPE" == "D" ]; then
 	X2GO_GEOMETRY="fullscreen"
 fi
 if [ "$X2GO_GEOMETRY" == "fullscreen" ]; then
-	X2GO_RESIZE=1
 	X2GO_FULLSCREEN=1
 fi
 
