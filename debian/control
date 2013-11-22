@@ -42,7 +42,7 @@ Recommends:
  x11-xserver-utils,
  fontconfig,
  xinit,
- x2goserver-extensions (= ${source:Version})
+ x2goserver-extensions (= ${source:Version}),
  xfonts-base,
 Suggests:
  x2goserver-printing (= ${source:Version}),
