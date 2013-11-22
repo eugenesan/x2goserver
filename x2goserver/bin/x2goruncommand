@@ -121,7 +121,7 @@ elif ([ "$cmd" == "UNITY" ] || [ "$cmd" == "unity" ]); then
 	# on earlier Ubuntu versions or with non-Ubuntu Distros the ,,UNITY'' command in X2Go will launch the GNOME2 desktop shell
 
 elif [ "$cmd" == "MATE" ]; then
-	cmd=="/usr/bin/mate-session"
+	cmd="/usr/bin/mate-session"
 elif [ "$cmd" == "KDE" ]; then
 	cmd="/usr/bin/startkde"
 elif [ "$cmd" == "XFCE4" ]; then
