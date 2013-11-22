@@ -48,7 +48,7 @@ x2goserver (4.0.1.7-0~x2go1) unstable; urgency=low
     - Use bash-builtin 'type' instead of to be avoided 'which'. (Fixes: #305).
 
   [ Oleksandr Shneyder ]
-  * New upstream version (4.0.0.6):
+  * New upstream version (4.0.1.7):
     - Fix x2goruncommand: "type -P $cmd" can create new lines in EXEC
       variable if command have the arguments wich have same names as existing
       commands, for example "rdesktop -k nl" -> "/usr/bin/rdesktop\n/usr/bin/nl".
