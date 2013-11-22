@@ -1,3 +1,9 @@
+x2goserver (4.0.0.7-0~x2go1) UNRELEASED; urgency=low
+
+  * Continue development for LTS release branch...
+
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 22 Nov 2013 22:52:31 +0100
+
 x2goserver (4.0.0.6-0~x2go1) unstable; urgency=low
 
   * New upstream version (4.0.0.6):
