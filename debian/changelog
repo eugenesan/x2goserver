@@ -63,7 +63,14 @@ x2goserver (4.1.0.0-0~x2go1) UNRELEASED; urgency=low
 
  -- Reinhard Tartler <siretart@tauware.de>  Thu, 20 Dec 2012 10:15:26 +0100
 
-x2goserver (4.0.1.7-0~x2go1) UNRELEASED; urgency=low
+x2goserver (4.0.1.8-0~x2go1) unstable; urgency=low
+
+  * New upstream version (4.0.1.8):
+    - Fix resizing when resuming sessions.
+
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 22 Nov 2013 22:14:50 +0100
+
+x2goserver (4.0.1.7-0~x2go1) unstable; urgency=low
 
   [ Orion Poplawski ]
   * New upstream version (4.0.1.7):
@@ -77,8 +84,8 @@ x2goserver (4.0.1.7-0~x2go1) UNRELEASED; urgency=low
       Xsession.options they get symlinked into /etc/x2go. Otherwise Xsession.d
       and Xsession.options are created under /etc/x2go as empty dir/file.
       (Fixes: #278).
-    - Fix automatic keyboard setup (via x2gosetkeyboard) while resuming a session.
-      (Fixes: #285).
+    - Fix automatic keyboard setup (via x2gosetkeyboard) while resuming a
+      session. (Fixes: #285).
     - Provide sudoers.d/x2goserver file that allows sudoed commands under
       KDE (by pertaining the env var QT_GRAPHICSSYSTEM. (Fixes: #276).
     - With PostgreSQL as session db backend, prevent the root user from
@@ -112,7 +119,7 @@ x2goserver (4.0.1.7-0~x2go1) UNRELEASED; urgency=low
       commands, for example "rdesktop -k nl" -> "/usr/bin/rdesktop\n/usr/bin/nl".
       Now we splitting $cmd and taking only first part.
 
- -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Sun, 28 Jul 2013 13:37:12 +0200
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 22 Nov 2013 21:58:27 +0100
 
 x2goserver (4.0.1.6-0~x2go1) unstable; urgency=low
 
