@@ -88,13 +88,14 @@ x2goserver (4.0.1.7-0~x2go1) UNRELEASED; urgency=low
     - Start/resume rootless sessions without geometry parameter. Esp. using
       X2GO_GEOMETRY=fullscreen for rootless sessions lead to an extra 1x1 px
       session window (nxagentCreateIconWindow in nxagent's Window.c).
-  * /debian/control:
+    - Typo fix in x2goruncommand (for MATE session startup).
+  * debian/control:
     + Update LONG_DESCRIPTIONS.
     + Move xfonts-base from Recommends: field to Depends: field (bin:package
       x2goserver).
     + Raise Standards: to 3.9.4 (no changes needed).
     + Move xfonts-base to Recommends: field of bin:package x2goserver.
-  * /debian/x2goserver.init:
+  * debian/x2goserver.init:
     + Make init script LSB compliant.
 
   [ Helmer Teles ]

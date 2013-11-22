@@ -126,7 +126,7 @@ elif ([ "$cmd" == "CINNAMON" ] || [ "$cmd" == "cinnamon" ]); then
 	args=" --session=$DESKTOP_SESSION"
 
 elif [ "$cmd" == "MATE" ]; then
-	cmd=="/usr/bin/mate-session"
+	cmd="/usr/bin/mate-session"
 elif [ "$cmd" == "KDE" ]; then
 	cmd="/usr/bin/startkde"
 elif [ "$cmd" == "XFCE4" ] || [ "$cmd" == "XFCE" ]; then
