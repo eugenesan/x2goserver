@@ -1,4 +1,4 @@
-x2goserver (4.0.1.7-0~x2go1) UNRELEASED; urgency=low
+x2goserver (4.0.1.7-0~x2go1) unstable; urgency=low
 
   [ Orion Poplawski ]
   * New upstream version (4.0.1.7):
@@ -47,7 +47,7 @@ x2goserver (4.0.1.7-0~x2go1) UNRELEASED; urgency=low
       commands, for example "rdesktop -k nl" -> "/usr/bin/rdesktop\n/usr/bin/nl".
       Now we splitting $cmd and taking only first part.
 
- -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Sun, 28 Jul 2013 13:37:12 +0200
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 22 Nov 2013 21:58:27 +0100
 
 x2goserver (4.0.1.6-0~x2go1) unstable; urgency=low
 
