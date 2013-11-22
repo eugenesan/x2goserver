@@ -42,6 +42,13 @@ x2goserver (4.0.1.7-0~x2go1) UNRELEASED; urgency=low
   * New upstream version (4.0.1.7):
     - Use bash-builtin 'type' instead of to be avoided 'which'. (Fixes: #305).
 
+  [ Oleksandr Shneyder ]
+  * New upstream version (4.0.0.6):
+    - Fix x2goruncommand: "type -P $cmd" can create new lines in EXEC
+      variable if command have the arguments wich have same names as existing
+      commands, for example "rdesktop -k nl" -> "/usr/bin/rdesktop\n/usr/bin/nl".
+      Now we splitting $cmd and taking only first part.
+
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Sun, 28 Jul 2013 13:37:12 +0200
 
 x2goserver (4.0.1.6-0~x2go1) unstable; urgency=low
@@ -114,18 +121,10 @@ x2goserver (4.0.1.0-0~x2go1) unstable; urgency=low
 
 x2goserver (4.0.0.6-0~x2go1) UNRELEASED; urgency=low
 
-  [ Mike Gabriel ]
   * New upstream version (4.0.0.6):
     - Work around buggy X2Go Client on Mac OS. If the keyboard type
       is set to "query", we force X2GO_SET_KBD to 1.
       (Partly resolves: #112).
-
-  [ Oleksandr Shneyder ]
-  * New upstream version (4.0.0.6):
-    - Fix x2goruncommand: "type -P $cmd" can create new lines in EXEC
-      variable if command have the arguments wich have same names as existing
-      commands, for example "rdesktop -k nl" -> "/usr/bin/rdesktop\n/usr/bin/nl".
-      Now we splitting $cmd and taking only first part.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Wed, 25 Sep 2013 12:19:16 +0200
 
