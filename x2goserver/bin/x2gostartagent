@@ -55,11 +55,6 @@ X2GO_CMD="$1"; shift
 X2GO_RESIZE=0
 X2GO_FULLSCREEN=0
 
-# Mac OS keyboard issue workaround: for old/broken clients that used to call type=query and usekbd=0...
-if [ "$X2GO_KBD_TYPE" = "query" ]; then
-	X2GO_SET_KBD=1
-fi
-
 XAUTHORITY=${XAUTHORITY:-"$HOME/.Xauthority"}
 
 if [ "$X2GO_STYPE" == "S" ]; then
