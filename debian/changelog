@@ -63,11 +63,13 @@ x2goserver (4.1.0.0-0x2go1) UNRELEASED; urgency=low
 
  -- Reinhard Tartler <siretart@tauware.de>  Thu, 20 Dec 2012 10:15:26 +0100
 
-x2goserver (4.0.1.9-0x2go1) UNRELEASED; urgency=low
+x2goserver (4.0.1.9-0x2go1) unstable; urgency=low
 
-  * Continue development for release branch...
+  * Silent bugfix release (4.0.1.9):
+    - Incorporate changes from LTS release 4.0.0.7. No other changes performed
+      on this release branch. (Fixes: #348).
 
- -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 22 Nov 2013 22:50:46 +0100
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Thu, 28 Nov 2013 16:06:44 +0100
 
 x2goserver (4.0.1.8-0~x2go1) unstable; urgency=low
 
