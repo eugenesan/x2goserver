@@ -198,7 +198,8 @@ x2goserver (4.0.1.0-0~x2go1) unstable; urgency=low
 x2goserver (4.0.0.7-0~x2go1) UNRELEASED; urgency=low
 
   * New upstream version (4.0.0.7):
-    - Continue development for LTS branch...
+    - Revert keyboard workaround for Mac OS X, as it causes other issues.
+      (Fixes: #348).
   * debian/source/format:
     + Switch to format 1.0.
 
