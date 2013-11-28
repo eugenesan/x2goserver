@@ -1,7 +1,6 @@
 x2goserver (4.0.1.10-0x2go1) UNRELEASED; urgency=low
 
   * Continue development on stable branch of X2Go Server...
-  * Test commit... This should trigger the package build in Jenkins.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Thu, 28 Nov 2013 16:16:22 +0100
 
