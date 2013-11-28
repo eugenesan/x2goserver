@@ -1,3 +1,9 @@
+x2goserver (4.0.1.10-0x2go1) UNRELEASED; urgency=low
+
+  * Continue development on stable branch of X2Go Server...
+
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Thu, 28 Nov 2013 16:16:22 +0100
+
 x2goserver (4.0.1.9-0x2go1) unstable; urgency=low
 
   * Silent bugfix release (4.0.1.9):
@@ -131,6 +137,12 @@ x2goserver (4.0.1.0-0~x2go1) unstable; urgency=low
       disappear within 20secs. (Fixes: #32).
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 07 Jun 2013 23:07:40 +0200
+
+x2goserver (4.0.0.8-0x2go1) UNRELEASED; urgency=low
+
+  * Continue development for LTS Baikal branch of X2Go Server...
+
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Thu, 28 Nov 2013 16:14:32 +0100
 
 x2goserver (4.0.0.7-0x2go1) unstable; urgency=low
 
