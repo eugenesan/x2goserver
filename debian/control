@@ -24,7 +24,7 @@ Depends:
  openssh-client,
  openssh-server,
  libconfig-simple-perl,
- makepasswd,
+ pwgen,
  libdbd-pg-perl,
  libdbd-sqlite3-perl,
  libfile-basedir-perl,
