@@ -1,0 +1,9 @@
+[Unit]
+Description=X2Go session cleanup
+
+[Service]
+ExecStart=/usr/sbin/x2gocleansessions
+
+[Install]
+WantedBy=multi-user.target
+
