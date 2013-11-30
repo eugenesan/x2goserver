@@ -188,7 +188,7 @@ if (!$sslmode)
 }
 my $dbadmin=$Config->param("postgres.dbadmin");
 my $x2goadmin="x2godbuser";
-my $x2goadminpass=`makepasswd`;
+my $x2goadminpass=`pwgen 8 1`;
 chomp ($x2goadminpass);
 my $db="x2go_sessions";
 
@@ -315,7 +315,7 @@ sub add_user()
 		print "The super-user \"root\" is not allowed to use X2Go\n";
 		return;
 	}
-	$pass=`makepasswd`;
+	$pass=`pwgen 8 1`;
 	chomp($pass);
 
 	my $sth=$dbh->prepare("DROP OWNED BY \"x2gouser_$user\"");

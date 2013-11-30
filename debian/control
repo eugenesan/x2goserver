@@ -26,6 +26,7 @@ Depends:
  bc,
  openssh-client,
  openssh-server,
+ pwgen,
  xauth,
  psmisc,
  net-tools,
