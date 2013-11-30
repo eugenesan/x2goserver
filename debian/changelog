@@ -205,7 +205,8 @@ x2goserver (4.0.1.0-0~x2go1) unstable; urgency=low
 
 x2goserver (4.0.0.8-0x2go1) UNRELEASED; urgency=low
 
-  * Continue development for LTS Baikal branch of X2Go Server...
+  * Use mktemp instead of tempfile (because Fedora does not have the tempfile
+    binary). (Fixes: #347).
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Thu, 28 Nov 2013 16:14:32 +0100
 
