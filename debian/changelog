@@ -1,8 +1,12 @@
 x2goserver (4.0.0.8-0x2go1) UNRELEASED; urgency=low
 
-  * Use mktemp instead of tempfile (because Fedora does not have the tempfile
-    binary). (Fixes: #347).
-  * Replace makepasswd by pwgen (because Fedora does not have makepasswd).
+  * New upstream version (4.0.0.8):
+    - Use mktemp instead of tempfile (because Fedora does not have the tempfile
+      binary). (Fixes: #347).
+    - Replace makepasswd by pwgen (because Fedora does not have makepasswd).
+    - Improve parsing of the NX session.log file where unexpected extra logging
+      takes place during session suspension/resumption. Thanks to Gerald Richter
+      for finding this!!! (Fixes: #356).
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Thu, 28 Nov 2013 16:14:32 +0100
 
