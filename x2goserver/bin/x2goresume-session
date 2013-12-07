@@ -129,14 +129,21 @@ done
 SESSION_DIR="${X2GO_ROOT}/C-${SESSION_NAME}"
 OPTIONS=`cat ${SESSION_DIR}/options`
 
-GSTR=`echo "$OPTIONS" | awk -F, {'print $13'}`
-RSTR=`echo "$OPTIONS" | awk -F, {'print $14'}`
-FSTR=`echo "$OPTIONS" | awk -F, {'print $15'}`
 LSTR=`echo "$OPTIONS" | awk -F, {'print $2'}`
 PSTR=`echo "$OPTIONS" | awk -F, {'print $3'}`
 KTSTR=`echo "$OPTIONS" | awk -F, {'print $12'}`
-LISTSTR=`echo "$OPTIONS" | awk -F, {'print $17'}`
-
+GSTR=`echo "$OPTIONS" | awk -F, {'print $13'}`
+test_GSTR=`echo $GSTR | sed s/geometry=.*//`
+if [ -n "$test_GSTR" ]; then
+	GSTR="geometry="
+	RSTR=`echo "$OPTIONS" | awk -F, {'print $13'}`
+	FSTR=`echo "$OPTIONS" | awk -F, {'print $14'}`
+	LISTSTR=`echo "$OPTIONS" | awk -F, {'print $16'}`
+else
+	RSTR=`echo "$OPTIONS" | awk -F, {'print $14'}`
+	FSTR=`echo "$OPTIONS" | awk -F, {'print $15'}`
+	LISTSTR=`echo "$OPTIONS" | awk -F, {'print $17'}`
+fi
 
 KTSTR=`echo "$KTSTR" | sed "s/\//\\\\\\\\\//"`
 X2GO_KBD_TYPE=`echo "$X2GO_KBD_TYPE" | sed "s/\//\\\\\\\\\//"`
