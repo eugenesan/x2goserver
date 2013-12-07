@@ -69,7 +69,7 @@ sub is_suspended
 	my $sess=shift;
 	my $user=shift;
 	my $log="/tmp/.x2go-${user}/session-C-${sess}.log";
-	my $text=`tail -1 $log 2>/dev/null`;
+	my $text=`grep Session: $log 2>/dev/null|tail -1`;
 	if ($text =~ m/Session suspended/)
 	{
 		return 1;
