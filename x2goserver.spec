@@ -11,8 +11,8 @@ Source0:        http://code.x2go.org/releases/source/%{name}/%{name}-%{version}.
 # cd x2goserver
 # git archive --prefix=x2goserver-4.1.0.0-20130722git65169c9/ 65169c9d65b117802e50631be0bbd719163d969e | gzip > ../x2goserver-4.1.0.0-20130722git65169c9.tar.gz
 #Source0:        %{name}/%{name}-%{version}-%{checkout}.tar.gz
-Source1:        x2gocleansessions.service
-Source2:        x2gocleansessions.init
+Source1:        x2goserver.service
+Source2:        x2goserver.init
 
 BuildRequires:  perl(ExtUtils::MakeMaker)
 %if 0%{?fedora}

@@ -1,5 +1,5 @@
 [Unit]
-Description=X2Go session cleanup
+Description=X2Go Server Daemon
 
 [Service]
 ExecStart=/usr/sbin/x2gocleansessions

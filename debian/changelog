@@ -78,6 +78,7 @@ x2goserver (4.0.1.10-0x2go1) UNRELEASED; urgency=low
       (Thanks to the Fedora package maintainers). File differs from the
       Fedora file already.
     + Clear (Fedora package) changelog.
+    + Use same init script name as on Debian (x2goserver.init, x2goserver.service).
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Thu, 28 Nov 2013 16:16:22 +0100
 
