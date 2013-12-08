@@ -1,6 +1,6 @@
 Name:           x2goserver
 Version:        4.0.1.9
-Release:        0x2go1%{?dist}
+Release:        0.0x2go1%{?dist}
 Summary:        X2Go Server
 
 Group:          Applications/Communications
@@ -219,59 +219,3 @@ exit 0
 %attr(0700,x2goprint,x2goprint) %{_localstatedir}/spool/x2goprint
 
 %changelog
-* Wed Nov 27 2013 Orion Poplawski <orion@cora.nwra.com> - 4.0.1.8-2
-- Use mktemp instead of tempfile
-- BR xorg-x11-xinit for Xsession.d link creation
-- Add patch to fix keyboard setting (bug #1033876)
-
-* Sat Nov 23 2013 Orion Poplawski <orion@cora.nwra.com> - 4.0.1.8-1
-- Update to 4.0.1.8
-- Fix x2gocleansessions init script for EL6 (bug #1031150)
-
-* Tue Oct 22 2013 Orion Poplawski <orion@cora.nwra.com> - 4.0.1.6-6
-- Fix bug in x2gocleansessions init script, enable by default
-
-* Wed Sep 11 2013 Orion Poplawski <orion@cora.nwra.com> - 4.0.1.6-5
-- Add some needed requires
-
-* Sun Aug 04 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 4.0.1.6-4
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
-
-* Tue Jul 30 2013 Orion Poplawski <orion@cora.nwra.com> - 4.0.1.6-3
-- Mark /var/lib/x2go as a directory
-- Add patch to make the following changes:
-- Remove Xsession.options
-- Make /etc/x2go/Xsession.d point to /etc/X11/xinit/Xclients.d
-- Make /etc/x2go/Xsession executable
-
-* Mon Jul 29 2013 Orion Poplawski <orion@cora.nwra.com> - 4.0.1.6-2
-- Add SysV init script for EL6
-
-* Mon Jul 29 2013 Orion Poplawski <orion@cora.nwra.com> - 4.0.1.6-1
-- Use 4.0.1.6 release
-- Drop patches applied upstream
-
-* Mon Jul 22 2013 Rok Mandeljc <rok.mandeljc@gmail.com> - 4.1.0.0-0.4.20130722git65169c9
-- Update to latest git
-- Use PREFIX=%{_prefix} when building, not just when installing.
-- Use pwgen instead of makepasswd, which is not available on Fedora.
-- Fixed a missing function import in x2golistsessions.
-- Added dependencies for xorg-x11-fonts-misc
-- Added system.d script for session cleanup on start.
-- Fixed x2goruncommand for TERMINAL -> gnome-terminal; the latter seems to return immediately in Fedora 19.
-
-* Thu May 30 2013 Orion Poplawski <orion@cora.nwra.com> - 4.1.0.0-0.3.20130520gitbd2cfe4
-- Update to latest git
-- Split out printing sub-package
-
-* Wed Jan 23 2013 Orion Poplawski <orion@cora.nwra.com> - 4.1.0.0-0.2.20130122git
-- Add post script to create session database if needed
-
-* Tue Jan 22 2013 Orion Poplawski <orion@cora.nwra.com> - 4.1.0.0-0.1.20130122git
-- Update to 4.1.0.0 git
-
-* Fri Jan 18 2013 Orion Poplawski <orion@cora.nwra.com> - 4.0.0.0-1
-- Update to 4.0.0.0
-
-* Tue Dec 11 2012 Orion Poplawski <orion@cora.nwra.com> - 3.1.1.9-1
-- Initial Fedora package
