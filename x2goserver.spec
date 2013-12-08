@@ -63,7 +63,8 @@ administrations.
 
 
 %package common
-Summary: X2Go Server (common files)
+Summary:        X2Go Server (common files)
+Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 
 %description common
 X2Go is a server based computing environment with
@@ -78,13 +79,14 @@ This package contains common files needed by the X2Go Server
 and the X2Go::Server Perl API.
 
 
-%package perl-X2Go-Server
+%package -n perl-X2Go-Server
 Summary:        Perl X2Go::Server package
 Requires:       x2goserver-common = %{version}-%{release}
 Requires:       perl-X2Go-Log = %{version}-%{release}
 Requires:       perl-X2Go-Server-DB = %{version}-%{release}
+Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 
-%description perl-X2Go-Server
+%description -n perl-X2Go-Server
 X2Go is a server based computing environment with
     - session resuming
     - low bandwidth support
@@ -96,14 +98,15 @@ X2Go is a server based computing environment with
 This package contains the X2Go::Server Perl package.
 
 
-%package perl-X2Go-Server-DB
+%package -n perl-X2Go-Server-DB
 Summary:        Perl X2Go::Server::DB package
 Requires:       x2goserver-common = %{version}-%{release}
 Requires:       perl-X2Go-Log = %{version}-%{release}
 Requires:       perl(DBD::SQLite)
 Requires:       perl(DBD::Pg)
+Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 
-%description perl-X2Go-Server-DB
+%description -n perl-X2Go-Server-DB
 X2Go is a server based computing environment with
     - session resuming
     - low bandwidth support
@@ -115,11 +118,12 @@ X2Go is a server based computing environment with
 This package contains the X2Go::Server::DB Perl package.
 
 
-%package perl-X2Go-Log
+%package -n perl-X2Go-Log
 Summary:        Perl X2Go::Log package
 Requires:       x2goserver-common = %{version}-%{release}
+Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 
-%description perl-X2Go-Log
+%description -n perl-X2Go-Log
 X2Go is a server based computing environment with
     - session resuming
     - low bandwidth support
@@ -134,6 +138,7 @@ This package contains the X2Go::Log Perl package.
 %package printing
 Summary:        X2Go Server (printing support)
 Requires:       %{name} = %{version}-%{release}
+Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 
 %description printing
 X2Go is a server based computing environment with
@@ -280,7 +285,7 @@ getent passwd x2gouser >/dev/null || \
     -c "x2go" x2gouser
 exit 0
 
-%post perl-X2Go-Server-DB
+%post -n perl-X2Go-Server-DB
 # Initialize the session database
 [ ! -f %{_sharedstatedir}/x2go/x2go_sessions ] &&
   %{_sbindir}/x2godbadmin --createdb || :
@@ -359,27 +364,25 @@ exit 0
 %endif
 
 
-%files perl-X2Go-Log
-%{_libdir}/perl5/X2Go/Log.pm
+%files -n perl-X2Go-Log
+%{perl_vendorlib}/X2Go/Log.pm
 %{_mandir}/man3/X2Go::Log.*
 
 
-%files perl-X2Go-Server
-%dir %{_libdir}/perl5/X2Go
-%{_libdir}/perl5/X2Go/Config.pm
-%{_libdir}/perl5/X2Go/Server.pm
-%{_libdir}/perl5/X2Go/SupeReNicer.pm
-%{_libdir}/perl5/X2Go/Utils.pm
+%files -n perl-X2Go-Server
+%{perl_vendorlib}/X2Go/Config.pm
+%{perl_vendorlib}/X2Go/Server.pm
+%{perl_vendorlib}/X2Go/SupeReNicer.pm
+%{perl_vendorlib}/X2Go/Utils.pm
 %{_mandir}/man3/X2Go::Config.*
 %{_mandir}/man3/X2Go::Server.*
 %{_mandir}/man3/X2Go::SupeReNicer.*
 %{_mandir}/man3/X2Go::Utils.*
 
 
-%files perl-X2Go-Server-DB
-%dir %{_libdir}/perl5/X2Go/DB
+%files -n perl-X2Go-Server-DB
 %dir %{_libdir}/x2go
-%{_libdir}/perl5/X2Go/DB/*
+%{perl_vendorlib}/X2Go/DB/*
 %{_libdir}/x2go/libx2go-server-db-sqlite3-wrapper
 %{_libdir}/x2go/libx2go-server-db-sqlite3-wrapper.pl
 %{_mandir}/man3/X2Go::Server::DB.*
