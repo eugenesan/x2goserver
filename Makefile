@@ -22,11 +22,9 @@ build_man2html:
 	$(MAKE) -C x2goserver $@
 	$(MAKE) -C libx2go-server-db-perl $@
 	$(MAKE) -C x2goserver-printing $@
-	$(MAKE) -C x2goserver-compat $@
 	$(MAKE) -C x2goserver-extensions $@
 	$(MAKE) -C x2goserver-xsession $@
 	$(MAKE) -C x2goserver-fmbindings $@
-	$(MAKE) -C x2goserver-pyhoca $@
 
 clean:
 	-$(MAKE) -f Makefile.perl clean
@@ -34,11 +32,9 @@ clean:
 	$(MAKE) -C x2goserver $@
 	$(MAKE) -C libx2go-server-db-perl $@
 	$(MAKE) -C x2goserver-printing $@
-	$(MAKE) -C x2goserver-compat $@
 	$(MAKE) -C x2goserver-extensions $@
 	$(MAKE) -C x2goserver-xsession $@
 	$(MAKE) -C x2goserver-fmbindings $@
-	$(MAKE) -C x2goserver-pyhoca $@
 
 distclean:
 	-$(MAKE) -f Makefile.perl realclean
@@ -46,22 +42,18 @@ distclean:
 	$(MAKE) -C x2goserver clean
 	$(MAKE) -C libx2go-server-db-perl clean
 	$(MAKE) -C x2goserver-printing clean
-	$(MAKE) -C x2goserver-compat clean
 	$(MAKE) -C x2goserver-extensions clean
 	$(MAKE) -C x2goserver-xsession clean
 	$(MAKE) -C x2goserver-fmbindings clean
-	$(MAKE) -C x2goserver-pyhoca clean
 
 build-arch:
 	$(MAKE) -C x2goserver-common $@
 	$(MAKE) -C x2goserver $@
 	$(MAKE) -C libx2go-server-db-perl $@
 	$(MAKE) -C x2goserver-printing $@
-	$(MAKE) -C x2goserver-compat $@
 	$(MAKE) -C x2goserver-extensions $@
 	$(MAKE) -C x2goserver-xsession $@
 	$(MAKE) -C x2goserver-fmbindings $@
-	$(MAKE) -C x2goserver-pyhoca $@
 
 build-indep:
 	$(PERL) Makefile.PL INSTALLDIRS=$(PERL_INSTALLDIRS)
@@ -70,11 +62,9 @@ build-indep:
 	$(MAKE) -C x2goserver $@
 	$(MAKE) -C libx2go-server-db-perl $@
 	$(MAKE) -C x2goserver-printing $@
-	$(MAKE) -C x2goserver-compat $@
 	$(MAKE) -C x2goserver-extensions $@
 	$(MAKE) -C x2goserver-xsession $@
 	$(MAKE) -C x2goserver-fmbindings $@
-	$(MAKE) -C x2goserver-pyhoca $@
 
 install:
 	$(MAKE) -f Makefile.perl install
@@ -82,18 +72,14 @@ install:
 	$(MAKE) -C x2goserver $@
 	$(MAKE) -C libx2go-server-db-perl $@
 	$(MAKE) -C x2goserver-printing $@
-	$(MAKE) -C x2goserver-compat $@
 	$(MAKE) -C x2goserver-extensions $@
 	$(MAKE) -C x2goserver-xsession $@
 	$(MAKE) -C x2goserver-fmbindings $@
-	$(MAKE) -C x2goserver-pyhoca $@
 
 uninstall:
 	$(MAKE) -C x2goserver-printing $@
-	$(MAKE) -C x2goserver-compat $@
 	$(MAKE) -C x2goserver-xsession $@
 	$(MAKE) -C x2goserver-fmbindings $@
-	$(MAKE) -C x2goserver-pyhoca $@
 	$(MAKE) -C x2goserver-extensions $@
 	$(MAKE) -f Makefile.perl uninstall
 	$(MAKE) -C libx2go-server-db-perl $@

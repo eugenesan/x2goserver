@@ -31,7 +31,8 @@ x2goserver (4.1.0.0-0x2go1) UNRELEASED; urgency=low
       is requesting the desktop sharing, rather than the username of the person
       who shares his/her desktop.
     - Do not superenice desktop sharing / shadow sessions.
-  * /debian/control:
+    - Drop obsolete components x2goserver-compat, x2goserver-pyhoca.
+  * debian/control:
     + Package X2Go::Log in separate package: libx2go-log-perl.
     + Package X2Go::Server::DB in separate package: libx2go-server-db-perl.
     + x2goserver package: Depend on libx2go-log-perl, libx2go-server-db-perl.
