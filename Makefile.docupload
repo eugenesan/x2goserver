@@ -6,7 +6,6 @@ VERSION=`head -n1 debian/changelog | sed 's,.*(\(.*\)).*,\1,' | cut -d"-" -f1`
 DOC_HOST=code.x2go.org
 DOC_PATCH_x2goserver=/srv/sites/x2go.org/packages/doc/x2goserver/man/
 DOC_PATCH_printing=/srv/sites/x2go.org/packages/doc/x2goserver-printing/man/
-DOC_PATCH_compat=/srv/sites/x2go.org/packages/doc/x2goserver-compat/man/
 DOC_PATCH_extensions=/srv/sites/x2go.org/packages/doc/x2goserver-extensions/man/
 DOC_USER=x2go-admin
 
@@ -24,11 +23,9 @@ docupload:
 	ssh -l${DOC_USER} ${DOC_HOST} "{ mkdir -p ${DOC_PATCH_extensions}; rm -Rfv ${DOC_PATCH_extensions}/*; }"
 	scp -r x2goserver/.build_man2html/html/* ${DOC_USER}@${DOC_HOST}:${DOC_PATCH_x2goserver}/
 	scp -r x2goserver-printing/.build_man2html/html/* ${DOC_USER}@${DOC_HOST}:${DOC_PATCH_printing}/
-	scp -r x2goserver-compat/.build_man2html/html/* ${DOC_USER}@${DOC_HOST}:${DOC_PATCH_compat}/
 	scp -r x2goserver-extensions/.build_man2html/html/* ${DOC_USER}@${DOC_HOST}:${DOC_PATCH_extensions}/
 
 clean:
 	rm -Rf x2goserver/.build_man2html/html/*
 	rm -Rf x2goserver-printing/.build_man2html/html/*
-	rm -Rf x2goserver-compat/.build_man2html/html/*
 	rm -Rf x2goserver-extensions/.build_man2html/html/*
