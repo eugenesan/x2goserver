@@ -46,17 +46,19 @@ Recommends:
  x2goserver-printing (>= ${source:Version}), x2goserver-printing (<< ${source:Version}.1~),
  xfonts-base,
 Suggests:
- x2goserver-compat (>= ${source:Version}), x2goserver-compat (<< ${source:Version}.1~),
- x2goserver-pyhoca (>= ${source:Version}), x2goserver-pyhoca (<< ${source:Version}.1~),
  rdesktop,
  pulseaudio-utils
 Breaks:
  x2goserver-one,
  x2goserver-home,
+ x2goserver-compat,
+ x2goserver-pyhoca,
 Replaces:
  x2goserver-one,
  x2goserver-home,
-Description: X2Go server daemon scripts
+ x2goserver-compat,
+ x2goserver-pyhoca,
+Description: X2Go server
  X2Go is a server based computing environment with
     - session resuming
     - low bandwidth support
@@ -67,15 +69,6 @@ Description: X2Go server daemon scripts
  .
  This package contains the main daemon and tools for
  X2Go server-side session administrations.
- .
- The x2goserver package provides full functionality
- for running the X2Go project's legacy X2Go client
- (x2goclient) on the client-side.
- .
- However, if you intend using other client implementations 
- of X2Go make sure that you also have X2Go server
- extensions package (x2goserver-extensions) installed.
-
 
 Package: x2goserver-common
 Architecture: any
@@ -176,7 +169,7 @@ Replaces:
  x2goprint
 Suggests:
  cups-x2go
-Description: X2Go server daemon scripts (printing)
+Description: X2Go server (printing support)
  X2Go is a server based computing environment with
     - session resuming
     - low bandwidth support
@@ -185,35 +178,18 @@ Description: X2Go server daemon scripts (printing)
     - audio support
     - authentication by smartcard and USB stick
  .
- The X2Go server printing package provides
+ The X2Go Server printing package provides
  client-side printing support for X2Go.
  .
- This package has to be installed on X2Go servers
+ This package has to be installed on X2Go Servers
  that shall be able to pass X2Go print jobs on
  to the X2Go client.
  .
  This package co-operates with the cups-x2go CUPS
- backend. If CUPS server and X2Go server are hosted
+ backend. If CUPS server and X2Go Server are hosted
  on different machines, then make sure you install
- this package on the X2Go server/s (and the cups-x2go
+ this package on the X2Go Server/s (and the cups-x2go
  package on the CUPS server).
-
-Package: x2goserver-compat
-Architecture: all
-Depends:
- ${misc:Depends},
- x2goserver (>= ${source:Version}), x2goserver (<< ${source:Version}.1~)
-Description: X2Go server daemon scripts (backwards compatitbity to old client versions)
- X2Go is a server based computing environment with
-    - session resuming
-    - low bandwidth support
-    - session brokerage support
-    - client side mass storage mounting support
-    - audio support
-    - authentication by smartcard and USB stick
- .
- This package contains compatitbility scripts to allow
- old x2goclient versions to connect to your X2Go server.
 
 Package: x2goserver-extensions
 Architecture: all
@@ -221,7 +197,7 @@ Depends:
  ${misc:Depends},
  x2goserver (>= ${source:Version}), x2goserver (<< ${source:Version}.1~),
  x11-xkb-utils
-Description: X2Go server daemon scripts (extensions)
+Description: X2Go Server (extension support)
  X2Go is a server based computing environment with
     - session resuming
     - low bandwidth support
@@ -230,13 +206,12 @@ Description: X2Go server daemon scripts (extensions)
     - audio support
     - authentication by smartcard and USB stick
  .
- The X2Go server extension namespace offers contributors
- to add script functionality to X2Go that is not
- needed/ignored by the legacy X2Go client (x2goclient).
+ The X2Go Server extension namespace offers contributors
+ to add script functionality to X2Go.
  .
  Make sure you have this package installed on your server
- if you want non-legacy X2Go clients to be able to
- access your server without lack of features.
+ if you want X2Go clients to be able to access your server
+ without lack of features.
 
 Package: x2goserver-xsession
 Architecture: all
@@ -244,7 +219,7 @@ Depends:
  ${misc:Depends},
  x2goserver (>= ${source:Version}), x2goserver (<< ${source:Version}.1~),
  x11-common
-Description: X2Go server daemon scripts (Xsession runner)
+Description: X2Go Server (Xsession runner)
  X2Go is a server based computing environment with
     - session resuming
     - low bandwidth support
@@ -253,7 +228,7 @@ Description: X2Go server daemon scripts (Xsession runner)
     - audio support
     - authentication by smartcard and USB stick
  .
- This X2Go server add-on enables Xsession script handling
+ This X2Go Server add-on enables Xsession script handling
  when starting desktop sessions with X2Go.
  .
  Amongst others the parsing of Xsession scripts will
@@ -268,7 +243,7 @@ Depends:
  x2goserver (>= ${source:Version}), x2goserver (<< ${source:Version}.1~),
  desktop-file-utils,
  xdg-utils
-Description: Generic (freedesktop-based) file manager bindings for X2Go
+Description: X2Go Server (file manager bindings)
  X2Go is a server based computing environment with
     - session resuming
     - low bandwidth support
@@ -277,7 +252,7 @@ Description: Generic (freedesktop-based) file manager bindings for X2Go
     - audio support
     - authentication by smartcard and USB stick
  .
- x2goserver-fmbindings contains generic MIME type information
+ This package contains generic MIME type information
  for X2Go's local folder sharing. It can be used with all
  freedesktop.org compliant desktop shells.
  .
@@ -285,29 +260,6 @@ Description: Generic (freedesktop-based) file manager bindings for X2Go
  destkop binding components, if installed and being used with the
  corresponding desktop shell:
     - under LXDE by x2golxdebindings
-    - under GNOME by x2gognomebindings
+    - under GNOMEv2 by x2gognomebindings
     - under KDE4 by plasma-widget-x2go
-
-Package: x2goserver-pyhoca
-Architecture: all
-Depends:
- ${misc:Depends},
- x2goserver (>= ${source:Version}), x2goserver (<< ${source:Version}.1~),
-Description: X2Go server daemon scripts (add-ons for pyhoca client)
- X2Go is a server based computing environment with
-    - session resuming
-    - low bandwidth support
-    - session brokerage support
-    - client side mass storage mounting support
-    - audio support
-    - authentication by smartcard and USB stick
- .
- This X2Go server add-on adds extra functionality when using
- the pyhoca client (GUI or cmdline tool). The installation
- of this package is completely optional, the pyhoca client
- will work without.
- .
- Functionalities this package adds:
-    - renaming of session window titles
-    - setting detailled X keyboard parameters
-
+    - under MATE by x2gomatebindings

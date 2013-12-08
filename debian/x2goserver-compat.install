@@ -1,2 +1,0 @@
-x2goserver-compat/bin/x2go*                     /usr/bin/
-x2goserver-compat/share/x2gofeature.d/*         /usr/share/x2go/x2gofeature.d/
