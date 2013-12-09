@@ -361,6 +361,7 @@ exit 0
 %exclude %{_mandir}/man8/x2goserver-run-extensions.8.gz
 %exclude %{_mandir}/man8/x2gofm.8.gz
 %exclude %{_mandir}/man8/x2goprint.8.gz
+%dir %{_datadir}/x2go/x2gofeature.d/
 %{_datadir}/x2go/x2gofeature.d/
 %exclude %{_datadir}/x2go/x2gofeature.d/x2goserver-fmbindings.features
 %exclude %{_datadir}/x2go/x2gofeature.d/x2goserver-printing.features
