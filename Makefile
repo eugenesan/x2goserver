@@ -10,7 +10,7 @@ LIBDIR=$(PREFIX)/lib/x2go
 SHAREDIR=$(PREFIX)/share/x2go
 
 PERL ?= /usr/bin/perl
-PERL_INSTALLDIRS ?=
+PERL_INSTALLDIRS ?= vendor
 
 all: build
 
