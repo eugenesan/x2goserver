@@ -32,7 +32,8 @@ x2goserver (4.1.0.0-0x2go1) UNRELEASED; urgency=low
       who shares his/her desktop.
     - Do not superenice desktop sharing / shadow sessions.
     - Drop obsolete components x2goserver-compat, x2goserver-pyhoca.
-    - Makefile: pre-set the PERL_INSTALLDIRS var with ,,vendor''.
+    - Makefile: pre-set the PERL_INSTALLDIRS var with ,,vendor''. Use
+      pure_install rather than install.
   * debian/control:
     + Package X2Go::Log in separate package: libx2go-log-perl.
     + Package X2Go::Server::DB in separate package: libx2go-server-db-perl.

@@ -67,7 +67,7 @@ build-indep:
 	$(MAKE) -C x2goserver-fmbindings $@
 
 install:
-	$(MAKE) -f Makefile.perl install
+	$(MAKE) -f Makefile.perl pure_install
 	$(MAKE) -C x2goserver-common $@
 	$(MAKE) -C x2goserver $@
 	$(MAKE) -C libx2go-server-db-perl $@
