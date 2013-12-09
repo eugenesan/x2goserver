@@ -75,6 +75,7 @@ x2goserver (4.0.1.10-0x2go1) UNRELEASED; urgency=low
       we broke by trying to fix the fullscreen/geometry issue in x2gostartagent.
       Thanks to Harvey Eneman for tracking this down!!! (Fixes: #355).
     - x2goserver-fmbindings/Makefile: install x2gofm.
+    - x2goserver-fmbindings/Makefile: install share/applications and share/mime.
   * Grab systemd service file from Fedora and ship it upstream.
   * Add init script for RPM based distro. Taken from the Fedora
     package.
