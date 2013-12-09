@@ -341,12 +341,14 @@ exit 0
 %dir %{_libdir}/x2go
 %{_libdir}/x2go/x2gochangestatus
 %{_libdir}/x2go/x2gocreatesession
+%{_libdir}/x2go/x2gocreateshadowsession
 %{_libdir}/x2go/x2gogetagent
 %{_libdir}/x2go/x2gogetdisplays
 %{_libdir}/x2go/x2gogetports
 %{_libdir}/x2go/x2gogetstatus
 %{_libdir}/x2go/x2goinsertport
 %{_libdir}/x2go/x2goinsertsession
+%{_libdir}/x2go/x2goinsertshadowsession
 %{_libdir}/x2go/x2golistsessions_sql
 %{_libdir}/x2go/x2gologlevel
 %{_libdir}/x2go/x2goresume
@@ -390,7 +392,7 @@ exit 0
 
 %files -n perl-X2Go-Server-DB
 %dir %{_libdir}/x2go
-%{perl_vendorlib}/X2Go/Server/DB/*
+%{perl_vendorlib}/X2Go/Server/DB*
 %{_libdir}/x2go/libx2go-server-db-sqlite3-wrapper
 %{_libdir}/x2go/libx2go-server-db-sqlite3-wrapper.pl
 %{_mandir}/man3/X2Go::Server::DB.*
@@ -416,7 +418,7 @@ exit 0
 
 
 %files fmbindings
-%{_datadir}/x2go/versions/VERSION.x2goserver-extensions
+%{_datadir}/x2go/versions/VERSION.x2goserver-fmbindings
 %{_bindir}/x2gofm
 %{_datadir}/applications/
 %{_datadir}/mime/
