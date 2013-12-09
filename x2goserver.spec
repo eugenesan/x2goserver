@@ -408,10 +408,8 @@ exit 0
 
 
 %files extensions
-%dir %{_libdir}/x2go/extensions
 %{_libdir}/x2go/extensions
 %{_bindir}/x2goserver-run-extensions
-%dir %{_datadir}/x2go/x2gofeature.d
 %{_datadir}/x2go/x2gofeature.d/
 %{_datadir}/x2go/versions/VERSION.x2goserver-extensions
 %{_mandir}/man8/x2goserver-run-extensions.8.gz
