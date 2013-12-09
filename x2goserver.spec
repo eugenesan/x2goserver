@@ -65,6 +65,7 @@ administrations.
 %package common
 Summary:        X2Go Server (common files)
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+Group:          Applications/Communications
 
 %description common
 X2Go is a server based computing environment with
@@ -85,6 +86,7 @@ Requires:       x2goserver-common = %{version}-%{release}
 Requires:       perl-X2Go-Log = %{version}-%{release}
 Requires:       perl-X2Go-Server-DB = %{version}-%{release}
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+Group:          Development/Libraries
 
 %description -n perl-X2Go-Server
 X2Go is a server based computing environment with
@@ -105,6 +107,7 @@ Requires:       perl-X2Go-Log = %{version}-%{release}
 Requires:       perl(DBD::SQLite)
 Requires:       perl(DBD::Pg)
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+Group:          Development/Libraries
 
 %description -n perl-X2Go-Server-DB
 X2Go is a server based computing environment with
@@ -122,6 +125,7 @@ This package contains the X2Go::Server::DB Perl package.
 Summary:        Perl X2Go::Log package
 Requires:       x2goserver-common = %{version}-%{release}
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+Group:          Development/Libraries
 
 %description -n perl-X2Go-Log
 X2Go is a server based computing environment with
@@ -139,6 +143,7 @@ This package contains the X2Go::Log Perl package.
 Summary:        X2Go Server (printing support)
 Requires:       %{name} = %{version}-%{release}
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+Group:          Applications/Communications
 
 %description printing
 X2Go is a server based computing environment with
@@ -164,6 +169,7 @@ server).
 %package extensions
 Summary:        X2Go Server (extension support)
 Requires:       %{name} = %{version}-%{release}
+Group:          Applications/Communications
 
 %description extensions
 X2Go is a server based computing environment with
@@ -186,6 +192,7 @@ without lack of features.
 Summary:        X2Go Server (Xsession runner)
 Requires:       %{name} = %{version}-%{release}
 Requires:       xorg-x11-xinit
+Group:          Applications/Communications
 
 %description xsession
  X2Go is a server based computing environment with
@@ -209,6 +216,7 @@ Summary:        X2Go Server (file manager bindings)
 Requires:       %{name} = %{version}-%{release}
 Requires:       xdg-utils
 Requires:       desktop-file-utils
+Group:          Applications/Communications
 
 %description fmbindings
 X2Go is a server based computing environment with
