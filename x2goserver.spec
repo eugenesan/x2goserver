@@ -284,7 +284,7 @@ install -pm0644 %SOURCE1 %{buildroot}%{_unitdir}
 %else
 # SysV session cleanup script
 mkdir -p %{buildroot}%{_initddir}
-install -pm0755 %SOURCE2 %{buildroot}%{_initddir}/x2gocleansessions
+install -pm0755 %SOURCE2 %{buildroot}%{_initddir}/x2goserver
 %endif
 
 %pre common
