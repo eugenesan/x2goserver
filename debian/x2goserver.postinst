@@ -52,10 +52,25 @@ case "$1" in
 		    dpkg-statoverride --add --update root root 0440 /etc/sudoers.d/x2goserver
 		fi
 
-
 		# create /etc/x2go/applications symlink if not already there (as link or as dir)
 		if ! test -e /etc/x2go/applications; then
 			ln -s /usr/share/applications /etc/x2go/applications
+		fi
+
+		# setup up SQLite3 database, do nothing if PostgeSQL is already configured
+		if [ -f /etc/x2go/x2gosql/sql ] && egrep "^backend=sqlite.*" /etc/x2go/x2gosql/sql >/dev/null; then
+			if [ ! -f /var/lib/x2go/x2go_sessions ]; then
+				x2godbadmin --createdb
+			else
+				# make sure db permissions are set correctly
+				chown -R root:x2gouser /var/lib/x2go
+				# egid x2gouser needs write access to the db dir (for temporary db journal file)
+				chmod 0770 /var/lib/x2go
+				# ... and to the db file itself, of course
+				chmod 0660 /var/lib/x2go/x2go_sessions
+			fi
+		else
+			echo "X2Go is configured to use a non-SQLite DB backend, leaving the database alone."
 		fi
 
 		;;

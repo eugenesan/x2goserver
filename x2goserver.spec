@@ -294,7 +294,7 @@ getent passwd x2gouser >/dev/null || \
     -c "x2go" x2gouser
 exit 0
 
-%post -n perl-X2Go-Server-DB
+%post
 # Initialize the session database
 [ ! -f %{_sharedstatedir}/x2go/x2go_sessions ] &&
   %{_sbindir}/x2godbadmin --createdb || :

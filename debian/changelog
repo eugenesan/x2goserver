@@ -44,12 +44,15 @@ x2goserver (4.1.0.0-0x2go1) UNRELEASED; urgency=low
       x2goserver.conf in new x2goserver-common package.
     + Move several x2goserver-* package to x2goserver's Recommends field.
     + Add Reinhard Tartler to Uploaders.
-  * /debian/x2goserver.init:
+  * debian/x2goserver.postinst:
+    + Make sure x2godbadmin is evoked from package x2goserver.
+  * debian/x2goserver.init:
     + Rely on $PATH when invoking x2gocleansessions.
   * Move code in pre/post+inst/rm scripts around (from x2goserver package
     to libx2go-server-db-perl and x2goserver-common).
   * x2goclient.spec:
     + Bring debian/control and x2goclient.spec in sync.
+    + Make sure x2godbadmin is evoked from package x2goserver.
 
   [ Guangzhou Nianguan Electronics Technology Co.Ltd. ]
   * New upstream version (4.1.0.0):
