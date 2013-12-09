@@ -249,8 +249,6 @@ find -type f | xargs sed -i -r -e '/^LIBDIR=/s,/lib/,/%{_lib}/,'
 sed -i -e 's,/lib/,/%{_lib}/,' x2goserver/bin/x2gopath
 # Don't try to be root
 sed -i -e 's/-o root -g root//' */Makefile
-# Perl pure_install
-sed -i -e 's/perl install/perl pure_install/' Makefile
 
 
 %build
@@ -260,6 +258,9 @@ make CFLAGS="%{optflags} -fPIC" %{?_smp_mflags} PERL_INSTALLDIRS=vendor PREFIX=%
 
 %install
 make install DESTDIR=%{buildroot} PREFIX=%{_prefix} XSESSIONDIR=/etc/X11/xinit/Xclients.d
+
+# Make sure the packlist file is remove...
+rm -f %{buildroot}%{perl_vendorlib}/auto/x2goserver/.packlist
 
 # Make symbolic link relative
 rm %{buildroot}%{_sysconfdir}/x2go/Xresources
