@@ -52,8 +52,8 @@ install: install_scripts install_config install_man install_version
 
 install_scripts:
 	$(INSTALL_DIR) $(DESTDIR)$(BINDIR)
-	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)
 	$(INSTALL_PROGRAM) bin/*                $(DESTDIR)$(BINDIR)/
+	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)/x2gofeature.d/
 	$(INSTALL_PROGRAM) share/x2gofeature.d/*.features $(DESTDIR)$(SHAREDIR)/x2gofeature.d/
 
 install_config:
