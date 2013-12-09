@@ -56,9 +56,9 @@ install_scripts:
 	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)
 	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)/x2gofeature.d
 	$(INSTALL_PROGRAM) share/x2go/x2gofeature.d/*.features $(DESTDIR)$(SHAREDIR)/x2gofeature.d/
-	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)/applications
+	$(INSTALL_DIR) $(DESTDIR)$(PREFIX)/share/applications
 	$(INSTALL_PROGRAM) share/applications/x2gofm.desktop $(DESTDIR)$(PREFIX)/share/applications/
-	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)/mime/packages
+	$(INSTALL_DIR) $(DESTDIR)$(PREFIX)/share/mime/packages
 	$(INSTALL_PROGRAM) share/mime/packages/sshfs-x2go.xml $(DESTDIR)$(PREFIX)/share/mime/packages/
 
 install_config:
