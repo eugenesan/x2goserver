@@ -390,7 +390,11 @@ exit 0
 %if 0%{?fedora}
 %{_unitdir}/x2goserver.service
 %else
+%if 0%{?el5}
+%{_initrddir}/x2goserver
+%else
 %{_initddir}/x2goserver
+%endif
 %endif
 
 
