@@ -57,7 +57,12 @@ case "$1" in
 			ln -s /usr/share/applications /etc/x2go/applications
 		fi
 
-		# setup up SQLite3 database, do nothing if PostgeSQL is already configured
+		# Setup up SQLite3 database, do nothing if PostgeSQL is already configured
+		#
+		# Note: The below code exists in x2goserver.postinst and libx2go-server-db.postinst
+		# It will only succeed if both packages are installed. As we cannot influence the
+		# installation order, we handle the session DB creation in both packages. One of
+		# then should succeed.
 		if [ -f /etc/x2go/x2gosql/sql ] && egrep "^backend=sqlite.*" /etc/x2go/x2gosql/sql >/dev/null; then
 			if [ ! -f /var/lib/x2go/x2go_sessions ]; then
 				x2godbadmin --createdb

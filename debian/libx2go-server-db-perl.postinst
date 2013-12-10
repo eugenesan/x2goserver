@@ -29,6 +29,27 @@ case "$1" in
 		if ! dpkg-statoverride --list /usr/lib/x2go/libx2go-server-db-sqlite3-wrapper >/dev/null; then
 		    dpkg-statoverride --add --update root x2gouser 2755 /usr/lib/x2go/libx2go-server-db-sqlite3-wrapper
 		fi
+
+		# setup up SQLite3 database, do nothing if PostgeSQL is already configured
+		#
+		# Note: The below code exists in x2goserver.postinst and libx2go-server-db.postinst
+		# It will only succeed if both packages are installed. As we cannot influence the
+		# installation order, we handle the session DB creation in both packages. One of
+		# then should succeed.
+		if [ -x /usr/sbin/x2godbadmin ] && [ -f /etc/x2go/x2gosql/sql ] && egrep "^backend=sqlite.*" /etc/x2go/x2gosql/sql 1>/dev/null; then
+			if [ ! -f /var/lib/x2go/x2go_sessions ]; then
+				x2godbadmin --createdb
+			else
+				# make sure db permissions are set correctly
+				chown -R root:x2gouser /var/lib/x2go
+				# egid x2gouser needs write access to the db dir (for temporary db journal file)
+				chmod 0770 /var/lib/x2go
+				# ... and to the db file itself, of course
+				chmod 0660 /var/lib/x2go/x2go_sessions
+			fi
+		else
+			echo "X2Go is configured to use a non-SQLite DB backend, leaving the database alone."
+		fi
 		;;
 
 	abort-upgrade|abort-remove|abort-deconfigure)

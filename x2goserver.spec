@@ -262,10 +262,6 @@ make install DESTDIR=%{buildroot} PREFIX=%{_prefix} XSESSIONDIR=/etc/X11/xinit/X
 # Make sure the .packlist file is removed from %{perl_vendorarch}...
 rm -f %{buildroot}%{perl_vendorarch}/auto/x2goserver/.packlist
 
-# Make symbolic link relative
-rm %{buildroot}%{_sysconfdir}/x2go/Xresources
-ln -s ../X11/Xresources %{buildroot}%{_sysconfdir}/x2go/
-
 # Remove placeholder files
 rm %{buildroot}%{_libdir}/x2go/extensions/*.d/.placeholder
 
@@ -287,6 +283,7 @@ mkdir -p %{buildroot}%{_initddir}
 install -pm0755 %SOURCE2 %{buildroot}%{_initddir}/x2goserver
 %endif
 
+
 %pre common
 getent group x2gouser >/dev/null || groupadd -r x2gouser
 getent passwd x2gouser >/dev/null || \
@@ -294,26 +291,31 @@ getent passwd x2gouser >/dev/null || \
     -c "x2go" x2gouser
 exit 0
 
+
 %post
-# Initialize the session database
+# Initialize the session database (first attempt, may fail if perl-X2Go-Server-DB is not yet installed
 [ ! -f %{_sharedstatedir}/x2go/x2go_sessions ] &&
-  %{_sbindir}/x2godbadmin --createdb || :
+  %{_sbindir}/x2godbadmin --createdb 1>/dev/null 2>/dev/null || :
 
 %if 0%{?fedora}
 %systemd_post x2goserver.service
 
+
 %preun
 %systemd_preun x2goserver.service
+
 
 %postun
 %systemd_postun x2goserver.service
 %else
 /sbin/chkconfig --add x2goserver
 
+
 %postun
 if [ "$1" -ge "1" ] ; then
     /sbin/service x2goserver condrestart >/dev/null 2>&1 || :
 fi
+
 
 %preun
 if [ "$1" = 0 ]; then
@@ -322,13 +324,19 @@ if [ "$1" = 0 ]; then
 fi
 %endif
 
+
+%post -n perl-X2Go-Server-DB
+# Initialize the session database (second attempt, may fail if x2goserver is not yet installed
+[ ! -f %{_sharedstatedir}/x2go/x2go_sessions ] &&
+  %{_sbindir}/x2godbadmin --createdb 1>/dev/null 2>/dev/null || :
+
+
 %pre printing
 getent group x2goprint >/dev/null || groupadd -r x2goprint
 getent passwd x2goprint >/dev/null || \
     useradd -r -g x2goprint -d /var/spool/x2goprint -s /sbin/nologin \
     -c "x2go" x2goprint
 exit 0
-
 
 %files
 %doc debian/copyright
