@@ -262,8 +262,8 @@ make install DESTDIR=%{buildroot} PREFIX=%{_prefix} XSESSIONDIR=/etc/X11/xinit/X
 # Make sure the .packlist file is removed from %{perl_vendorarch}...
 rm -f %{buildroot}%{perl_vendorarch}/auto/x2goserver/.packlist
 
-# Remove placeholder files
-rm %{buildroot}%{_libdir}/x2go/extensions/*.d/.placeholder
+# Remove placeholder files (in a way that works on EPEL-5, as well)
+find %{buildroot}%{_libdir}/x2go/extensions/ -type f -name ".placeholder" | while read file; do rm -f "$file"; done
 
 # x2gouser homedir, state dir
 mkdir -p %{buildroot}%{_sharedstatedir}/x2go
