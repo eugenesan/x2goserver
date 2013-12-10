@@ -284,7 +284,7 @@ mkdir -p %{buildroot}%{_unitdir}
 install -pm0644 %SOURCE1 %{buildroot}%{_unitdir}
 %else
 # SysV session cleanup script
-%if 0%{el5}
+%if 0%{?el5}
 mkdir -p %{buildroot}%{_initrddir}
 install -pm0755 %SOURCE2 %{buildroot}%{_initrddir}/x2goserver
 %else
