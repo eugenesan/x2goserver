@@ -3,6 +3,7 @@ Version:        4.0.1.9
 Release:        0.0x2go1%{?dist}
 Summary:        X2Go Server
 
+
 Group:          Applications/Communications
 License:        GPLv2+
 URL:            http://www.x2go.org
@@ -13,6 +14,10 @@ Source0:        http://code.x2go.org/releases/source/%{name}/%{name}-%{version}.
 #Source0:        %{name}/%{name}-%{version}-%{checkout}.tar.gz
 Source1:        x2goserver.service
 Source2:        x2goserver.init
+%if 0%{?el5}
+# For compatibility with EPEL5
+BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
+%endif
 
 BuildRequires:  perl(ExtUtils::MakeMaker)
 %if 0%{?fedora}
