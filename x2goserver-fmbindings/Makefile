@@ -14,14 +14,11 @@ DESTDIR ?=
 PREFIX ?= /usr/local
 ETCDIR=/etc/x2go
 BINDIR=$(PREFIX)/bin
-#SBINDIR=$(PREFIX)/sbin
 LIBDIR=$(PREFIX)/lib/x2go
 MANDIR=$(PREFIX)/share/man
 SHAREDIR=$(PREFIX)/share/x2go
 
 BIN_SCRIPTS=$(shell cd bin && echo *)
-#SBIN_SCRIPTS=$(shell cd sbin && echo *)
-#LIB_FILES=$(shell cd lib && echo *)
 FEATURE_SCRIPTS=$(shell cd share/x2go/x2gofeature.d && echo *.features)
 
 man_pages = `cd man && find * -type f`

@@ -23,17 +23,8 @@ SHAREDIR=$(PREFIX)/share/x2go
 XSESSIONDIR ?= /etc/X11/Xsession.d
 XSESSIONOPTIONFILE ?= /etc/X11/Xsession.options
 
-#BIN_SCRIPTS=$(shell cd bin && echo *)
-#SBIN_SCRIPTS=$(shell cd sbin && echo *)
-#LIB_FILES=$(shell cd lib && echo *)
 ETC_FILES=$(shell cd etc && echo *)
 FEATURE_SCRIPTS=$(shell cd share/x2gofeature.d && echo *.features)
-
-#man_pages = `cd man && find * -type f`
-
-#MAN2HTML_BIN  = man2html
-#MAN2HTML_SRC  = man
-#MAN2HTML_DEST = .build_man2html/html
 
 all: clean build
 

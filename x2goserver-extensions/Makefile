@@ -14,14 +14,11 @@ DESTDIR ?=
 PREFIX ?= /usr/local
 ETCDIR=/etc/x2go
 BINDIR=$(PREFIX)/bin
-#SBINDIR=$(PREFIX)/sbin
 LIBDIR=$(PREFIX)/lib/x2go
 MANDIR=$(PREFIX)/share/man
 SHAREDIR=$(PREFIX)/share/x2go
 
 BIN_SCRIPTS=$(shell cd bin && echo *)
-#SBIN_SCRIPTS=$(shell cd sbin && echo *)
-#LIB_FILES=$(shell cd lib && echo *)
 FEATURE_SCRIPTS=$(shell cd share/x2gofeature.d && echo *.features .placeholder)
 
 man_pages = `cd man && find * -type f`
@@ -52,7 +49,6 @@ install: install_scripts install_config install_man install_version
 
 install_scripts:
 	$(INSTALL_DIR) $(DESTDIR)$(BINDIR)
-#	$(INSTALL_DIR) $(DESTDIR)$(SBINDIR)
 	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)
 	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/extensions
 	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/extensions/pre-start.d
@@ -70,7 +66,6 @@ install_scripts:
 	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)
 	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)/x2gofeature.d
 	$(INSTALL_PROGRAM) bin/*                $(DESTDIR)$(BINDIR)/
-#	$(INSTALL_PROGRAM) sbin/*               $(DESTDIR)$(SBINDIR)/
 	$(INSTALL_FILE) lib/extensions/pre-start.d/.placeholder $(DESTDIR)$(LIBDIR)/extensions/pre-start.d/
 	$(INSTALL_FILE) lib/extensions/post-start.d/.placeholder $(DESTDIR)$(LIBDIR)/extensions/post-start.d/
 	$(INSTALL_FILE) lib/extensions/fail-start.d/.placeholder $(DESTDIR)$(LIBDIR)/extensions/fail-start.d/
@@ -86,11 +81,6 @@ install_scripts:
 	$(INSTALL_PROGRAM) share/x2gofeature.d/*.features $(DESTDIR)$(SHAREDIR)/x2gofeature.d/
 
 install_config:
-#	$(INSTALL_DIR) $(DESTDIR)$(ETCDIR)
-#	$(INSTALL_DIR) $(DESTDIR)$(ETCDIR)/x2gosql
-#	$(INSTALL_DIR) $(DESTDIR)$(ETCDIR)/x2gosql/passwords
-#	$(INSTALL_FILE) etc/x2goserver.conf     $(DESTDIR)$(ETCDIR)/
-#	$(INSTALL_FILE) etc/x2gosql/sql         $(DESTDIR)$(ETCDIR)/x2gosql
 
 install_man:
 	$(INSTALL_DIR) $(DESTDIR)$(MANDIR)
@@ -107,8 +97,6 @@ uninstall: uninstall_scripts uninstall_config uninstall_man uninstall_version
 
 uninstall_scripts:
 	for file in $(BIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(BINDIR)/$$file; done
-#	for file in $(SBIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(SBINDIR)/$$file; done
-#	for file in $(LIB_FILES); do $(RM_FILE) $(DESTDIR)$(LIBDIR)/$$file; done
 	$(RM_DIR) $(DESTDIR)$(LIBDIR)/extensions/ || true
 	$(RM_FILE) $(DESTDIR)$(LIBDIR)/extensions/pre-start.d/.placeholder
 	$(RM_FILE) $(DESTDIR)$(LIBDIR)/extensions/post-start.d/.placeholder
@@ -137,11 +125,6 @@ uninstall_scripts:
 	for file in $(FEATURE_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(SHAREDIR)/x2gofeature.d/$$file; done
 
 uninstall_config:
-#	$(RM_FILE) $(DESTDIR)$(ETCDIR)/x2goserver.conf
-#	$(RM_FILE) $(DESTDIR)$(ETCDIR)/x2gosql/sql
-#	$(RM_DIR)  $(DESTDIR)$(ETCDIR) || true
-#	$(RM_DIR)  $(DESTDIR)$(ETCDIR)/x2gosql/passwords || true
-#	$(RM_DIR)  $(DESTDIR)$(ETCDIR)/x2gosql || true
 
 uninstall_man:
 	for file in $(BIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(MANDIR)/man8/$$file.8.gz; done
