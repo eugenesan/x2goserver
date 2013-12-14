@@ -1,17 +1,17 @@
 #!/bin/sh
 #
-# x2gocleansessions - Starts/stop the "x2gocleansessions" daemon
+# x2goserver - Starts/stop the "x2goserver" daemon
 #
 # chkconfig:   2345 99 1
 # description: Cleans the X2Go session database
 
 ### BEGIN INIT INFO
-# Provides: x2gocleansessions at batch
+# Provides: x2goserver at batch
 # Required-Start: $local_fs
 # Required-Stop: $local_fs
 # Default-Start: 2345
 # Default-Stop: 016
-# Short-Description: Starts/stop the "x2gocleansessions" daemon
+# Short-Description: Starts/stop the "x2goserver" daemon
 # Description:      Cleans the X2Go session database
 ### END INIT INFO
 
