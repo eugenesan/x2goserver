@@ -71,7 +71,7 @@ reset_keymap() {
 update_keymap() {
 
 	if [ "$XKB_RULES" = "evdev" ]; then
-		XKB_RULES="xfree86"
+		XKB_RULES="base"
 	fi
 	# prepare for setxkbmap call
 	[ -n "$XKB_RULES" ] && XKB_RULES="-rules $XKB_RULES"

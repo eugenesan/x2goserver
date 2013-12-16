@@ -89,6 +89,8 @@ x2goserver (4.0.1.10-0x2go1) UNRELEASED; urgency=low
       files into it.
     - Handle TCP listening of x2goagent in x2goagent.options. (Fixes: #354).
     - Clean up Makefiles, remove commented out line.
+    - Use xkb ruleset 'base' rather than xfree86 as on RHEL systems the
+      xfree86 symlink to base rulset does not exist.
   * Grab systemd service file from Fedora and ship it upstream.
   * Add init script for RPM based distro. Taken from the Fedora
     package.
