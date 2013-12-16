@@ -37,6 +37,9 @@ Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $versi
 # We need a database
 # For killall in x2gosuspend-session
 Requires:       psmisc
+# For x2goshowblocks
+Requires:       lsof
+# For x2godbadmin
 Requires:       pwgen
 # For printing, file-sharing
 Requires:       sshfs
