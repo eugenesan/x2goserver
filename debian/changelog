@@ -13,12 +13,13 @@ x2goserver (4.0.1.10-0x2go1) UNRELEASED; urgency=low
     - Clean up Makefiles, remove commented out line.
     - Use xkb ruleset 'base' rather than xfree86 as on RHEL systems the
       xfree86 symlink to base rulset does not exist.
-  * Grab systemd service file from Fedora and ship it upstream.
-  * Add init script for RPM based distro. Taken from the Fedora
-    package.
-  * Ship x2goserver.spec (RPM package definitions) in upstream project. (Thanks
-    to the Fedora package maintainers). File differs from the Fedora file
-    already.
+    - Grab systemd service file from Fedora and ship it upstream.
+  * x2goserver.spec:
+    + Ship x2goserver.spec (RPM package definitions) in upstream project.
+      (Thanks to the Fedora package maintainers). File differs from the Fedora
+      file already.
+    + Add init script for RPM based distro. Taken from the Fedora
+      package.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Thu, 28 Nov 2013 16:16:22 +0100
 
