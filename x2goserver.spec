@@ -265,7 +265,7 @@ make CFLAGS="%{optflags} -fPIC" %{?_smp_mflags} PERL_INSTALLDIRS=vendor PREFIX=%
 
 
 %install
-make install DESTDIR=%{buildroot} PREFIX=%{_prefix} XSESSIONDIR=/etc/X11/xinit/Xclients.d
+make install DESTDIR=%{buildroot} PREFIX=%{_prefix}
 
 # Make sure the .packlist file is removed from %{perl_vendorarch}...
 rm -f %{buildroot}%{perl_vendorarch}/auto/x2goserver/.packlist
@@ -313,22 +313,18 @@ exit 0
 %if 0%{?fedora}
 %systemd_post x2goserver.service
 
-
 %preun
 %systemd_preun x2goserver.service
-
 
 %postun
 %systemd_postun x2goserver.service
 %else
 /sbin/chkconfig --add x2goserver
 
-
 %postun
 if [ "$1" -ge "1" ] ; then
     /sbin/service x2goserver condrestart >/dev/null 2>&1 || :
 fi
-
 
 %preun
 if [ "$1" = 0 ]; then
@@ -462,10 +458,10 @@ exit 0
 
 
 %files xsession
-%config(noreplace) %{_sysconfdir}/x2go/Xsession.options
+%{_sysconfdir}/x2go/xinitrc.d
+%{_sysconfdir}/x2go/Xclients.d
 %{_sysconfdir}/x2go/Xresources
 %config(noreplace) %{_sysconfdir}/x2go/Xsession
-%{_sysconfdir}/x2go/Xsession.d
 %{_datadir}/x2go/x2gofeature.d/x2goserver-xsession.features
 %{_datadir}/x2go/versions/VERSION.x2goserver-xsession
 
