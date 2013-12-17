@@ -15,6 +15,8 @@ x2goserver (4.0.1.10-0x2go1) UNRELEASED; urgency=low
       xfree86 symlink to base rulset does not exist.
     - Grab systemd service file from Fedora and ship it upstream.
     - Provide RHEL/Fedora support in x2goserver-xsession.
+    - Only sanity check for existence of /etc/x2go/Xsession.d on Debian
+      (derived) systems.
   * x2goserver.spec:
     + Ship x2goserver.spec (RPM package definitions) in upstream project.
       (Thanks to the Fedora package maintainers). File differs from the Fedora
