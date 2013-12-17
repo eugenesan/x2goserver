@@ -320,6 +320,7 @@ exit 0
 %systemd_postun x2goserver.service
 %else
 /sbin/chkconfig --add x2goserver
+/sbin/service x2goserver condrestart >/dev/null 2>&1 || :
 
 %postun
 if [ "$1" -ge "1" ] ; then

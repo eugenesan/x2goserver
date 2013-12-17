@@ -19,13 +19,13 @@
 . /etc/rc.d/init.d/functions
 
 exec=/usr/sbin/x2gocleansessions
-prog="x2gocleansessions"
-config=/etc/sysconfig/x2gocleansessions
+prog="X2Go Server"
+config=/etc/sysconfig/x2goserver
 XSOCKDIR=/tmp/.X11-unix
 
-[ -e /etc/sysconfig/$prog ] && . /etc/sysconfig/$prog
+[ -e $config ] && . $config
 
-lockfile=/var/lock/subsys/$prog
+lockfile=/var/lock/subsys/x2goserver
 
 start() {
 [ -x $exec ] || exit 5
@@ -65,7 +65,7 @@ force_reload() {
 
 rh_status() {
 	# run checks to determine if the service is running or use generic status
-	status $prog
+	status x2goserver
 }
 
 rh_status_q() {
