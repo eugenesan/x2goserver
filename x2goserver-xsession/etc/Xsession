@@ -13,48 +13,48 @@ X2GO_LIBEXEC_PATH="$(x2gopath libexec)";
 PROGNAME=XSession-x2go
 
 message () {
-  # pretty-print messages of arbitrary length; use xmessage if it
-  # is available and $DISPLAY is set
-  MESSAGE="$PROGNAME: $*"
-  echo "$MESSAGE" | fold -s -w ${COLUMNS:-80} >&2
-  if [ -n "$DISPLAY" ] && which xmessage > /dev/null 2>&1; then
-    echo "$MESSAGE" | fold -s -w ${COLUMNS:-80} | xmessage -center -file -
-  fi
+	# pretty-print messages of arbitrary length; use xmessage if it
+	# is available and $DISPLAY is set
+	MESSAGE="$PROGNAME: $*"
+	echo "$MESSAGE" | fold -s -w ${COLUMNS:-80} >&2
+	if [ -n "$DISPLAY" ] && which xmessage > /dev/null 2>&1; then
+		echo "$MESSAGE" | fold -s -w ${COLUMNS:-80} | xmessage -center -file -
+	fi
 }
 
 message_nonl () {
-  # pretty-print messages of arbitrary length (no trailing newline); use
-  # xmessage if it is available and $DISPLAY is set
-  MESSAGE="$PROGNAME: $*"
-  echo -n "$MESSAGE" | fold -s -w ${COLUMNS:-80} >&2;
-  if [ -n "$DISPLAY" ] && which xmessage > /dev/null 2>&1; then
-    echo -n "$MESSAGE" | fold -s -w ${COLUMNS:-80} | xmessage -center -file -
-  fi
+	# pretty-print messages of arbitrary length (no trailing newline); use
+	# xmessage if it is available and $DISPLAY is set
+	MESSAGE="$PROGNAME: $*"
+	echo -n "$MESSAGE" | fold -s -w ${COLUMNS:-80} >&2;
+	if [ -n "$DISPLAY" ] && which xmessage > /dev/null 2>&1; then
+		echo -n "$MESSAGE" | fold -s -w ${COLUMNS:-80} | xmessage -center -file -
+	fi
 }
 
 errormsg () {
-  # exit script with error
-  message "$*"
-  exit 1
+	# exit script with error
+	message "$*"
+	exit 1
 }
 
 internal_errormsg () {
-  # exit script with error; essentially a "THIS SHOULD NEVER HAPPEN" message
-  # One big call to message() for the sake of xmessage; if we had two then
-  # the user would have dismissed the error we want reported before seeing the
-  # request to report it.
-  errormsg "$*" \
-           "Please report the installed version of the \"x2goserver\"" \
-           "package and the complete text of this error message to" \
-           "<x2go-dev@lists.x2go.org>."
+	# exit script with error; essentially a "THIS SHOULD NEVER HAPPEN" message
+	# One big call to message() for the sake of xmessage; if we had two then
+	# the user would have dismissed the error we want reported before seeing the
+	# request to report it.
+	errormsg "$*" \
+	   "Please report the installed version of the \"X2Go Server\"" \
+	   "package and the complete text of this error message to" \
+	   "<x2go-dev@lists.x2go.org>."
 }
 
 # Load profile
 for file in "/etc/profile" "$HOME/.profile" "/etc/xprofile" "$HOME/.xprofile"; do
-    if [ -f "$file" ]; then
-        echo "Loading profile from $file";
-        . "$file"
-    fi
+	if [ -f "$file" ]; then
+		echo "Loading profile from $file";
+		. "$file"
+	fi
 done
 
 # initialize variables for use by all session scripts
@@ -71,17 +71,16 @@ ALTUSERXSESSION=$HOME/.Xsession-x2go
 ERRFILE=$HOME/.xsession-x2go-errors
 
 # attempt to create an error file; abort if we cannot
-if (umask 077 && touch "$ERRFILE") 2> /dev/null && [ -w "$ERRFILE" ] &&
-  [ ! -L "$ERRFILE" ]; then
-  chmod 600 "$ERRFILE"
+if (umask 077 && touch "$ERRFILE") 2> /dev/null && [ -w "$ERRFILE" ] && [ ! -L "$ERRFILE" ]; then
+	chmod 600 "$ERRFILE"
 elif ERRFILE=$(mktemp 2> /dev/null); then
-  if ! ln -sf "$ERRFILE" "${TMPDIR:=/tmp}/xsession-x2go-$USER"; then
-    message "warning: unable to symlink \"$TMPDIR/xsession-x2go-$USER\" to" \
-             "\"$ERRFILE\"; look for session log/errors in" \
-             "\"$TMPDIR/xsession-x2go-$USER\"."
-  fi
+	if ! ln -sf "$ERRFILE" "${TMPDIR:=/tmp}/xsession-x2go-$USER"; then
+		message "warning: unable to symlink \"$TMPDIR/xsession-x2go-$USER\" to" \
+		        "\"$ERRFILE\"; look for session log/errors in" \
+		        "\"$TMPDIR/xsession-x2go-$USER\"."
+	fi
 else
-  errormsg "unable to create X session (X2Go) log/error file; aborting."
+	errormsg "unable to create X session (X2Go) log/error file; aborting."
 fi
 
 exec >>"$ERRFILE" 2>&1
@@ -90,7 +89,7 @@ echo "$PROGNAME: X session started for $LOGNAME at $(date)"
 
 # sanity check; is our session script directory present?
 if [ ! -d "$SYSSESSIONDIR" ]; then
-  errormsg "no \"$SYSSESSIONDIR\" directory found; aborting."
+	errormsg "no \"$SYSSESSIONDIR\" directory found; aborting."
 fi
 
 # Attempt to create a file of non-zero length in /tmp; a full filesystem can
@@ -100,32 +99,118 @@ fi
 # determining what went wrong.
 WRITE_TEST=$(mktemp)
 if ! echo "*" >>"$WRITE_TEST"; then
-  message "warning: unable to write to ${WRITE_TEST%/*}; X session (X2Go) may" \
-          "exit with an error"
+	message "warning: unable to write to ${WRITE_TEST%/*}; X session (X2Go) may" \
+	        "exit with an error"
 fi
 rm -f "$WRITE_TEST"
 
-# use run-parts to source every file in the session directory; we source
-# instead of executing so that the variables and functions defined above
-# are available to the scripts, and so that they can pass variables to each
-# other
 
-SESSIONFILES=$(run-parts --list $SYSSESSIONDIR)
-SYSSESSIONDIR=/etc/x2go/Xsession.d
+if [ -f /etc/debian_version ]; then
 
-SESSIONFILES=$(run-parts --list $SYSSESSIONDIR)
+	# use run-parts to source every file in the session directory; we source
+	# instead of executing so that the variables and functions defined above
+	# are available to the scripts, and so that they can pass variables to each
+	# other
 
-### source Xsession files
-if [ -n "$SESSIONFILES" ]; then
+	SESSIONFILES=$(run-parts --list $SYSSESSIONDIR)
+	SYSSESSIONDIR=/etc/x2go/Xsession.d
 
-    set +e
-    for SESSIONFILE in $SESSIONFILES; do
-        "$X2GO_LIBEXEC_PATH/x2gosyslog" "$0" "info" "executing $SESSIONFILE"
-        . $SESSIONFILE
-    done
-    set -e
+	SESSIONFILES=$(run-parts --list $SYSSESSIONDIR)
+
+	### source Xsession files
+	if [ -n "$SESSIONFILES" ]; then
+
+		set +e
+		for SESSIONFILE in $SESSIONFILES; do
+			"$X2GO_LIBEXEC_PATH/x2gosyslog" "$0" "info" "executing $SESSIONFILE"
+			. $SESSIONFILE
+		done
+		set -e
+	fi
+elif [ -f /etc/redhat-release ]; then
+
+	# define a fallback... (should never be needed). The XSESSION_EXEC var gets set in
+	# X2Go's x2goruncommand script and can be used with obsolete switchdesk or with
+	# Xclients.d scripts (also rarely used, see below...).
+	XSESSION_EXEC=${XSESSION_EXEC:-xterm}
+
+	# Set up i18n environment
+	if [ -r /etc/profile.d/lang.sh ]; then
+		. /etc/profile.d/lang.sh
+	fi
+
+	# merge in defaults
+	[ -r "$SYSRESOURCES" ] && xrdb -nocpp -merge "$SYSRESOURCES"
+	[ -r "$USRRESOURCES" ] && xrdb -merge "$USRRESOURCES"
+
+	# RHEL's Xsession file for X11 allows playing with setxkbmap / xmodmap
+	# We provide this for compat, but disrecommend using it. Make sure to
+	# disable any Keyboard setup in X2Go Client / PyHoca-GUI if you want to
+	# use server-side key mappings.
+	USRMODMAP=$HOME/.Xmodmap-x2go
+	USRXKBMAP=$HOME/.Xkbmap-x2go
+
+	SYSMODMAP=/etc/x2go/Xmodmap
+	SYSXKBMAP=/etc/x2go/Xkbmap
+
+	# merge in keymaps
+	if [ -r "$SYSXKBMAP" ]; then
+		setxkbmap $(cat "$SYSXKBMAP")
+		XKB_IN_USE=yes
+	fi
+
+	if [ -r "$USRXKBMAP" ]; then
+		setxkbmap $(cat "$USRXKBMAP")
+		XKB_IN_USE=yes
+	fi
+
+	# xkb and xmodmap don't play nice together
+	if [ -z "$XKB_IN_USE" ]; then
+		[ -r "$SYSMODMAP" ] && xmodmap "$SYSMODMAP"
+		[ -r "$USRMODMAP" ] && xmodmap "$USRMODMAP"
+	fi
+
+	unset XKB_IN_USE
+
+	# run all system xinitrc shell scripts.
+	for file in /etc/x2go/xinit/xinitrc.d/* ; do
+		. $file
+	done
+
+	# Prefix launch of session with ssh-agent if available and not already running.
+	SSH_AGENT=
+	if [ -x /usr/bin/ssh-agent -a -z "$SSH_AGENT_PID" ]; then
+		if [ "x$TMPDIR" != "x" ]; then
+			SSH_AGENT="/usr/bin/ssh-agent /bin/env TMPDIR=$TMPDIR"
+		else
+			SSH_AGENT="/usr/bin/ssh-agent"
+		fi
+	fi
+
+	CK_XINIT_SESSION=
+	if [ -x /usr/bin/ck-xinit-session -a -z "$XDG_SESSION_COOKIE" ]; then
+		CK_XINIT_SESSION="/usr/bin/ck-xinit-session"
+	fi
+
+	# At the time of integrating X2Go Xsession support for RHEL6 / Fedora
+	# the Xsession stuff in Fedora/RHEL6 seems to be a little mess.
+	# The proposed strategy is to have Xclients.$WM.sh files in 
+	# /etc/X11/xinit/Xclients.d. Currently, only wmx uses this mechanism.
+	# As it is a described but rather unused ,,standard'' we will not support it
+	# in X2Go for now, but leave it here as a reminder...
+
+	# XCLIENTS_D=/etc/x2go/Xclients.d
+	#if [ -d "$XCLIENTS_D" -a -x "$XCLIENTS_D/Xclients.${XSESSION_EXEC}.sh" ]; then
+	#	exec -l $SHELL -c "$CK_XINIT_SESSION $SSH_AGENT $XCLIENTS_D/Xclients.$1.sh"
+	#fi
+
+	# switchdesk support is also totally deprecated in RHEL, but we leave it here
+	# as a reminder, as well, in case we need it in the future for special setups...
+	#if [ -x "$SWITCHDESKPATH/Xclients.${XSESSION_EXEC}" ]; then
+	#	exec -l "$SHELL" -c "$SWITCHDESKPATH/Xclients.${XSESSION_EXEC}";
+	#fi
+
+	exec $CK_XINIT_SESSION $SSH_AGENT /bin/sh -c "exec -l $SHELL -c \"$STARTUP\""
 fi
 
 exit 0
-
-# vim:set ai et sts=2 sw=2 tw=80:

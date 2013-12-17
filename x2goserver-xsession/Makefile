@@ -22,6 +22,8 @@ SHAREDIR=$(PREFIX)/share/x2go
 
 XSESSIONDIR ?= /etc/X11/Xsession.d
 XSESSIONOPTIONFILE ?= /etc/X11/Xsession.options
+XINITRCDIR ?= /etc/X11/xinit/xinitrc.d
+XCLIENTSDIR ?= /etc/X11/xinit/Xclients.d
 
 ETC_FILES=$(shell cd etc && echo *)
 FEATURE_SCRIPTS=$(shell cd share/x2gofeature.d && echo *.features)
@@ -60,8 +62,10 @@ install_config:
 #       provide target dirs for X11 related symlinks
 	$(INSTALL_PROGRAM) etc/Xsession                 $(DESTDIR)$(ETCDIR)/
 	$(INSTALL_SYMLINK) /etc/X11/Xresources          $(DESTDIR)$(ETCDIR)/
-	if [ -e $(XSESSIONOPTIONFILE) ]; then $(INSTALL_SYMLINK) $(XSESSIONOPTIONFILE) $(DESTDIR)$(ETCDIR)/Xsession.options; else touch $(DESTDIR)$(ETCDIR)/Xsession.options; fi
-	if [ -d $(XSESSIONDIR) ]; then $(INSTALL_SYMLINK) $(XSESSIONDIR) $(DESTDIR)$(ETCDIR)/Xsession.d; else $(INSTALL_DIR) $(DESTDIR)$(ETCDIR)/Xsession.d; fi
+	if [ -e /etc/debian_version ]; if [ -e $(XSESSIONOPTIONFILE) ]; then $(INSTALL_SYMLINK) $(XSESSIONOPTIONFILE) $(DESTDIR)$(ETCDIR)/Xsession.options; else touch $(DESTDIR)$(ETCDIR)/Xsession.options; fi; fi
+	if [ -e /etc/debian_version ]; if [ -d $(XSESSIONDIR) ]; then $(INSTALL_SYMLINK) $(XSESSIONDIR) $(DESTDIR)$(ETCDIR)/Xsession.d; else $(INSTALL_DIR) $(DESTDIR)$(ETCDIR)/Xsession.d; fi; fi
+	if [ -e /etc/redhat-release ]; if [ -d $(XINITRCDIR) ]; then $(INSTALL_SYMLINK) $(XINITRCDIR) $(DESTDIR)$(ETCDIR)/xinitrc.d; else $(INSTALL_DIR) $(DESTDIR)$(ETCDIR)/xinitrc.d; fi; fi
+	if [ -e /etc/redhat-release ]; if [ -d $(XCLIENTSDIR) ]; then $(INSTALL_SYMLINK) $(XCLIENTSDIR) $(DESTDIR)$(ETCDIR)/Xclients.d; else $(INSTALL_DIR) $(DESTDIR)$(ETCDIR)/Xclients.d; fi; fi
 
 install_man:
 #	$(INSTALL_DIR) $(DESTDIR)$(MANDIR)
