@@ -59,6 +59,7 @@ x2goserver (4.1.0.0-0x2go1) UNRELEASED; urgency=low
     + Set buildroot if we build for EPEL-5.
     + Use deprected %{_initrddir} macro for EPEL-5 builds.
     + Take advantage of native RHEL support (since 4.0.1.10).
+    + Install SQLite3 wrapper as setgid x2gouser. (Fixes: 371).
 
   [ Guangzhou Nianguan Electronics Technology Co.Ltd. ]
   * New upstream version (4.1.0.0):
