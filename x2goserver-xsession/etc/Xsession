@@ -87,10 +87,6 @@ exec >>"$ERRFILE" 2>&1
 
 echo "$PROGNAME: X session started for $LOGNAME at $(date)"
 
-# sanity check; is our session script directory present?
-if [ ! -d "$SYSSESSIONDIR" ]; then
-	errormsg "no \"$SYSSESSIONDIR\" directory found; aborting."
-fi
 
 # Attempt to create a file of non-zero length in /tmp; a full filesystem can
 # cause mysterious X session failures.  We do not use touch, :, or test -w
@@ -106,6 +102,11 @@ rm -f "$WRITE_TEST"
 
 
 if [ -f /etc/debian_version ]; then
+
+	# sanity check; is our session script directory present?
+	if [ ! -d "$SYSSESSIONDIR" ]; then
+		errormsg "no \"$SYSSESSIONDIR\" directory found; aborting."
+	fi
 
 	# use run-parts to source every file in the session directory; we source
 	# instead of executing so that the variables and functions defined above
