@@ -307,7 +307,7 @@ exit 0
 
 %post
 # Initialize the session database (first attempt, may fail if perl-X2Go-Server-DB is not yet installed
-[ ! -f %{_sharedstatedir}/x2go/x2go_sessions ] &&
+[ ! -s %{_sharedstatedir}/x2go/x2go_sessions ] && egrep "^backend=sqlite.*" /etc/x2go/x2gosql/sql 1>/dev/null 2>/dev/null &&
   %{_sbindir}/x2godbadmin --createdb 1>/dev/null 2>/dev/null || :
 
 %if 0%{?fedora}
@@ -336,7 +336,7 @@ fi
 
 %post -n perl-X2Go-Server-DB
 # Initialize the session database (second attempt, may fail if x2goserver is not yet installed
-[ ! -f %{_sharedstatedir}/x2go/x2go_sessions ] &&
+[ ! -s %{_sharedstatedir}/x2go/x2go_sessions ] && egrep "^backend=sqlite.*" /etc/x2go/x2gosql/sql 1>/dev/null 2>/dev/null &&
   %{_sbindir}/x2godbadmin --createdb 1>/dev/null 2>/dev/null || :
 
 
