@@ -379,10 +379,7 @@ exit 0
 %exclude %{_mandir}/man8/x2gofm.8.gz
 %exclude %{_mandir}/man8/x2goprint.8.gz
 %dir %{_datadir}/x2go/x2gofeature.d/
-%{_datadir}/x2go/x2gofeature.d/
-%exclude %{_datadir}/x2go/x2gofeature.d/x2goserver-fmbindings.features
-%exclude %{_datadir}/x2go/x2gofeature.d/x2goserver-printing.features
-%exclude %{_datadir}/x2go/x2gofeature.d/x2goserver-xsession.features
+%{_datadir}/x2go/x2gofeature.d/x2goserver.features
 %{_datadir}/x2go/versions/VERSION.x2goserver
 %attr(0775,root,x2gouser) %dir %{_sharedstatedir}/x2go/
 %ghost %attr(0660,root,x2gouser) %{_sharedstatedir}/x2go/x2go_sessions
@@ -435,7 +432,7 @@ exit 0
 %files extensions
 %{_libdir}/x2go/extensions
 %{_bindir}/x2goserver-run-extensions
-%{_datadir}/x2go/x2gofeature.d/
+%{_datadir}/x2go/x2gofeature.d/x2goserver-extensions.features
 %{_datadir}/x2go/versions/VERSION.x2goserver-extensions
 %{_mandir}/man8/x2goserver-run-extensions.8.gz
 

@@ -62,6 +62,8 @@ x2goserver (4.1.0.0-0x2go1) UNRELEASED; urgency=low
     + Install SQLite3 wrapper as setgid x2gouser. (Fixes: 371).
     + Assure that SQLite3 session DB file gets created on install (unless
       PostgreSQL is used as session DB backend).
+    + Make sure x2goserver-*.features files do not get installed
+      multiple times into various packages.
 
   [ Guangzhou Nianguan Electronics Technology Co.Ltd. ]
   * New upstream version (4.1.0.0):
