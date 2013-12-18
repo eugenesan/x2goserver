@@ -341,6 +341,16 @@ fi
   %{_sbindir}/x2godbadmin --createdb 1>/dev/null 2>/dev/null || :
 
 
+%post fmbindings
+/usr/bin/update-mime-database /usr/share/mime &>/dev/null || :
+/usr/bin/update-desktop-database &>/dev/null || :
+
+%postun fmbindings
+if [ $1 -eq 0 ] ; then
+        /usr/bin/update-mime-database /usr/share/mime &>/dev/null || :
+        /usr/bin/update-desktop-database &>/dev/null || :
+fi
+
 %pre printing
 getent group x2goprint >/dev/null || groupadd -r x2goprint
 getent passwd x2goprint >/dev/null || \
