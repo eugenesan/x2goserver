@@ -248,6 +248,7 @@ for (my $i=0;$i<@dirs;$i++)
 	if (db_insertmount( $session, $mntpath, $host))
 	{
 
+		syslog('debug', "insertion of shared folder into session DB has been successful");
 		my $Config = get_config();
 		my $umask=$Config->param("security.umask");
 		my $umaskstr="";
@@ -263,6 +264,14 @@ for (my $i=0;$i<@dirs;$i++)
 		if ($code_conv ne "")
 		{
 			$code_conv="-o $code_conv";
+		}
+		if ( -f $key )
+		{
+			syslog('debug', "SSH key file has arrived: $key");
+		}
+		if ( -f $key.ident )
+		{
+			syslog('debug', "SSH host key has arrived: $key.ident");
 		}
 		$msg = "sshfs $code_conv -o idmap=user,uid=`id -u`,gid=`id -g`,$umaskstr,ServerAliveInterval=300,Cipher=blowfish,IdentityFile=$key,UserKnownHostsFile=$key.ident \"$user\"\@$host:\"@dirs[$i]\" \"$mntpath\" -p $port";
 		syslog('debug', "executing: $msg");
