@@ -1,5 +1,5 @@
 Name:           x2goserver
-Version:        4.1.0.0
+Version:        4.0.1.10
 Release:        0.0x2go1%{?dist}
 Summary:        X2Go Server
 
@@ -87,65 +87,6 @@ X2Go is a server based computing environment with
 
 This package contains common files needed by the X2Go Server
 and the X2Go::Server Perl API.
-
-
-%package -n perl-X2Go-Server
-Summary:        Perl X2Go::Server package
-Requires:       x2goserver-common = %{version}-%{release}
-Requires:       perl-X2Go-Log = %{version}-%{release}
-Requires:       perl-X2Go-Server-DB = %{version}-%{release}
-Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
-Group:          Development/Libraries
-
-%description -n perl-X2Go-Server
-X2Go is a server based computing environment with
-    - session resuming
-    - low bandwidth support
-    - session brokerage support
-    - client side mass storage mounting support
-    - audio support
-    - authentication by smartcard and USB stick
-
-This package contains the X2Go::Server Perl package.
-
-
-%package -n perl-X2Go-Server-DB
-Summary:        Perl X2Go::Server::DB package
-Requires:       x2goserver-common = %{version}-%{release}
-Requires:       perl-X2Go-Log = %{version}-%{release}
-Requires:       perl(DBD::SQLite)
-Requires:       perl(DBD::Pg)
-Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
-Group:          Development/Libraries
-
-%description -n perl-X2Go-Server-DB
-X2Go is a server based computing environment with
-    - session resuming
-    - low bandwidth support
-    - session brokerage support
-    - client side mass storage mounting support
-    - audio support
-    - authentication by smartcard and USB stick
-
-This package contains the X2Go::Server::DB Perl package.
-
-
-%package -n perl-X2Go-Log
-Summary:        Perl X2Go::Log package
-Requires:       x2goserver-common = %{version}-%{release}
-Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
-Group:          Development/Libraries
-
-%description -n perl-X2Go-Log
-X2Go is a server based computing environment with
-    - session resuming
-    - low bandwidth support
-    - session brokerage support
-    - client side mass storage mounting support
-    - audio support
-    - authentication by smartcard and USB stick
-
-This package contains the X2Go::Log Perl package.
 
 
 %package printing
@@ -253,7 +194,6 @@ corresponding desktop shell:
 %setup -q
 
 # Set path
-#find -type f | xargs sed -i -r -e '/^((LIBDIR|X2GO_LIB_PATH)=|use lib|my \$x2go_lib_path)/s,/lib/,/%{_lib}/,'
 find -type f | xargs sed -i -r -e '/^LIBDIR=/s,/lib/,/%{_lib}/,'
 sed -i -e 's,/lib/,/%{_lib}/,' x2goserver/bin/x2gopath
 # Don't try to be root
@@ -269,7 +209,7 @@ make CFLAGS="%{optflags} -fPIC" %{?_smp_mflags} PERL_INSTALLDIRS=vendor PREFIX=%
 make install DESTDIR=%{buildroot} PREFIX=%{_prefix}
 
 # Make sure the .packlist file is removed from %{perl_vendorarch}...
-rm -f %{buildroot}%{perl_vendorarch}/auto/x2goserver/.packlist
+#rm -f %{buildroot}%{perl_vendorarch}/auto/x2goserver/.packlist
 
 # Remove placeholder files (in a way that works on EPEL-5, as well)
 find %{buildroot}%{_libdir}/x2go/extensions/ -type f -name ".placeholder" | while read file; do rm -f "$file"; done
@@ -298,7 +238,7 @@ install -pm0755 %SOURCE2 %{buildroot}%{_initddir}/x2goserver
 %endif
 
 
-%pre common
+%pre
 getent group x2gouser >/dev/null || groupadd -r x2gouser
 getent passwd x2gouser >/dev/null || \
     useradd -r -g x2gouser -d /var/lib/x2go -s /sbin/nologin \
@@ -336,12 +276,6 @@ fi
 %endif
 
 
-%post -n perl-X2Go-Server-DB
-# Initialize the session database (second attempt, may fail if x2goserver is not yet installed
-[ ! -s %{_sharedstatedir}/x2go/x2go_sessions ] && egrep "^backend=sqlite.*" /etc/x2go/x2gosql/sql 1>/dev/null 2>/dev/null &&
-  %{_sbindir}/x2godbadmin --createdb 1>/dev/null 2>/dev/null || :
-
-
 %post fmbindings
 /usr/bin/update-mime-database /usr/share/mime &>/dev/null || :
 /usr/bin/update-desktop-database &>/dev/null || :
@@ -363,24 +297,29 @@ exit 0
 %doc debian/copyright
 %doc debian/changelog
 %dir %{_sysconfdir}/x2go/
+%config(noreplace) %{_sysconfdir}/x2go/x2go*
+%dir %{_sysconfdir}/x2go/x2gosql
+%config(noreplace) %{_sysconfdir}/x2go/x2gosql/sql
 %config(noreplace) %{_sysconfdir}/sudoers.d/x2goserver
 %{_bindir}/x2go*
 %exclude %{_bindir}/x2goserver-run-extensions
 %exclude %{_bindir}/x2gofm
 %exclude %{_bindir}/x2goprint
 %dir %{_libdir}/x2go
+%{_libdir}/x2go/x2gosqlitewrapper.pl
+%attr(2775,root,x2gouser) %{_libdir}/x2go/x2gosqlitewrapper
 %{_libdir}/x2go/x2gochangestatus
 %{_libdir}/x2go/x2gocreatesession
-%{_libdir}/x2go/x2gocreateshadowsession
+%{_libdir}/x2go/x2godbwrapper.pm
 %{_libdir}/x2go/x2gogetagent
 %{_libdir}/x2go/x2gogetdisplays
 %{_libdir}/x2go/x2gogetports
 %{_libdir}/x2go/x2gogetstatus
 %{_libdir}/x2go/x2goinsertport
 %{_libdir}/x2go/x2goinsertsession
-%{_libdir}/x2go/x2goinsertshadowsession
 %{_libdir}/x2go/x2golistsessions_sql
 %{_libdir}/x2go/x2gologlevel
+%{_libdir}/x2go/x2gologlevel.pm
 %{_libdir}/x2go/x2goresume
 %{_libdir}/x2go/x2gormport
 %{_libdir}/x2go/x2gosuspend-agent
@@ -390,6 +329,7 @@ exit 0
 %exclude %{_mandir}/man8/x2goserver-run-extensions.8.gz
 %exclude %{_mandir}/man8/x2gofm.8.gz
 %exclude %{_mandir}/man8/x2goprint.8.gz
+%{_mandir}/man5/x2goserver.conf.5.gz
 %dir %{_datadir}/x2go/x2gofeature.d/
 %{_datadir}/x2go/x2gofeature.d/x2goserver.features
 %{_datadir}/x2go/versions/VERSION.x2goserver
@@ -404,41 +344,6 @@ exit 0
 %{_initddir}/x2goserver
 %endif
 %endif
-
-
-%files -n perl-X2Go-Log
-%{perl_vendorlib}/X2Go/Log.pm
-%{_mandir}/man3/X2Go::Log.*
-
-
-%files -n perl-X2Go-Server
-%{perl_vendorlib}/X2Go/Config.pm
-%{perl_vendorlib}/X2Go/Server.pm
-%{perl_vendorlib}/X2Go/SupeReNicer.pm
-%{perl_vendorlib}/X2Go/Utils.pm
-%{_mandir}/man3/X2Go::Config.*
-%{_mandir}/man3/X2Go::Server.*
-%{_mandir}/man3/X2Go::SupeReNicer.*
-%{_mandir}/man3/X2Go::Utils.*
-
-
-%files -n perl-X2Go-Server-DB
-%dir %{_libdir}/x2go
-%{perl_vendorlib}/X2Go/Server/DB*
-%attr(2775,root,x2gouser) %{_libdir}/x2go/libx2go-server-db-sqlite3-wrapper
-%{_libdir}/x2go/libx2go-server-db-sqlite3-wrapper.pl
-%{_mandir}/man3/X2Go::Server::DB.*
-%{_mandir}/man3/X2Go::Server::DB::*
-%dir %{_sysconfdir}/x2go/x2gosql
-%config(noreplace) %{_sysconfdir}/x2go/x2gosql/sql
-
-
-%files common
-%dir %{_sysconfdir}/x2go/
-%config(noreplace) %{_sysconfdir}/x2go/x2go*
-%{_mandir}/man5/x2goserver.conf.5.gz
-%dir %{_datadir}/x2go/versions
-%{_datadir}/x2go/versions/VERSION.x2goserver-common
 
 
 %files extensions
