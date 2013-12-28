@@ -196,6 +196,8 @@ corresponding desktop shell:
 # Set path
 find -type f | xargs sed -i -r -e '/^LIBDIR=/s,/lib/,/%{_lib}/,'
 sed -i -e 's,/lib/,/%{_lib}/,' x2goserver/bin/x2gopath
+sed -i -e 's/\t$(MAKE) -C x2goserver-compat/#\t$(MAKE) -C x2goserver-compat/g' Makefile
+sed -i -e 's/\t$(MAKE) -C x2goserver-pyhoca/#\t$(MAKE) -C x2goserver-pyhoca/g' Makefile
 # Don't try to be root
 sed -i -e 's/-o root -g root//' */Makefile
 
