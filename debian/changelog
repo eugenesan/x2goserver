@@ -17,6 +17,7 @@ x2goserver (4.0.1.10-0x2go1) UNRELEASED; urgency=low
     - Provide RHEL/Fedora support in x2goserver-xsession.
     - Only sanity check for existence of /etc/x2go/Xsession.d on Debian
       (derived) systems.
+    - Provide man page for x2goserver.conf.
   * x2goserver.spec:
     + Ship x2goserver.spec (RPM package definitions) in upstream project.
       (Thanks to the Fedora package maintainers). File differs from the Fedora
