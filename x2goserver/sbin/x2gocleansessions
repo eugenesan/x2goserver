@@ -27,6 +27,8 @@ $ENV{'PATH'} = "/bin:/sbin:/usr/bin:/usr/sbin";
 use Sys::Hostname;
 use Sys::Syslog qw( :standard :macros );
 
+use File::ReadBackwards;
+
 my $x2go_lib_path = `x2gopath libexec`;
 use X2Go::Config qw( get_config );
 use X2Go::Log qw( loglevel );
@@ -59,8 +61,14 @@ sub has_terminated
 	my $sess=shift;
 	my $user=shift;
 	my $log="/tmp/.x2go-${user}/session-C-${sess}.log";
-	my $text=`tail -1 $log 2>/dev/null`;
-	if ($text =~ m/Session terminated/)
+	my $log_line;
+	my $log_file = File::ReadBackwards->new( $log ) or return 1;
+	while( defined( $log_line = $log_file->readline ) ) {
+		next if ( ! ( $log_line =~ m/^Session:/ ) );
+		last;
+	}
+	$log_file->close();
+	if ($log_line =~ m/Session terminated/)
 	{
 		return 1;
 	}
@@ -72,8 +80,14 @@ sub is_suspended
 	my $sess=shift;
 	my $user=shift;
 	my $log="/tmp/.x2go-${user}/session-C-${sess}.log";
-	my $text=`grep Session: $log 2>/dev/null|tail -1`;
-	if ($text =~ m/Session suspended/)
+	my $log_line;
+	my $log_file = File::ReadBackwards->new( $log ) or return 0;
+	while( defined( $log_line = $log_file->readline ) ) {
+		next if ( ! ( $log_line =~ m/^Session:/ ) );
+		last;
+	}
+	$log_file->close();
+	if ($log_line =~ m/Session suspended/)
 	{
 		return 1;
 	}
@@ -183,30 +197,30 @@ elsif ($pid == 0 )
 				{
 					# send SIGKILL to dangling X-server processes
 					syslog('warning', "@sinfo[1]: found stale X-server process (@sinfo[0]), sending SIGKILL");
-					qw(kill -9 @sinfo[0]);
+					system("kill", "-9", "@sinfo[0]");
 					delete $remembered_sessions_since{@sinfo[1]};
 				}
 				syslog('debug', "@sinfo[1]: unmounting all shares");
-				system( "su @sinfo[11] -c \"export HOSTNAME && x2goumount-session @sinfo[1]\" 2> /dev/null");
+				system( "su", "@sinfo[11]", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");
 			}
 
 			elsif (! check_pid (@sinfo[0],@sinfo[1],@sinfo[12]))
 			{
-				system("su @sinfo[11] -c \"$x2go_lib_path/x2gochangestatus 'F' @sinfo[1] \" 1> /dev/null 2> /dev/null");
+				system("su", "@sinfo[11]", "-c", "$x2go_lib_path/x2gochangestatus 'F' @sinfo[1]");
 				syslog('debug', "@sinfo[1], pid @sinfo[0] does not exist, changing status from @sinfo[4] to F");
 				syslog('debug', "@sinfo[1]: unmounting all shares");
-				system( "su @sinfo[11] -c \"export HOSTNAME && x2goumount-session @sinfo[1]\" 2> /dev/null");
+				system("su", "@sinfo[11]", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");
 			}
 			else
-			{ 
+			{
 				if ( (@sinfo[4] eq 'R') && ( $remembered_sessions_since{ @sinfo[1] } ge 2 ))
 				{
 					if (is_suspended(@sinfo[1],@sinfo[11]))
 					{
-						system("su @sinfo[11] -c  \"$x2go_lib_path/x2gochangestatus 'S' @sinfo[1] \" 1> /dev/null 2>/dev/null");
+						system("su", "@sinfo[11]", "-c", "$x2go_lib_path/x2gochangestatus S @sinfo[1]");
 						syslog('debug', "@sinfo[1] is suspended, changing status from @sinfo[4] to S");
 						syslog('debug', "@sinfo[1]: unmounting all shares");
-						system( "su @sinfo[11] -c \"export HOSTNAME && x2goumount-session @sinfo[1]\" 2> /dev/null");
+						system("su", "@sinfo[11]", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");
 					}
 				}
 				if (@sinfo[4] eq 'S')
@@ -214,8 +228,8 @@ elsif ($pid == 0 )
 					if (is_running(@sinfo[1],@sinfo[11]))
 					{
 						syslog('debug', "@sinfo[1]: unmounting all shares");
-						system( "su @sinfo[11] -c \"export HOSTNAME && x2goumount-session @sinfo[1]\" 2> /dev/null");
-						system("su @sinfo[11] -c  \"x2gosuspend-session @sinfo[1] \" 1> /dev/null 2>/dev/null");
+						system("su", "@sinfo[11]", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");
+						system("su", "@sinfo[11]", "-c", "x2gosuspend-session @sinfo[1]");
 						syslog('debug', "@sinfo[1] was found running and has now been suspended");
 					}
 				}
@@ -224,8 +238,8 @@ elsif ($pid == 0 )
 					if (!has_terminated(@sinfo[1],@sinfo[11]))
 					{
 						syslog('debug', "@sinfo[1]: unmounting all shares");
-						system( "su @sinfo[11] -c \"export HOSTNAME && x2goumount-session @sinfo[1]\" 2> /dev/null");
-						system("su @sinfo[11] -c  \"x2goterminate-session @sinfo[1] \" 1> /dev/null 2>/dev/null");
+						system("su", "@sinfo[11]", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");
+						system("su", "@sinfo[11]", "-c", "x2goterminate-session @sinfo[1]");
 						syslog('debug', "@sinfo[1] has been requested for termination via the session DB");
 					}
 				}

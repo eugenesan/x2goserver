@@ -34,6 +34,7 @@ Requires:       bc
 Requires:       net-tools
 Requires:       openssh-server
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+Requires:	perl(File::ReadBackwards)
 # We need a database
 # For killall in x2gosuspend-session
 Requires:       psmisc
