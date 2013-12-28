@@ -75,6 +75,9 @@ install_config:
 
 install_man:
 	$(INSTALL_DIR) $(DESTDIR)$(MANDIR)
+	$(INSTALL_DIR) $(DESTDIR)$(MANDIR)/man5
+	$(INSTALL_FILE) man/man5/*.5           $(DESTDIR)$(MANDIR)/man5
+	gzip -f $(DESTDIR)$(MANDIR)/man5/x2go*.5
 	$(INSTALL_DIR) $(DESTDIR)$(MANDIR)/man8
 	$(INSTALL_FILE) man/man8/*.8           $(DESTDIR)$(MANDIR)/man8
 	gzip -f $(DESTDIR)$(MANDIR)/man8/x2go*.8
