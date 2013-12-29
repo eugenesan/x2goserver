@@ -76,7 +76,7 @@ for (my $i=0;$i<@outp;$i++)
 		{
 			if (is_suspended(@sinfo[1],@sinfo[11]))
 			{
-				system("su - @sinfo[11] -c \"$x2go_lib_path/x2gochangestatus 'S' @sinfo[1]\" > /dev/null");
+				system("su", "-", "@sinfo[11]", "-c", "$x2go_lib_path/x2gochangestatus 'S' @sinfo[1] > /dev/null");
 				@outp[$i] =~ s/\|R\|/\|S\|/;
 			}
 		}
