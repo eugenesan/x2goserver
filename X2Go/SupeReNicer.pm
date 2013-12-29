@@ -43,12 +43,17 @@ our @EXPORT=('superenice');
 
 sub checkPID {
 	my $pid = sanitizer("num",$_[0]);
-	open(PS,"/bin/ps --no-headers -o %u,%p,%n,%c -p $pid|");
-	my ($pidInf,undef) = <PS>;
-	close(PS);
-	my ($user,$pid,$nice,$cmd)  = split(/\,/,clups($pidInf));
-	$pid =~ s/\D//g;
-	return ($pid,$user,$nice,$cmd)
+	if ( $pid )
+	{
+		open(PS,"/bin/ps --no-headers -o %u,%p,%n,%c -p $pid|");
+		my ($pidInf,undef) = <PS>;
+		close(PS);
+		my ($user,$pid,$nice,$cmd)  = split(/\,/,clups($pidInf));
+		$pid =~ s/\D//g;
+		return ($pid,$user,$nice,$cmd);
+	} else {
+		return (-1, "failure", 0, "failed to sanitize PID");
+	}
 }
 
 
@@ -118,42 +123,44 @@ sub superenice {
 				# Using the NICE value of the agent to figgure out the current nice state...
 				my ($psP,$psU,$psN,$psC) = checkPID($agentPid);
 
-				if ($x2goState eq "R") {
+				if ($psP > -1) {
+					if ($x2goState eq "R") {
 
-					# State is R (Running?)...
-					if ($psN ne $normalNL) {
-						# If nice level is not normal, renice to normal...
-						syslog('notice', "ReNicing \"$userID\" to level $normalNL for session \"$x2gosid\"");
-						# For the sake of getting a user back to normal ASAP...  We'll renice the entire user not just individual sessions...
-						system("renice", "-n", "$normalNL", "-u", "$userID");
-					}
+						# State is R (Running?)...
+						if ($psN ne $normalNL) {
+							# If nice level is not normal, renice to normal...
+							syslog('notice', "ReNicing \"$userID\" to level $normalNL for session \"$x2gosid\"");
+							# For the sake of getting a user back to normal ASAP...  We'll renice the entire user not just individual sessions...
+							system("renice", "-n", "$normalNL", "-u", "$userID");
+						}
 
-				} elsif ($x2goState eq "S") {
+					} elsif ($x2goState eq "S") {
 
-					# State is S (suspended)
-					if ($psN ne $idleNL) {
+						# State is S (suspended)
+						if ($psN ne $idleNL) {
 
-						# Did we renice this?
-						open(AUPS,"/bin/ps --no-headers -o %u,%p,%n,%c -u $userID|"); # use PS to fetch a list of the users current processes
-						while (<AUPS>) {
-							my ($user,$pid,$nice,$cmd)  = split(/\,/,clups($_));
-							$pid  = sanitizer("num",$pid);
+							# Did we renice this?
+							open(AUPS,"/bin/ps --no-headers -o %u,%p,%n,%c -u $userID|"); # use PS to fetch a list of the users current processes
+							while (<AUPS>) {
+								my ($user,$pid,$nice,$cmd)  = split(/\,/,clups($_));
+								$pid  = sanitizer("num",$pid);
 
-							if (-f "/proc/$pid/environ") {
-								open(ENVIRON,"/proc/$pid/environ");my ($Environ,undef) = <ENVIRON>;close(ENVIRON);
-								if ($Environ =~ m/X2GO_SESSION=$x2gosid/) {       # If the x2go Session ID is in environ... renice the pid...
-									#syslog('debug', "$pid: X2GO_SESSION=$x2gosid");
-									system("renice", "-n", "$idleNL", "-p", "$pid");
+								if (-f "/proc/$pid/environ") {
+									open(ENVIRON,"/proc/$pid/environ");my ($Environ,undef) = <ENVIRON>;close(ENVIRON);
+									if ($Environ =~ m/X2GO_SESSION=$x2gosid/) {       # If the x2go Session ID is in environ... renice the pid...
+										#syslog('debug', "$pid: X2GO_SESSION=$x2gosid");
+										system("renice", "-n", "$idleNL", "-p", "$pid");
+									}
 								}
+
 							}
+							close(AUPS);
+
+							# Renice the AGENT so that we'll know that this one is already reniced.
+							system("renice", "-n", "$idleNL", "-p", "$agentPid");
+							syslog('notice', "ReNicing \"$userID\" to level $idleNL for session \"$x2gosid\"");
 
 						}
-						close(AUPS);
-
-						# Renice the AGENT so that we'll know that this one is already reniced.
-						system("renice", "-n", "$idleNL", "-p", "$agentPid");
-						syslog('notice', "ReNicing \"$userID\" to level $idleNL for session \"$x2gosid\"");
-
 					}
 				}
 			}
@@ -198,22 +205,24 @@ sub superenice {
 				# Using the NICE value of the agent to figgure out the current nice state...
 				my ($psP,$psU,$psN,$psC) = checkPID($agentPid);
 				syslog('debug', "$nUser:$x2goState,$agentPid:$psP,$psU,$psN,$psC");
-				# State is R (Running?)...
-				if ($x2goState eq "R") {
+				if ($psP > -1) {
+					# State is R (Running?)...
+					if ($x2goState eq "R") {
 
-					# If nice level is not normal, renice to normal...
-					if ($psN ne $normalNL) {
-						syslog('debug', "ReNicing \"$nUser\" to level $normalNL");
-						system("renice", "-n", "$normalNL", "-u", "$nUser");
-					}
+						# If nice level is not normal, renice to normal...
+						if ($psN ne $normalNL) {
+							syslog('debug', "ReNicing \"$nUser\" to level $normalNL");
+							system("renice", "-n", "$normalNL", "-u", "$nUser");
+						}
 
-				# State is S (suspended)
-				} elsif ($x2goState eq "S") {
+					# State is S (suspended)
+					} elsif ($x2goState eq "S") {
 
-					# Did we renice this?
-					if ($psN ne $idleNL) {
-						syslog('debug', "ReNicing \"$nUser\" to level $idleNL");
-						system("renice", "-n", "$idleNL", "-u", "$nUser");
+						# Did we renice this?
+						if ($psN ne $idleNL) {
+							syslog('debug', "ReNicing \"$nUser\" to level $idleNL");
+							system("renice", "-n", "$idleNL", "-u", "$nUser");
+						}
 					}
 				}
 			}
