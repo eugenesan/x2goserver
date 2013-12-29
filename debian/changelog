@@ -175,6 +175,8 @@ x2goserver (4.0.0.8-0x2go1) UNRELEASED; urgency=low
       x2golistsessions_root.
     - Avoid one argument system calls and backticks in x2golistsessions.
     - Avoid one argument system calls and backticks in x2goprint.
+    - Avoid backticks in x2goshowblocks, move script to <prefix>/sbin/ as it is
+      for being run with root privileges.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Thu, 28 Nov 2013 16:14:32 +0100
 
