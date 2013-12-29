@@ -24,9 +24,12 @@ use strict;
 use Sys::Hostname;
 use Sys::Syslog qw( :standard :macros );
 
+use File::ReadBackwards;
+
 use lib `x2gopath lib`;
 use x2godbwrapper; 
 use x2gologlevel;
+
 
 openlog($0,'cons,pid','user');
 setlogmask( LOG_UPTO(x2gologlevel()) );
@@ -38,17 +41,25 @@ if ( @ARGV ) {
 	syslog('debug', "x2golistsessions has been called with no option");
 }
 
-sub check_stat
+
+sub is_suspended
 {
 	my $sess=shift;
-	my $log="$ENV{'HOME'}/.x2go/C-$sess/session.log";
-	my $text=`tail -1 $log 2>/dev/null`;
-	if ($text =~ m/Session suspended/)
-	{
-		return 0;
+	my $log="$ENV{'HOME'}/.x2go/C-${sess}.log";
+	my $log_line;
+	my $log_file = File::ReadBackwards->new( $log ) or return 0;
+	while( defined( $log_line = $log_file->readline ) ) {
+		next if ( ! ( $log_line =~ m/^Session:/ ) );
+		last;
 	}
-	return 1;
+	$log_file->close();
+	if ($log_line =~ m/Session suspended/)
+	{
+		return 1;
+	}
+	return 0;
 }
+
 
 my $serv=shift;
 if( ! $serv)
@@ -79,11 +90,11 @@ for (my $i=0;$i<@outp;$i++)
 	{ 
 		if (@sinfo[4]eq 'R')
 		{
-			if(!check_stat(@sinfo[1]))
+			if(is_suspended(@sinfo[1]))
 			{
 				db_changestatus( 'S', @sinfo[1] );
 				@outp[$i] =~ s/\|R\|/\|S\|/;
-				system( "x2goumount-session @sinfo[1]");
+				system("x2goumount-session", "@sinfo[1]");
 			}
 		}
 		print "@outp[$i]\n";
