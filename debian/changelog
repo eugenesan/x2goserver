@@ -37,6 +37,7 @@ x2goserver (4.1.0.0-0x2go1) UNRELEASED; urgency=low
     - Avoid one argument system calls in x2golistshadowsessions.
     - Provide Perl functions to capture stdout/stderr with multi-argument system
       calls.
+    - Avoid one argument system calls and backticks in SupeReNicer.
   * debian/control:
     + Package X2Go::Log in separate package: libx2go-log-perl.
     + Package X2Go::Server::DB in separate package: libx2go-server-db-perl.

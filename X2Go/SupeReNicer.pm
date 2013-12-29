@@ -34,7 +34,7 @@ X2Go::SupeReNicer Perl package.
 
 use strict;
 use Sys::Syslog qw( :standard :macros );
-use X2Go::Utils qw( sanitizer clups );
+use X2Go::Utils qw( sanitizer clups system_capture_stdout_output );
 
 use base 'Exporter';
 
@@ -79,7 +79,7 @@ sub superenice {
 	my $forceUSERrenice = shift; $forceUSERrenice = 0 unless defined $forceUSERrenice;
 	#Path to the "x2golistsessions_root" perl script...
 
-	my $x2golsrpath = `x2gopath base` . "/sbin/x2golistsessions_root";
+	my $x2golsrpath = system_capture_stdout_output("x2gopath", "base") . "/sbin/x2golistsessions_root";
 
 	###########################################################################################
 	# Load list of users to "ignore". These users will never be reniced...
@@ -125,7 +125,7 @@ sub superenice {
 						# If nice level is not normal, renice to normal...
 						syslog('notice', "ReNicing \"$userID\" to level $normalNL for session \"$x2gosid\"");
 						# For the sake of getting a user back to normal ASAP...  We'll renice the entire user not just individual sessions...
-						system("renice -n $normalNL -u $userID 1>/dev/null 2>/dev/null");
+						system("renice", "-n", "$normalNL", "-u", "$userID");
 					}
 
 				} elsif ($x2goState eq "S") {
@@ -143,7 +143,7 @@ sub superenice {
 								open(ENVIRON,"/proc/$pid/environ");my ($Environ,undef) = <ENVIRON>;close(ENVIRON);
 								if ($Environ =~ m/X2GO_SESSION=$x2gosid/) {       # If the x2go Session ID is in environ... renice the pid...
 									#syslog('debug', "$pid: X2GO_SESSION=$x2gosid");
-									system("renice -n $idleNL -p $pid 1>/dev/null 2>/dev/null");
+									system("renice", "-n", "$idleNL", "-p", "$pid");
 								}
 							}
 
@@ -151,7 +151,7 @@ sub superenice {
 						close(AUPS);
 
 						# Renice the AGENT so that we'll know that this one is already reniced.
-						system("renice -n $idleNL -p $agentPid 1>/dev/null 2>/dev/null");
+						system("renice", "-n", "$idleNL", "-p", "$agentPid");
 						syslog('notice', "ReNicing \"$userID\" to level $idleNL for session \"$x2gosid\"");
 
 					}
@@ -204,7 +204,7 @@ sub superenice {
 					# If nice level is not normal, renice to normal...
 					if ($psN ne $normalNL) {
 						syslog('debug', "ReNicing \"$nUser\" to level $normalNL");
-						system("renice -n $normalNL -u $nUser 1>/dev/null 2>/dev/null");
+						system("renice", "-n", "$normalNL", "-u", "$nUser");
 					}
 
 				# State is S (suspended)
@@ -213,7 +213,7 @@ sub superenice {
 					# Did we renice this?
 					if ($psN ne $idleNL) {
 						syslog('debug', "ReNicing \"$nUser\" to level $idleNL");
-						system("renice -n $idleNL -u $nUser 1>/dev/null 2>/dev/null");
+						system("renice", "-n", "$idleNL", "-u", "$nUser");
 					}
 				}
 			}
