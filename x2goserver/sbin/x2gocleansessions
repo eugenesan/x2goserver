@@ -33,6 +33,8 @@ my $x2go_lib_path = `x2gopath libexec`;
 use X2Go::Config qw( get_config );
 use X2Go::Log qw( loglevel );
 use X2Go::SupeReNicer qw( superenice );
+use X2Go::Server::Agent qw( session_is_suspended session_is_running session_has_terminated );
+use X2Go::Server::DB qw( dbsys_rmsessionsroot );
 
 openlog($0,'cons,pid','user');
 setlogmask( LOG_UPTO(loglevel()) );
@@ -50,55 +52,6 @@ sub check_pid
 	my $text=<F>;
 	close (F);
 	if ($text =~ m/$sess/)
-	{
-		return 1;
-	}
-	return 0;
-}
-
-sub has_terminated
-{
-	my $sess=shift;
-	my $user=shift;
-	my $log="/tmp/.x2go-${user}/session-C-${sess}.log";
-	my $log_line;
-	my $log_file = File::ReadBackwards->new( $log ) or return 1;
-	while( defined( $log_line = $log_file->readline ) ) {
-		next if ( ! ( $log_line =~ m/^Session:/ ) );
-		last;
-	}
-	$log_file->close();
-	if ($log_line =~ m/Session terminated/)
-	{
-		return 1;
-	}
-	return 0;
-}
-
-sub is_suspended
-{
-	my $sess=shift;
-	my $user=shift;
-	my $log="/tmp/.x2go-${user}/session-C-${sess}.log";
-	my $log_line;
-	my $log_file = File::ReadBackwards->new( $log ) or return 0;
-	while( defined( $log_line = $log_file->readline ) ) {
-		next if ( ! ( $log_line =~ m/^Session:/ ) );
-		last;
-	}
-	$log_file->close();
-	if ($log_line =~ m/Session suspended/)
-	{
-		return 1;
-	}
-	return 0;
-}
-
-sub is_running
-{
-	my $sess=shift;
-	my $user=shift;
-	if (!is_suspended($sess, $user) && !has_terminated($sess, $user))
 	{
 		return 1;
 	}
@@ -180,6 +133,13 @@ elsif ($pid == 0 )
 
 			my @sinfo=split('\\|',"@outp[$i]");
 
+			# clean up invalid sessions from the session
+			if ( ( ! @sinfo[0] ) && ( $remembered_sessions_since{ @sinfo[1] } ge 10 ) )
+			{
+				dbsys_rmsessionsroot(@sinfo[1]);
+				next;
+			}
+
 			if (defined $remembered_sessions_since{ @sinfo[1] } && ($remembered_sessions_status{ @sinfo[1] } =~m/@sinfo[4]/ ))
 			{
 				$remembered_sessions_since{ @sinfo[1] } += 2;
@@ -215,7 +175,7 @@ elsif ($pid == 0 )
 			{
 				if ( (@sinfo[4] eq 'R') && ( $remembered_sessions_since{ @sinfo[1] } ge 2 ))
 				{
-					if (is_suspended(@sinfo[1],@sinfo[11]))
+					if (session_is_suspended(@sinfo[1],@sinfo[11]))
 					{
 						system("su", "@sinfo[11]", "-c", "$x2go_lib_path/x2gochangestatus S @sinfo[1]");
 						syslog('debug', "@sinfo[1] is suspended, changing status from @sinfo[4] to S");
@@ -225,7 +185,7 @@ elsif ($pid == 0 )
 				}
 				if (@sinfo[4] eq 'S')
 				{
-					if (is_running(@sinfo[1],@sinfo[11]))
+					if (session_is_running(@sinfo[1],@sinfo[11]))
 					{
 						syslog('debug', "@sinfo[1]: unmounting all shares");
 						system("su", "@sinfo[11]", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");
@@ -235,7 +195,7 @@ elsif ($pid == 0 )
 				}
 				if (@sinfo[4] eq 'T')
 				{
-					if (!has_terminated(@sinfo[1],@sinfo[11]))
+					if (!session_has_terminated(@sinfo[1],@sinfo[11]))
 					{
 						syslog('debug', "@sinfo[1]: unmounting all shares");
 						system("su", "@sinfo[11]", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");

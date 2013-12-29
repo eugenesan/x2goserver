@@ -37,7 +37,21 @@ X2Go::Utils Perl package.
 use strict;
 use base 'Exporter';
 
-our @EXPORT = ('source_environment', 'clups', 'sanitizer', );
+our @EXPORT = ( 'source_environment', 'clups', 'sanitizer',
+                'load_module',
+                'system_capture_merged_output', 'system_capture_stdout_output' );
+
+use Sys::Syslog qw( :standard :macros );
+use Capture::Tiny qw ( :all );
+
+sub load_module {
+	for (@_) {
+		(my $file = "$_.pm") =~ s{::}{/}g;
+		require $file;
+		import $_;
+	}
+}
+
 
 sub source_environment {
 	my $name = shift;
@@ -59,6 +73,7 @@ sub source_environment {
 		$ENV{$k} = $v;
 	}
 }
+
 
 # Over-zealous string sanitizer that makes perl strict and  perl -T happy...
 sub sanitizer {
@@ -96,6 +111,7 @@ sub sanitizer {
 	}
 }
 
+
 sub clups {
 	my $string = "@_";
 	$string =~ s/\n//g;
@@ -104,17 +120,20 @@ sub clups {
 	return $string;
 }
 
+
 sub system_capture_stdout_output {
 	my $cmd = shift;
 	my @args = @_;
+	syslog("debug", "executing external command ,,$cmd'' with args: ".join(",", @args));
 	return capture_stdout { system( $cmd, @args ); };
 }
+
 
 sub system_capture_merged_output {
 	my $cmd = shift;
 	my @args = @_;
+	syslog("debug", "executing external command ,,$cmd'' with args: ".join(",", @args));
 	return capture_merged { system( $cmd, @args ); };
 }
-
 
 1;

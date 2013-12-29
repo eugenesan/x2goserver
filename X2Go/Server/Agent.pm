@@ -1,4 +1,3 @@
-#!/usr/bin/perl
 # Copyright (C) 2007-2013 X2Go Project - http://wiki.x2go.org
 #
 # This program is free software; you can redistribute it and/or modify
@@ -19,50 +18,46 @@
 # Copyright (C) 2007-2013  Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
 # Copyright (C) 2007-2013  Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
 
+package X2Go::Server::Agent;
+
+=head1 NAME
+
+X2Go::Server::Agent - X2Go Server Agent package for Perl
+
+=head1 DESCRIPTION
+
+X2Go::Server::Agent Perl package for X2Go::Server.
+
+=cut
+
 use strict;
-use Sys::Hostname;
-use Sys::Syslog qw( :standard :macros );
+use X2Go::Utils qw( load_module );
 
-use File::ReadBackwards;
+# TODO: when other agents may come into play, the AGENT var has to be read from config file or
+# somehow else...
+my $DEFAULT_AGENT="NX";
+my $AGENT=$DEFAULT_AGENT;
+my $agent_module = "X2Go::Server::Agent::$AGENT";
+load_module $agent_module;
 
-use X2Go::Log qw(loglevel);
-use X2Go::Utils qw(system_capture_stdout_output);
-use X2Go::Server::Agent qw(session_is_suspended);
+use base 'Exporter';
 
-openlog($0,'cons,pid','user');
-setlogmask( LOG_UPTO(loglevel()) );
+our @EXPORT=( 'session_has_terminated', 'session_is_running', 'session_is_suspended' );
 
-my $x2go_lib_path = system_capture_stdout_output("x2gopath", "libexec");
 
-my $uname;
 
-my $serv=shift;
-if ( ! $serv)
-{
-	$serv=hostname;
+sub session_has_terminated {
+	return $agent_module->session_has_terminated(@_);
 }
 
-my $outp=system_capture_stdout_output("$x2go_lib_path/x2golistsessions_sql","$serv");
 
-my @outp=split("\n","$outp");
-
-for (my $i=0;$i<@outp;$i++)
-{
-	my @sinfo=split('\\|',"@outp[$i]");
-	if (@sinfo[4]eq 'F')
-	{
-		print "@outp[$i]\n";
-	}
-	else
-	{ 
-		if (@sinfo[4]eq 'R')
-		{
-			if (session_is_suspended(@sinfo[1],@sinfo[11]))
-			{
-				system("su", "-", "@sinfo[11]", "-c", "$x2go_lib_path/x2gochangestatus 'S' @sinfo[1] > /dev/null");
-				@outp[$i] =~ s/\|R\|/\|S\|/;
-			}
-		}
-		print "@outp[$i]\n";
-	}
+sub session_is_running {
+	return $agent_module->session_is_running(@_);
 }
+
+
+sub session_is_suspended {
+	return $agent_module->session_is_suspended(@_);
+}
+
+1;

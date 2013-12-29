@@ -2,7 +2,11 @@ usr/share/perl5/X2Go/Config.pm
 usr/share/perl5/X2Go/Server.pm
 usr/share/perl5/X2Go/SupeReNicer.pm
 usr/share/perl5/X2Go/Utils.pm
+usr/share/perl5/X2Go/Server/Agent*
+usr/share/perl5/X2Go/Utils.pm
 usr/share/man/man3/X2Go::Config.*
 usr/share/man/man3/X2Go::Server.*
 usr/share/man/man3/X2Go::SupeReNicer.*
 usr/share/man/man3/X2Go::Utils.*
+usr/share/man/man3/X2Go::Server::Agent.*
+usr/share/man/man3/X2Go::Server::Agent::*
