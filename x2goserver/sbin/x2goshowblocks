@@ -26,6 +26,7 @@ use Sys::Syslog qw( :standard :macros );
 use lib `x2gopath lib`;
 use x2godbwrapper; 
 use x2gologlevel;
+use x2goutils;
 
 openlog($0,'cons,pid','user');
 setlogmask( LOG_UPTO(x2gologlevel()) );
@@ -40,8 +41,8 @@ my @outp=dbsys_getmounts( $id);
 for (my $i=0;$i<@outp;$i++)
 {
 	my $path=(split("\\|",@outp[$i]))[1];
-	print `su $uname -c "lsof 2>/dev/null | grep $path"`;
+	print x2goutils::system_capture_merged_output("su", "$uname", "-c", "lsof | grep \"$path\"");
 }
 
-# closing syslog 
+# closing syslog
 closelog;
