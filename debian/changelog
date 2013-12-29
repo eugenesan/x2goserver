@@ -64,6 +64,7 @@ x2goserver (4.1.0.0-0x2go1) UNRELEASED; urgency=low
     + Make sure x2goserver-*.features files do not get installed
       multiple times into various packages.
     + Make sure X2Go Server (x2gocleansessions) starts after installation.
+  * 
 
   [ Guangzhou Nianguan Electronics Technology Co.Ltd. ]
   * New upstream version (4.1.0.0):
@@ -256,6 +257,7 @@ x2goserver (4.0.0.8-0x2go1) UNRELEASED; urgency=low
       for finding this!!! (Fixes: #356).
     - Avoid one argument system calls and backticks in x2gocleansessions and
       x2golistsessions_root.
+    - Avoid one argument system calls and backticks in x2golistsessions.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Thu, 28 Nov 2013 16:14:32 +0100
 
