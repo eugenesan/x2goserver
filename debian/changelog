@@ -17,8 +17,6 @@ x2goserver (4.0.1.10-0x2go1) UNRELEASED; urgency=low
     - Provide RHEL/Fedora support in x2goserver-xsession.
     - Only sanity check for existence of /etc/x2go/Xsession.d on Debian
       (derived) systems.
-    - Avoid one argument system calls and backticks in x2gocleansessions and
-      x2golistsessions_root.
     - Provide man page for x2goserver.conf.
   * x2goserver.spec:
     + Ship x2goserver.spec (RPM package definitions) in upstream project.
@@ -173,7 +171,9 @@ x2goserver (4.0.0.8-0x2go1) UNRELEASED; urgency=low
     - Improve parsing of the NX session.log file where unexpected extra logging
       takes place during session suspension/resumption. Thanks to Gerald Richter
       for finding this!!! (Fixes: #356).
-
+    - Avoid one argument system calls and backticks in x2gocleansessions and
+      x2golistsessions_root.
+ 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Thu, 28 Nov 2013 16:14:32 +0100
 
 x2goserver (4.0.0.7-0x2go1) unstable; urgency=low
