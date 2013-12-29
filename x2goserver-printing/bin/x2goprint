@@ -29,6 +29,7 @@ use Sys::Syslog qw( :standard :macros );
 use lib `x2gopath lib`;
 use x2godbwrapper;
 use x2gologlevel;
+use x2goutils;
 
 openlog($0,'cons,pid','user');
 setlogmask( LOG_UPTO(x2gologlevel()) );
@@ -52,7 +53,7 @@ sub check_usage
 	if (scalar(@ARGV) == 1)
 	{
 		syslog('info', "x2goprint was called with only one cmd line arg, running in x2golistsessions wrapper mode");
-		system ("su @ARGV[0] -c \"x2golistsessions --all-servers\"");
+		system ("su", "@ARGV[0]", "-c", "x2golistsessions --all-servers");
 		exit 0;
 	}
 	elsif (scalar(@ARGV) != 4)
@@ -100,7 +101,7 @@ chown $uid, $gid, "$spooltmp";
 chmod 0700, "$spooltmp";
 
 # this last part mainly uses the session user's privileges
-my $mounts=`su $user -c "x2golistmounts $session"`;
+my $mounts=x2goutils::system_capture_merged_output("su", "$user", "-c", "x2golistmounts $session");
 if ( $mounts=~m/$spooldir/)
 {
 
@@ -117,7 +118,7 @@ if ( $mounts=~m/$spooldir/)
 	}
 	chown $uid, $gid, "$spooltmp/$pdfFile";
 
-	system("su $user -c \"mv $spooltmp/$pdfFile $spooldir\"");
+	system("su", "$user", "-c", "mv $spooltmp/$pdfFile $spooldir");
 	syslog('debug', "x2goprint moved file $pdfFile to X2Go client's spool dir");
 
 	open (RFILE,">$spooltmp/$pdfFile.ready");
@@ -125,7 +126,7 @@ if ( $mounts=~m/$spooldir/)
 	close (RFILE);
 
 	chown $uid, $gid, "$spooltmp/$pdfFile.ready";
-	system ("su $user -c \"mv $spooltmp/$pdfFile.ready $spooldir\"");
+	system ("su", "$user", "-c", "mv $spooltmp/$pdfFile.ready $spooldir");
 	syslog('debug', "x2goprint moved file $pdfFile.ready to X2Go client's spool dir, X2Go client should start the print dialog very soon");
 
 } else {
