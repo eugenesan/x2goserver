@@ -24,7 +24,7 @@ use strict;
 use Sys::Syslog qw( :standard :macros );
 
 use lib `x2gopath lib`;
-use x2godbwrapper; 
+use x2godbwrapper;
 use x2gologlevel;
 use x2goutils;
 
