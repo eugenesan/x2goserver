@@ -104,4 +104,17 @@ sub clups {
 	return $string;
 }
 
+sub system_capture_stdout_output {
+	my $cmd = shift;
+	my @args = @_;
+	return capture_stdout { system( $cmd, @args ); };
+}
+
+sub system_capture_merged_output {
+	my $cmd = shift;
+	my @args = @_;
+	return capture_merged { system( $cmd, @args ); };
+}
+
+
 1;
