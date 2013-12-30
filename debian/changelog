@@ -44,8 +44,6 @@ x2goserver (4.1.0.0-0x2go1) UNRELEASED; urgency=low
       Move duplicate code into that new Perl package.
     - Security audit of complete code tree, avoid one-argument system calls where
       possible, avoid backticks, use more quotes in shell scripts.
-    - Sanitize session ID, port numbers, display number and PID number before
-      writing it to the session DB.
   * debian/control:
     + Package X2Go::Log in separate package: libx2go-log-perl.
     + Package X2Go::Server::DB in separate package: libx2go-server-db-perl.
@@ -272,6 +270,8 @@ x2goserver (4.0.0.8-0x2go1) UNRELEASED; urgency=low
     - Avoid one argument system calls and backticks in x2goprint.
     - Avoid backticks in x2goshowblocks, move script to <prefix>/sbin/ as it is
       for being run with root privileges.
+    - Sanitize session ID string, port numbers, display numbers and agent PID
+      numbers.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Thu, 28 Nov 2013 16:14:32 +0100
 
