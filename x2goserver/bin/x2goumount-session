@@ -137,7 +137,7 @@ for ($i=0;$i<@outp;$i++)
 break:
 	if ($found)
 	{
-		chdir($tmpdir)
+		chdir($tmp_dir);
 		if (system("fusermount", "-u", "\"@line[1]\"") == 0)
 		{
 			syslog('notice', "successfully unmounted \"@line[1]\"");
