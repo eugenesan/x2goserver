@@ -29,7 +29,7 @@ use Sys::Syslog qw( :standard :macros );
 my $x2go_lib_path = `x2gopath libexec`;
 use lib `x2gopath lib`;
 use x2gologlevel;
-
+use x2goutils;
 
 my ($uname, $pass, $uid, $pgid, $quota, $comment, $gcos, $homedir, $shell, $expire) = getpwuid(getuid());
 
@@ -112,20 +112,20 @@ sub dbsys_rmsessionsroot
 
 sub dbsys_deletemounts
 {
-        my $sid=shift or die "argument \"session_id\" missed";
-        if ($backend eq 'postgres')
-        {
-                my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
-                my $sth=$dbh->prepare("delete from mounts where session_id='$sid'");
-                $sth->execute();
-                $sth->finish();
-                $dbh->disconnect();
-        }
-        if ($backend eq 'sqlite')
-        {
-                `$x2go_lib_path/x2gosqlitewrapper deletemounts $sid`;
-        }
-        syslog('debug', "dbsys_deletemounts called, session ID: $sid");
+	my $sid=shift or die "argument \"session_id\" missed";
+	if ($backend eq 'postgres')
+	{
+		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
+		my $sth=$dbh->prepare("delete from mounts where session_id='$sid'");
+		$sth->execute();
+		$sth->finish();
+		$dbh->disconnect();
+	}
+	if ($backend eq 'sqlite')
+	{
+		`$x2go_lib_path/x2gosqlitewrapper deletemounts $sid`;
+	}
+	syslog('debug', "dbsys_deletemounts called, session ID: $sid");
 }
 
 sub dbsys_listsessionsroot
@@ -193,6 +193,7 @@ sub dbsys_getmounts
 	my $sid=shift or die "argument \"session_id\" missed";
 	if ($backend eq 'postgres')
 	{
+		$sid = x2goutils::sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
 		my @strings;
 		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 		my $sth=$dbh->prepare("select client, path from mounts where session_id='$sid'");
@@ -222,6 +223,7 @@ sub db_getmounts
 	my $sid=shift or die "argument \"session_id\" missed";
 	if($backend eq 'postgres')
 	{
+		$sid = x2goutils::sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
 		my @strings;
 		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 		my $sth=$dbh->prepare("select client, path from mounts_view where session_id='$sid'");
@@ -251,6 +253,7 @@ sub db_deletemount
 	my $path=shift or die "argument \"path\" missed";
 	if ($backend eq 'postgres')
 	{
+		$sid = x2goutils::sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
 		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 		my $sth=$dbh->prepare("delete from mounts_view where session_id='$sid' and path='$path'");
 		$sth->execute();
@@ -272,6 +275,7 @@ sub db_insertmount
 	my $res_ok=0;
 	if ($backend eq 'postgres')
 	{
+		$sid = x2goutils::sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
 		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 		my $sth=$dbh->prepare("insert into mounts (session_id,path,client) values  ('$sid','$path','$client')");
 		$sth->execute();
@@ -300,6 +304,8 @@ sub db_insertsession
 	my $sid=shift or die "argument \"session_id\" missed";
 	if ($backend eq 'postgres')
 	{
+		$sid = x2goutils::sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
+		$display = x2goutils::sanitizer('num', $display) or die "argument \"display\" malformed";
 		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 		my $sth=$dbh->prepare("insert into sessions (display,server,uname,session_id) values ('$display','$server','$uname','$sid')");
 		$sth->execute()or die $_;
@@ -328,6 +334,11 @@ sub db_createsession
 	my $sid=shift or die "argument \"session_id\" missed";
 	if ($backend eq 'postgres')
 	{
+		$sid = x2goutils::sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
+		$pid = x2goutils::sanitizer('num', $pid) or die "argument \"pid\" malformed";
+		$gr_port = x2goutils::sanitizer('num', $gr_port) or die "argument \"gr_port\" malformed";
+		$snd_port = x2goutils::sanitizer('num', $snd_port) or die "argument \"snd_port\" malformed";
+		$fs_port = x2goutils::sanitizer('num', $fs_port) or die "argument \"fs_port\" malformed";
 		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 		my $sth=$dbh->prepare("update sessions_view set status='R',last_time=now(),
 		                      cookie='$cookie',agent_pid='$pid',client='$client',gr_port='$gr_port',
@@ -354,6 +365,7 @@ sub db_insertport
 	my $sshport=shift or die "argument \"port\" missed";
 	if ($backend eq 'postgres')
 	{
+		$sid = x2goutils::sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
 		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 		my $sth=$dbh->prepare("insert into used_ports (server,session_id,port) values  ('$server','$sid','$sshport')");
 		$sth->execute()or die;
@@ -392,22 +404,26 @@ sub db_resume
 	my $client=shift or die "argument \"client\" missed";
 	my $sid=shift or die "argument \"session_id\" missed";
 	my $gr_port=shift or die "argument \"gr_port\" missed";
-	my $sound_port=shift or die "argument \"sound_port\" missed";
+	my $snd_port=shift or die "argument \"snd_port\" missed";
 	my $fs_port=shift or die "argument \"fs_port\" missed";
 	if ($backend eq 'postgres')
 	{
+		$sid = x2goutils::sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
+		$gr_port = x2goutils::sanitizer('num', $gr_port) or die "argument \"gr_port\" malformed";
+		$snd_port = x2goutils::sanitizer('num', $snd_port) or die "argument \"snd_port\" malformed";
+		$fs_port = x2goutils::sanitizer('num', $fs_port) or die "argument \"fs_port\" malformed";
 		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 		my $sth=$dbh->prepare("update sessions_view set last_time=now(),status='R',client='$client',gr_port='$gr_port',
-			sound_port='$sound_port',fs_port='$fs_port' where session_id = '$sid'");
+			sound_port='$snd_port',fs_port='$fs_port' where session_id = '$sid'");
 		$sth->execute()or die;
 		$sth->finish();
 		$dbh->disconnect();
 	}
 	if ($backend eq 'sqlite')
 	{
-		`$x2go_lib_path/x2gosqlitewrapper resume $client $sid $gr_port $sound_port $fs_port`;
+		`$x2go_lib_path/x2gosqlitewrapper resume $client $sid $gr_port $snd_port $fs_port`;
 	}
-	syslog('debug', "db_resume called, session ID: $sid, client: $client, gr_port: $gr_port, sound_port: $sound_port, fs_port: $fs_port");
+	syslog('debug', "db_resume called, session ID: $sid, client: $client, gr_port: $gr_port, sound_port: $snd_port, fs_port: $fs_port");
 }
 
 sub db_changestatus
@@ -416,6 +432,7 @@ sub db_changestatus
 	my $sid=shift or die "argument \"session_id\" missed";
 	if ($backend eq 'postgres')
 	{
+		$sid = x2goutils::sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
 		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 		my $sth=$dbh->prepare("update sessions_view set last_time=now(),status='$status' where session_id = '$sid'");
 		$sth->execute()or die;
@@ -435,6 +452,7 @@ sub db_getstatus
 	my $status='';
 	if ($backend eq 'postgres')
 	{
+		$sid = x2goutils::sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
 		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 		my $sth=$dbh->prepare("select status from sessions_view where session_id = '$sid'");
 		$sth->execute($sid) or die;
@@ -548,6 +566,7 @@ sub db_getagent
 	my $sid=shift or die "argument \"session_id\" missed";
 	if ($backend eq 'postgres')
 	{
+		$sid = x2goutils::sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
 		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 		my $sth=$dbh->prepare("select agent_pid from sessions_view
 		                      where session_id ='$sid'");
@@ -575,6 +594,7 @@ sub db_getdisplay
 	my $sid=shift or die "argument \"session_id\" missed";
 	if ($backend eq 'postgres')
 	{
+		$sid = x2goutils::sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
 		my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 		my $sth=$dbh->prepare("select display from sessions_view
 		                      where session_id ='$sid'");
