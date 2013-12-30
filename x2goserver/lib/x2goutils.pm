@@ -28,6 +28,30 @@ use base 'Exporter';
 our @EXPORT = ( 'system_capture_merged_output' );
 
 
+# same applies for the sanitizer code shipped in x2goutils.pm
+sub sanitizer {
+	my $type   = $_[0];
+	my $string = $_[1];
+	if ($type eq "num") {
+		$string =~ s/\D//g;
+		if ($string =~ /^([0-9]*)$/) {
+			$string = $1;
+			return $string;
+		} else {return 0;}
+	} elsif ($type eq "anumazcsdaus") {
+		$string =~ s/[^a-zA-Z0-9\_\-]//g;
+		if ($string =~ /^([a-zA-Z0-9\_\-]*)$/) {
+			$string = $1;
+			return $string;
+		} else {return 0;}
+	} elsif ($type eq "SOMETHINGELSE") {
+		return 0;
+	} else {
+		return 0;
+	}
+}
+
+
 sub system_capture_merged_output {
 	my $cmd = shift;
 	my @args = @_;
