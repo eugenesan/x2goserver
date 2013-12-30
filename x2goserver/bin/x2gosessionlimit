@@ -25,6 +25,7 @@ use Sys::Syslog qw( :standard :macros );
 
 use X2Go::Config qw( get_config);
 use X2Go::Log qw( loglevel );
+use X2Go::Utils qw( system_capture_merged_output );
 
 openlog($0,'cons,pid','user');
 setlogmask( LOG_UPTO(loglevel()) );
@@ -55,7 +56,7 @@ sub getGroupLimit
 my $uname;
 $uname=getpwuid($<);
 
-my $runningsessions=`x2golistsessions --all-servers`;
+my $runningsessions=system_capture_merged_output("x2golistsessions", "--all-servers");
 my @sessions=split("\n",$runningsessions);
 my $scount=@sessions;
 

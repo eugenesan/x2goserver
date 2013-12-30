@@ -29,12 +29,13 @@ use Sys::Syslog qw( :standard :macros );
 
 use File::ReadBackwards;
 
-my $x2go_lib_path = `x2gopath libexec`;
 use X2Go::Config qw( get_config );
 use X2Go::Log qw( loglevel );
 use X2Go::SupeReNicer qw( superenice );
 use X2Go::Server::Agent qw( session_is_suspended session_is_running session_has_terminated );
 use X2Go::Server::DB qw( dbsys_rmsessionsroot );
+use X2Go::Utils qw( system_capture_stdout_output );
+my $x2go_lib_path = system_capture_stdout_output("x2gopath", "libexec");
 
 openlog($0,'cons,pid','user');
 setlogmask( LOG_UPTO(loglevel()) );
@@ -115,7 +116,7 @@ elsif ($pid == 0 )
 
 	while(sleep 2)
 	{
-		my $outp=`$x2go_lib_path/x2golistsessions_sql $serv 2>/dev/null`;
+		my $outp=system_capture_stdout_output("$x2go_lib_path/x2golistsessions_sql", "$serv");
 		my @outp=split("\n","$outp");
 
 		# forget earlier remembered blocked sessions

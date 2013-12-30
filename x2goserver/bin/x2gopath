@@ -22,7 +22,6 @@
 # Copyright (C) 2012-2013  Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
 # Copyright (C) 2012-2013  Jan Engelhard <jengelh@inai.de>
 
-
 base="${0%/*}";
 if test "$base" = "$0"; then
 	base=".";
@@ -32,12 +31,12 @@ base=$(readlink -f "$base/..");
 
 # The following section is subject to substitution by distro packaging tools.
 case "$1" in
-	base) echo -n "$base";;
-	lib) echo -n "$base/lib/x2go";;
-	libexec) echo -n "$base/lib/x2go";;
-	share) echo -n "$base/share/x2go";;
-	nx-x11) echo -n "$base/lib/nx/X11";;
-	xinerama) echo -n "$base/lib/nx/X11/Xinerama";;
+	"base") echo -n "$base";;
+	"lib") echo -n "$base/lib/x2go";;
+	"libexec") echo -n "$base/lib/x2go";;
+	"share") echo -n "$base/share/x2go";;
+	"nx-x11") echo -n "$base/lib/nx/X11";;
+	"xinerama") echo -n "$base/lib/nx/X11/Xinerama";;
 	*) exit 1;;
 esac;
 

@@ -28,6 +28,7 @@ use File::BaseDir qw(xdg_config_home);
 use X2Go::Utils qw(source_environment);
 use X2Go::Server::DB qw(db_getdisplay db_getmounts db_deletemount);
 use X2Go::Log qw(loglevel);
+use X2Go::Utils qw(system_capture_merged_output);
 
 openlog($0,'cons,pid','user');
 setlogmask( LOG_UPTO(loglevel()) );
@@ -136,7 +137,8 @@ for ($i=0;$i<@outp;$i++)
 break:
 	if ($found)
 	{
-		if (system( "cd $tmp_dir && fusermount -u \"@line[1]\" && cd - >/dev/null" ) == 0)
+		chdir($tmpdir)
+		if (system("fusermount", "-u", "\"@line[1]\"") == 0)
 		{
 			syslog('notice', "successfully unmounted \"@line[1]\"");
 			$found=0;
@@ -175,19 +177,19 @@ break:
 		$remote="$desktopdir/$remote";
 
 		my $current_desktop = 'NONE';
-		if (($session =~ m/_stDGNOME_dp/) && system("x2gofeature X2GO_GNOMEBINDINGS >/dev/null") == 0)
+		if (($session =~ m/_stDGNOME_dp/) && system_capture_merged_output("x2gofeature", "X2GO_GNOMEBINDINGS") == 0)
 		{
 			$current_desktop="-gnome";
 		}
-		elsif (($session =~ m/_stDMATE_dp/) && system("x2gofeature X2GO_MATEBINDINGS >/dev/null") == 0)
+		elsif (($session =~ m/_stDMATE_dp/) && system_capture_merged_output("x2gofeature", "X2GO_MATEBINDINGS") == 0)
 		{
 			$current_desktop="-mate";
 		}
-		elsif (($session =~ m/_stDLXDE_dp/) && system("x2gofeature X2GO_LXDEBINDINGS >/dev/null") == 0)
+		elsif (($session =~ m/_stDLXDE_dp/) && system_capture_merged_output("x2gofeature", "X2GO_LXDEBINDINGS") == 0)
 		{
 			$current_desktop="-lxde";
 		}
-		elsif (($session =~ m/_st.*_dp/) && system("x2gofeature X2GO_FMBINDINGS >/dev/null") == 0)
+		elsif (($session =~ m/_st.*_dp/) && system_capture_merged_output("x2gofeature", "X2GO_FMBINDINGS") == 0)
 		{
 			$current_desktop="";
 		}
@@ -224,7 +226,7 @@ rmdir ("$mdir/rm");
 rmdir ("$mdir");
 if (( ! -d "$mdir" ) && ( -l "$ENV{'HOME'}/media" ))
 {
-	system("rm -f $ENV{'HOME'}/media");
+	system_capture_merged_output("rm", "-f", "$ENV{'HOME'}/media");
 }
 rmdir ("$spooldir/C-$session");
 rmdir ("$spooldir");
@@ -233,4 +235,3 @@ rmdir ("$mimeboxdir");
 
 # closing syslog 
 closelog;
-

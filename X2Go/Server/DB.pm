@@ -38,13 +38,14 @@ use Sys::Syslog qw( :standard :macros );
 use X2Go::Config qw( get_sqlconfig );
 use X2Go::Log qw( loglevel );
 use X2Go::Server::DB::PostgreSQL;
-
+use X2Go::Utils qw( system_capture_merged_output system_capture_stdout_output );
 setlogmask( LOG_UPTO(loglevel()) );
+
 
 my ($uname, $pass, $uid, $pgid, $quota, $comment, $gcos, $homedir, $shell, $expire) = getpwuid(getuid());
 
 my $Config = get_sqlconfig();
-my $x2go_lib_path=`x2gopath libexec`;
+my $x2go_lib_path=system_capture_stdout_output("x2gopath", "libexec");
 
 my $backend=$Config->param("backend");
 
@@ -77,7 +78,7 @@ sub dbsys_rmsessionsroot
 	}
 	if($backend eq 'sqlite')
 	{
-		`$x2go_lib_path/libx2go-server-db-sqlite3-wrapper rmsessionsroot $sid`;
+		system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "rmsessionsroot", "$sid");
 	}
 }
 
@@ -90,7 +91,7 @@ sub dbsys_deletemounts
 	}
 	if ($backend eq 'sqlite')
 	{
-		`$x2go_lib_path/libx2go-server-db-sqlite3-wrapper deletemounts $sid`;
+		system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "deletemounts", "$sid");
 	}
 	syslog('debug', "dbsys_deletemounts called, session ID: $sid");
 }
@@ -104,7 +105,7 @@ sub dbsys_listsessionsroot
 	}
 	if($backend eq 'sqlite')
 	{
-		return split("\n",`$x2go_lib_path/libx2go-server-db-sqlite3-wrapper listsessionsroot $server`);
+		return split("\n",system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "listsessionsroot", "$server"));
 	}
 }
 
@@ -116,7 +117,7 @@ sub dbsys_listsessionsroot_all
 	}
 	if ($backend eq 'sqlite')
 	{
-		return split("\n",`$x2go_lib_path/libx2go-server-db-sqlite3-wrapper listsessionsroot_all`);
+		return split("\n",system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "listsessionsroot_all"));
 	}
 }
 
@@ -130,7 +131,7 @@ sub dbsys_getmounts
 	}
 	if ($backend eq 'sqlite')
 	{
-		@mounts = split("\n",`$x2go_lib_path/libx2go-server-db-sqlite3-wrapper getmounts $sid`);
+		@mounts = split("\n",system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "getmounts", "$sid"));
 	}
 	my $log_retval = join(" ", @mounts);
 	syslog('debug', "dbsys_getmounts called, session ID: $sid; return value: $log_retval");
@@ -147,7 +148,7 @@ sub db_getmounts
 	}
 	if ($backend eq 'sqlite')
 	{
-		@mounts = split("\n",`$x2go_lib_path/libx2go-server-db-sqlite3-wrapper getmounts $sid`);
+		@mounts = split("\n",system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "getmounts", "$sid"));
 	}
 	my $log_retval = join(" ", @mounts);
 	syslog('debug', "db_getmounts called, session ID: $sid; return value: $log_retval");
@@ -164,7 +165,7 @@ sub db_deletemount
 	}
 	if ($backend eq 'sqlite')
 	{
-		`$x2go_lib_path/libx2go-server-db-sqlite3-wrapper deletemount $sid \"$path\"`;
+		system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "deletemount", "$sid", "$path");
 	}
 	syslog('debug', "db_deletemount called, session ID: $sid, path: $path");
 }
@@ -181,7 +182,7 @@ sub db_insertmount
 	}
 	if ($backend eq 'sqlite')
 	{
-		if( `$x2go_lib_path/libx2go-server-db-sqlite3-wrapper insertmount $sid \"$path\" $client` eq "ok")
+		if( system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "insertmount", "$sid", "\"$path\"", "$client") eq "ok")
 		{
 			$res_ok=1;
 		}
@@ -201,7 +202,7 @@ sub db_insertsession
 	}
 	if ($backend eq 'sqlite')
 	{
-		my $err=`$x2go_lib_path/libx2go-server-db-sqlite3-wrapper insertsession $display $server $sid`;
+		my $err=system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "insertsession", "$display", "$server", "$sid");
 		if ($err ne "ok")
 		{
 			die "$err: $x2go_lib_path/libx2go-server-db-sqlite3-wrapper insertsession $display $server $sid";
@@ -222,7 +223,7 @@ sub db_insertshadowsession
 	}
 	if ($backend eq 'sqlite')
 	{
-		my $err=`$x2go_lib_path/libx2go-server-db-sqlite3-wrapper insertshadowsession $display $server $sid $shadreq_user`;
+		my $err=system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "insertshadowsession", "$display", "$server", "$sid", "$shadreq_user");
 		if ($err ne "ok")
 		{
 			die "$err: $x2go_lib_path/libx2go-server-db-sqlite3-wrapper insertshadowsession $display $server $sid $shadreq_user";
@@ -246,7 +247,7 @@ sub db_createsession
 	}
 	if ($backend eq 'sqlite')
 	{
-		my $err= `$x2go_lib_path/libx2go-server-db-sqlite3-wrapper createsession $cookie $pid $client $gr_port $snd_port $fs_port $sid`;
+		my $err= system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "createsession", "$cookie", "$pid", "$client", "$gr_port", "$snd_port", "$fs_port", "$sid");
 		if ($err ne "ok")
 		{
 			die $err;
@@ -272,7 +273,7 @@ sub db_createshadowsession
 	}
 	if ($backend eq 'sqlite')
 	{
-		my $err= `$x2go_lib_path/libx2go-server-db-sqlite3-wrapper createshadowsession $cookie $pid $client $gr_port $snd_port $fs_port $sid $shadreq_user`;
+		my $err=system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "createshadowsession", "$cookie", "$pid", "$client", "$gr_port", "$snd_port", "$fs_port", "$sid", "$shadreq_user");
 		if ($err ne "ok")
 		{
 			die $err;
@@ -292,7 +293,11 @@ sub db_insertport
 	}
 	if ($backend eq 'sqlite')
 	{
-		`$x2go_lib_path/libx2go-server-db-sqlite3-wrapper insertport $server $sid $sshport`;
+		my $err=system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "insertport", "$server", "$sid", "$sshport");
+		if ($err ne "ok")
+		{
+			die $err;
+		}
 	}
 	syslog('debug', "db_insertport called, session ID: $sid, server: $server, SSH port: $sshport");
 }
@@ -308,7 +313,7 @@ sub db_rmport
 	}
 	if ($backend eq 'sqlite')
 	{
-		`$x2go_lib_path/libx2go-server-db-sqlite3-wrapper rmport $server $sid $sshport`;
+		system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "rmport", "$server", "$sid", "$sshport");
 	}
 	syslog('debug', "db_rmport called, session ID: $sid, server: $server, SSH port: $sshport");
 }
@@ -326,7 +331,7 @@ sub db_resume
 	}
 	if ($backend eq 'sqlite')
 	{
-		`$x2go_lib_path/libx2go-server-db-sqlite3-wrapper resume $client $sid $gr_port $snd_port $fs_port`;
+		system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "resume", "$client", "$sid", "$gr_port", "$snd_port", "$fs_port");
 	}
 	syslog('debug', "db_resume called, session ID: $sid, client: $client, gr_port: $gr_port, sound_port: $snd_port, fs_port: $fs_port");
 }
@@ -341,7 +346,7 @@ sub db_changestatus
 	}
 	if ($backend eq 'sqlite')
 	{
-		`$x2go_lib_path/libx2go-server-db-sqlite3-wrapper changestatus $status $sid`;
+		system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "changestatus", "$status", "$sid");
 	}
 	syslog('debug', "db_changestatus called, session ID: $sid, new status: $status");
 }
@@ -356,7 +361,7 @@ sub db_getstatus
 	}
 	if ($backend eq 'sqlite')
 	{
-		$status=`$x2go_lib_path/libx2go-server-db-sqlite3-wrapper getstatus $sid`;
+		$status=system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "getstatus", "$sid");
 	}
 	syslog('debug', "db_getstatus called, session ID: $sid, return value: $status");
 	return $status;
@@ -373,7 +378,7 @@ sub db_getdisplays
 	}
 	if ($backend eq 'sqlite')
 	{
-		@displays = split("\n",`$x2go_lib_path/libx2go-server-db-sqlite3-wrapper getdisplays $server`);
+		@displays = split("\n",system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "getdisplays", "$server"));
 	}
 	my $log_retval = join(" ", @displays);
 	syslog('debug', "db_getdisplays called, server: $server; return value: $log_retval");
@@ -391,7 +396,7 @@ sub db_getports
 	}
 	if ($backend eq 'sqlite')
 	{
-		@ports = split("\n",`$x2go_lib_path/libx2go-server-db-sqlite3-wrapper getports $server`);
+		@ports = split("\n",system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "getports", "$server"));
 	}
 	my $log_retval = join(" ", @ports);
 	syslog('debug', "db_getports called, server: $server; return value: $log_retval");
@@ -407,7 +412,7 @@ sub db_getservers
 	}
 	if ($backend eq 'sqlite')
 	{
-		@servers = split("\n",`$x2go_lib_path/libx2go-server-db-sqlite3-wrapper getservers`);
+		@servers = split("\n",system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "getservers"));
 	}
 	my $log_retval = join(" ", @servers);
 	syslog('debug', "db_getservers called, return value: $log_retval");
@@ -424,7 +429,7 @@ sub db_getagent
 	}
 	if($backend eq 'sqlite')
 	{
-		$agent=`$x2go_lib_path/libx2go-server-db-sqlite3-wrapper getagent $sid`;
+		$agent=system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "getagent", "$sid");
 	}
 	syslog('debug', "db_getagent called, session ID: $sid; return value: $agent");
 	return $agent;
@@ -440,7 +445,7 @@ sub db_getdisplay
 	}
 	if ($backend eq 'sqlite')
 	{
-		$display=`$x2go_lib_path/libx2go-server-db-sqlite3-wrapper getdisplay $sid`;
+		$display=system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "getdisplay", "$sid");
 	}
 	syslog('debug', "db_getdisplay called, session ID: $sid; return value: $display");
 	return $display;
@@ -455,7 +460,7 @@ sub db_listsessions
 	}
 	if ($backend eq 'sqlite')
 	{
-		return split("\n",`$x2go_lib_path/libx2go-server-db-sqlite3-wrapper listsessions $server`);
+		return split("\n",system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "listsessions", "$server"));
 	}
 }
 
@@ -467,7 +472,7 @@ sub db_listsessions_all
 	}
 	if ($backend eq 'sqlite')
 	{
-		return split("\n",`$x2go_lib_path/libx2go-server-db-sqlite3-wrapper listsessions_all`);
+		return split("\n",system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "listsessions_all"));
 	}
 }
 
@@ -480,7 +485,7 @@ sub db_listshadowsessions
 	}
 	if ($backend eq 'sqlite')
 	{
-		return split("\n",`$x2go_lib_path/libx2go-server-db-sqlite3-wrapper listshadowsessions $server`);
+		return split("\n",system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "listshadowsessions", "$server"));
 	}
 }
 
@@ -492,6 +497,6 @@ sub db_listshadowsessions_all
 	}
 	if ($backend eq 'sqlite')
 	{
-		return split("\n",`$x2go_lib_path/libx2go-server-db-sqlite3-wrapper listshadowsessions_all`);
+		return split("\n",system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "listshadowsessions_all"));
 	}
 }

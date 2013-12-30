@@ -22,12 +22,12 @@
 X2GO_LIB_PATH="$(x2gopath libexec)";
 X2GO_SHARE_PATH="$(x2gopath share)";
 
-$X2GO_LIB_PATH/x2gosyslog "$0" "info" "$(basename $0) called with options: $@"
+"$X2GO_LIB_PATH/x2gosyslog" "$0" "info" "$(basename $0) called with options: $@"
 
 # run x2gofeature scripts of X2Go extensions
 test -d "$X2GO_SHARE_PATH/x2gofeature.d" && {
-    for subscript in $X2GO_SHARE_PATH/x2gofeature.d/*.features; do
-        cat $subscript | egrep ".*\).*ok.*exit 0.*" | cut -d"\"" -f2 | cut -d"\"" -f1
+    for subscript in "$X2GO_SHARE_PATH/x2gofeature.d/"*.features; do
+        cat "$subscript" | egrep ".*\).*ok.*exit 0.*" | cut -d"\"" -f2 | cut -d"\"" -f1
     done
 }
 

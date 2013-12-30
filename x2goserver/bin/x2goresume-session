@@ -41,7 +41,7 @@ then
 	rm "$NX_XINERAMA_CONF"
 fi
 
-$X2GO_LIB_PATH/x2gosyslog "$0" "info" "$(basename $0) called with options: $@"
+"$X2GO_LIB_PATH/x2gosyslog" "$0" "info" "$(basename $0) called with options: $@"
 
 
 # rootless sessions require to be resizable
@@ -71,10 +71,10 @@ SOUND_PORT=`echo "$SESSIONINFO" | awk -F, {'print $10'}`
 FS_PORT=`echo "$SESSIONINFO" | awk -F, {'print $14'}`
 SERVER=`echo "$SESSIONINFO" | awk -F, {'print $4'}`
 
-$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "old ports: $GR_PORT, $SOUND_PORT, $FS_PORT"
+"$X2GO_LIB_PATH/x2gosyslog" "$0" "debug" "old ports: $GR_PORT, $SOUND_PORT, $FS_PORT"
 
 #Get all used in system ports from ss output
-ss=$(PATH="$PATH:/usr/sbin:/sbin" type -P ss);
+ss="$(PATH="$PATH:/usr/sbin:/sbin" type -P ss)";
 USED_PORTS=$(
 	"$ss" -nt -all |
 	awk '{ n=split($0,lines,"\n"); for(i=1;i<=n;i++){split (lines[i],words," ");delim=split(words[4],ports,":"); if(delim>1)printf ("|%s|\n",ports[delim])} }';
@@ -178,17 +178,17 @@ echo "$NEWOPTIONS" >"${SESSION_DIR}/options"
 x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions "$SESSION_NAME" pre-resume || true
 
 # clear old keyboard file
-rm -Rf $SESSION_DIR/keyboard
+rm -Rf "$SESSION_DIR/keyboard"
 
-kill -HUP $X2GO_AGENT_PID &>/dev/null && {
+kill -HUP "$X2GO_AGENT_PID" &>/dev/null && {
 
-	$X2GO_LIB_PATH/x2goresume  "$X2GO_CLIENT" "$SESSION_NAME"  "$GR_PORT" "$SOUND_PORT" "$FS_PORT" > /dev/null
+	$X2GO_LIB_PATH/x2goresume "$X2GO_CLIENT" "$SESSION_NAME"  "$GR_PORT" "$SOUND_PORT" "$FS_PORT" > /dev/null
 	$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "client $X2GO_CLIENT has successfully resumed session with ID $SESSION_NAME"
 
 	# set client-side keyboard model, type, variant, etc.
 	if [ "$X2GO_SET_KBD" != "0" ] && [ "$X2GO_KBD_TYPE" == "auto" ]; then
-		X2GO_DISPLAY=$(echo $SESSION_NAME | cut -d"-" -f2)
-		export DISPLAY=:$X2GO_DISPLAY.0
+		X2GO_DISPLAY="$(echo \"$SESSION_NAME\" | cut -d'-' -f2)"
+		export DISPLAY=":$X2GO_DISPLAY.0"
 		x2gosetkeyboard "$SESSION_NAME" >/dev/null 2>/dev/null &
 	fi
 
@@ -201,11 +201,11 @@ kill -HUP $X2GO_AGENT_PID &>/dev/null && {
 } || {
 	err_msg="ERROR: failed to resume session with ID $SESSION_NAME"
 	echo "$err_msg" 1>&2
-	$X2GO_LIB_PATH/x2gosyslog "$0" "err" "$err_msg"
+	"$X2GO_LIB_PATH/x2gosyslog" "$0" "err" "$err_msg"
 
 	# If we reach here it means that the x2goagent process of the session has vanisshed
 	# If this happens than we mark the session as finished...
-	$X2GO_LIB_PATH/x2gochangestatus 'F' "$SESSION_NAME"  > /dev/null
+	"$X2GO_LIB_PATH/x2gochangestatus" 'F' "$SESSION_NAME"  > /dev/null
 
 	# run x2goserver-extensions for fail-resume
 	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions "$SESSION_NAME" fail-resume || true

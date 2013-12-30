@@ -61,7 +61,7 @@ sub init_db
 	if ( ! ( $dbuser and $dbpass ) )
 	{
 		my $Config = get_sqlconfig;
-		my $x2go_lib_path=`x2gopath libexec`;
+		my $x2go_lib_path=system_capture_stdout_output("x2gopath", "libexec");
 
 		my $backend=$Config->param("backend");
 		if ( $backend ne "postgres" )

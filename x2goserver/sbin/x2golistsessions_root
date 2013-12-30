@@ -28,11 +28,11 @@ use File::ReadBackwards;
 use X2Go::Log qw(loglevel);
 use X2Go::Utils qw(system_capture_stdout_output);
 use X2Go::Server::Agent qw(session_is_suspended);
+my $x2go_lib_path = system_capture_stdout_output("x2gopath", "libexec");
 
 openlog($0,'cons,pid','user');
 setlogmask( LOG_UPTO(loglevel()) );
 
-my $x2go_lib_path = system_capture_stdout_output("x2gopath", "libexec");
 
 my $uname;
 

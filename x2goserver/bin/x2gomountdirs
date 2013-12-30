@@ -26,7 +26,7 @@ use File::BaseDir qw(xdg_config_home);
 
 use X2Go::Config qw( get_config );
 use X2Go::Server::DB qw( db_insertmount db_deletemount );
-use X2Go::Utils qw( source_environment );
+use X2Go::Utils qw( source_environment system_capture_merged_output );
 use X2Go::Log qw( loglevel );
 
 openlog($0,'cons,pid','user');
@@ -170,7 +170,7 @@ if ( -d $ldir)
 
 if ( ! -l $ldir)
 {
-	system ("ln -s $mdir $ldir");
+	system ("ln", "-s", "$mdir", "$ldir");
 }
 
 if ( -d $spooldir_lnk)
@@ -180,7 +180,7 @@ if ( -d $spooldir_lnk)
 
 if ( ! -l $spooldir_lnk)
 {
-	system ("ln -s $spooldir $spooldir_lnk");
+	system ("ln", "-s", "$spooldir", "$spooldir_lnk");
 }
 
 if ( -d $mimeboxdir_lnk)
@@ -190,7 +190,7 @@ if ( -d $mimeboxdir_lnk)
 
 if ( ! -l $mimeboxdir_lnk)
 {
-	system ("ln -s $mimeboxdir $mimeboxdir_lnk");
+	system ("ln", "-s", "$mimeboxdir", "$mimeboxdir_lnk");
 }
 
 my $uname=$ENV{'USER'};
@@ -265,17 +265,19 @@ for (my $i=0;$i<@dirs;$i++)
 		{
 			$code_conv="-o $code_conv";
 		}
-		if ( -f $key )
+		if ( -f "$key" )
 		{
 			syslog('debug', "SSH key file has arrived: $key");
 		}
-		if ( -f $key.ident )
+		if ( -f "$key.ident" )
 		{
 			syslog('debug', "SSH host key has arrived: $key.ident");
 		}
 		$msg = "sshfs $code_conv -o idmap=user,uid=`id -u`,gid=`id -g`,$umaskstr,ServerAliveInterval=300,Cipher=blowfish,IdentityFile=$key,UserKnownHostsFile=$key.ident \"$user\"\@$host:\"@dirs[$i]\" \"$mntpath\" -p $port";
 		syslog('debug', "executing: $msg");
 		print "inserted, $msg\n";
+
+		# FIXME: this system call should be converted to a multi-argument system call while pertaining the redirect of stderr to the mounts.log file
 		if (system("sshfs  $code_conv -o idmap=user,uid=`id -u`,gid=`id -g`,$umaskstr,ServerAliveInterval=300,Cipher=blowfish,IdentityFile=$key,UserKnownHostsFile=$key.ident \"$user\"\@$host:\"@dirs[$i]\" \"$mntpath\" -p $port 2>>~/mounts.log")==0)
 		{
 			print "mount @dirs[$i] ok\n";
@@ -303,19 +305,19 @@ for (my $i=0;$i<@dirs;$i++)
 					$fname="$ENV{'HOME'}/Desktop";
 				}
 				my $current_desktop = "NONE";
-				if (($session =~ m/_stDGNOME_dp/) && system("x2gofeature X2GO_GNOMEBINDINGS >/dev/null") == 0)
+				if (($session =~ m/_stDGNOME_dp/) && system_capture_merged_output("x2gofeature", "X2GO_GNOMEBINDINGS") == 0)
 				{
 					$current_desktop="-gnome";
 				}
-				elsif (($session =~ m/_stDMATE_dp/) && system("x2gofeature X2GO_MATEBINDINGS >/dev/null") == 0)
+				elsif (($session =~ m/_stDMATE_dp/) && system_capture_merged_output("x2gofeature", "X2GO_MATEBINDINGS") == 0)
 				{
 					$current_desktop="-mate";
 				}
-				elsif (($session =~ m/_stDLXDE_dp/) && system("x2gofeature X2GO_LXDEBINDINGS >/dev/null") == 0)
+				elsif (($session =~ m/_stDLXDE_dp/) && system_capture_merged_output("x2gofeature", "X2GO_LXDEBINDINGS") == 0)
 				{
 					$current_desktop="-lxde";
 				}
-				elsif (($session =~ m/_stD.*_dp/) && system("x2gofeature X2GO_FMBINDINGS >/dev/null") == 0)
+				elsif (($session =~ m/_stD.*_dp/) && system_capture_merged_output("x2gofeature", "X2GO_FMBINDINGS") == 0)
 				{
 					$current_desktop="";
 				}
