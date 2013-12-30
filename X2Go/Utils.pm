@@ -48,7 +48,6 @@ sub load_module {
 	for (@_) {
 		(my $file = "$_.pm") =~ s{::}{/}g;
 		require $file;
-		import $_;
 	}
 }
 
