@@ -42,6 +42,7 @@ use POSIX;
 
 use Sys::Syslog qw( :standard :macros );
 use X2Go::Log qw( loglevel );
+use X2Go::Utils qw( sanitizer );
 
 openlog($0,'cons,pid','user');
 setlogmask( LOG_UPTO(loglevel()) );
@@ -131,10 +132,27 @@ sub dbsys_listsessionsroot_all
 	return @sessions;
 }
 
+sub dbsys_deletemounts
+{
+	my $dbh = init_db();
+	my $sid=shift or die "argument \"session_id\" missed";
+	check_user($sid);
+	my $sth=$dbh->prepare("delete from mounts where session_id=?");
+	$sth->execute($sid);
+	if ($sth->err())
+	{
+		syslog('error', "deletemounts (SQLite3 session db backend) failed with exitcode: $sth->err()");
+		die();
+	}
+	$sth->finish();
+	$dbh->disconnect();
+}
+
 sub db_getmounts
 {
 	my $dbh = init_db();
 	my $sid=shift or die "argument \"session_id\" missed";
+	$sid = sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
 	check_user($sid);
 	my @strings;
 	my $sth=$dbh->prepare("select client, path from mounts where session_id=?");
@@ -154,6 +172,7 @@ sub db_deletemount
 {
 	my $dbh = init_db();
 	my $sid=shift or die "argument \"session_id\" missed";
+	$sid = sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
 	my $path=shift or die "argument \"path\" missed";
 	check_user($sid);
 	my $sth=$dbh->prepare("delete from mounts where session_id=? and path=?");
@@ -167,26 +186,11 @@ sub db_deletemount
 	$dbh->disconnect();
 }
 
-sub db_deletemounts
-{
-	my $dbh = init_db();
-	my $sid=shift or die "argument \"session_id\" missed";
-	check_user($sid);
-	my $sth=$dbh->prepare("delete from mounts where session_id=?");
-	$sth->execute($sid);
-	if ($sth->err())
-	{
-		syslog('error', "deletemounts (SQLite3 session db backend) failed with exitcode: $sth->err()");
-		die();
-	}
-	$sth->finish();
-	$dbh->disconnect();
-}
-
 sub db_insertmount
 {
 	my $dbh = init_db();
 	my $sid=shift or die "argument \"session_id\" missed";
+	$sid = sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
 	my $path=shift or die "argument \"path\" missed";
 	my $client=shift or die "argument \"client\" missed";
 	check_user($sid);
@@ -208,8 +212,10 @@ sub db_insertsession
 {
 	my $dbh = init_db();
 	my $display=shift or die "argument \"display\" missed";
+	$display = sanitizer('num', $display) or die "argument \"display\" malformed";
 	my $server=shift or die "argument \"server\" missed";
 	my $sid=shift or die "argument \"session_id\" missed";
+	$sid = sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
 	check_user($sid);
 	my $sth=$dbh->prepare("insert into sessions (display,server,uname,session_id, init_time, last_time) values
 	                       (?, ?, ?, ?, datetime('now','localtime'), datetime('now','localtime'))");
@@ -223,8 +229,10 @@ sub db_insertshadowsession
 {
 	my $dbh = init_db();
 	my $display=shift or die "argument \"display\" missed";
+	$display = sanitizer('num', $display) or die "argument \"display\" malformed";
 	my $server=shift or die "argument \"server\" missed";
 	my $sid=shift or die "argument \"session_id\" missed";
+	$sid = sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
 	my $shadreq_user = shift or die "argument \"shadreq_user\" missed";
 	my $fake_sid = $sid;
 	$fake_sid =~ s/$shadreq_user-/$realuser-/;
@@ -242,11 +250,16 @@ sub db_createsession
 	my $dbh = init_db();
 	my $cookie=shift or die"argument \"cookie\" missed";
 	my $pid=shift or die"argument \"pid\" missed";
+	$pid = sanitizer('num', $pid) or die "argument \"pid\" malformed";
 	my $client=shift or die"argument \"client\" missed";
 	my $gr_port=shift or die"argument \"gr_port\" missed";
+	$gr_port = sanitizer('num', $gr_port) or die "argument \"gr_port\" malformed";
 	my $snd_port=shift or die"argument \"snd_port\" missed";
+	$snd_port = sanitizer('num', $snd_port) or die "argument \"snd_port\" malformed";
 	my $fs_port=shift or die"argument \"fs_port\" missed";
+	$fs_port = sanitizer('num', $fs_port) or die "argument \"fs_port\" malformed";
 	my $sid=shift or die "argument \"session_id\" missed";
+	$sid = sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
 	check_user($sid);
 	my $sth=$dbh->prepare("update sessions set status='R',last_time=datetime('now','localtime'),cookie=?,agent_pid=?,
 	                       client=?,gr_port=?,sound_port=?,fs_port=? where session_id=? and uname=?");
@@ -266,11 +279,16 @@ sub db_createshadowsession
 	my $dbh = init_db();
 	my $cookie=shift or die"argument \"cookie\" missed";
 	my $pid=shift or die"argument \"pid\" missed";
+	$pid = sanitizer('num', $pid) or die "argument \"pid\" malformed";
 	my $client=shift or die"argument \"client\" missed";
 	my $gr_port=shift or die"argument \"gr_port\" missed";
+	$gr_port = sanitizer('num', $gr_port) or die "argument \"gr_port\" malformed";
 	my $snd_port=shift or die"argument \"snd_port\" missed";
+	$snd_port = sanitizer('num', $snd_port) or die "argument \"snd_port\" malformed";
 	my $fs_port=shift or die"argument \"fs_port\" missed";
+	$fs_port = sanitizer('num', $fs_port) or die "argument \"fs_port\" malformed";
 	my $sid=shift or die "argument \"session_id\" missed";
+	$sid = sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
 	my $shadreq_user = shift or die "argument \"shadreq_user\" missed";
 	my $fake_sid = $sid;
 	$fake_sid =~ s/^$shadreq_user-/$realuser-/;
@@ -293,6 +311,7 @@ sub db_insertport
 	my $dbh = init_db();
 	my $server=shift or die "argument \"server\" missed";
 	my $sid=shift or die "argument \"session_id\" missed";
+	$sid = sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
 	my $sshport=shift or die "argument \"port\" missed";
 	my $sth=$dbh->prepare("insert into used_ports (server,session_id,port) values  (?, ?, ?)");
 	check_user($sid);
@@ -311,6 +330,7 @@ sub db_rmport
 	my $dbh = init_db();
 	my $server=shift or die "argument \"server\" missed";
 	my $sid=shift or die "argument \"session_id\" missed";
+	$sid = sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
 	my $sshport=shift or die "argument \"port\" missed";
 	my $sth=$dbh->prepare("delete from used_ports where server=? and session_id=? and port=?");
 	check_user($sid);
@@ -328,13 +348,17 @@ sub db_resume
 	my $dbh = init_db();
 	my $client=shift or die "argument \"client\" missed";
 	my $sid=shift or die "argument \"session_id\" missed";
+	$sid = sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
 	my $gr_port=shift or die "argument \"gr_port\" missed";
-	my $sound_port=shift or die "argument \"sound_port\" missed";
+	$gr_port = sanitizer('num', $gr_port) or die "argument \"gr_port\" malformed";
+	my $snd_port=shift or die "argument \"snd_port\" missed";
+	$snd_port = sanitizer('num', $snd_port) or die "argument \"snd_port\" malformed";
 	my $fs_port=shift or die "argument \"fs_port\" missed";
+	$fs_port = sanitizer('num', $fs_port) or die "argument \"fs_port\" malformed";
 	check_user($sid);
 	my $sth=$dbh->prepare("update sessions set last_time=datetime('now','localtime'),status='R',
 	                       client=?,gr_port=?,sound_port=?,fs_port=? where session_id = ? and uname=?");
-	$sth->execute($client, $gr_port, $sound_port, $fs_port, $sid, $realuser);
+	$sth->execute($client, $gr_port, $snd_port, $fs_port, $sid, $realuser);
 	if ($sth->err())
 	{
 		syslog('error', "resume (SQLite3 session db backend) failed with exitcode: $sth->err()");
@@ -349,6 +373,7 @@ sub db_changestatus
 	my $dbh = init_db();
 	my $status=shift or die "argument \"status\" missed";
 	my $sid=shift or die "argument \"session_id\" missed";
+	$sid = sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
 	check_user($sid);
 	my $sth=$dbh->prepare("update sessions set last_time=datetime('now','localtime'),
 	                       status=? where session_id = ? and uname=?");
@@ -366,6 +391,7 @@ sub db_getstatus
 {
 	my $dbh = init_db();
 	my $sid=shift or die "argument \"session_id\" missed";
+	$sid = sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
 	check_user($sid);
 	my $sth=$dbh->prepare("select status from sessions where session_id = ?");
 	$sth->execute($sid);
@@ -458,6 +484,7 @@ sub db_getagent
 {
 	my $dbh = init_db();
 	my $sid=shift or die "argument \"session_id\" missed";
+	$sid = sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
 	my $agent;
 	check_user($sid);
 	my $sth=$dbh->prepare("select agent_pid from sessions
@@ -483,6 +510,7 @@ sub db_getdisplay
 {
 	my $dbh = init_db();
 	my $sid=shift or die "argument \"session_id\" missed";
+	$sid = sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
 	my $display;
 	check_user($sid);
 	my $sth=$dbh->prepare("select display from sessions

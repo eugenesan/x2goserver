@@ -37,6 +37,7 @@ use Sys::Syslog qw( :standard :macros );
 
 use X2Go::Log qw( loglevel );
 use X2Go::Config qw( get_sqlconfig );
+use X2Go::Utils qw( sanitizer );
 
 setlogmask( LOG_UPTO(loglevel()) );
 
@@ -178,6 +179,7 @@ sub dbsys_getmounts
 {
 	init_db();
 	my $sid=shift or die "argument \"session_id\" missed";
+	$sid = sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
 	my @mounts;
 	my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 	my $sth=$dbh->prepare("select client, path from mounts where session_id='$sid'");
@@ -197,6 +199,7 @@ sub db_getmounts
 {
 	init_db();
 	my $sid=shift or die "argument \"session_id\" missed";
+	$sid = sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
 	my @mounts;
 	my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 	my $sth=$dbh->prepare("select client, path from mounts_view where session_id='$sid'");
@@ -216,6 +219,7 @@ sub db_deletemount
 {
 	init_db();
 	my $sid=shift or die "argument \"session_id\" missed";
+	$sid = sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
 	my $path=shift or die "argument \"path\" missed";
 	my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 	my $sth=$dbh->prepare("delete from mounts_view where session_id='$sid' and path='$path'");
@@ -228,6 +232,7 @@ sub db_insertmount
 {
 	init_db();
 	my $sid=shift or die "argument \"session_id\" missed";
+	$sid = sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
 	my $path=shift or die "argument \"path\" missed";
 	my $client=shift or die "argument \"client\" missed";
 	my $res_ok=0;
@@ -247,8 +252,10 @@ sub db_insertsession
 {
 	init_db();
 	my $display=shift or die "argument \"display\" missed";
+	$display = sanitizer('num', $display) or die "argument \"display\" malformed";
 	my $server=shift or die "argument \"server\" missed";
 	my $sid=shift or die "argument \"session_id\" missed";
+	$sid = sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
 	my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 	my $sth=$dbh->prepare("insert into sessions (display,server,uname,session_id) values ('$display','$server','$uname','$sid')");
 	$sth->execute()or die $_;
@@ -260,8 +267,10 @@ sub db_insertshadowsession
 {
 	init_db();
 	my $display=shift or die "argument \"display\" missed";
+	$display = sanitizer('num', $display) or die "argument \"display\" malformed";
 	my $server=shift or die "argument \"server\" missed";
 	my $sid=shift or die "argument \"session_id\" missed";
+	$sid = sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
 	my $shadreq_user=shift or die "argument \"shadreq_user\" missed";
 	my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 	my $sth=$dbh->prepare("insert into sessions (display,server,uname,session_id) values ('$display','$server','$shadreq_user','$sid')");
@@ -275,11 +284,16 @@ sub db_createsession
 	init_db();
 	my $cookie=shift or die"argument \"cookie\" missed";
 	my $pid=shift or die"argument \"pid\" missed";
+	$pid = sanitizer('num', $pid) or die "argument \"pid\" malformed";
 	my $client=shift or die"argument \"client\" missed";
 	my $gr_port=shift or die"argument \"gr_port\" missed";
+	$gr_port = sanitizer('num', $gr_port) or die "argument \"gr_port\" malformed";
 	my $snd_port=shift or die"argument \"snd_port\" missed";
+	$snd_port = sanitizer('num', $snd_port) or die "argument \"snd_port\" malformed";
 	my $fs_port=shift or die"argument \"fs_port\" missed";
+	$fs_port = sanitizer('num', $fs_port) or die "argument \"fs_port\" malformed";
 	my $sid=shift or die "argument \"session_id\" missed";
+	$sid = sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
 	my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 	my $sth=$dbh->prepare("update sessions_view set status='R',last_time=now(),
 	                      cookie='$cookie',agent_pid='$pid',client='$client',gr_port='$gr_port',
@@ -294,6 +308,7 @@ sub db_insertport
 	init_db();
 	my $server=shift or die "argument \"server\" missed";
 	my $sid=shift or die "argument \"session_id\" missed";
+	$sid = sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
 	my $sshport=shift or die "argument \"port\" missed";
 	my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 	my $sth=$dbh->prepare("insert into used_ports (server,session_id,port) values  ('$server','$sid','$sshport')");
@@ -307,6 +322,7 @@ sub db_rmport
 	init_db();
 	my $server=shift or die "argument \"server\" missed";
 	my $sid=shift or die "argument \"session_id\" missed";
+	$sid = sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
 	my $sshport=shift or die "argument \"port\" missed";
 	my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 	my $sth=$dbh->prepare("delete from used_ports where server='$server' and session_id='$sid' and port='$sshport'");
@@ -320,12 +336,16 @@ sub db_resume
 	init_db();
 	my $client=shift or die "argument \"client\" missed";
 	my $sid=shift or die "argument \"session_id\" missed";
+	$sid = sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
 	my $gr_port=shift or die "argument \"gr_port\" missed";
-	my $sound_port=shift or die "argument \"sound_port\" missed";
+	$gr_port = sanitizer('num', $gr_port) or die "argument \"gr_port\" malformed";
+	my $snd_port=shift or die "argument \"sound_port\" missed";
+	$snd_port = sanitizer('num', $snd_port) or die "argument \"snd_port\" malformed";
 	my $fs_port=shift or die "argument \"fs_port\" missed";
+	$fs_port = sanitizer('num', $fs_port) or die "argument \"fs_port\" malformed";
 	my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 	my $sth=$dbh->prepare("update sessions_view set last_time=now(),status='R',client='$client',gr_port='$gr_port',
-	                       sound_port='$sound_port',fs_port='$fs_port' where session_id = '$sid'");
+	                       sound_port='$snd_port',fs_port='$fs_port' where session_id = '$sid'");
 	$sth->execute()or die;
 	$sth->finish();
 	$dbh->disconnect();
@@ -336,6 +356,7 @@ sub db_changestatus
 	init_db();
 	my $status=shift or die "argument \"status\" missed";
 	my $sid=shift or die "argument \"session_id\" missed";
+	$sid = sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
 	my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 	my $sth=$dbh->prepare("update sessions_view set last_time=now(),status='$status' where session_id = '$sid'");
 	$sth->execute()or die;
@@ -347,6 +368,7 @@ sub db_getstatus
 {
 	init_db();
 	my $sid=shift or die "argument \"session_id\" missed";
+	$sid = sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
 	my $status='';
 	my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 	my $sth=$dbh->prepare("select status from sessions_view where session_id = '$sid'");
@@ -424,6 +446,7 @@ sub db_getagent
 	init_db();
 	my $agent;
 	my $sid=shift or die "argument \"session_id\" missed";
+	$sid = sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
 	my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 	my $sth=$dbh->prepare("select agent_pid from sessions_view
 	                      where session_id ='$sid'");
@@ -444,6 +467,7 @@ sub db_getdisplay
 	init_db();
 	my $display;
 	my $sid=shift or die "argument \"session_id\" missed";
+	$sid = sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
 	my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 	my $sth=$dbh->prepare("select display from sessions_view
 	                      where session_id ='$sid'");
