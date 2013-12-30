@@ -34,6 +34,7 @@ use strict;
 use DBI;
 use POSIX;
 use Sys::Syslog qw( :standard :macros );
+use File::ReadBackwards;
 
 use X2Go::Log qw( loglevel );
 
