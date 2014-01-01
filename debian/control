@@ -99,6 +99,7 @@ Depends:
  ${perl:Depends},
  ${misc:Depends},
  libconfig-simple-perl,
+ libcapture-tiny-perl,
  libx2go-log-perl (>= ${source:Version}), libx2go-log-perl (<< ${source:Version}.1~),
  libx2go-server-db-perl (>= ${source:Version}), libx2go-server-db-perl (<< ${source:Version}.1~),
  x2goserver-common (>= ${source:Version}), x2goserver-common (<< ${source:Version}.1~),
