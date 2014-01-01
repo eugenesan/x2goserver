@@ -54,6 +54,7 @@ x2goserver (4.1.0.0-0x2go1) UNRELEASED; urgency=low
     + Move several x2goserver-* package to x2goserver's Recommends field.
     + Add Reinhard Tartler to Uploaders.
     + Add libcatpure-tiny-perl to Depends: field of libx2go-server-perl.
+    + Use versioned dependency with (= {$binary:Version}) style.
   * debian/x2goserver.postinst, debian/libx2go-server-db-perl:
     + Handle X2Go session DB creation in x2goserver _and_
       perl-X2Go-Server-DB on postinst.
