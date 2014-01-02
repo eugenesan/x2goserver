@@ -21,7 +21,7 @@ Depends:
  ${misc:Depends},
  libfile-basedir-perl,
  libfile-readbackwards-perl,
- libx2go-server-perl (= ${binarysource:Version}),
+ libx2go-server-perl (= ${binary:Version}),
  x2goagent (>= 2:3.5.0.15-0~),
  lsof,
  bc,
