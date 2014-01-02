@@ -432,13 +432,13 @@ exit 0
 %{_libdir}/x2go/libx2go-server-db-sqlite3-wrapper.pl
 %{_mandir}/man3/X2Go::Server::DB.*
 %{_mandir}/man3/X2Go::Server::DB::*
-%dir %{_sysconfdir}/x2go/x2gosql
-%config(noreplace) %{_sysconfdir}/x2go/x2gosql/sql
 
 
 %files common
 %dir %{_sysconfdir}/x2go/
 %config(noreplace) %{_sysconfdir}/x2go/x2go*
+%dir %{_sysconfdir}/x2go/x2gosql
+%config(noreplace) %{_sysconfdir}/x2go/x2gosql/sql
 %{_mandir}/man5/x2goserver.conf.5.gz
 %dir %{_datadir}/x2go/versions
 %{_datadir}/x2go/versions/VERSION.x2goserver-common
