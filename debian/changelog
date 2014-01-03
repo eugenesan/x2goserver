@@ -269,7 +269,7 @@ x2goserver (4.0.1.0-0~x2go1) unstable; urgency=low
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 07 Jun 2013 23:07:40 +0200
 
-x2goserver (4.0.0.8-0x2go1) UNRELEASED; urgency=low
+x2goserver (4.0.0.8-0x2go1) unstable; urgency=low
 
   * New upstream version (4.0.0.8):
     - Use mktemp instead of tempfile (because Fedora does not have the tempfile
@@ -287,7 +287,7 @@ x2goserver (4.0.0.8-0x2go1) UNRELEASED; urgency=low
     - Sanitize session ID string, port numbers, display numbers and agent PID
       numbers before writing them as strings to the session DB.
 
- -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Thu, 28 Nov 2013 16:14:32 +0100
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 03 Jan 2014 11:30:54 +0100
 
 x2goserver (4.0.0.7-0x2go1) unstable; urgency=low
 
