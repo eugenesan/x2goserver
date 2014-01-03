@@ -421,8 +421,8 @@ exit 0
 %{_mandir}/man3/X2Go::Server.*
 %{_mandir}/man3/X2Go::SupeReNicer.*
 %{_mandir}/man3/X2Go::Utils.*
-%{_mandir}/man3/X2Go::Agent.*
-%{_mandir}/man3/X2Go::Agent::*
+%{_mandir}/man3/X2Go::Server::Agent.*
+%{_mandir}/man3/X2Go::Server::Agent::*
 
 
 %files -n perl-X2Go-Server-DB
