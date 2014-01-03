@@ -313,6 +313,7 @@ exit 0
 %{_libdir}/x2go/x2gochangestatus
 %{_libdir}/x2go/x2gocreatesession
 %{_libdir}/x2go/x2godbwrapper.pm
+%{_libdir}/x2go/x2goutils.pm
 %{_libdir}/x2go/x2gogetagent
 %{_libdir}/x2go/x2gogetdisplays
 %{_libdir}/x2go/x2gogetports
