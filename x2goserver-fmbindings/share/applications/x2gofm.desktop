@@ -1,7 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=x2gofm
-MimeType=application/sshfsdisk-x2go;application/sshfscdrom-x2go;application/sshfsremovable-x2go
+MimeType=application/sshfsdisk-x2go;application/sshfscdrom-x2go;application/sshfsremovable-x2go;
 Exec=x2gofm %f
 Type=Application
 Terminal=false

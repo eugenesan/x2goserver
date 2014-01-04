@@ -1,5 +1,5 @@
 Name:           x2goserver
-Version:        4.0.1.10
+Version:        4.0.1.11
 Release:        0.0x2go1%{?dist}
 Summary:        X2Go Server
 
@@ -26,6 +26,7 @@ BuildRequires:  systemd
 %else
 BuildRequires:  man
 %endif
+BuildRequires:  desktop-file-utils
 # So XSESSIONDIR gets linked
 BuildRequires:  xorg-x11-xinit
 # For x2goruncommand - for now
@@ -166,6 +167,8 @@ Summary:        X2Go Server (file manager bindings)
 Requires:       %{name} = %{version}-%{release}
 Requires:       xdg-utils
 Requires:       desktop-file-utils
+Requires(post):   desktop-file-utils
+Requires(postun): desktop-file-utils
 Group:          Applications/Communications
 
 %description fmbindings
@@ -238,6 +241,8 @@ mkdir -p %{buildroot}%{_initddir}
 install -pm0755 %SOURCE2 %{buildroot}%{_initddir}/x2goserver
 %endif
 %endif
+
+desktop-file-validate %{buildroot}%{_datadir}/applications/x2gofm.desktop
 
 
 %pre
