@@ -98,7 +98,11 @@ x2goserver (4.1.0.0-0x2go1) UNRELEASED; urgency=low
 
 x2goserver (4.0.1.11-0x2go1) UNRELEASED; urgency=low
 
-  * Continue development on stable branch of X2Go Server...
+  * New upstream version (4.0.1.11):
+    - Fix x2gofm.desktop syntax. (Fixes: #391).
+  * x2goserver.spec:
+    - Enhance requirement of desktop-file-utils, validate x2gofm.desktop
+      during package build.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Sat, 04 Jan 2014 11:29:35 +0100
 
