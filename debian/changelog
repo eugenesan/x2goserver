@@ -178,6 +178,7 @@ x2goserver (4.0.0.9-0x2go1) UNRELEASED; urgency=low
     - Sanitize session name in x2gostartagent, as well. Fixes problems
       with custom session commands containing characters that get
       sanitized out.
+    - Allow dots (".") in sanitized session names.
 
  -- Mike Gabriel <mga@listrac.informatik.uni-kiel.de>  Mon, 06 Jan 2014 12:35:24 +0100
 

@@ -60,9 +60,9 @@ sub sanitizer {
 			$string = $1;
 			return $string;
 		} else {return 0;}
-	} elsif ($type eq "anumazcsdaus") {
-		$string =~ s/[^a-zA-Z0-9\_\-]//g;
-		if ($string =~ /^([a-zA-Z0-9\_\-]*)$/) {
+	} elsif ($type eq "pnixusername") {
+		$string =~ s/[^a-zA-Z0-9\_\-\.]//g;
+		if ($string =~ /^([a-zA-Z0-9\_\-\.]*)$/) {
 			$string = $1;
 			return $string;
 		} else {return 0;}
@@ -149,7 +149,7 @@ elsif($cmd eq  "listsessionsroot_all")
 elsif($cmd eq  "getmounts")
 {
 	my $sid=shift or die "argument \"session_id\" missed";
-	$sid = sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
+	$sid = sanitizer('pnixusername', $sid) or die "argument \"session_id\" malformed";
 	check_user($sid);
 	my @strings;
 	my $sth=$dbh->prepare("select client, path from mounts where session_id=?");
@@ -165,7 +165,7 @@ elsif($cmd eq  "getmounts")
 elsif($cmd eq  "deletemount")
 {
 	my $sid=shift or die "argument \"session_id\" missed";
-	$sid = sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
+	$sid = sanitizer('pnixusername', $sid) or die "argument \"session_id\" malformed";
 	my $path=shift or die "argument \"path\" missed";
 	check_user($sid);
 	my $sth=$dbh->prepare("delete from mounts where session_id=? and path=?");
@@ -181,7 +181,7 @@ elsif($cmd eq  "deletemount")
 elsif($cmd eq  "deletemounts")
 {
 	my $sid=shift or die "argument \"session_id\" missed";
-	$sid = sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
+	$sid = sanitizer('pnixusername', $sid) or die "argument \"session_id\" malformed";
 	check_user($sid);
 	my $sth=$dbh->prepare("delete from mounts where session_id=?");
 	$sth->execute($sid);
@@ -196,7 +196,7 @@ elsif($cmd eq  "deletemounts")
 elsif($cmd eq  "insertmount")
 {
 	my $sid=shift or die "argument \"session_id\" missed";
-	$sid = sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
+	$sid = sanitizer('pnixusername', $sid) or die "argument \"session_id\" malformed";
 	my $path=shift or die "argument \"path\" missed";
 	my $client=shift or die "argument \"client\" missed";
 	check_user($sid);
@@ -217,7 +217,7 @@ elsif($cmd eq  "insertsession")
 	$display = sanitizer('num', $display) or die "argument \"display\" malformed";
 	my $server=shift or die "argument \"server\" missed";
 	my $sid=shift or die "argument \"session_id\" missed";
-	$sid = sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
+	$sid = sanitizer('pnixusername', $sid) or die "argument \"session_id\" malformed";
 	check_user($sid);
 	my $sth=$dbh->prepare("insert into sessions (display,server,uname,session_id, init_time, last_time) values
 	                       (?, ?, ?, ?, datetime('now','localtime'), datetime('now','localtime'))");
@@ -239,7 +239,7 @@ elsif($cmd eq  "createsession")
 	my $fs_port=shift or die"argument \"fs_port\" missed";
 	$fs_port = sanitizer('num', $fs_port) or die "argument \"fs_port\" malformed";
 	my $sid=shift or die "argument \"session_id\" missed";
-	$sid = sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
+	$sid = sanitizer('pnixusername', $sid) or die "argument \"session_id\" malformed";
 	check_user($sid);
 	my $sth=$dbh->prepare("update sessions set status='R',last_time=datetime('now','localtime'),cookie=?,agent_pid=?,
 	                       client=?,gr_port=?,sound_port=?,fs_port=? where session_id=? and uname=?");
@@ -257,7 +257,7 @@ elsif($cmd eq  "insertport")
 {
 	my $server=shift or die "argument \"server\" missed";
 	my $sid=shift or die "argument \"session_id\" missed";
-	$sid = sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
+	$sid = sanitizer('pnixusername', $sid) or die "argument \"session_id\" malformed";
 	my $sshport=shift or die "argument \"port\" missed";
 	my $sth=$dbh->prepare("insert into used_ports (server,session_id,port) values  (?, ?, ?)");
 	check_user($sid);
@@ -274,7 +274,7 @@ elsif($cmd eq  "rmport")
 {
 	my $server=shift or die "argument \"server\" missed";
 	my $sid=shift or die "argument \"session_id\" missed";
-	$sid = sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
+	$sid = sanitizer('pnixusername', $sid) or die "argument \"session_id\" malformed";
 	my $sshport=shift or die "argument \"port\" missed";
 	my $sth=$dbh->prepare("delete from used_ports where server=? and session_id=? and port=?");
 	check_user($sid);
@@ -290,7 +290,7 @@ elsif($cmd eq  "resume")
 {
 	my $client=shift or die "argument \"client\" missed";
 	my $sid=shift or die "argument \"session_id\" missed";
-	$sid = sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
+	$sid = sanitizer('pnixusername', $sid) or die "argument \"session_id\" malformed";
 	my $gr_port=shift or die "argument \"gr_port\" missed";
 	$gr_port = sanitizer('num', $gr_port) or die "argument \"gr_port\" malformed";
 	my $snd_port=shift or die "argument \"snd_port\" missed";
@@ -313,7 +313,7 @@ elsif($cmd eq  "changestatus")
 {
 	my $status=shift or die "argument \"status\" missed";
 	my $sid=shift or die "argument \"session_id\" missed";
-	$sid = sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
+	$sid = sanitizer('pnixusername', $sid) or die "argument \"session_id\" malformed";
 	check_user($sid);
 	my $sth=$dbh->prepare("update sessions set last_time=datetime('now','localtime'),
 	                       status=? where session_id = ? and uname=?");
@@ -329,7 +329,7 @@ elsif($cmd eq  "changestatus")
 elsif($cmd eq  "getstatus")
 {
 	my $sid=shift or die "argument \"session_id\" missed";
-	$sid = sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
+	$sid = sanitizer('pnixusername', $sid) or die "argument \"session_id\" malformed";
 	check_user($sid);
 	my $sth=$dbh->prepare("select status from sessions where session_id = ?");
 	$sth->execute($sid);
@@ -415,7 +415,7 @@ elsif($cmd eq  "getservers")
 elsif($cmd eq  "getagent")
 {
 	my $sid=shift or die "argument \"session_id\" missed";
-	$sid = sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
+	$sid = sanitizer('pnixusername', $sid) or die "argument \"session_id\" malformed";
 	my $agent;
 	check_user($sid);
 	my $sth=$dbh->prepare("select agent_pid from sessions
@@ -439,7 +439,7 @@ elsif($cmd eq  "getagent")
 elsif($cmd eq  "getdisplay")
 {
 	my $sid=shift or die "argument \"session_id\" missed";
-	$sid = sanitizer('anumazcsdaus', $sid) or die "argument \"session_id\" malformed";
+	$sid = sanitizer('pnixusername', $sid) or die "argument \"session_id\" malformed";
 	my $display;
 	check_user($sid);
 	my $sth=$dbh->prepare("select display from sessions
