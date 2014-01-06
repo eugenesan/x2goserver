@@ -169,7 +169,7 @@ while [ "$OUTPUT"  != "inserted" ]; do
 		fi
 		# sanitize session name
 		SESSION_NAME=`echo "$SESSION_NAME" | sed  -e  "s/[^a-zA-Z0-9\.\_\-]//g"`
-	
+
 		OUTPUT=`$X2GO_LIB_PATH/x2goinsertsession "$X2GO_PORT" "$HOSTNAME" "$SESSION_NAME"`
 	fi 
 done
