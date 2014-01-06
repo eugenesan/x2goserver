@@ -115,7 +115,7 @@ sub superenice {
 			$agentPid = sanitizer("num",$agentPid);
 
 			# We're only working with "portable" unix usernames.
-			$userID = sanitizer("anumazcsdaus",$userID);
+			$userID = sanitizer("pnixusername",$userID);
 
 			# So if the sanitizer returns something we'll do this....
 			if ($userID) {
@@ -194,7 +194,7 @@ sub superenice {
 		close(XGOLS);
 
 		foreach my $nUser (keys %niceUsers) {
-			$nUser = sanitizer("anumazcsdaus",$nUser);
+			$nUser = sanitizer("pnixusername",$nUser);
 
 			# We're only working with "portable" unix usernames..  
 			if ($nUser) {
