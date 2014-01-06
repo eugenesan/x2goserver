@@ -157,7 +157,7 @@ while [ "$OUTPUT"  != "inserted" ]; do
 			SESSION_NAME="${SESSION_NAME}_st${SESSION_TYPE}${X2GO_CMD}_dp${COLORDEPTH}"
 			SESSION_NAME=`echo "$SESSION_NAME" | sed  -e  "s/:/PP/g"`
 			# sanitize session name
-			SESSION_NAME=`echo "$SESSION_NAME" | sed  -e  "s/[^a-zA-Z0-9\_\-]//g"`
+			SESSION_NAME=`echo "$SESSION_NAME" | sed  -e  "s/[^a-zA-Z0-9\_\-\.]//g"`
 		fi
 		OUTPUT=`$X2GO_LIB_PATH/x2goinsertsession "$X2GO_PORT" "$HOSTNAME" "$SESSION_NAME"`
 	fi 

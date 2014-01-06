@@ -38,9 +38,9 @@ sub sanitizer {
 			$string = $1;
 			return $string;
 		} else {return 0;}
-	} elsif ($type eq "anumazcsdaus") {
-		$string =~ s/[^a-zA-Z0-9\_\-]//g;
-		if ($string =~ /^([a-zA-Z0-9\_\-]*)$/) {
+	} elsif ($type eq "pnixusername") {
+		$string =~ s/[^a-zA-Z0-9\_\-\.]//g;
+		if ($string =~ /^([a-zA-Z0-9\_\-\.]*)$/) {
 			$string = $1;
 			return $string;
 		} else {return 0;}
