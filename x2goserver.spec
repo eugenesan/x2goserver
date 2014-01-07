@@ -10,7 +10,7 @@ URL:            http://www.x2go.org
 Source0:        http://code.x2go.org/releases/source/%{name}/%{name}-%{version}.tar.gz
 # git clone git://code.x2go.org/x2goserver
 # cd x2goserver
-# git archive --prefix=x2goserver-4.1.0.0-20130722git65169c9/ 65169c9d65b117802e50631be0bbd719163d969e | gzip > ../x2goserver-4.1.0.0-20130722git65169c9.tar.gz
+# git archive --prefix=x2goserver-4.1.0.0-20140722git65169c9/ 65169c9d65b117802e50631be0bbd719163d969e | gzip > ../x2goserver-4.1.0.0-20140722git65169c9.tar.gz
 #Source0:        %{name}/%{name}-%{version}-%{checkout}.tar.gz
 Source1:        x2goserver.service
 Source2:        x2goserver.init
