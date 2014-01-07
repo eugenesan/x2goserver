@@ -1,3 +1,10 @@
+x2goserver (4.0.1.12-0x2go2) UNRELEASED; urgency=low
+
+  * Build hotfix for RPM packages (x2goserver.spec):
+    + Add perl(Capture::Tiny) to Requires: field of x2goserver.
+
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 07 Jan 2014 18:35:49 +0100
+
 x2goserver (4.0.1.12-0x2go1) unstable; urgency=low
 
   * Hotfix release including changes from LTS release version
