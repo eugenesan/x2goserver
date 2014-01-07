@@ -96,6 +96,20 @@ x2goserver (4.1.0.0-0x2go1) UNRELEASED; urgency=low
 
  -- Reinhard Tartler <siretart@tauware.de>  Thu, 20 Dec 2012 10:15:26 +0100
 
+x2goserver (4.0.1.12-0x2go2) UNRELEASED; urgency=low
+
+  * Build hotfix for RPM packages (x2goserver.spec):
+    + Add perl(Capture::Tiny) to Requires: field of x2goserver.
+
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 07 Jan 2014 18:35:49 +0100
+
+x2goserver (4.0.1.12-0x2go1) unstable; urgency=low
+
+  * Hotfix release including changes from LTS release version
+    4.0.0.10 (see below).
+
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 07 Jan 2014 18:26:28 +0100
+
 x2goserver (4.0.1.11-0x2go1) unstable; urgency=low
 
   * New upstream version (4.0.1.11):
@@ -136,13 +150,6 @@ x2goserver (4.0.1.10-0x2go1) unstable; urgency=low
     + Clear (Fedora package) changelog.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 03 Jan 2014 11:34:36 +0100
-
-x2goserver (4.0.1.12-0x2go1) unstable; urgency=low
-
-  * Hotfix release including changes from LTS release version
-    4.0.0.10 (see below).
-
- -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 07 Jan 2014 18:26:28 +0100
 
 x2goserver (4.0.1.9-0x2go1) unstable; urgency=low
 
