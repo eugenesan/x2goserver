@@ -29,6 +29,7 @@ Depends:
  libdbd-sqlite3-perl,
  libfile-basedir-perl,
  libfile-readbackwards-perl,
+ libcapture-tiny-perl,
  adduser,
  xauth,
  psmisc,

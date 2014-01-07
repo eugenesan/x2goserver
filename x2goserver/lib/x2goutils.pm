@@ -24,6 +24,7 @@
 package x2goutils;
 
 use strict;
+use Capture::Tiny qw( :all );
 use base 'Exporter';
 our @EXPORT = ( 'system_capture_merged_output' );
 

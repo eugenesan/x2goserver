@@ -1,6 +1,10 @@
 x2goserver (4.0.0.10-0x2go1) UNRELEASED; urgency=low
 
-  * Continue development...
+  * New upstream version (4.0.0.10):
+    - Add forgotten import of Perl package Capture::Tiny in
+      x2goutils.pm.
+  * debian/control:
+    - Depend on libcapture-tiny-perl.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 07 Jan 2014 17:46:02 +0100
 
