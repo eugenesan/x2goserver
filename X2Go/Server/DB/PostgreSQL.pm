@@ -37,7 +37,7 @@ use Sys::Syslog qw( :standard :macros );
 
 use X2Go::Log qw( loglevel );
 use X2Go::Config qw( get_sqlconfig );
-use X2Go::Utils qw( sanitizer );
+use X2Go::Utils qw( sanitizer system_capture_stdout_output );
 
 setlogmask( LOG_UPTO(loglevel()) );
 
