@@ -1,8 +1,10 @@
-x2goserver (4.0.1.13-0x2go1) UNRELEASED; urgency=low
+x2goserver (4.0.1.13-0x2go1) unstable; urgency=low
 
-  * Continue development on release branch...
+  * New upstream version (4.0.1.13):
+    - Include all achievements from LTS release branch (as of version
+      4.0.0.11).
 
- -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 07 Jan 2014 18:33:41 +0100
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Mon, 20 Jan 2014 14:04:01 +0100
 
 x2goserver (4.0.1.12-0x2go2) unstable; urgency=low
 
