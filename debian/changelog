@@ -96,7 +96,15 @@ x2goserver (4.1.0.0-0x2go1) UNRELEASED; urgency=low
 
  -- Reinhard Tartler <siretart@tauware.de>  Thu, 20 Dec 2012 10:15:26 +0100
 
-x2goserver (4.0.1.12-0x2go2) UNRELEASED; urgency=low
+x2goserver (4.0.1.13-0x2go1) unstable; urgency=low
+
+  * New upstream version (4.0.1.13):
+    - Include all achievements from LTS release branch (as of version
+      4.0.0.11).
+
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Mon, 20 Jan 2014 14:04:01 +0100
+
+x2goserver (4.0.1.12-0x2go2) unstable; urgency=low
 
   * Build hotfix for RPM packages (x2goserver.spec):
     + Add perl(Capture::Tiny) to Requires: field of x2goserver.
