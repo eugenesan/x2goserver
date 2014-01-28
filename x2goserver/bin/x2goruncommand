@@ -108,13 +108,13 @@ if [ "$cmd" == "GNOME" ] || [ "$cmd" == "gnome-session" ]; then
 
 elif ([ "$cmd" == "UNITY" ] || [ "$cmd" == "unity" ]); then
 	cmd="/usr/bin/gnome-session"
-	if [ "$DISTRIB_ID" == "Ubuntu" ] && [ "$(echo "$DISTRIB_RELEASE" >= 12.10 | bc)" == "1" ]; then
+	if [ "$DISTRIB_ID" == "Ubuntu" ] && [ "$(echo "$DISTRIB_RELEASE >= 12.10" | bc)" == "1" ]; then
 		export DESKTOP_SESSION="ubuntu"
 		args=" --session=$DESKTOP_SESSION"
-	elif [ "$DISTRIB_ID" == "Ubuntu" ] && [ "$(echo "$DISTRIB_RELEASE" == 11.10 | bc)" == "1" -o "$(echo $DISTRIB_RELEASE == 12.04 | bc)" == "1" ]; then
+	elif [ "$DISTRIB_ID" == "Ubuntu" ] && [ "$(echo "$DISTRIB_RELEASE == 11.10" | bc)" == "1" -o "$(echo "$DISTRIB_RELEASE == 12.04" | bc)" == "1" ]; then
 		export DESKTOP_SESSION="ubuntu-2d"
 		args=" --session=$DESKTOP_SESSION"
-	elif [ "$DISTRIB_ID" == "Ubuntu" ] && [ "$(echo "$DISTRIB_RELEASE" == 11.04 | bc)" == "1" ]; then
+	elif [ "$DISTRIB_ID" == "Ubuntu" ] && [ "$(echo "$DISTRIB_RELEASE == 11.04" | bc)" == "1" ]; then
 		export DESKTOP_SESSION="2d-ubuntu"
 		args=" --session=$DESKTOP_SESSION"
 	fi

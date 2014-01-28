@@ -103,6 +103,13 @@ x2goserver (4.0.1.14-0x2go1) UNRELEASED; urgency=low
     - Log SSHFS output and errors to ~/.x2go/C-<session>/sshfs-mounts.log.
       (Fixes: #415).
 
+  [ Harald Nordgard-Hansen ]
+  * New upstream release (4.0.1.14):
+    - Correctly quote the tests against $DISTRIB_RELEASE in x2goruncommand that
+      were badly quoted (which caused them to report the wrong result and to
+      create a file called "=" in the user home directory). Aligning all tests
+      to use the same style of quoting fixes this. (Fixes: #409).
+
   [ Orion Poplawski ]
   * New upstream release (4.0.1.14):
     - Fix wrong path to xinitrd.d in Xsession (section for RPM based distros).
