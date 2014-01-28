@@ -20,7 +20,7 @@ BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 %endif
 
 BuildRequires:  perl(ExtUtils::MakeMaker)
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?el7}
 BuildRequires:  man2html-core
 BuildRequires:  systemd
 %else
@@ -228,7 +228,7 @@ touch %{buildroot}%{_sharedstatedir}/x2go/x2go_sessions
 # Printing spool dir
 mkdir -p %{buildroot}%{_localstatedir}/spool/x2goprint
 
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?el7}
 # System.d session cleanup script
 mkdir -p %{buildroot}%{_unitdir}
 install -pm0644 %SOURCE1 %{buildroot}%{_unitdir}
@@ -259,7 +259,7 @@ exit 0
 [ ! -s %{_sharedstatedir}/x2go/x2go_sessions ] && egrep "^backend=sqlite.*" /etc/x2go/x2gosql/sql 1>/dev/null 2>/dev/null &&
   %{_sbindir}/x2godbadmin --createdb 1>/dev/null 2>/dev/null || :
 
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?el7}
 %systemd_post x2goserver.service
 
 %preun
@@ -344,7 +344,7 @@ exit 0
 %{_datadir}/x2go/versions/VERSION.x2goserver
 %attr(0775,root,x2gouser) %dir %{_sharedstatedir}/x2go/
 %ghost %attr(0660,root,x2gouser) %{_sharedstatedir}/x2go/x2go_sessions
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?el7}
 %{_unitdir}/x2goserver.service
 %else
 %if 0%{?el5}
