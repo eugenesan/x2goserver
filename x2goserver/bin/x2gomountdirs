@@ -104,9 +104,10 @@ chmod(0600,"$key.ident");
 
 my $mdir="$tmp_dir/.x2go-$ENV{'USER'}/media";
 my $ldir="$ENV{'HOME'}/media";
-my $spooldir_lnk="$ENV{'HOME'}/.x2go/C-$session/spool";
+my $sessiondir="$ENV{'HOME'}/.x2go/C-$session";
+my $spooldir_lnk="$sessiondir/spool";
 my $spooldir="$tmp_dir/.x2go-$ENV{'USER'}/spool";
-my $mimeboxdir_lnk="$ENV{'HOME'}/.x2go/C-$session/mimebox";
+my $mimeboxdir_lnk="$sessiondir/mimebox";
 my $mimeboxdir="$tmp_dir/.x2go-$ENV{'USER'}/mimebox";
 
 source_environment(xdg_config_home() . "/user-dirs.dirs");
@@ -278,7 +279,7 @@ for (my $i=0;$i<@dirs;$i++)
 		print "inserted, $msg\n";
 
 		# FIXME: this system call should be converted to a multi-argument system call while pertaining the redirect of stderr to the mounts.log file
-		if (system("sshfs  $code_conv -o idmap=user,uid=`id -u`,gid=`id -g`,$umaskstr,ServerAliveInterval=300,Cipher=blowfish,IdentityFile=$key,UserKnownHostsFile=$key.ident \"$user\"\@$host:\"@dirs[$i]\" \"$mntpath\" -p $port 2>>~/mounts.log")==0)
+		if (system("sshfs  $code_conv -o idmap=user,uid=`id -u`,gid=`id -g`,$umaskstr,ServerAliveInterval=300,Cipher=blowfish,IdentityFile=$key,UserKnownHostsFile=$key.ident \"$user\"\@$host:\"@dirs[$i]\" \"$mntpath\" -p $port 2>&1 1>>$sessiondir/sshfs-mounts.log")==0)
 		{
 			print "mount @dirs[$i] ok\n";
 			syslog('notice', "successfully mounted $user\@$host:$port@dirs[$i] to $mntpath");
