@@ -223,7 +223,14 @@ x2goserver (4.0.1.0-0~x2go1) unstable; urgency=low
 
 x2goserver (4.0.0.12-0x2go1) UNRELEASED; urgency=low
 
-  * Continue development on LTS release branch...
+  * Adopt this patch from stable release branch and apply to LTS branch:
+    - Start/resume rootless sessions without geometry parameter. Esp. using
+      X2GO_GEOMETRY=fullscreen for rootless sessions lead to an extra 1x1 px
+      session window (nxagentCreateIconWindow in nxagent's Window.c).
+    - Fix x2goresume-session. The several parameters placed into the NX options
+      file are expected by x2goresume-session at very specific positions. This
+      we broke by trying to fix the fullscreen/geometry issue in x2gostartagent.
+      Thanks to Harvey Eneman for tracking this down!!!
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 21 Feb 2014 14:25:43 +0100
 
@@ -232,7 +239,6 @@ x2goserver (4.0.0.11-0x2go1) unstable; urgency=low
   * New upstream version (4.0.0.11):
     - Use perl instead of sed for search+replace in session names sanitizing.
       (Fixes: #404).
-
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Mon, 20 Jan 2014 14:00:42 +0100
 
 x2goserver (4.0.0.10-0x2go1) unstable; urgency=low
