@@ -1,5 +1,5 @@
 Name:           x2goserver
-Version:        4.0.1.13
+Version:        4.0.1.14
 Release:        0.0x2go1%{?dist}
 Summary:        X2Go Server
 
