@@ -29,7 +29,7 @@ use X2Go::Log qw(loglevel);
 openlog($0,'cons,pid','user');
 setlogmask( LOG_UPTO(loglevel()) );
 
-my $session_id=shift or die;
+my $session_id=shift || $ENV{'X2GO_SESSION'} or die;
 
 my $mounts = join("\n", db_getmounts($session_id));
 print "$mounts\n";

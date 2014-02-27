@@ -102,6 +102,8 @@ x2goserver (4.0.1.14-0x2go1) UNRELEASED; urgency=low
   * New upstream release (4.0.1.14):
     - Log SSHFS output and errors to ~/.x2go/C-<session>/sshfs-mounts.log.
       (Fixes: #415).
+    - If x2golistmounts is used with out cmd options <session_id>, then
+      the env var $X2GO_SESSION (current session) will be used.
   * x2goserver.spec:
     - Let builds for EPEL-7 behave like recent Fedora builds.
 
