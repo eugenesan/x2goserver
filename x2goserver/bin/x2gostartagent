@@ -35,7 +35,7 @@ fi
 X2GO_ROOT="${HOME}/.x2go"
 export NX_ROOT=$X2GO_ROOT
 
-X2GO_NXAGENT_DEFAULT_OPTIONS="-nolisten tcp"
+X2GO_NXAGENT_DEFAULT_OPTIONS="-extension XFIXES -extension GLX -nolisten tcp"
 
 if [ -r /etc/x2go/x2goagent.options ]; then
     source /etc/x2go/x2goagent.options
@@ -298,7 +298,7 @@ fi
 NOLISTOPT=""
 if [ "$X2GOXDMCP" == "" ] ;then
 	XDMCPOPT=""
-	if [ "x${X2GO_NXAGENT_OPTIONS}" = "x${X2GO_NXAGENT_OPTIONS/' -nolisten tcp'/''}" ]; then
+	if [ "x${X2GO_NXAGENT_OPTIONS}" != "x${X2GO_NXAGENT_OPTIONS/' -nolisten tcp'/''}" ]; then
 		NOLISTOPT="-nolisten tcp"
 	fi
 else
