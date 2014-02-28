@@ -8,6 +8,12 @@ x2goserver (4.0.1.14-0x2go1) UNRELEASED; urgency=low
       the env var $X2GO_SESSION (current session) will be used.
     - Fix x2gostartagent. Make sure the -nolisten tcp option is configurable
       via x2goagent.options. (Fixes: #424).
+    - Safely remove desktop files for client-side shared folders. Remove
+      the correct desktop file, even if the shared folder has already
+      been (forcefully) umounted. Such situations occur in cases where
+      the connection gets interrupted. SSHFS will then get removed by the
+      Linux kernel and we have to "guess" what desktop icons is actually
+      to be removed.
   * x2goserver.spec:
     - Let builds for EPEL-7 behave like recent Fedora builds.
 

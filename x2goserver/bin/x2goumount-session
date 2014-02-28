@@ -24,6 +24,7 @@ use strict;
 use Sys::Hostname;
 use Sys::Syslog qw( :standard :macros );
 use File::BaseDir qw( xdg_config_home );
+use File::Basename;
 
 use lib `x2gopath lib`;
 use x2godbwrapper; 
@@ -163,7 +164,6 @@ break:
 		if (system( "cd $tmp_dir && fusermount -u \"@line[1]\" && cd - >/dev/null" ) == 0)
 		{
 			syslog('notice', "successfully unmounted \"@line[1]\"");
-			$found=0;
 		}
 		else
 		{
@@ -179,9 +179,11 @@ break:
 			}
 		}
 	}
-	if (! $found)
-	{
 
+	if (!$found) {
+		syslog('info', "SSHFS share already unmounted, taking care of further clean-up (".basename(@line[1]).")");
+		$remote = basename(@line[1]);
+	} else {
 		$remote=~s/\/cygdrive\///;
 		$remote=~s/\/windrive\///;
 		$remote=~s/\/uncpath\///;
@@ -189,55 +191,65 @@ break:
 		$remote=~s/ /_/g;
 		$remote=~s/\\040/_/g;
 		$remote=(split(":","$remote"))[1];
-		my $desktopdir;
-		if ( $ENV{'XDG_DESKTOP_DIR'} )
-		{
-			$desktopdir="$ENV{'XDG_DESKTOP_DIR'}";
-		} else {
-			$desktopdir="$ENV{'HOME'}/Desktop";
-		}
-		$remote="$desktopdir/$remote";
-
-		my $current_desktop = 'NONE';
-		if (($session =~ m/_stDGNOME_dp/) && system("x2gofeature X2GO_GNOMEBINDINGS >/dev/null") == 0)
-		{
-			$current_desktop="-gnome";
-		}
-		elsif (($session =~ m/_stDMATE_dp/) && system("x2gofeature X2GO_MATEBINDINGS >/dev/null") == 0)
-		{
-			$current_desktop="-mate";
-		}
-		elsif (($session =~ m/_stDLXDE_dp/) && system("x2gofeature X2GO_LXDEBINDINGS >/dev/null") == 0)
-		{
-			$current_desktop="-lxde";
-		}
-		elsif (($session =~ m/_st.*_dp/) && system("x2gofeature X2GO_FMBINDINGS >/dev/null") == 0)
-		{
-			$current_desktop="";
-		}
-
-		if ("$current_desktop" ne "NONE")
-		{
-			if ( -e "$remote\ (sshfs-disk$current_desktop)")
-			{
-				syslog('info', "removing desktop icon ,,$remote (sshfs-disk$current_desktop)''");
-				unlink("$remote\ (sshfs-disk$current_desktop)");
-			}
-			$remote=~s/%2framdrive%2fmnt%2f//;
-			if ( -e "$remote\ (sshfs-removable$current_desktop)")
-			{
-				syslog('info', "removing desktop icon ,,$remote\ (sshfs-removable$current_desktop)''");
-				unlink("$remote\ (sshfs-removable$current_desktop)");
-			}
-			if ( -e "$remote\ (sshfs-cdrom/$current_desktop)")
-			{
-				syslog('info', "removing desktop icon ,,$remote\ (sshfs-cdrom$current_desktop)''");
-				unlink("$remote\ (sshfs-cdrom$current_desktop)");
-			}
-		}
-		db_deletemount ($session, @line[1]);
-		rmdir (@line[1]);
 	}
+	my $desktop_dir;
+	if ( $ENV{'XDG_DESKTOP_DIR'} )
+	{
+		$desktop_dir="$ENV{'XDG_DESKTOP_DIR'}";
+	} else {
+		$desktop_dir="$ENV{'HOME'}/Desktop";
+	}
+
+	my $current_desktop = 'NONE';
+	if (($session =~ m/_stDGNOME_dp/) && system("x2gofeature X2GO_GNOMEBINDINGS >/dev/null") == 0)
+	{
+		$current_desktop="-gnome";
+	}
+	elsif (($session =~ m/_stDMATE_dp/) && system("x2gofeature X2GO_MATEBINDINGS >/dev/null") == 0)
+	{
+		$current_desktop="-mate";
+	}
+	elsif (($session =~ m/_stDLXDE_dp/) && system("x2gofeature X2GO_LXDEBINDINGS >/dev/null") == 0)
+	{
+		$current_desktop="-lxde";
+	}
+	elsif (($session =~ m/_st.*_dp/) && system("x2gofeature X2GO_FMBINDINGS >/dev/null") == 0)
+	{
+		$current_desktop="";
+	}
+
+	if ("$current_desktop" ne "NONE")
+	{
+		my $desktop_file;
+		if ( -f "$desktop_dir/$remote\ (sshfs-disk$current_desktop)")
+		{
+			$desktop_file = "$remote\ (sshfs-disk$current_desktop)";
+		}
+		$remote=~s/%2framdrive%2fmnt%2f//;
+		if ( -f "$desktop_dir/$remote\ (sshfs-removable$current_desktop)")
+		{
+			$desktop_file = "$remote\ (sshfs-removable$current_desktop)";
+		}
+		if ( -f "$desktop_dir/$remote\ (sshfs-cdrom/$current_desktop)")
+		{
+			$desktop_file = "$remote\ (sshfs-cdrom$current_desktop)";
+		}
+
+		syslog('info', "Attempting removal of desktop file ,,$desktop_dir/$desktop_file''");
+		if ( -f "$desktop_dir/$desktop_file" ) {
+			open (DF,"<$desktop_dir/$desktop_file") or die "Can't open $desktop_file for reading";
+			my @desktop_file_content=<DF>;
+			close(DF);
+
+			if ( @desktop_file_content[1] == $session ) {
+				syslog('info', "removing desktop icon ,,$desktop_dir/$desktop_file''");
+				unlink("$desktop_dir/$desktop_file");
+			}
+		}
+
+	}
+	db_deletemount ($session, @line[1]);
+	rmdir (@line[1]);
 cont:
 }
 
