@@ -61,7 +61,7 @@ sub source_environment {
 
 my $tmp_dir = '/tmp';
 
-my $session=shift;
+my $session=shift || $ENV{'X2GO_SESSION'} or die "no valid session name that we can use";
 my $only_path=shift;
 my $uname="$ENV{'USER'}";
 my $serv=hostname;
