@@ -114,6 +114,8 @@ x2goserver (4.0.1.14-0x2go1) UNRELEASED; urgency=low
       the connection gets interrupted. SSHFS will then get removed by the
       Linux kernel and we have to "guess" what desktop icons is actually
       to be removed.
+    - Fix broken file descriptor closures in x2gocleansessions. (Fixes:
+      #441).
   * x2goserver.spec:
     - Let builds for EPEL-7 behave like recent Fedora builds.
 
