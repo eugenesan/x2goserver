@@ -17,8 +17,8 @@
 # Free Software Foundation, Inc.,
 # 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
 #
-# Copyright (C) 2012-2014  Milan Knížek <knizek.confy@gmail.com>
-# Copyright (C) 2012-2014  Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
+# Copyright (C) 2012-2014 Milan Knížek <knizek.confy@gmail.com>
+# Copyright (C) 2012-2014 Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
 
 use strict;
 
