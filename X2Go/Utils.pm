@@ -37,8 +37,8 @@ X2Go::Utils Perl package.
 use strict;
 use base 'Exporter';
 
-our @EXPORT = ( 'source_environment', 'clups', 'sanitizer',
-                'load_module',
+our @EXPORT = ( 'load_module', 'is_true',
+                'source_environment', 'clups', 'sanitizer',
                 'system_capture_merged_output', 'system_capture_stdout_output' );
 
 use Sys::Syslog qw( :standard :macros );
@@ -49,6 +49,15 @@ sub load_module {
 		(my $file = "$_.pm") =~ s{::}{/}g;
 		require $file;
 	}
+}
+
+
+sub is_true {
+	my $value = shift;
+	if ( $value =~ m/(1|yes|Yes|YES|on|On|ON|True|true|TRUE)/ ) {
+		return 1
+	}
+	return 0
 }
 
 
