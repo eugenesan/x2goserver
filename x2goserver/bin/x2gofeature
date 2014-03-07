@@ -17,8 +17,8 @@
 # Free Software Foundation, Inc.,
 # 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
 #
-# Copyright (C) 2011-2014  Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
-# Copyright (C) 2011-2014  Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
+# Copyright (C) 2011-2014 Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
+# Copyright (C) 2011-2014 Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
 
 [ -z $1 ] && { echo usage: "$(basename $0) <X2GO_FEATURE_NAME>"; exit -2; }
 
