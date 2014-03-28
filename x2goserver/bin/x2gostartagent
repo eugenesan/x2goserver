@@ -32,6 +32,8 @@ if egrep "^backend[ ]*=[ ]*postgres" /etc/x2go/x2gosql/sql 1>/dev/null 2>/dev/nu
 	exit -1
 fi
 
+X2GO_TELEKINESIS_ENABLED=`echo 'use X2Go::Config qw( get_config ); use X2Go::Utils qw( is_true ); my $Config = get_config(); print is_true($Config->param("telekinesis.enable"));' | perl`
+
 X2GO_ROOT="${HOME}/.x2go"
 export NX_ROOT=$X2GO_ROOT
 
@@ -185,8 +187,12 @@ while [ "$OUTPUT"  != "inserted" ]; do
 	fi 
 done
 
+if [ "x$X2GO_TELEKINESIS_ENABLED" == "x0" ]; then
+	TEKICTRL_PORT="-1"
+	TEKIDATA_PORT="-1"
+fi
 
-while [ "$GR_PORT" == "" ] || [ "$SOUND_PORT" == "" ] || [ "$FS_PORT" == "" ]; do
+while [ "$GR_PORT" == "" ] || [ "$SOUND_PORT" == "" ] || [ "$FS_PORT" == "" ] || [ "$TEKICTRL_PORT" == "" ] || [ "$TEKIDATA_PORT" == "" ]; do
 	OUTPUT=""
 	while [ "$OUTPUT"  != "inserted" ]; do
 		SSH_PORT=$(($SSH_PORT + 1))
@@ -212,8 +218,12 @@ while [ "$GR_PORT" == "" ] || [ "$SOUND_PORT" == "" ] || [ "$FS_PORT" == "" ]; d
 		GR_PORT="$SSH_PORT"
 	elif [ "$SOUND_PORT" == "" ]; then
 		SOUND_PORT="$SSH_PORT"
-	else
+	elif [ "$FS_PORT" == "" ]; then
 		FS_PORT="$SSH_PORT"
+	elif [ "$TEKICTRL_PORT" == "" ]; then
+		TEKICTRL_PORT=$SSH_PORT
+	elif [ "$TEKIDATA_PORT" == "" ]; then
+		TEKIDATA_PORT=$SSH_PORT
 	fi
 done
 
@@ -345,7 +355,7 @@ X2GO_SND_PORT=1024
 if [ -n "$SHADREQ_USER" ]; then
 	$X2GO_LIB_PATH/x2gocreateshadowsession "$X2GO_COOKIE" "$X2GO_AGENT_PID" "$X2GO_CLIENT" "$GR_PORT" "$SOUND_PORT" "$FS_PORT" "$SESSION_NAME" "$SHADREQ_USER" > /dev/null
 else
-	$X2GO_LIB_PATH/x2gocreatesession "$X2GO_COOKIE" "$X2GO_AGENT_PID" "$X2GO_CLIENT" "$GR_PORT" "$SOUND_PORT" "$FS_PORT" "$SESSION_NAME" > /dev/null
+	$X2GO_LIB_PATH/x2gocreatesession "$X2GO_COOKIE" "$X2GO_AGENT_PID" "$X2GO_CLIENT" "$GR_PORT" "$SOUND_PORT" "$FS_PORT" "$TEKICTRL_PORT" "$TEKIDATA_PORT" "$SESSION_NAME" > /dev/null
 fi
 
 if [ "$X2GO_SET_KBD" == "0" ] || [ "$X2GO_KBD_TYPE" != "auto" ]; then
@@ -360,3 +370,7 @@ echo $SESSION_NAME
 echo $GR_PORT
 echo $SOUND_PORT
 echo $FS_PORT
+if [ "x$X2GO_TELEKINESIS_ENABLED" == "x1" ]; then
+	echo $TEKICTRL_PORT
+	echo $TEKIDATA_PORT
+fi

@@ -41,8 +41,9 @@ use POSIX;
 ####       It is intended that the code in this package cannot do system() calls.
 
 use Sys::Syslog qw( :standard :macros );
+use X2Go::Config qw( get_config );
 use X2Go::Log qw( loglevel );
-use X2Go::Utils qw( sanitizer );
+use X2Go::Utils qw( sanitizer is_true );
 
 openlog($0,'cons,pid','user');
 setlogmask( LOG_UPTO(loglevel()) );
@@ -95,7 +96,8 @@ sub dbsys_listsessionsroot
 	                       cookie,client,gr_port,sound_port,
 	                       strftime('%Y-%m-%dT%H:%M:%S',last_time),
 	                       uname,
-	                       strftime('%s','now','localtime') - strftime('%s',init_time),fs_port from  sessions
+	                       strftime('%s','now','localtime') - strftime('%s',init_time),fs_port,
+	                       tekictrl_port, tekidata_port from sessions
 	                       where server=?  order by status desc");
 	$sth->execute($server);
 	if ($sth->err()) {
@@ -118,7 +120,8 @@ sub dbsys_listsessionsroot_all
 	                       cookie,client,gr_port,sound_port,
 	                       strftime('%Y-%m-%dT%H:%M:%S',last_time),
 	                       uname,
-	                       strftime('%s','now','localtime') - strftime('%s',init_time),fs_port from  sessions
+	                       strftime('%s','now','localtime') - strftime('%s',init_time),fs_port,
+	                       tekictrl_port, tekidata_port from sessions
 	                       order by status desc");
 	$sth->execute();
 	if ($sth->err())
@@ -258,12 +261,16 @@ sub db_createsession
 	$snd_port = sanitizer('num', $snd_port) or die "argument \"snd_port\" malformed";
 	my $fs_port=shift or die"argument \"fs_port\" missed";
 	$fs_port = sanitizer('num', $fs_port) or die "argument \"fs_port\" malformed";
+	my $tekictrl_port=shift or die "argument \"tekictrl_port\" missed";
+	$tekictrl_port = sanitizer('pnnum', $tekictrl_port) or die "argument \"tekictrl_port\" malformed";
+	my $tekidata_port=shift or die "argument \"tekidata_port\" missed";
+	$tekidata_port = sanitizer('pnnum', $tekidata_port) or die "argument \"tekidata_port\" malformed";
 	my $sid=shift or die "argument \"session_id\" missed";
 	$sid = sanitizer('x2gosid', $sid) or die "argument \"session_id\" malformed";
 	check_user($sid);
 	my $sth=$dbh->prepare("update sessions set status='R',last_time=datetime('now','localtime'),cookie=?,agent_pid=?,
-	                       client=?,gr_port=?,sound_port=?,fs_port=? where session_id=? and uname=?");
-	$sth->execute($cookie, $pid, $client, $gr_port, $snd_port, $fs_port, $sid, $realuser);
+	                       client=?,gr_port=?,sound_port=?,fs_port=?,tekictrl_port=?,tekidata_port=? where session_id=? and uname=?");
+	$sth->execute($cookie, $pid, $client, $gr_port, $snd_port, $fs_port, $tekictrl_port, $tekidata_port, $sid, $realuser);
 	if ($sth->err())
 	{
 		syslog('error', "createsession (SQLite3 session db backend) failed with exitcode: $sth->err()");
@@ -355,10 +362,14 @@ sub db_resume
 	$snd_port = sanitizer('num', $snd_port) or die "argument \"snd_port\" malformed";
 	my $fs_port=shift or die "argument \"fs_port\" missed";
 	$fs_port = sanitizer('num', $fs_port) or die "argument \"fs_port\" malformed";
+	my $tekictrl_port=shift or die"argument \"tekictrl_port\" missed";
+	$tekictrl_port = sanitizer('pnnum', $tekictrl_port) or die "argument \"tekictrl_port\" malformed";
+	my $tekidata_port=shift or die"argument \"tekidata_port\" missed";
+	$tekidata_port = sanitizer('pnnum', $tekidata_port) or die "argument \"tekidata_port\" malformed";
 	check_user($sid);
 	my $sth=$dbh->prepare("update sessions set last_time=datetime('now','localtime'),status='R',
-	                       client=?,gr_port=?,sound_port=?,fs_port=? where session_id = ? and uname=?");
-	$sth->execute($client, $gr_port, $snd_port, $fs_port, $sid, $realuser);
+	                       client=?,gr_port=?,sound_port=?,fs_port=?,tekictrl_port=?,tekidata_port=? where session_id = ? and uname=?");
+	$sth->execute($client, $gr_port, $snd_port, $fs_port, $tekictrl_port, $tekidata_port, $sid, $realuser);
 	if ($sth->err())
 	{
 		syslog('error', "resume (SQLite3 session db backend) failed with exitcode: $sth->err()");
@@ -542,7 +553,8 @@ sub db_listsessions
 	                       cookie,client,gr_port,sound_port,
 	                       strftime('%Y-%m-%dT%H:%M:%S',last_time),
 	                       uname,
-	                       strftime('%s','now','localtime') - strftime('%s',init_time),fs_port from  sessions
+	                       strftime('%s','now','localtime') - strftime('%s',init_time),fs_port,
+	                       tekictrl_port,tekidata_port from sessions
 	                       where status !='F' and server=? and uname=?
 	                       and  (  session_id not like '%XSHAD%')  order by status desc");
 	$sth->execute($server, $realuser);
@@ -566,7 +578,8 @@ sub db_listsessions_all
 	                       cookie,client,gr_port,sound_port,
 	                       strftime('%Y-%m-%dT%H:%M:%S',last_time),
 	                       uname,
-	                       strftime('%s','now','localtime') - strftime('%s',init_time),fs_port from  sessions 
+	                       strftime('%s','now','localtime') - strftime('%s',init_time),fs_port,
+	                       tekictrl_port,tekidata_port from  sessions
 	                       where status !='F' and uname=? and  (  session_id not like '%XSHAD%')  order by status desc");
 	
 	$sth->execute($realuser);

@@ -240,20 +240,22 @@ sub db_createsession
 	my $gr_port=shift or die"argument \"gr_port\" missed";
 	my $snd_port=shift or die"argument \"snd_port\" missed";
 	my $fs_port=shift or die"argument \"fs_port\" missed";
+	my $tekictrl_port=shift or die"argument \"tekictrl_port\" missed";
+	my $tekidata_port=shift or die"argument \"tekidata_port\" missed";
 	my $sid=shift or die "argument \"session_id\" missed";
 	if ($backend eq 'postgres')
 	{
-		X2Go::Server::DB::PostgreSQL::db_createsession($cookie, $pid, $client, $gr_port, $snd_port, $fs_port, $sid);
+		X2Go::Server::DB::PostgreSQL::db_createsession($cookie, $pid, $client, $gr_port, $snd_port, $fs_port, $tekictrl_port, $tekidata_port, $sid);
 	}
 	if ($backend eq 'sqlite')
 	{
-		my $err= system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "createsession", "$cookie", "$pid", "$client", "$gr_port", "$snd_port", "$fs_port", "$sid");
+		my $err= system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "createsession", "$cookie", "$pid", "$client", "$gr_port", "$snd_port", "$fs_port", "$tekictrl_port", "$tekidata_port", "$sid");
 		if ($err ne "ok")
 		{
 			die $err;
 		}
 	}
-	syslog('debug', "db_createsession called, session ID: $sid, cookie: $cookie, client: $client, pid: $pid, graphics port: $gr_port, sound port: $snd_port, file sharing port: $fs_port");
+	syslog('debug', "db_createsession called, session ID: $sid, cookie: $cookie, client: $client, pid: $pid, graphics port: $gr_port, sound port: $snd_port, file sharing port: $fs_port. telekinesis ctrl port: $tekictrl_port, telekinesis data port: $tekidata_port");
 }
 
 sub db_createshadowsession
@@ -325,15 +327,17 @@ sub db_resume
 	my $gr_port=shift or die "argument \"gr_port\" missed";
 	my $snd_port=shift or die "argument \"snd_port\" missed";
 	my $fs_port=shift or die "argument \"fs_port\" missed";
+	my $tekictrl_port=shift or die"argument \"tekictrl_port\" missed";
+	my $tekidata_port=shift or die"argument \"tekidata_port\" missed";
 	if ($backend eq 'postgres')
 	{
-		X2Go::Server::DB::PostgreSQL::db_resume($client, $sid, $gr_port, $snd_port, $fs_port);
+		X2Go::Server::DB::PostgreSQL::db_resume($client, $sid, $gr_port, $snd_port, $fs_port, $tekictrl_port, $tekidata_port);
 	}
 	if ($backend eq 'sqlite')
 	{
-		system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "resume", "$client", "$sid", "$gr_port", "$snd_port", "$fs_port");
+		system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "resume", "$client", "$sid", "$gr_port", "$snd_port", "$fs_port", "$tekictrl_port", "$tekidata_port");
 	}
-	syslog('debug', "db_resume called, session ID: $sid, client: $client, gr_port: $gr_port, sound_port: $snd_port, fs_port: $fs_port");
+	syslog('debug', "db_resume called, session ID: $sid, client: $client, gr_port: $gr_port, sound_port: $snd_port, fs_port: $fs_port, telekinesis ctrl port: $tekictrl_port, telekinesis data port: $tekidata_port");
 }
 
 sub db_changestatus

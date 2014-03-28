@@ -43,6 +43,7 @@ fi
 
 "$X2GO_LIB_PATH/x2gosyslog" "$0" "info" "$(basename $0) called with options: $@"
 
+X2GO_TELEKINESIS_ENABLED=`echo 'use X2Go::Config qw( get_config ); use X2Go::Utils qw( is_true ); my $Config= get_config(); print is_true($Config->param("telekinesis.enable"));' | perl`
 
 # rootless sessions require to be resizable
 if [ "$SESSION_TYPE" == "R" ]; then
@@ -97,12 +98,32 @@ if grep -q "|${FS_PORT}|" <<<$SYSTEM_PORTS ; then
 	FS_PORT=""
 fi
 
+if [ "x$X2GO_TELEKINESIS_ENABLED" == "x1" ]; then
+	TEKICTRL_PORT=`echo "$SESSIONINFO" | awk -F, {'print $15'}`
+	TEKIDATA_PORT=`echo "$SESSIONINFO" | awk -F, {'print $16'}`
+	if grep -q "|${TEKICTRL_PORT}|" <<<$SYSTEM_PORTS ; then
+		$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "port "$TEKICTRL_PORT" is already in use"
+		$X2GO_LIB_PATH/x2gormport "$HOSTNAME" "$SESSION_NAME" "$TEKICTRL_PORT"
+		TEKICTRL_PORT=""
+	fi
+	if grep -q "|${TEKIDATA_PORT}|" <<<$SYSTEM_PORTS ; then
+		$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "port "$TEKIDATA_PORT" is already in use"
+		$X2GO_LIB_PATH/x2gormport "$HOSTNAME" "$SESSION_NAME" "$TEKIDATA_PORT"
+		TEKIDATA_PORT=""
+	fi
+else
+	$X2GO_LIB_PATH/x2gormport "$HOSTNAME" "$SESSION_NAME" "$TEKICTRL_PORT"
+	$X2GO_LIB_PATH/x2gormport "$HOSTNAME" "$SESSION_NAME" "$TEKIDATA_PORT"
+	TEKICTRL_PORT="0"
+	TEKIDATA_PORT="0"
+fi
+
 SSH_PORT=30000 #First ssh port 30001
 
 #Get all used in system ports from X2Go database and netstat output
 USED_PORTS=`$X2GO_LIB_PATH/x2gogetports "$HOSTNAME"; netstat -nt -all | awk '{ n=split($0,lines,"\n"); for(i=1;i<=n;i++){split (lines[i],words," ");delim=split(words[4],ports,":"); if(delim>1)printf ("|%s|\n",ports[delim])} }'`
 
-while [ "$GR_PORT" == "" ] || [ "$SOUND_PORT" == "" ] || [ "$FS_PORT" == "" ]; do
+while [ "$GR_PORT" == "" ] || [ "$SOUND_PORT" == "" ] || [ "$FS_PORT" == "" ] || [ "$TEKICTRL_PORT" == "" ] || [ "$TEKIDATA_PORT" == "" ]; do
 	OUTPUT=""
 	while [ "$OUTPUT"  != "inserted" ]; do
 		SSH_PORT=$(($SSH_PORT + 1))
@@ -120,8 +141,12 @@ while [ "$GR_PORT" == "" ] || [ "$SOUND_PORT" == "" ] || [ "$FS_PORT" == "" ]; d
 		GR_PORT="$SSH_PORT"
 	elif [ "$SOUND_PORT" == "" ]; then
 		SOUND_PORT="$SSH_PORT"
-	else
+	elif [ "$FS_PORT" == "" ]; then
 		FS_PORT="$SSH_PORT"
+	elif [ "$TEKICTRL_PORT" == "" ]; then
+		TEKICTRL_PORT="$SSH_PORT"
+	elif [ "$TEKIDATA_PORT" == "" ]; then
+		TEKIDATA_PORT="$SSH_PORT"
 	fi
 done
 
@@ -182,7 +207,7 @@ rm -Rf "$SESSION_DIR/keyboard"
 
 kill -HUP "$X2GO_AGENT_PID" &>/dev/null && {
 
-	$X2GO_LIB_PATH/x2goresume "$X2GO_CLIENT" "$SESSION_NAME"  "$GR_PORT" "$SOUND_PORT" "$FS_PORT" > /dev/null
+	$X2GO_LIB_PATH/x2goresume "$X2GO_CLIENT" "$SESSION_NAME"  "$GR_PORT" "$SOUND_PORT" "$FS_PORT" "$TEKICTRL_PORT" "$TEKIDATA_PORT" > /dev/null
 	$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "client $X2GO_CLIENT has successfully resumed session with ID $SESSION_NAME"
 
 	# set client-side keyboard model, type, variant, etc.
@@ -215,4 +240,7 @@ kill -HUP "$X2GO_AGENT_PID" &>/dev/null && {
 echo "gr_port=$GR_PORT"
 echo "sound_port=$SOUND_PORT"
 echo "fs_port=$FS_PORT"
-
+if [ "x$X2GO_TELEKINESIS_ENABLED" == "x1" ]; then
+	echo "tekictrl_port=$TEKICTRL_PORT"
+	echo "tekidata_port=$TEKIDATA_PORT"
+fi

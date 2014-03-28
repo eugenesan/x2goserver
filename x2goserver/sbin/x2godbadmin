@@ -25,6 +25,7 @@ use Sys::Syslog qw( :standard :macros );
 use File::Path qw( make_path );
 use Getopt::Long;
 use DBI;
+use Try::Tiny;
 
 use X2Go::Config qw( get_sqlconfig );
 use X2Go::Log qw( loglevel );
@@ -36,6 +37,7 @@ sub show_usage()
 {
 	print "X2Go SQL admin interface. Use it to create x2go database and insert or remove users or groups in x2go database\n".
 	      "Usage:\nx2godbadmin --createdb\n".
+	      "x2godbadmin --updatedb\n".
 	      "x2godbadmin --listusers\n".
 	      "x2godbadmin --adduser|rmuser <UNIX user>\n".
 	      "x2godbadmin --addgroup|rmgroup <UNIX group>\n";
@@ -43,16 +45,17 @@ sub show_usage()
 
 my $help='';
 my $createdb='';
+my $updatedb='';
 my $adduser='';
 my $rmuser='';
 my $addgroup='';
 my $rmgroup='';
 my $listusers='';
 
-GetOptions('listusers' => \$listusers, 'createdb' => \$createdb, 'help' => \$help, 'adduser=s' => \$adduser, 
+GetOptions('listusers' => \$listusers, 'createdb' => \$createdb, 'updatedb' => \$updatedb, 'help' => \$help, 'adduser=s' => \$adduser, 
            'addgroup=s' => \$addgroup, 'rmuser=s' => \$rmuser, 'rmgroup=s' => \$rmgroup);
 
-if ($help  || ! ( $createdb || $adduser || $rmuser || $addgroup || $rmgroup || $listusers))
+if ($help  || ! ( $createdb || $updatedb || $adduser || $rmuser || $addgroup || $rmgroup || $listusers))
 {
 	show_usage();
 	exit(0);
@@ -74,9 +77,56 @@ if ($Config->param("backend") eq 'sqlite')
 
 	if ($listusers|| $adduser||$addgroup||$rmuser||$rmgroup)
 	{
-		print "Only \"--createdb\" option is available with sqlite backend\n";
+		print "Only \"--createdb\" and \"--updatedb\" options are available with SQLite3 backend\n";
 		exit(0);
 	}
+	if ($updatedb)
+	{
+		if ( ! -e $dbfile)
+		{
+
+			$createdb = 1;
+
+		} else {
+
+			# Update the session DB file
+			my $dbh=DBI->connect("dbi:SQLite:dbname=$dbfile","","",{AutoCommit => 1, PrintError => 0, PrintWarn  => 1, RaiseError => 1 }) or die $_;
+			my $coltest;
+			my $sth;
+			# Update missing column on sessions table: tekictrl_port
+			try
+			{
+				$dbh->prepare("
+				              select tekictrl_port from sessions
+				              ");
+			} catch {
+				print "ADDING: tekictrl_port column to table sessions\n";
+				$sth=$dbh->prepare("
+				                   alter table sessions add column 'tekictrl_port' int
+				                   ");
+				$sth->execute();
+				$sth->finish();
+			};
+
+			# Update missing column on sessions table: tekidata_port
+			try
+			{
+				$dbh->prepare("
+				              select tekidata_port from sessions
+				              ");
+			} catch {
+				print "ADDING: tekidata_port column to table sessions\n";
+				$sth=$dbh->prepare("
+				                   alter table sessions add column 'tekidata_port' int
+				                   ");
+				$sth->execute();
+				$sth->finish();
+			};
+
+			exit(0);
+		}
+	}
+
 	if ($createdb)
 	{
 		if (! -d "$dir" )
@@ -104,6 +154,8 @@ if ($Config->param("backend") eq 'sqlite')
 		                      gr_port int,
 		                      sound_port int,
 		                      fs_port int,
+		                      tekictrl_port int,
+		                      tekidata_port int,
 		                      unique(display))
 		                      ");
 		$sth->execute() or die;
@@ -374,6 +426,8 @@ sub create_tables()
 	                      gr_port int,
 	                      sound_port int,
 	                      fs_port int,
+	                      tekictrl_port int,
+	                      tekictrl_data int,
 	                      creator_id text NOT NULL default current_user,
 	                      unique(display))
 	                      ");
@@ -383,7 +437,7 @@ sub create_tables()
 	                   create VIEW sessions_view as 
 	                   SELECT 
 	                   agent_pid, session_id, display, server, status, init_time, cookie, client, gr_port,
-	                   sound_port, last_time, uname, fs_port from  sessions 
+	                   sound_port, last_time, uname, fs_port, tekictrl_port, tekidata_port from  sessions
 	                   where creator_id = current_user
 	                   ");
 	$sth->execute() or die;
@@ -428,6 +482,8 @@ sub create_tables()
 	                   gr_port=NEW.gr_port,
 	                   sound_port=NEW.sound_port,
 	                   fs_port=NEW.fs_port
+	                   tekictrl_port=NEW.tekictrl_port
+	                   tekidata_port=NEW.tekidata_port
 	                   where session_id=OLD.session_id and creator_id=current_user
 	                   ");
 	$sth->execute() or die;
