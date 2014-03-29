@@ -58,6 +58,8 @@ install_config:
 	if [ -e /etc/debian_version ]; then if [ -d $(XSESSIONDIR) ]; then $(INSTALL_SYMLINK) $(XSESSIONDIR) $(DESTDIR)$(ETCDIR)/Xsession.d; else $(INSTALL_DIR) $(DESTDIR)$(ETCDIR)/Xsession.d; fi; fi
 	if [ -e /etc/redhat-release ]; then if [ -d $(XINITRCDIR) ]; then $(INSTALL_SYMLINK) $(XINITRCDIR) $(DESTDIR)$(ETCDIR)/xinitrc.d; else $(INSTALL_DIR) $(DESTDIR)$(ETCDIR)/xinitrc.d; fi; fi
 	if [ -e /etc/redhat-release ]; then if [ -d $(XCLIENTSDIR) ]; then $(INSTALL_SYMLINK) $(XCLIENTSDIR) $(DESTDIR)$(ETCDIR)/Xclients.d; else $(INSTALL_DIR) $(DESTDIR)$(ETCDIR)/Xclients.d; fi; fi
+	if [ -e /etc/gentoo-release ]; then if [ -d $(XINITRCDIR) ]; then $(INSTALL_SYMLINK) $(XINITRCDIR) $(DESTDIR)$(ETCDIR)/xinitrc.d; else $(INSTALL_DIR) $(DESTDIR)$(ETCDIR)/xinitrc.d; fi; fi
+	if [ -e /etc/gentoo-release ]; then if [ -d $(XCLIENTSDIR) ]; then $(INSTALL_SYMLINK) $(XCLIENTSDIR) $(DESTDIR)$(ETCDIR)/Xclients.d; else $(INSTALL_DIR) $(DESTDIR)$(ETCDIR)/Xclients.d; fi; fi
 
 install_man:
 
