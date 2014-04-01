@@ -21,6 +21,8 @@ x2goserver (4.0.1.14-0x2go1) UNRELEASED; urgency=low
     - Provide proper Gentoo support in x2goserver-xsession portion of
       X2Go Server. (Fixes: #445).
     - x2gofm.desktop: Drop obsolete Encoding key from .desktop file.
+    - Fix typos / hyphen-as-minus signs issues in x2goversion.8 and
+      x2gomountdirs.8.
   * x2goserver.spec:
     - Let builds for EPEL-7 behave like recent Fedora builds.
   * debian/*.doc-base:
