@@ -120,6 +120,9 @@ x2goserver (4.0.1.14-0x2go1) UNRELEASED; urgency=low
       X2Go Server. (Fixes: #445).
   * x2goserver.spec:
     - Let builds for EPEL-7 behave like recent Fedora builds.
+  * debian/*.doc-base:
+    + Provide *.doc-base files for bin:packages containing HTML man pages
+      or other documentation.
 
   [ Harald Nordgard-Hansen ]
   * New upstream release (4.0.1.14):

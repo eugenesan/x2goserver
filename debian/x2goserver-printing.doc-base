@@ -1,0 +1,9 @@
+Document: x2goserver-printing
+Title: X2Go Server printing (man pages)
+Author: Mike Gabriel
+Abstract: Man pages for scripts from package x2goserver-printing
+Section: System/Administration
+
+Format: HTML
+Index: /usr/share/doc/x2goserver-printing/html/
+Files: /usr/share/doc/x2goserver-printing/html/*
