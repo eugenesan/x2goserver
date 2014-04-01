@@ -29,6 +29,8 @@ x2goserver (4.0.1.14-0x2go1) UNRELEASED; urgency=low
     + Add status option for init script (test if x2gocleansessions is
       running or not).
     + Add Description key to LSB header.
+  * debian/config:
+    + Explicitly call set -e. Makes lintian happier.
 
   [ Harald Nordgard-Hansen ]
   * New upstream release (4.0.1.14):
