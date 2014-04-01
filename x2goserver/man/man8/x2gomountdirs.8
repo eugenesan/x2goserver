@@ -15,7 +15,7 @@ x2gomountdirs \- Share Client-Side Folder with X2Go Session
 x2gomountdirs <mount_type> <session_id> <username> <key_file> <dir1> [<dir2> [<dir3> [...]]]
 
 .SH DESCRIPTION
-\fBx2gomountdirs\fR mounts client-side folders or devices onto mountpoints that are accessible
+\fBx2gomountdirs\fR mounts client\-side folders or devices onto mountpoints that are accessible
 from within your remote X2Go session.
 .PP
 \fBx2gomountdirs\fR is run with X2Go user privileges and normally issued by an X2Go client application.
@@ -38,19 +38,19 @@ Location of a temporary private SSH key file (only valid for this command execut
 A list of client-side folders or device mount points that shall be mounted for X2Go session <session_id>.
 .PP
 .SH PERMISSIONS
-X2Go uses the fuse-based SSH filesystem (SSHFS) for sharing client-side file ressources with X2Go sessions.
+X2Go uses the fuse-based SSH filesystem (SSHFS) for sharing client\-side file resources with X2Go sessions.
 Users that shall use X2Go folder sharing must be members of the X2Go server's ,,fuse'' POSIX group.
 .SH RETURN VALUES
 \fBx2gomountdirs\fR returns some mount point information to stdout if the mounting process has been successful.
-The mount results are printed line-by-line. The individual lines must be interpreted as shown below:
+The mount results are printed line\-by\-line. The individual lines must be interpreted as shown below:
 
     line 01: dirs:<local_path>__REVERSESSH_PORT__<sshfs_port>
     line 02: ssh port:<sshfs_port>
     line 03: Host:<client_ip>
     line 04: User:<user>
-    line 05: inserted, sshfs  -o <options> \\
+    line 05: inserted, sshfs  \-o <options> \\
                 "<user">@<client_ip>:"<local_path>" \\
-                "<server_path>" -p <sshfs_port>
+                "<server_path>" \-p <sshfs_port>
     line 06: mount <local_path> ok
     line 07: fname: <desktop_icon_name>
 .PP
@@ -65,3 +65,4 @@ x2goumount-session(8)
 .SH AUTHOR
 This manual has been written by Mike Gabriel <mike.gabriel@das-netzwerkteam.de> for the X2Go project
 (http://www.x2go.org).
+
