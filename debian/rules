@@ -4,9 +4,11 @@
 	PREFIX=/usr dh $@
 
 override_dh_auto_install:
+	if [ -f ChangeLog.gitlog ]; then cp ChangeLog.gitlog ChangeLog; fi
 	PREFIX=/usr make -f Makefile build-arch
 
 override_dh_auto_clean:
+	rm -f ChangeLog
 	rm -fv x2gosqlitewrapper
 	rm -Rfv x2goserver/.build_html
 	rm -Rfv x2goserver-extensions/.build_html
