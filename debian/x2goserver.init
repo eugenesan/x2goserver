@@ -1,4 +1,5 @@
 #! /bin/sh -e
+
 ### BEGIN INIT INFO
 # Provides:          x2goserver
 # Required-Start:    $remote_fs $syslog
@@ -6,6 +7,7 @@
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
 # Short-Description: Start and stop the X2Go daemon
+# Description:       The X2Go daemon is responsible for post-session clean-ups
 ### END INIT INFO
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
@@ -41,6 +43,13 @@ case "$1" in
 		stop
 		sleep 1
 		start
+	;;
+	status)
+		if ps -C x2gocleansessions 1>/dev/null 2>/dev/null; then
+			log_action_msg "X2Go Server clean-up daemon is up and running"
+		else
+			log_warning_msg "X2Go Server clean-up daemon is down"
+		fi
 	;;
 	*)
 		N=/etc/init.d/x2goserver
