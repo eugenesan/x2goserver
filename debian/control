@@ -8,7 +8,7 @@ Uploaders:
  Reinhard Tartler <siretart@tauware.de>,
 Build-Depends: 
  debhelper (>= 7.0.50~),
- man2html-base | man2html
+ man2html-base | man2html,
 Standards-Version: 3.9.4
 Homepage: http://code.x2go.org/releases/source/x2goserver
 Vcs-Git: git://code.x2go.org/x2goserver.git
@@ -17,11 +17,11 @@ Vcs-Browser: http://code.x2go.org/gitweb?p=x2goserver.git;a=summary
 Package: x2goserver
 Architecture: any
 Depends:
- x2goserver-common (>= 4.1.0.0-0~),
+ x2goserver-common (>= ${source:Version}), x2goserver-common (<< ${source:Version}.1~),
  ${misc:Depends},
  libfile-basedir-perl,
  libfile-readbackwards-perl,
- libx2go-server-perl (>= ${source:Version}), libx2go-server-db-perl (<< ${source:Version}.1~),
+ libx2go-server-perl (>= ${source:Version}), libx2go-server-perl (<< ${source:Version}.1~),
  x2goagent (>= 2:3.5.0.15-0~),
  lsof,
  bc,
@@ -49,7 +49,7 @@ Recommends:
 Suggests:
  rdesktop,
  pulseaudio-utils
-Breaks:
+Conflicts:
  x2goserver-one,
  x2goserver-home,
  x2goserver-compat,
@@ -93,7 +93,7 @@ Description: X2Go Server (common files)
  and the X2Go::Server Perl API.
 
 Package: libx2go-server-perl
-Architecture: any
+Architecture: all
 Section: perl
 Depends:
  ${perl:Depends},
@@ -142,7 +142,7 @@ Description: Perl X2Go::Server:DB package
  This package contains the X2Go::Server::DB Perl package.
 
 Package: libx2go-log-perl
-Architecture: any
+Architecture: all
 Section: perl
 Depends:
  ${perl:Depends},
@@ -164,13 +164,13 @@ Architecture: all
 Depends:
  ${misc:Depends},
  x2goserver (>= ${source:Version}), x2goserver (<< ${source:Version}.1~),
- adduser
-Breaks:
- x2goprint
+ adduser,
+Conflicts:
+ x2goprint,
 Replaces:
- x2goprint
+ x2goprint,
 Suggests:
- cups-x2go
+ cups-x2go,
 Description: X2Go server (printing support)
  X2Go is a server based computing environment with
     - session resuming
@@ -198,7 +198,7 @@ Architecture: all
 Depends:
  ${misc:Depends},
  x2goserver (>= ${source:Version}), x2goserver (<< ${source:Version}.1~),
- x11-xkb-utils
+ x11-xkb-utils,
 Description: X2Go Server (extension support)
  X2Go is a server based computing environment with
     - session resuming
@@ -220,7 +220,7 @@ Architecture: all
 Depends:
  ${misc:Depends},
  x2goserver (>= ${source:Version}), x2goserver (<< ${source:Version}.1~),
- x11-common
+ x11-common,
 Description: X2Go Server (Xsession runner)
  X2Go is a server based computing environment with
     - session resuming
@@ -244,7 +244,7 @@ Depends:
  ${misc:Depends},
  x2goserver (>= ${source:Version}), x2goserver (<< ${source:Version}.1~),
  desktop-file-utils,
- xdg-utils
+ xdg-utils,
 Description: X2Go Server (file manager bindings)
  X2Go is a server based computing environment with
     - session resuming
