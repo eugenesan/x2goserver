@@ -1,0 +1,9 @@
+Document: x2goserver
+Title: X2Go Server (man pages)
+Author: Mike Gabriel
+Abstract: Man pages for scripts from package x2goserver
+Section: System/Administration
+
+Format: HTML
+Index: /usr/share/doc/x2goserver/html/
+Files: /usr/share/doc/x2goserver/html/*

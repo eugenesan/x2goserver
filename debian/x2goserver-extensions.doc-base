@@ -1,0 +1,9 @@
+Document: x2goserver-extensions
+Title: X2Go Server extensions (man pages)
+Author: Mike Gabriel
+Abstract: Man pages for scripts from package x2goserver-extensions
+Section: System/Administration
+
+Format: HTML
+Index: /usr/share/doc/x2goserver-extensions/html/
+Files: /usr/share/doc/x2goserver-extensions/html/*

@@ -1,0 +1,10 @@
+Document: x2goserver-xsession
+Title: X2Go Xsession README
+Author: Mike Gabriel
+Abstract: This document describes how X2Go should be used to launch desktop
+ sessions
+Section: System/Administration
+
+Format: text
+Index: /usr/share/doc/x2goserver-xsession/doc/README.Xsession-X2Go
+Files: /usr/share/doc/x2goserver-xsession/doc/README.Xsession-X2Go
