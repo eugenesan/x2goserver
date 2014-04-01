@@ -66,6 +66,8 @@ x2goserver (4.1.0.0-0x2go1) UNRELEASED; urgency=low
     to libx2go-server-db-perl and x2goserver-common).
   * debian/copyright:
     + Provide DEP-5 compliant copyright file.
+    + Add copyright.in auto-generated file (by licensecheck+CDBS) for later
+      reference.
   * x2goclient.spec:
     + Bring debian/control and x2goclient.spec in sync.
     + Make sure x2godbadmin is evoked from package x2goserver.
