@@ -205,7 +205,6 @@ sed -i -e 's/\t$(MAKE) -C x2goserver-pyhoca/#\t$(MAKE) -C x2goserver-pyhoca/g' M
 # Don't try to be root
 sed -i -e 's/-o root -g root//' */Makefile
 
-
 %build
 export PATH=%{_qt4_bindir}:$PATH
 make CFLAGS="%{optflags} -fPIC" %{?_smp_mflags} PERL_INSTALLDIRS=vendor PREFIX=%{_prefix}
@@ -243,6 +242,9 @@ install -pm0755 %SOURCE2 %{buildroot}%{_initddir}/x2goserver
 %endif
 %endif
 
+%if 0%{?el5}
+echo "Encoding=UTF-8" >> %{buildroot}%{_datadir}/applications/x2gofm.desktop
+%endif
 desktop-file-validate %{buildroot}%{_datadir}/applications/x2gofm.desktop
 
 
