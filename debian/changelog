@@ -102,7 +102,7 @@ x2goserver (4.1.0.0-0x2go1) UNRELEASED; urgency=low
 
  -- Reinhard Tartler <siretart@tauware.de>  Thu, 20 Dec 2012 10:15:26 +0100
 
-x2goserver (4.0.1.14-0x2go1) UNRELEASED; urgency=low
+x2goserver (4.0.1.14-0x2go1) unstable; urgency=low
 
   [ Mike Gabriel ]
   * New upstream release (4.0.1.14):
@@ -158,7 +158,7 @@ x2goserver (4.0.1.14-0x2go1) UNRELEASED; urgency=low
     - Fix the x2goserver.service unit file. Allow systemd to track the service
       after startup. (Fixes: #428).
 
- -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 28 Jan 2014 13:41:38 +0100
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Wed, 02 Apr 2014 14:32:39 +0200
 
 x2goserver (4.0.1.13-0x2go1) unstable; urgency=low
 

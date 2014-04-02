@@ -1,0 +1,4 @@
+# this package contains symlinks to files/dirs from another package
+x2goserver-xsession: package-contains-broken-symlink etc/x2go/Xresources ../X11/Xresources
+x2goserver-xsession: package-contains-broken-symlink etc/x2go/Xsession.d ../X11/Xsession.d
+x2goserver-xsession: package-contains-broken-symlink etc/x2go/Xsession.options ../X11/Xsession.options
