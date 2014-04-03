@@ -102,14 +102,14 @@ x2goserver (4.1.0.0-0x2go1) UNRELEASED; urgency=low
 
  -- Reinhard Tartler <siretart@tauware.de>  Thu, 20 Dec 2012 10:15:26 +0100
 
-x2goserver (4.0.1.15-0x2go1) UNRELEASED; urgency=low
+x2goserver (4.0.1.15-0x2go1) unstable; urgency=low
 
   * New upstream release (4.0.1.15):
     + Fix hanging of x2goserver init script. Cherry-pick a322d8c from master
       branch. (Fixes: #471).
     + Add COPYING (GPL-2) file to base project folder.
 
- -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Thu, 03 Apr 2014 10:08:05 +0200
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Thu, 03 Apr 2014 11:35:50 +0200
 
 x2goserver (4.0.1.14-0x2go1) unstable; urgency=low
 
