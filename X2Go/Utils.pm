@@ -85,7 +85,7 @@ sub source_environment {
 
 # Over-zealous string sanitizer that makes perl strict and  perl -T happy...
 sub sanitizer {
-	my $type   = $_[0];
+	my $type   = lc($_[0]);
 	my $string = $_[1];
 	if ($type eq "anumazcs") {
 		$string =~ s/[^a-zA-Z0-9]//g;
