@@ -152,7 +152,7 @@ sub db_getmounts
 {
 	my $dbh = init_db();
 	my $sid=shift or die "argument \"session_id\" missed";
-	$sid = sanitizer('pnixusername', $sid) or die "argument \"session_id\" malformed";
+	$sid = sanitizer('x2gosid', $sid) or die "argument \"session_id\" malformed";
 	check_user($sid);
 	my @strings;
 	my $sth=$dbh->prepare("select client, path from mounts where session_id=?");
@@ -172,7 +172,7 @@ sub db_deletemount
 {
 	my $dbh = init_db();
 	my $sid=shift or die "argument \"session_id\" missed";
-	$sid = sanitizer('pnixusername', $sid) or die "argument \"session_id\" malformed";
+	$sid = sanitizer('x2gosid', $sid) or die "argument \"session_id\" malformed";
 	my $path=shift or die "argument \"path\" missed";
 	check_user($sid);
 	my $sth=$dbh->prepare("delete from mounts where session_id=? and path=?");
@@ -190,7 +190,7 @@ sub db_insertmount
 {
 	my $dbh = init_db();
 	my $sid=shift or die "argument \"session_id\" missed";
-	$sid = sanitizer('pnixusername', $sid) or die "argument \"session_id\" malformed";
+	$sid = sanitizer('x2gosid', $sid) or die "argument \"session_id\" malformed";
 	my $path=shift or die "argument \"path\" missed";
 	my $client=shift or die "argument \"client\" missed";
 	check_user($sid);
@@ -215,7 +215,7 @@ sub db_insertsession
 	$display = sanitizer('num', $display) or die "argument \"display\" malformed";
 	my $server=shift or die "argument \"server\" missed";
 	my $sid=shift or die "argument \"session_id\" missed";
-	$sid = sanitizer('pnixusername', $sid) or die "argument \"session_id\" malformed";
+	$sid = sanitizer('x2gosid', $sid) or die "argument \"session_id\" malformed";
 	check_user($sid);
 	my $sth=$dbh->prepare("insert into sessions (display,server,uname,session_id, init_time, last_time) values
 	                       (?, ?, ?, ?, datetime('now','localtime'), datetime('now','localtime'))");
@@ -232,7 +232,7 @@ sub db_insertshadowsession
 	$display = sanitizer('num', $display) or die "argument \"display\" malformed";
 	my $server=shift or die "argument \"server\" missed";
 	my $sid=shift or die "argument \"session_id\" missed";
-	$sid = sanitizer('pnixusername', $sid) or die "argument \"session_id\" malformed";
+	$sid = sanitizer('x2gosid', $sid) or die "argument \"session_id\" malformed";
 	my $shadreq_user = shift or die "argument \"shadreq_user\" missed";
 	my $fake_sid = $sid;
 	$fake_sid =~ s/$shadreq_user-/$realuser-/;
@@ -259,7 +259,7 @@ sub db_createsession
 	my $fs_port=shift or die"argument \"fs_port\" missed";
 	$fs_port = sanitizer('num', $fs_port) or die "argument \"fs_port\" malformed";
 	my $sid=shift or die "argument \"session_id\" missed";
-	$sid = sanitizer('pnixusername', $sid) or die "argument \"session_id\" malformed";
+	$sid = sanitizer('x2gosid', $sid) or die "argument \"session_id\" malformed";
 	check_user($sid);
 	my $sth=$dbh->prepare("update sessions set status='R',last_time=datetime('now','localtime'),cookie=?,agent_pid=?,
 	                       client=?,gr_port=?,sound_port=?,fs_port=? where session_id=? and uname=?");
@@ -288,7 +288,7 @@ sub db_createshadowsession
 	my $fs_port=shift or die"argument \"fs_port\" missed";
 	$fs_port = sanitizer('num', $fs_port) or die "argument \"fs_port\" malformed";
 	my $sid=shift or die "argument \"session_id\" missed";
-	$sid = sanitizer('pnixusername', $sid) or die "argument \"session_id\" malformed";
+	$sid = sanitizer('x2gosid', $sid) or die "argument \"session_id\" malformed";
 	my $shadreq_user = shift or die "argument \"shadreq_user\" missed";
 	my $fake_sid = $sid;
 	$fake_sid =~ s/^$shadreq_user-/$realuser-/;
@@ -311,7 +311,7 @@ sub db_insertport
 	my $dbh = init_db();
 	my $server=shift or die "argument \"server\" missed";
 	my $sid=shift or die "argument \"session_id\" missed";
-	$sid = sanitizer('pnixusername', $sid) or die "argument \"session_id\" malformed";
+	$sid = sanitizer('x2gosid', $sid) or die "argument \"session_id\" malformed";
 	my $sshport=shift or die "argument \"port\" missed";
 	my $sth=$dbh->prepare("insert into used_ports (server,session_id,port) values  (?, ?, ?)");
 	check_user($sid);
@@ -330,7 +330,7 @@ sub db_rmport
 	my $dbh = init_db();
 	my $server=shift or die "argument \"server\" missed";
 	my $sid=shift or die "argument \"session_id\" missed";
-	$sid = sanitizer('pnixusername', $sid) or die "argument \"session_id\" malformed";
+	$sid = sanitizer('x2gosid', $sid) or die "argument \"session_id\" malformed";
 	my $sshport=shift or die "argument \"port\" missed";
 	my $sth=$dbh->prepare("delete from used_ports where server=? and session_id=? and port=?");
 	check_user($sid);
@@ -348,7 +348,7 @@ sub db_resume
 	my $dbh = init_db();
 	my $client=shift or die "argument \"client\" missed";
 	my $sid=shift or die "argument \"session_id\" missed";
-	$sid = sanitizer('pnixusername', $sid) or die "argument \"session_id\" malformed";
+	$sid = sanitizer('x2gosid', $sid) or die "argument \"session_id\" malformed";
 	my $gr_port=shift or die "argument \"gr_port\" missed";
 	$gr_port = sanitizer('num', $gr_port) or die "argument \"gr_port\" malformed";
 	my $snd_port=shift or die "argument \"snd_port\" missed";
@@ -373,7 +373,7 @@ sub db_changestatus
 	my $dbh = init_db();
 	my $status=shift or die "argument \"status\" missed";
 	my $sid=shift or die "argument \"session_id\" missed";
-	$sid = sanitizer('pnixusername', $sid) or die "argument \"session_id\" malformed";
+	$sid = sanitizer('x2gosid', $sid) or die "argument \"session_id\" malformed";
 	check_user($sid);
 	my $sth=$dbh->prepare("update sessions set last_time=datetime('now','localtime'),
 	                       status=? where session_id = ? and uname=?");
@@ -391,7 +391,7 @@ sub db_getstatus
 {
 	my $dbh = init_db();
 	my $sid=shift or die "argument \"session_id\" missed";
-	$sid = sanitizer('pnixusername', $sid) or die "argument \"session_id\" malformed";
+	$sid = sanitizer('x2gosid', $sid) or die "argument \"session_id\" malformed";
 	check_user($sid);
 	my $sth=$dbh->prepare("select status from sessions where session_id = ?");
 	$sth->execute($sid);
@@ -484,7 +484,7 @@ sub db_getagent
 {
 	my $dbh = init_db();
 	my $sid=shift or die "argument \"session_id\" missed";
-	$sid = sanitizer('pnixusername', $sid) or die "argument \"session_id\" malformed";
+	$sid = sanitizer('x2gosid', $sid) or die "argument \"session_id\" malformed";
 	my $agent;
 	check_user($sid);
 	my $sth=$dbh->prepare("select agent_pid from sessions
@@ -510,7 +510,7 @@ sub db_getdisplay
 {
 	my $dbh = init_db();
 	my $sid=shift or die "argument \"session_id\" missed";
-	$sid = sanitizer('pnixusername', $sid) or die "argument \"session_id\" malformed";
+	$sid = sanitizer('x2gosid', $sid) or die "argument \"session_id\" malformed";
 	my $display;
 	check_user($sid);
 	my $sth=$dbh->prepare("select display from sessions
