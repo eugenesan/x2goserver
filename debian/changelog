@@ -103,6 +103,12 @@ x2goserver (4.1.0.0-0x2go1) UNRELEASED; urgency=low
 
  -- Reinhard Tartler <siretart@tauware.de>  Thu, 20 Dec 2012 10:15:26 +0100
 
+x2goserver (4.0.1.16-0x2go1) UNRELEASED; urgency=low
+
+  * Continue development on release branch...
+
+ -- Mike DePaulo <mikedep333@gmail.com>  Thu, 23 Apr 2014 17:49:00 -0500
+
 x2goserver (4.0.1.15-0x2go1) unstable; urgency=low
 
   * New upstream release (4.0.1.15):
