@@ -81,17 +81,49 @@ fi
 # Ubuntu launches Unity (in accelerated mode) when calling gnome-session.
 # To make the GNOME variants start up properly on Debian/Ubuntu we have to make the following differentiations
 
-# before and with Ubuntu 10.10 (maverick): GNOME -> gnome-session (would start GNOME2)
-# Ubuntu 11.04 (natty): GNOME -> gnome-session --session=2d-gnome, UNITY -> gnome-session --session=2d-ubuntu (GNOME3 based desktop shells)
-# Ubuntu 11.10 (oneiric) or later: GNOME -> gnome-session --session=gnome-fallback, UNITY -> gnome-session --session=ubuntu-2d (GNOME3 based desktop shells)
+# Ubuntu 10.10 and earlier (maverick):
+#		 GNOME -> gnome-session
+#		 (would start GNOME2)
+# Ubuntu 11.04 (natty):
+#		 GNOME -> gnome-session --session=2d-gnome
+#		 UNITY -> gnome-session --session=2d-ubuntu
+#		 (GNOME3 based desktop shells)
+# Ubuntu 11.10 (oneiric) & 12.04 (precise):
+#		 GNOME -> gnome-session --session=gnome-fallback
+#		 UNITY -> gnome-session --session=ubuntu-2d
+#		 (GNOME3 based desktop shells)
+# Ubuntu 12.10 (quantal):
+#		 GNOME -> gnome-session --session=gnome-fallback
+#		 UNITY -> gnome-session --session=ubuntu
+#		 (GNOME3 based desktop shells)
+# Ubuntu 13.10 (raring) and later:
+#		 GNOME -> gnome-session --session=gnome-flashback
+#		 UNITY -> gnome-session --session=ubuntu
+#		 (GNOME3 based desktop shells)
 
-# before and with Debian squeeze: GNOME -> gnome-session (would start GNOME2)
-# Debian wheezy: GNOME -> gnome-session --session=gnome-fallback, UNITY: not available (GNOME3 based desktop shells)
+# Debian squeeze and earlier:
+#		 GNOME -> gnome-session
+#		 (would start GNOME2)
+# Debian wheezy:
+#		 GNOME -> gnome-session --session=gnome-fallback
+#		 UNITY: not available
+#		 (GNOME3 based desktop shells)
+# Debian jessie:
+#		 GNOME -> gnome-session --session=gnome-flashback
+#		 UNITY: not available
+#		 (GNOME3 based desktop shells)
 
 if [ "$cmd" == "GNOME" ] || [ "$cmd" == "gnome-session" ]; then
-
 	cmd="/usr/bin/gnome-session"
-	if [ "$DISTRIB_ID" == "Ubuntu" ] && [ "$(echo "$DISTRIB_RELEASE >= 11.10" | bc)" == "1" ]; then
+	if [ "$DISTRIB_ID" == "Ubuntu" ] && [ "$(echo "$DISTRIB_RELEASE >= 13.10" | bc)" == "1" ]; then
+		export DESKTOP_SESSION="gnome-flashback"
+		if [ -z "$GTK_MODULES" ] ; then
+			export GTK_MODULES="unity-gtk-module"
+		else
+			export GTK_MODULES="$GTK_MODULES:unity-gtk-module"
+		fi
+		args=" --session=$DESKTOP_SESSION"
+	elif [ "$DISTRIB_ID" == "Ubuntu" ] && [ "$(echo "$DISTRIB_RELEASE >= 11.10" | bc)" == "1" ]; then
 		export DESKTOP_SESSION="gnome-fallback"
 		args=" --session=$DESKTOP_SESSION"
 	elif [ "$DISTRIB_ID" == "Ubuntu" ] && [ "$(echo "$DISTRIB_RELEASE == 11.04" | bc)" == "1" ]; then
@@ -103,6 +135,9 @@ if [ "$cmd" == "GNOME" ] || [ "$cmd" == "gnome-session" ]; then
 		export DESKTOP_SESSION="gnome"
 	elif cat /etc/debian_version | egrep "^(wheezy|7\.).*" >/dev/null; then
 		export DESKTOP_SESSION="gnome-fallback"
+		args=" --session=$DESKTOP_SESSION"
+	elif cat /etc/debian_version | egrep "^(jessie|8\.).*" >/dev/null; then
+		export DESKTOP_SESSION="gnome-flashback"
 		args=" --session=$DESKTOP_SESSION"
 	fi
 
