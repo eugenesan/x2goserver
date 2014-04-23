@@ -5,6 +5,7 @@ x2goserver (4.0.1.16-0x2go1) UNRELEASED; urgency=low
     (Note: This requires that gnome-flashback.session actually be installed.
      It also currently requires that the gnome-session binary not require
      hardware 3D acceleration for said session.)
+    (Thanks Eugene San (eugenesan@gmail.com))
 
  -- Mike DePaulo <mikedep333@gmail.com>  Thu, 23 Apr 2014 17:49:00 -0500
 
