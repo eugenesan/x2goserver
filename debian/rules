@@ -15,4 +15,8 @@ override_dh_auto_clean:
 	rm -f ChangeLog
 	rm -Rfv x2goserver/.build_html
 	rm -Rfv x2goserver-extensions/.build_html
+	rm -f ChangeLog.gitlog
+	rm -f MYMETA.yml
+	rm -f Makefile.perl.old
 	PREFIX=/usr dh_auto_clean
+	rm -f Makefile.perl
