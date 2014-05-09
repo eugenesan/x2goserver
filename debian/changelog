@@ -61,6 +61,7 @@ x2goserver (4.1.0.0-0x2go1) UNRELEASED; urgency=low
   * debian/x2goserver.postinst, debian/libx2go-server-db-perl:
     + Handle X2Go session DB creation in x2goserver _and_
       perl-X2Go-Server-DB on postinst.
+    - Make sure X2Go session DB files get updated during postinst.
   * debian/libx2go-server-db-perl installation scripts:
     + Remove dpkg-statoverride during remove on prerm, not on purge in postrm.
   * debian/x2goserver.init:
@@ -85,6 +86,7 @@ x2goserver (4.1.0.0-0x2go1) UNRELEASED; urgency=low
     + Make sure x2goserver-*.features files do not get installed
       multiple times into various packages.
     + Make sure X2Go Server (x2gocleansessions) starts after installation.
+    - Make sure X2Go session DB files get updated during postinst.
 
   [ Guangzhou Nianguan Electronics Technology Co.Ltd. ]
   * New upstream version (4.1.0.0):

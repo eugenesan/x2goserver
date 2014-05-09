@@ -46,6 +46,7 @@ case "$1" in
 				chmod 0770 /var/lib/x2go
 				# ... and to the db file itself, of course
 				chmod 0660 /var/lib/x2go/x2go_sessions
+				x2godbadmin --updatedb
 			fi
 		else
 			echo "X2Go is configured to use a non-SQLite DB backend, leaving the database alone."

@@ -320,6 +320,8 @@ exit 0
 [ ! -s %{_sharedstatedir}/x2go/x2go_sessions ] && egrep "^backend=sqlite.*" /etc/x2go/x2gosql/sql 1>/dev/null 2>/dev/null &&
   %{_sbindir}/x2godbadmin --createdb 1>/dev/null 2>/dev/null || :
 
+egrep "^backend=sqlite.*" /etc/x2go/x2gosql/sql 1>/dev/null 2>/dev/null && { [ ! -s %{_sharedstatedir}/x2go/x2go_sessions ] && %{_sbindir}/x2godbadmin --createdb 1>/dev/null 2>/dev/null || %{_sbindir}/x2godbadmin --updatedb 1>/dev/null 2>/dev/null; }
+
 %if 0%{?fedora} || 0%{?el7}
 %systemd_post x2goserver.service
 
