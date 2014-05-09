@@ -1,11 +1,11 @@
 x2goserver (4.0.1.16-0x2go1) UNRELEASED; urgency=low
 
-  * Continue development on release branch...
-  - Support GNOME Flashback session on Ubuntu 13.10+ and on debian Jessie
-    (Note: This requires that gnome-flashback.session actually be installed.
-     It also currently requires that the gnome-session binary not require
-     hardware 3D acceleration for said session.)
-    (Thanks Eugene San (eugenesan@gmail.com))
+  * New upstream release (4.0.1.16):
+    - Support GNOME Flashback session on Ubuntu 13.10+ and on debian Jessie
+      (Note: This requires that gnome-flashback.session actually be installed.
+       It also currently requires that the gnome-session binary not require
+       hardware 3D acceleration for said session.)
+      (Thanks Eugene San (eugenesan@gmail.com))
   * debian/rules:
     + Improve dh_auto_clean override.
 
