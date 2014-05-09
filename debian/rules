@@ -12,4 +12,5 @@ override_dh_auto_clean:
 	rm -fv x2gosqlitewrapper
 	rm -Rfv x2goserver/.build_html
 	rm -Rfv x2goserver-extensions/.build_html
+	rm -f ChangeLog.gitlog
 	PREFIX=/usr dh_auto_clean
