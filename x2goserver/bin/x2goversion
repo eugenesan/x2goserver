@@ -38,6 +38,7 @@ if [ -n "$1" ]; then
 		echo "$(get_version ${X2GO_COMPONENT_VERFILE})"
 	else
 		echo "Version information for X2Go component '$X2GO_COMPONENT' is not available." >&1
+		exit 1
 	fi
 else
 	cd "${X2GO_VERSIONS_BASEPATH}"
