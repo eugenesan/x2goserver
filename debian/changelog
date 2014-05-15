@@ -8,6 +8,8 @@ x2goserver (4.0.1.16-0x2go1) UNRELEASED; urgency=low
       (Thanks Eugene San (eugenesan@gmail.com))
     - Let x2goversion exit with an error if the X2Go component cannot be
       found.
+    - Detect terminated sessions from NX log file. Also interpret a session as
+      terminated if terminating just has started.
   * debian/rules:
     + Improve dh_auto_clean override.
 
