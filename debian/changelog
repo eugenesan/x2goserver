@@ -289,6 +289,8 @@ x2goserver (4.0.0.12-0x2go1) UNRELEASED; urgency=low
       file are expected by x2goresume-session at very specific positions. This
       we broke by trying to fix the fullscreen/geometry issue in x2gostartagent.
       Thanks to Harvey Eneman for tracking this down!!!
+    - Detect suspended sessions from NX log file. Also interpret a session as
+      suspended if suspending just has started.
 
   [ Oleksandr Shneyder ]
   * New upstream version (4.0.0.12):
