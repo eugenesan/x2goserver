@@ -44,7 +44,7 @@ sub is_suspended
 		last;
 	}
 	$log_file->close();
-	if (($log_line =~ m/Session suspended/) || ($log_line =~ m/Suspending session/))
+	if (($log_line =~ m/Session suspended/) || ($log_line =~ m/Suspending session/) || ($log_line =~ m/Display failure detected/))
 	{
 		return 1;
 	}

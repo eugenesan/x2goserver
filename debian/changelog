@@ -299,6 +299,7 @@ x2goserver (4.0.0.12-0x2go1) UNRELEASED; urgency=low
       Thanks to Harvey Eneman for tracking this down!!!
     - Detect suspended sessions from NX log file. Also interpret a session as
       suspended if suspending just has started.
+    - Interpret NX display failures as (about to be) suspended sessions.
 
   [ Oleksandr Shneyder ]
   * New upstream version (4.0.0.12):
