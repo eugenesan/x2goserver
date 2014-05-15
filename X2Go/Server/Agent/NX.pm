@@ -18,15 +18,15 @@
 # Copyright (C) 2007-2014 Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
 # Copyright (C) 2007-2014 Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
 
-package X2Go::Server::Agent;
+package X2Go::Server::Agent::NX;
 
 =head1 NAME
 
-X2Go::Server::Agent - X2Go Server Agent package for Perl
+X2Go::Server::Agent::NX - X2Go Server NX Agent package for Perl
 
 =head1 DESCRIPTION
 
-X2Go::Server::Agent Perl package for X2Go::Server.
+X2Go::Server::Agent::NX Perl package for X2Go::Server.
 
 =cut
 
