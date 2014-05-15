@@ -18,6 +18,8 @@ x2goserver (4.0.1.16-0x2go1) UNRELEASED; urgency=low
       terminated if terminating just has started.
     - Detect started/starting/resumed/resuming sessions by explicitly scanning
       the NX session log file for those keywords.
+    - Interpret NX sessions marked as "aborting session" as (not yet) terminated
+      sessions.
 
  -- Mike DePaulo <mikedep333@gmail.com>  Thu, 23 Apr 2014 17:49:00 -0500
 
