@@ -53,7 +53,7 @@ sub session_has_terminated
                 last;
         }
         $log_file->close();
-        if (($log_line =~ m/Session terminated/) || ($log_line =~ m/Terminating session/))
+        if (($log_line =~ m/Session terminated/) || ($log_line =~ m/Terminating session/) || ($log_line =~ m/Aborting session/))
         {
                 return 1;
         }
@@ -73,7 +73,7 @@ sub session_is_suspended
                 last;
         }
         $log_file->close();
-        if (($log_line =~ m/Session suspended/) || ($log_line =~ m/Suspending session/))
+        if (($log_line =~ m/Session suspended/) || ($log_line =~ m/Suspending session/) || ($log_line =~ m/Display failure detected/))
         {
                 return 1;
         }
