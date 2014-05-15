@@ -85,7 +85,15 @@ sub session_is_running
 {
         my $sess=shift;
         my $user=shift;
-        if (!session_is_suspended($sess, $user) && !session_has_terminated($sess, $user))
+        my $log="/tmp/.x2go-${user}/session-C-${sess}.log";
+        my $log_line;
+        my $log_file = File::ReadBackwards->new( $log ) or return 0;
+        while( defined( $log_line = $log_file->readline ) ) {
+                next if ( ! ( $log_line =~ m/^Session:/ ) );
+                last;
+        }
+        $log_file->close();
+        if (($log_line =~ m/Session started/) || ($log_line =~ m/Starting session/) || ($log_line =~ m/Session resumed/) || ($log_line =~ m/Resuming session/))
         {
                 return 1;
         }

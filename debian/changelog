@@ -124,6 +124,8 @@ x2goserver (4.0.1.16-0x2go1) UNRELEASED; urgency=low
       found.
     - Detect terminated sessions from NX log file. Also interpret a session as
       terminated if terminating just has started.
+    - Detect started/starting/resumed/resuming sessions by explicitly scanning
+      the NX session log file for those keywords.
 
  -- Mike DePaulo <mikedep333@gmail.com>  Thu, 23 Apr 2014 17:49:00 -0500
 
