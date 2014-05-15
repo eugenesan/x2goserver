@@ -53,7 +53,7 @@ sub session_has_terminated
                 last;
         }
         $log_file->close();
-        if ($log_line =~ m/Session terminated/)
+        if (($log_line =~ m/Session terminated/) || ($log_line =~ m/Terminating session/))
         {
                 return 1;
         }
@@ -73,7 +73,7 @@ sub session_is_suspended
                 last;
         }
         $log_file->close();
-        if ($log_line =~ m/Session suspended/)
+        if (($log_line =~ m/Session suspended/) || ($log_line =~ m/Suspending session/))
         {
                 return 1;
         }
