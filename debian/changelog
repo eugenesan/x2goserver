@@ -108,6 +108,7 @@ x2goserver (4.1.0.0-0x2go1.1) UNRELEASED; urgency=low
 
 x2goserver (4.0.1.16-0x2go1) UNRELEASED; urgency=low
 
+  [ Mike DePaulo ]
   * New upstream release (4.0.1.16):
     - Support GNOME Flashback session on Ubuntu 13.10+ and on debian Jessie
       (Note: This requires that gnome-flashback.session actually be installed.
@@ -118,6 +119,11 @@ x2goserver (4.0.1.16-0x2go1) UNRELEASED; urgency=low
       found.
   * debian/rules:
     + Improve dh_auto_clean override.
+
+  [ Mike Gabriel ]
+  * New upstream version (4.0.1.16):
+    - Detect terminated sessions from NX log file. Also interpret a session as
+      terminated if terminating just has started.
 
  -- Mike DePaulo <mikedep333@gmail.com>  Thu, 23 Apr 2014 17:49:00 -0500
 
