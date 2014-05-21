@@ -45,6 +45,7 @@ x2goserver (4.1.0.0-0x2go1.1) UNRELEASED; urgency=low
     - Security audit of complete code tree, avoid one-argument system calls
       where possible, avoid backticks, use more quotes in shell scripts.
     - Add tunneling port allocation for TeleKinesis framework.
+    - Only use teki_* fields with PostgreSQL DB backend if TeKi is enabled.
   * debian/control:
     + Package X2Go::Log in separate package: libx2go-log-perl.
     + Package X2Go::Server::DB in separate package: libx2go-server-db-perl.

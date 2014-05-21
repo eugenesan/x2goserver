@@ -36,8 +36,8 @@ use POSIX;
 use Sys::Syslog qw( :standard :macros );
 
 use X2Go::Log qw( loglevel );
-use X2Go::Config qw( get_sqlconfig );
-use X2Go::Utils qw( sanitizer system_capture_stdout_output );
+use X2Go::Config qw( get_config get_sqlconfig );
+use X2Go::Utils qw( sanitizer system_capture_stdout_output is_true );
 
 setlogmask( LOG_UPTO(loglevel()) );
 
@@ -56,22 +56,27 @@ my $db="x2go_sessions";
 my $dbpass;
 my $dbuser;
 my $sslmode;
+my $with_TeKi;
 
 sub init_db
 {
+	# the $Config is required later (see below...)
+	my $Config = get_config;
+	$with_TeKi = is_true($Config->param("telekinesis.enable"));
+
 	if ( ! ( $dbuser and $dbpass ) )
 	{
-		my $Config = get_sqlconfig;
+		my $SqlConfig = get_sqlconfig;
 		my $x2go_lib_path=system_capture_stdout_output("x2gopath", "libexec");
 
-		my $backend=$Config->param("backend");
+		my $backend=$SqlConfig->param("backend");
 		if ( $backend ne "postgres" )
 		{
 			die "X2Go server is not configured to use the PostgreSQL session db backend";
 		}
 
-		$host=$Config->param("postgres.host");
-		$port=$Config->param("postgres.port");
+		$host=$SqlConfig->param("postgres.host");
+		$port=$SqlConfig->param("postgres.port");
 		if (!$host)
 		{
 			$host='localhost';
@@ -91,7 +96,7 @@ sub init_db
 			$dbuser="x2gouser_$uname";
 			$passfile="$homedir/.x2go/sqlpass";
 		}
-		$sslmode=$Config->param("postgres.ssl");
+		$sslmode=$SqlConfig->param("postgres.ssl");
 		if (!$sslmode)
 		{
 			$sslmode="prefer";
@@ -135,12 +140,20 @@ sub dbsys_listsessionsroot
 	my @strings;
 	my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", 
 	                     "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
-
-	my $sth=$dbh->prepare("select agent_pid, session_id, display, server, status,
-	                      to_char(init_time,'YYYY-MM-DD\"T\"HH24:MI:SS'),cookie,client,gr_port,
-	                      sound_port,to_char(last_time,'YYYY-MM-DD\"T\"HH24:MI:SS'),uname,
-	                      to_char(now()-init_time,'SSSS'),fs_port,tekictrl_port,tekidata_port  from sessions
-	                      where server='$server'  order by status desc");
+	my $sth;
+	if ($with_TeKi) {
+		$sth=$dbh->prepare("select agent_pid, session_id, display, server, status,
+		                    to_char(init_time,'YYYY-MM-DD\"T\"HH24:MI:SS'),cookie,client,gr_port,
+		                    sound_port,to_char(last_time,'YYYY-MM-DD\"T\"HH24:MI:SS'),uname,
+		                    to_char(now()-init_time,'SSSS'),fs_port,tekictrl_port,tekidata_port  from sessions
+		                    where server='$server'  order by status desc");
+	} else {
+		$sth=$dbh->prepare("select agent_pid, session_id, display, server, status,
+		                    to_char(init_time,'YYYY-MM-DD\"T\"HH24:MI:SS'),cookie,client,gr_port,
+		                    sound_port,to_char(last_time,'YYYY-MM-DD\"T\"HH24:MI:SS'),uname,
+		                    to_char(now()-init_time,'SSSS'),fs_port from sessions
+		                    where server='$server' order by status desc");
+	}
 	$sth->execute()or die;
 	my @data;
 	my $i=0;
@@ -158,11 +171,20 @@ sub dbsys_listsessionsroot_all
 	init_db();
 	my @strings;
 	my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
-	my $sth=$dbh->prepare("select agent_pid, session_id, display, server, status,
-	                      to_char(init_time,'YYYY-MM-DD\"T\"HH24:MI:SS'),cookie,client,gr_port,
-	                      sound_port,to_char(last_time,'YYYY-MM-DD\"T\"HH24:MI:SS'),uname,
-	                      to_char(now()-init_time,'SSSS'),fs_port,tekictrl_port,tekidata_port  from  sessions
-	                      order by status desc");
+	my $sth;
+	if ($with_TeKi) {
+		$sth=$dbh->prepare("select agent_pid, session_id, display, server, status,
+		                    to_char(init_time,'YYYY-MM-DD\"T\"HH24:MI:SS'),cookie,client,gr_port,
+		                    sound_port,to_char(last_time,'YYYY-MM-DD\"T\"HH24:MI:SS'),uname,
+		                    to_char(now()-init_time,'SSSS'),fs_port,tekictrl_port,tekidata_port  from  sessions
+		                    order by status desc");
+	} else {
+		$sth=$dbh->prepare("select agent_pid, session_id, display, server, status,
+		                    to_char(init_time,'YYYY-MM-DD\"T\"HH24:MI:SS'),cookie,client,gr_port,
+		                    sound_port,to_char(last_time,'YYYY-MM-DD\"T\"HH24:MI:SS'),uname,
+		                    to_char(now()-init_time,'SSSS'),fs_port from  sessions
+		                    order by status desc");
+	}
 	$sth->execute()or die;
 	my @data;
 	my $i=0;
@@ -292,19 +314,27 @@ sub db_createsession
 	$snd_port = sanitizer('num', $snd_port) or die "argument \"snd_port\" malformed";
 	my $fs_port=shift or die"argument \"fs_port\" missed";
 	$fs_port = sanitizer('num', $fs_port) or die "argument \"fs_port\" malformed";
-	my $tekictrl_port=shift or die"argument \"tekictrl_port\" missed";
-	$tekictrl_port = sanitizer('num', $tekictrl_port) or die "argument \"tekictrl_port\" malformed";
-	my $tekidata_port=shift or die"argument \"tekidata_port\" missed";
-	$tekidata_port = sanitizer('num', $tekidata_port) or die "argument \"tekidata_port\" malformed";
 	my $sid=shift or die "argument \"session_id\" missed";
 	$sid = sanitizer('x2gosid', $sid) or die "argument \"session_id\" malformed";
 	my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
-	my $sth=$dbh->prepare("update sessions_view set status='R',last_time=now(),
-	                      cookie='$cookie',agent_pid='$pid',client='$client',gr_port='$gr_port',
-	                      sound_port='$snd_port',fs_port='$fs_port',tekictrl_port='$tekictrl_port',
-	                      tekidata_port='$tekidata_port'
-	                      where session_id='$sid'");
-	$sth->execute()or die;
+	my $sth;
+	if ($with_TeKi) {
+		my $tekictrl_port=shift or die"argument \"tekictrl_port\" missed";
+		$tekictrl_port = sanitizer('num', $tekictrl_port) or die "argument \"tekictrl_port\" malformed";
+		my $tekidata_port=shift or die"argument \"tekidata_port\" missed";
+		$tekidata_port = sanitizer('num', $tekidata_port) or die "argument \"tekidata_port\" malformed";
+		$sth=$dbh->prepare("update sessions_view set status='R',last_time=now(),
+		                    cookie='$cookie',agent_pid='$pid',client='$client',gr_port='$gr_port',
+		                    sound_port='$snd_port',fs_port='$fs_port',tekictrl_port='$tekictrl_port',
+		                    tekidata_port='$tekidata_port'
+		                    where session_id='$sid'");
+	} else {
+		$sth=$dbh->prepare("update sessions_view set status='R',last_time=now(),
+		                    cookie='$cookie',agent_pid='$pid',client='$client',gr_port='$gr_port',
+		                    sound_port='$snd_port',fs_port='$fs_port'
+		                    where session_id='$sid'");
+	}
+	$sth->execute() or die;
 	$sth->finish();
 	$dbh->disconnect();
 }
@@ -349,14 +379,20 @@ sub db_resume
 	$snd_port = sanitizer('num', $snd_port) or die "argument \"snd_port\" malformed";
 	my $fs_port=shift or die "argument \"fs_port\" missed";
 	$fs_port = sanitizer('num', $fs_port) or die "argument \"fs_port\" malformed";
-	my $tekictrl_port=shift or die"argument \"tekictrl_port\" missed";
-	$tekictrl_port = sanitizer('num', $tekictrl_port) or die "argument \"tekictrl_port\" malformed";
-	my $tekidata_port=shift or die"argument \"tekidata_port\" missed";
-	$tekidata_port = sanitizer('num', $tekidata_port) or die "argument \"tekidata_port\" malformed";
 	my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
-	my $sth=$dbh->prepare("update sessions_view set last_time=now(),status='R',client='$client',gr_port='$gr_port',
-	                       sound_port='$snd_port',fs_port='$fs_port',tekictrl_port='$tekictrl_port',
-	                       tekidata_port='$tekidata_port' where session_id = '$sid'");
+	my $sth;
+	if ($with_TeKi) {
+		my $tekictrl_port=shift or die"argument \"tekictrl_port\" missed";
+		$tekictrl_port = sanitizer('num', $tekictrl_port) or die "argument \"tekictrl_port\" malformed";
+		my $tekidata_port=shift or die"argument \"tekidata_port\" missed";
+		$tekidata_port = sanitizer('num', $tekidata_port) or die "argument \"tekidata_port\" malformed";
+		$sth=$dbh->prepare("update sessions_view set last_time=now(),status='R',client='$client',gr_port='$gr_port',
+		                    sound_port='$snd_port',fs_port='$fs_port',tekictrl_port='$tekictrl_port',
+		                    tekidata_port='$tekidata_port' where session_id = '$sid'");
+	} else {
+		$sth=$dbh->prepare("update sessions_view set last_time=now(),status='R',client='$client',gr_port='$gr_port',
+		                    sound_port='$snd_port',fs_port='$fs_port' where session_id = '$sid'");
+	}
 	$sth->execute()or die;
 	$sth->finish();
 	$dbh->disconnect();
@@ -500,12 +536,22 @@ sub db_listsessions
 	my $server=shift or die "argument \"server\" missed";
 	my @sessions;
 	my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
-	my $sth=$dbh->prepare("select agent_pid, session_id, display, server, status,
-	                      to_char(init_time,'YYYY-MM-DD\"T\"HH24:MI:SS'), cookie, client, gr_port,
-	                      sound_port, to_char( last_time, 'YYYY-MM-DD\"T\"HH24:MI:SS'), uname,
-	                      to_char(now()- init_time,'SSSS'), fs_port, tekictrl_port, tekidata_port  from  sessions_view
-	                      where status !='F' and server='$server' and
-	                      (session_id not like '%XSHAD%') order by status desc");
+	my $sth;
+	if ($with_TeKi) {
+		$sth=$dbh->prepare("select agent_pid, session_id, display, server, status,
+		                    to_char(init_time,'YYYY-MM-DD\"T\"HH24:MI:SS'), cookie, client, gr_port,
+		                    sound_port, to_char( last_time, 'YYYY-MM-DD\"T\"HH24:MI:SS'), uname,
+		                    to_char(now()- init_time,'SSSS'), fs_port, tekictrl_port, tekidata_port  from  sessions_view
+		                    where status !='F' and server='$server' and
+		                    (session_id not like '%XSHAD%') order by status desc");
+	} else {
+		$sth=$dbh->prepare("select agent_pid, session_id, display, server, status,
+		                    to_char(init_time,'YYYY-MM-DD\"T\"HH24:MI:SS'), cookie, client, gr_port,
+		                    sound_port, to_char( last_time, 'YYYY-MM-DD\"T\"HH24:MI:SS'), uname,
+		                    to_char(now()- init_time,'SSSS'), fs_port  from  sessions_view
+		                    where status !='F' and server='$server' and
+		                    (session_id not like '%XSHAD%') order by status desc");
+	}
 	$sth->execute() or die;
 	my @data;
 	my $i=0;
@@ -523,12 +569,22 @@ sub db_listsessions_all
 	init_db();
 	my @sessions;
 	my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
-	my $sth=$dbh->prepare("select agent_pid, session_id, display, server, status,
-	                      to_char(init_time,'YYYY-MM-DD\"T\"HH24:MI:SS'), cookie, client, gr_port,
-	                      sound_port, to_char( last_time, 'YYYY-MM-DD\"T\"HH24:MI:SS'), uname,
-	                      to_char(now()- init_time,'SSSS'), fs_port, tekictrl_port, tekidata_port  from  sessions_view
-	                      where status !='F'  and  
-	                      (session_id not like '%XSHAD%') order by status desc");
+	my $sth;
+	if ($with_TeKi) {
+		$sth=$dbh->prepare("select agent_pid, session_id, display, server, status,
+		                    to_char(init_time,'YYYY-MM-DD\"T\"HH24:MI:SS'), cookie, client, gr_port,
+		                    sound_port, to_char( last_time, 'YYYY-MM-DD\"T\"HH24:MI:SS'), uname,
+		                    to_char(now()- init_time,'SSSS'), fs_port, tekictrl_port, tekidata_port  from  sessions_view
+		                    where status !='F'  and
+		                    (session_id not like '%XSHAD%') order by status desc");
+	} else {
+		$sth=$dbh->prepare("select agent_pid, session_id, display, server, status,
+		                    to_char(init_time,'YYYY-MM-DD\"T\"HH24:MI:SS'), cookie, client, gr_port,
+		                    sound_port, to_char( last_time, 'YYYY-MM-DD\"T\"HH24:MI:SS'), uname,
+		                    to_char(now()- init_time,'SSSS'), fs_port  from  sessions_view
+		                    where status !='F'  and
+		                    (session_id not like '%XSHAD%') order by status desc");
+	}
 	$sth->execute()or die;
 	my @data;
 	my $i=0;
@@ -551,7 +607,7 @@ sub db_listshadowsessions
 	                      to_char(init_time,'YYYY-MM-DD\"T\"HH24:MI:SS'), cookie, client, gr_port,
 	                      sound_port, to_char( last_time, 'YYYY-MM-DD\"T\"HH24:MI:SS'), uname,
 	                      to_char(now()- init_time,'SSSS'), fs_port from  sessions_view
-	                      where status !='F' and server='$server' and  
+	                      where status !='F' and server='$server' and
 	                      (session_id like '%XSHAD%') order by status desc");
 	$sth->execute() or die;
 	my @data;
@@ -574,7 +630,7 @@ sub db_listshadowsessions_all
 	                      to_char(init_time,'YYYY-MM-DD\"T\"HH24:MI:SS'), cookie, client, gr_port,
 	                      sound_port, to_char( last_time, 'YYYY-MM-DD\"T\"HH24:MI:SS'), uname,
 	                      to_char(now()- init_time,'SSSS'), fs_port from  sessions_view
-	                      where status !='F'  and  
+	                      where status !='F'  and
 	                      (session_id is like '%XSHAD%') order by status desc");
 	$sth->execute()or die;
 	my @data;
