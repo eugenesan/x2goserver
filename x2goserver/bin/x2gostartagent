@@ -336,19 +336,6 @@ ln -s "${SESSION_LOG}" "${SESSION_DIR}/session.log"
 
 X2GO_AGENT_PID=$!
 X2GO_AGENT_RETVAL=$?
-test $X2GO_AGENT_RETVAL && {
-	$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "successfully started X2Go agent session with ID $SESSION_NAME"
-
-	# run x2goserver-extensions for post-start
-	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions "$SESSION_NAME" post-start || true
-
-} || {
-	$X2GO_LIB_PATH/x2gosyslog "$0" "err" "ERROR: failed to start X2Go agent session with ID $SESSION_NAME"
-
-	# run x2goserver-extensions for fail-start
-	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions "$SESSION_NAME" fail-start || true
-
-}
 
 X2GO_SND_PORT=1024
 
@@ -362,6 +349,20 @@ if [ "$X2GO_SET_KBD" == "0" ] || [ "$X2GO_KBD_TYPE" != "auto" ]; then
 	$X2GO_LIB_PATH/x2gosyslog "$0" "info" "blocking creation of agent's keyboard file ${SESSION_DIR}/keyboard as requested by session startup command"
 	mkdir -p ${SESSION_DIR}/keyboard
 fi
+
+test $X2GO_AGENT_RETVAL && {
+	$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "successfully started X2Go agent session with ID $SESSION_NAME"
+
+	# run x2goserver-extensions for post-start
+	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions "$SESSION_NAME" post-start || true
+
+} || {
+	$X2GO_LIB_PATH/x2gosyslog "$0" "err" "ERROR: failed to start X2Go agent session with ID $SESSION_NAME"
+
+	# run x2goserver-extensions for fail-start
+	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions "$SESSION_NAME" fail-start || true
+
+}
 
 echo $X2GO_PORT
 echo $X2GO_COOKIE
