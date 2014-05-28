@@ -187,9 +187,10 @@ while [ "$OUTPUT"  != "inserted" ]; do
 	fi 
 done
 
-if [ "x$X2GO_TELEKINESIS_ENABLED" == "x0" ]; then
+if [ "x$X2GO_TELEKINESIS_ENABLED" == "x0" ] || ! type -p telekinesis-server 1>/dev/null; then
 	TEKICTRL_PORT="-1"
 	TEKIDATA_PORT="-1"
+	X2GO_TELEKINESIS_ENABLED="0"
 fi
 
 while [ "$GR_PORT" == "" ] || [ "$SOUND_PORT" == "" ] || [ "$FS_PORT" == "" ] || [ "$TEKICTRL_PORT" == "" ] || [ "$TEKIDATA_PORT" == "" ]; do
@@ -248,6 +249,9 @@ if [ "$X2GO_STYPE" == "S" ]; then
 fi
 
 SESSION_DIR="${X2GO_ROOT}/C-${SESSION_NAME}"
+if [ "x$X2GO_TELEKINESIS_ENABLED" != "x0" ]; then
+	mkdir -p "${SESSION_DIR}/telekinesis/remote/"
+fi
 
 # do not use $TMP or $TEMP here, the session.log file location has to be accessible by root
 SESSION_LOG="/tmp/.x2go-${USER}/session-C-${SESSION_NAME}.log"

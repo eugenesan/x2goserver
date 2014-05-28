@@ -62,6 +62,8 @@ x2goserver (4.1.0.0-0x2go1.1) UNRELEASED; urgency=low
     + Move x2gosql config to x2goserver-common.
     + Several style and dependency fixes. Use Conflicts: instead of Breaks:
       for unversioned package conflicts.
+    + Test if telekinesis-server is installed server-side. If so,
+      prepare the telekinesis session sub-directory.
   * debian/x2goserver.postinst, debian/libx2go-server-db-perl:
     + Handle X2Go session DB creation in x2goserver _and_
       perl-X2Go-Server-DB on postinst.
