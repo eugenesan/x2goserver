@@ -45,7 +45,12 @@ sub session_has_terminated
 {
         my $sess=shift;
         my $user=shift;
-        my $log="/tmp/.x2go-${user}/session-C-${sess}.log";
+	my $log;
+	if ( (-d "/tmp-inst/${user}/.x2go-${user}" && ! -d "/tmp/.x2go-${user}") ) {
+		$log="/tmp-inst/${user}/.x2go-${user}/session-C-${sess}.log";
+	} else {
+		$log="/tmp/.x2go-${user}/session-C-${sess}.log";
+	}
         my $log_line;
         my $log_file = File::ReadBackwards->new( $log ) or return 1;
         while( defined( $log_line = $log_file->readline ) ) {
@@ -65,7 +70,12 @@ sub session_is_suspended
 {
         my $sess=shift;
         my $user=shift;
-        my $log="/tmp/.x2go-${user}/session-C-${sess}.log";
+	my $log;
+	if ( (-d "/tmp-inst/${user}/.x2go-${user}" && ! -d "/tmp/.x2go-${user}") ) {
+		$log="/tmp-inst/${user}/.x2go-${user}/session-C-${sess}.log";
+	} else {
+		$log="/tmp/.x2go-${user}/session-C-${sess}.log";
+	}
         my $log_line;
         my $log_file = File::ReadBackwards->new( $log ) or return 0;
         while( defined( $log_line = $log_file->readline ) ) {
@@ -85,7 +95,12 @@ sub session_is_running
 {
         my $sess=shift;
         my $user=shift;
-        my $log="/tmp/.x2go-${user}/session-C-${sess}.log";
+	my $log;
+	if ( (-d "/tmp-inst/${user}/.x2go-${user}" && ! -d "/tmp/.x2go-${user}") ) {
+		$log="/tmp-inst/${user}/.x2go-${user}/session-C-${sess}.log";
+	} else {
+		$log="/tmp/.x2go-${user}/session-C-${sess}.log";
+	}
         my $log_line;
         my $log_file = File::ReadBackwards->new( $log ) or return 0;
         while( defined( $log_line = $log_file->readline ) ) {
