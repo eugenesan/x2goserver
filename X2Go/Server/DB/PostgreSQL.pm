@@ -304,6 +304,8 @@ sub db_insertshadowsession
 sub db_createsession
 {
 	init_db();
+	my $sid=shift or die "argument \"session_id\" missed";
+	$sid = sanitizer('x2gosid', $sid) or die "argument \"session_id\" malformed";
 	my $cookie=shift or die"argument \"cookie\" missed";
 	my $pid=shift or die"argument \"pid\" missed";
 	$pid = sanitizer('num', $pid) or die "argument \"pid\" malformed";
@@ -315,18 +317,12 @@ sub db_createsession
 	my $fs_port=shift or die"argument \"fs_port\" missed";
 	$fs_port = sanitizer('num', $fs_port) or die "argument \"fs_port\" malformed";
 	my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
-	my $tekictrl_port;
-	my $tekidata_port;
 	my $sth;
 	if ($with_TeKi) {
-		$tekictrl_port=shift or die"argument \"tekictrl_port\" missed";
+		my $tekictrl_port=shift or die"argument \"tekictrl_port\" missed";
 		$tekictrl_port = sanitizer('num', $tekictrl_port) or die "argument \"tekictrl_port\" malformed";
-		$tekidata_port=shift or die"argument \"tekidata_port\" missed";
+		my $tekidata_port=shift or die"argument \"tekidata_port\" missed";
 		$tekidata_port = sanitizer('num', $tekidata_port) or die "argument \"tekidata_port\" malformed";
-	}
-	my $sid=shift or die "argument \"session_id\" missed";
-	$sid = sanitizer('x2gosid', $sid) or die "argument \"session_id\" malformed";
-	if ($with_TeKi) {
 		$sth=$dbh->prepare("update sessions_view set status='R',last_time=now(),
 		                    cookie='$cookie',agent_pid='$pid',client='$client',gr_port='$gr_port',
 		                    sound_port='$snd_port',fs_port='$fs_port',tekictrl_port='$tekictrl_port',

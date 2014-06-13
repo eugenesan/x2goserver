@@ -30,6 +30,7 @@ openlog($0,'cons,pid','user');
 setlogmask( LOG_UPTO(loglevel()) );
 
 
+my $sid=shift or die;
 my $cookie=shift or die;
 my $pid=shift or die;
 my $client=shift or die;
@@ -38,9 +39,8 @@ my $snd_port=shift or die;
 my $fs_port=shift or die;
 my $tekictrl_port=shift or die;
 my $tekidata_port=shift or die;
-my $sid=shift or die;
 
-db_createsession($cookie,$pid,$client,$gr_port, $snd_port, $fs_port, $tekictrl_port, $tekidata_port, $sid);
+db_createsession($sid, $cookie, $pid, $client, $gr_port, $snd_port, $fs_port, $tekictrl_port, $tekidata_port);
 
 # closing syslog 
 closelog;

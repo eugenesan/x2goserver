@@ -251,6 +251,8 @@ sub db_insertshadowsession
 sub db_createsession
 {
 	my $dbh = init_db();
+	my $sid=shift or die "argument \"session_id\" missed";
+	$sid = sanitizer('x2gosid', $sid) or die "argument \"session_id\" malformed";
 	my $cookie=shift or die"argument \"cookie\" missed";
 	my $pid=shift or die"argument \"pid\" missed";
 	$pid = sanitizer('num', $pid) or die "argument \"pid\" malformed";
@@ -265,8 +267,6 @@ sub db_createsession
 	$tekictrl_port = sanitizer('pnnum', $tekictrl_port) or die "argument \"tekictrl_port\" malformed";
 	my $tekidata_port=shift or die "argument \"tekidata_port\" missed";
 	$tekidata_port = sanitizer('pnnum', $tekidata_port) or die "argument \"tekidata_port\" malformed";
-	my $sid=shift or die "argument \"session_id\" missed";
-	$sid = sanitizer('x2gosid', $sid) or die "argument \"session_id\" malformed";
 	check_user($sid);
 	my $sth=$dbh->prepare("update sessions set status='R',last_time=datetime('now','localtime'),cookie=?,agent_pid=?,
 	                       client=?,gr_port=?,sound_port=?,fs_port=?,tekictrl_port=?,tekidata_port=? where session_id=? and uname=?");
@@ -284,6 +284,8 @@ sub db_createsession
 sub db_createshadowsession
 {
 	my $dbh = init_db();
+	my $sid=shift or die "argument \"session_id\" missed";
+	$sid = sanitizer('x2gosid', $sid) or die "argument \"session_id\" malformed";
 	my $cookie=shift or die"argument \"cookie\" missed";
 	my $pid=shift or die"argument \"pid\" missed";
 	$pid = sanitizer('num', $pid) or die "argument \"pid\" malformed";
@@ -294,8 +296,6 @@ sub db_createshadowsession
 	$snd_port = sanitizer('num', $snd_port) or die "argument \"snd_port\" malformed";
 	my $fs_port=shift or die"argument \"fs_port\" missed";
 	$fs_port = sanitizer('num', $fs_port) or die "argument \"fs_port\" malformed";
-	my $sid=shift or die "argument \"session_id\" missed";
-	$sid = sanitizer('x2gosid', $sid) or die "argument \"session_id\" malformed";
 	my $shadreq_user = shift or die "argument \"shadreq_user\" missed";
 	my $fake_sid = $sid;
 	$fake_sid =~ s/^$shadreq_user-/$realuser-/;

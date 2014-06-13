@@ -234,6 +234,7 @@ sub db_insertshadowsession
 
 sub db_createsession
 {
+	my $sid=shift or die "argument \"session_id\" missed";
 	my $cookie=shift or die"argument \"cookie\" missed";
 	my $pid=shift or die"argument \"pid\" missed";
 	my $client=shift or die"argument \"client\" missed";
@@ -242,14 +243,13 @@ sub db_createsession
 	my $fs_port=shift or die"argument \"fs_port\" missed";
 	my $tekictrl_port=shift or die"argument \"tekictrl_port\" missed";
 	my $tekidata_port=shift or die"argument \"tekidata_port\" missed";
-	my $sid=shift or die "argument \"session_id\" missed";
 	if ($backend eq 'postgres')
 	{
-		X2Go::Server::DB::PostgreSQL::db_createsession($cookie, $pid, $client, $gr_port, $snd_port, $fs_port, $tekictrl_port, $tekidata_port, $sid);
+		X2Go::Server::DB::PostgreSQL::db_createsession($sid, $cookie, $pid, $client, $gr_port, $snd_port, $fs_port, $tekictrl_port, $tekidata_port);
 	}
 	if ($backend eq 'sqlite')
 	{
-		my $err= system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "createsession", "$cookie", "$pid", "$client", "$gr_port", "$snd_port", "$fs_port", "$tekictrl_port", "$tekidata_port", "$sid");
+		my $err= system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "createsession", "$sid", "$cookie", "$pid", "$client", "$gr_port", "$snd_port", "$fs_port", "$tekictrl_port", "$tekidata_port");
 		if ($err ne "ok")
 		{
 			die $err;
@@ -260,22 +260,22 @@ sub db_createsession
 
 sub db_createshadowsession
 {
+	my $sid=shift or die "argument \"session_id\" missed";
 	my $cookie=shift or die"argument \"cookie\" missed";
 	my $pid=shift or die"argument \"pid\" missed";
 	my $client=shift or die"argument \"client\" missed";
 	my $gr_port=shift or die"argument \"gr_port\" missed";
 	my $snd_port=shift or die"argument \"snd_port\" missed";
 	my $fs_port=shift or die"argument \"fs_port\" missed";
-	my $sid=shift or die "argument \"session_id\" missed";
 	my $shadreq_user=shift or die "argument \"shadreq_user\" missed";
 	if ($backend eq 'postgres')
 	{
 		# for PostgreSQL we can use the normal db_createsession code...
-		X2Go::Server::DB::PostgreSQL::db_createsession($cookie, $pid, $client, $gr_port, $snd_port, $fs_port, $sid);
+		X2Go::Server::DB::PostgreSQL::db_createsession($sid, $cookie, $pid, $client, $gr_port, $snd_port, $fs_port, -1, -1);
 	}
 	if ($backend eq 'sqlite')
 	{
-		my $err=system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "createshadowsession", "$cookie", "$pid", "$client", "$gr_port", "$snd_port", "$fs_port", "$sid", "$shadreq_user");
+		my $err=system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "createshadowsession", "$sid", "$cookie", "$pid", "$client", "$gr_port", "$snd_port", "$fs_port", "$shadreq_user");
 		if ($err ne "ok")
 		{
 			die $err;

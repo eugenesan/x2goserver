@@ -39,7 +39,7 @@ my $fs_port=shift or die;
 my $sid=shift or die;
 my $shadreq_user=shift or die;
 
-db_createshadowsession($cookie,$pid,$client,$gr_port, $snd_port, $fs_port, $sid, $shadreq_user);
+db_createshadowsession($sid, $cookie, $pid, $client, $gr_port, $snd_port, $fs_port, $shadreq_user);
 
 # closing syslog 
 closelog;
