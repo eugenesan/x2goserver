@@ -138,6 +138,9 @@ x2goserver (4.0.1.16-0x2go1) UNRELEASED; urgency=low
       x2goagent.options. (Fixes: #506).
     - Be aware of poly-instantiated /tmp directories bind-mounted under
       /tmp-inst. (Fixes: #406).
+  * debian/control, x2goserver.spec:
+    + Update versioned D: x2goagent (>= 3.5.0.25). This assures that X2Go
+      works with poly-instantiated /tmp directories.
 
  -- Mike DePaulo <mikedep333@gmail.com>  Thu, 23 Apr 2014 17:49:00 -0500
 

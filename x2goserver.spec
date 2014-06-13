@@ -49,7 +49,7 @@ Requires:       pwgen
 Requires:       sshfs
 # For /etc/sudoers.d
 Requires:       sudo
-Requires:       x2goagent
+Requires:       x2goagent >= 3.5.0.25
 # For /etc/X11/Xresources
 Requires:       xorg-x11-xinit
 Requires:       xorg-x11-fonts-misc
