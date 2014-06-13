@@ -315,11 +315,13 @@ sub db_createsession
 	my $fs_port=shift or die"argument \"fs_port\" missed";
 	$fs_port = sanitizer('num', $fs_port) or die "argument \"fs_port\" malformed";
 	my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
+	my $tekictrl_port;
+	my $tekidata_port;
 	my $sth;
 	if ($with_TeKi) {
-		my $tekictrl_port=shift or die"argument \"tekictrl_port\" missed";
+		$tekictrl_port=shift or die"argument \"tekictrl_port\" missed";
 		$tekictrl_port = sanitizer('num', $tekictrl_port) or die "argument \"tekictrl_port\" malformed";
-		my $tekidata_port=shift or die"argument \"tekidata_port\" missed";
+		$tekidata_port=shift or die"argument \"tekidata_port\" missed";
 		$tekidata_port = sanitizer('num', $tekidata_port) or die "argument \"tekidata_port\" malformed";
 	}
 	my $sid=shift or die "argument \"session_id\" missed";
