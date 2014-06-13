@@ -314,8 +314,6 @@ sub db_createsession
 	$snd_port = sanitizer('num', $snd_port) or die "argument \"snd_port\" malformed";
 	my $fs_port=shift or die"argument \"fs_port\" missed";
 	$fs_port = sanitizer('num', $fs_port) or die "argument \"fs_port\" malformed";
-	my $sid=shift or die "argument \"session_id\" missed";
-	$sid = sanitizer('x2gosid', $sid) or die "argument \"session_id\" malformed";
 	my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 	my $sth;
 	if ($with_TeKi) {
@@ -323,6 +321,10 @@ sub db_createsession
 		$tekictrl_port = sanitizer('num', $tekictrl_port) or die "argument \"tekictrl_port\" malformed";
 		my $tekidata_port=shift or die"argument \"tekidata_port\" missed";
 		$tekidata_port = sanitizer('num', $tekidata_port) or die "argument \"tekidata_port\" malformed";
+	}
+	my $sid=shift or die "argument \"session_id\" missed";
+	$sid = sanitizer('x2gosid', $sid) or die "argument \"session_id\" malformed";
+	if ($with_TeKi) {
 		$sth=$dbh->prepare("update sessions_view set status='R',last_time=now(),
 		                    cookie='$cookie',agent_pid='$pid',client='$client',gr_port='$gr_port',
 		                    sound_port='$snd_port',fs_port='$fs_port',tekictrl_port='$tekictrl_port',
