@@ -46,7 +46,7 @@ sub session_has_terminated
 	my $sess=shift;
 	my $user=shift;
 	my $log;
-	if ( (-d "/tmp-inst/${user}/.x2go-${user}" && ! -d "/tmp/.x2go-${user}") ) {
+	if ( -d "/tmp-inst/${user}/.x2go-${user}" ) {
 		$log="/tmp-inst/${user}/.x2go-${user}/session-C-${sess}.log";
 	} else {
 		$log="/tmp/.x2go-${user}/session-C-${sess}.log";
@@ -71,7 +71,7 @@ sub session_is_suspended
 	my $sess=shift;
 	my $user=shift;
 	my $log;
-	if ( (-d "/tmp-inst/${user}/.x2go-${user}" && ! -d "/tmp/.x2go-${user}") ) {
+	if ( -d "/tmp-inst/${user}/.x2go-${user}" ) {
 		$log="/tmp-inst/${user}/.x2go-${user}/session-C-${sess}.log";
 	} else {
 		$log="/tmp/.x2go-${user}/session-C-${sess}.log";
@@ -96,7 +96,7 @@ sub session_is_running
 	my $sess=shift;
 	my $user=shift;
 	my $log;
-	if ( (-d "/tmp-inst/${user}/.x2go-${user}" && ! -d "/tmp/.x2go-${user}") ) {
+	if ( -d "/tmp-inst/${user}/.x2go-${user}" ) {
 		$log="/tmp-inst/${user}/.x2go-${user}/session-C-${sess}.log";
 	} else {
 		$log="/tmp/.x2go-${user}/session-C-${sess}.log";
