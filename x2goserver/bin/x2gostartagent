@@ -160,7 +160,7 @@ while [ "$OUTPUT"  != "inserted" ]; do
 	
 	#Test if the session is already in use. nxagent uses 6000+DISPLAY to open a port. Therefore this must be tested, too.
 	NX_PORT=$(($X2GO_PORT + 6000))
-	if $ss -lxs 2>/dev/null | egrep "(@|)/tmp/.X11-unix/${X2GO_PORT}(|-lock) " 1>/dev/null ||
+	if $ss -lxs 2>/dev/null | egrep "(@|)/tmp/.X11-unix/X${X2GO_PORT}(|-lock) " 1>/dev/null ||
 		grep -q "|${NX_PORT}|" <<<$USED_PORTS ; then
 		OUTPUT="XXX"
 	else
