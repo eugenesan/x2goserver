@@ -26,7 +26,7 @@ package x2goutils;
 use strict;
 use Capture::Tiny qw( :all );
 use base 'Exporter';
-our @EXPORT = ( 'system_capture_merged_output' );
+our @EXPORT = ( 'system_capture_merged_output', 'sanitizer', );
 
 
 # same applies for the sanitizer code shipped in x2goutils.pm
@@ -45,13 +45,22 @@ sub sanitizer {
 			$string = $1;
 			return $string;
 		} else {return 0;}
+	} elsif ($type eq "x2gosid") {
+		$string =~ s/[^a-zA-Z0-9\_\-\$\.]//g;
+		if ($string =~ /^([a-zA-Z0-9\_\-\$\.]*)$/) {
+			$string = $1;
+			if ($string =~ /^([a-zA-Z\_][a-zA-Z0-9\_\-\.]{0,31}[\$]?)\-([\d]{2,4})\-([\d]{9,12})\_[a-zA-Z0-9\_\-]*\_dp[\d]{1,2}$/) {
+				if ((length($1) > 0) and (length($1) < 32)){
+					return $string;
+				} else {return 0;}
+			} else {return 0;}
+		} else {return 0;}
 	} elsif ($type eq "SOMETHINGELSE") {
 		return 0;
 	} else {
 		return 0;
 	}
 }
-
 
 sub system_capture_merged_output {
 	my $cmd = shift;
