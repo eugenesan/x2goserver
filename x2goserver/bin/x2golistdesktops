@@ -37,6 +37,10 @@ if ( @ARGV ) {
 	syslog('info', "x2golistdesktops has been called without options");
 }
 
+if (hostname == '(none)' ) {
+	die "Hostname of X2Go Server not set-up correctly, check /etc/hostname. Exiting..."
+}
+
 my $serv=shift;
 if( ! $serv)
 {

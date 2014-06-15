@@ -30,6 +30,10 @@ use X2Go::Server::DB qw(db_listsessions db_listsessions_all db_changestatus);
 use X2Go::Server::Agent qw(session_is_suspended);
 use X2Go::Log qw(loglevel);
 
+if (hostname == '(none)' ) {
+	die "Hostname of X2Go Server is not set-up correctly, check /etc/hostname. Exiting..."
+}
+
 openlog($0,'cons,pid','user');
 setlogmask( LOG_UPTO(loglevel()) );
 
