@@ -260,7 +260,7 @@ x2goserver (4.0.1.10-0x2go1) unstable; urgency=low
     - Fix x2goresume-session. The several parameters placed into the NX options
       file are expected by x2goresume-session at very specific positions. This
       we broke by trying to fix the fullscreen/geometry issue in x2gostartagent.
-      Thanks to Harvey Eneman for tracking this down!!! (Fixes: #355).
+      Thanks to Harvey Eneman for tracking this down!!! (Fixes: #353, #355).
     - x2goserver-fmbindings/Makefile: install x2gofm.
     - x2goserver-fmbindings/Makefile: install share/applications and share/mime.
     - x2goserver-printing/Makefile: create feature.d directory before installing
