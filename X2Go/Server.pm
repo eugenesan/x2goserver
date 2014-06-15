@@ -19,6 +19,8 @@
 #
 # Copyright (C) 2007-2014 Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
 # Copyright (C) 2007-2014 Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
+# Copyright (C) 2010-2014 Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
+# Copyright (C) 2013-2014 Guangzhou Nianguan Electronics Technology Co.Ltd. <opensource@gznianguan.com>
 
 package X2Go::Server;
 
@@ -33,7 +35,20 @@ X2Go::Server Perl package.
 =cut
 
 use strict;
-use base 'Exporter';
+use Sys::Hostname;
+use X2Go::Server::DB qw(db_listsessions);
 
+use base 'Exporter';
+our @EXPORT = ( 'get_session_info', );
+
+sub get_session_info {
+	my $theX2GoSID = $_[0];
+	foreach  my $sessionLine (db_listsessions(hostname)) {
+		if ($sessionLine =~ /$theX2GoSID/) {
+			return split(/\|/,$sessionLine);
+		}
+	}
+	return 0;
+}
 
 1;

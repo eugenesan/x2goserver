@@ -48,13 +48,16 @@ x2gofeature X2GO_DESKTOPSHARING &>/dev/null && x2goterminate-desktopsharing "$SE
 # run x2goserver-extensions for pre-terminate
 x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions "$SESSION_NAME" pre-terminate || true
 
-kill -TERM $X2GO_AGENT_PID &>/dev/null && {
+if kill -TERM $X2GO_AGENT_PID &>/dev/null; then
 	$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "session with ID "$SESSION_NAME" has been terminated successfully"
 
 	# run x2goserver-extensions for post-terminate
 	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions "$SESSION_NAME" post-terminate || true
 
-} || {
+	# this makes sure that the socket on localhost blocked by NX agent gets released immediately
+	$X2GO_LIB_PATH/x2gonxcleanup
+
+else
 	err_msg="ERROR: failed to terminate session with ID $SESSION_NAME"
 
 	# some x2goclient versions behave weirdly if we give an error message here, so we only write syslog for now...
@@ -64,6 +67,6 @@ kill -TERM $X2GO_AGENT_PID &>/dev/null && {
 
 	# run x2goserver-extensions for fail-terminate
 	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions "$SESSION_NAME" fail-terminate || true
-}
+fi
 
 $X2GO_LIB_PATH/x2gochangestatus 'F' "$SESSION_NAME"  > /dev/null
