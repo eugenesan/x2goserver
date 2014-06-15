@@ -51,6 +51,9 @@ x2gofeature X2GO_DESKTOPSHARING &>/dev/null && x2gosuspend-desktopsharing "$SESS
 # run x2goserver-extensions for pre-suspend
 x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions "$SESSION_NAME" pre-suspend || true
 
+export HOSTNAME
+x2goumount-session "$SESSION_NAME"
+
 if kill -HUP $X2GO_AGENT_PID &>/dev/null; then
 	$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "session with ID $SESSION_NAME has been suspended successfully"
 
@@ -61,7 +64,6 @@ if kill -HUP $X2GO_AGENT_PID &>/dev/null; then
 
 	# this makes sure that the socket on localhost blocked by NX agent gets released immediately
 	$X2GO_LIB_PATH/x2gonxcleanup
-
 else
 	err_msg="ERROR: failed to suspend session with ID $SESSION_NAME"
 	echo "$err_msg" 1>&2
@@ -75,5 +77,3 @@ else
 	$X2GO_LIB_PATH/x2gochangestatus 'F' "$SESSION_NAME"  > /dev/null
 fi
 
-export HOSTNAME
-x2goumount-session "$SESSION_NAME"
