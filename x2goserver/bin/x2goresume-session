@@ -174,7 +174,7 @@ x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions "$SESSI
 # clear old keyboard file
 rm -Rf $SESSION_DIR/keyboard
 
-kill -HUP $X2GO_AGENT_PID &>/dev/null && {
+if kill -HUP $X2GO_AGENT_PID &>/dev/null; then
 
 	$X2GO_LIB_PATH/x2goresume  "$X2GO_CLIENT" "$SESSION_NAME"  "$GR_PORT" "$SOUND_PORT" "$FS_PORT" > /dev/null
 	$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "client $X2GO_CLIENT has successfully resumed session with ID $SESSION_NAME"
@@ -191,8 +191,7 @@ kill -HUP $X2GO_AGENT_PID &>/dev/null && {
 
 	# run x2goserver-extensions for post-resume
 	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions "$SESSION_NAME" post-resume || true
-
-} || {
+else
 	err_msg="ERROR: failed to resume session with ID $SESSION_NAME"
 	echo "$err_msg" 1>&2
 	$X2GO_LIB_PATH/x2gosyslog "$0" "err" "$err_msg"
@@ -203,8 +202,7 @@ kill -HUP $X2GO_AGENT_PID &>/dev/null && {
 
 	# run x2goserver-extensions for fail-resume
 	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions "$SESSION_NAME" fail-resume || true
-
-}
+fi
 
 echo "gr_port=$GR_PORT"
 echo "sound_port=$SOUND_PORT"
