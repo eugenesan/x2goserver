@@ -172,11 +172,11 @@ break:
 			syslog('err', "ERROR: failed to unmount \"@line[1]\"");
 			if ($use_zenity == 0)
 			{
-				system("which kdialog &>/dev/null && kdialog --error \"ERROR (X2Go): Failed to unmount @line[1]\"&");
+				system("type -p kdialog 1>/dev/null && kdialog --error \"ERROR (X2Go): Failed to unmount @line[1]\"&");
 			}
 			else
 			{
-				system("which zenity &>/dev/null && zenity --error --text \"ERROR (X2Go): Failed to unmount @line[1]\"&");
+				system("type -p zenity 1>/dev/null && zenity --error --text \"ERROR (X2Go): Failed to unmount @line[1]\"&");
 			}
 		}
 	}
