@@ -150,6 +150,8 @@ x2goserver (4.0.1.16-0x2go1) UNRELEASED; urgency=low
       call. (Fixes: #407).
     - Use type -p instead of which in x2goumount-session. Suppress output
       to stdout properly.
+    - Use if--then--else--fi during x2goagent resuming in x2goresume-session
+      script.
   * debian/control, x2goserver.spec:
     + Update versioned D: x2goagent (>= 3.5.0.25). This assures that X2Go
       works with poly-instantiated /tmp directories.
