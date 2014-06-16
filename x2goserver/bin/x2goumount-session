@@ -139,7 +139,7 @@ break:
 	if ($found)
 	{
 		chdir($tmp_dir);
-		if (system("fusermount", "-u", "\"@line[1]\"") == 0)
+		if (system("fusermount", "-u", "@line[1]") == 0)
 		{
 			syslog('notice', "successfully unmounted \"@line[1]\"");
 		}
