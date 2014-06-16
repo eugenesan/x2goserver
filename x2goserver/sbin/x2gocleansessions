@@ -226,7 +226,7 @@ elsif ($pid == 0 )
 			}
 			else
 			{
-				if ( (@sinfo[4] eq 'R') && ( $remembered_sessions_since{ @sinfo[1] } ge 2 ))
+				if (@sinfo[4] eq 'R')
 				{
 					if (is_suspended(@sinfo[1],@sinfo[11]))
 					{
