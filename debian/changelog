@@ -27,6 +27,7 @@ x2goserver (4.0.1.16-0x2go1) UNRELEASED; urgency=low
     - On suspend: Call x2goumount-session before sending SIGHUP to x2goagent.
     - Refuse client communcation if server-side hostname is not set up
       correctly (Fixes: #468).
+    - Fix string comparion in x2goumount-session.
   * debian/control, x2goserver.spec:
     + Update versioned D: x2goagent (>= 3.5.0.25). This assures that X2Go
       works with poly-instantiated /tmp directories.
