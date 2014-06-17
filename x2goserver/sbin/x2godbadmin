@@ -267,7 +267,7 @@ if ($updatedb)
 	# check if the DB already exists, if not, create it...
 	my $dbh;
 	until (
-		$dbh = DBI->connect("dbi:Pg:dbname='test';host=$host;port=$port;sslmode=$sslmode", "$dbadmin", "$dbadminpass",{AutoCommit => 1, RaiseError => 0, PrintError => 0})
+		$dbh = DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbadmin", "$dbadminpass",{AutoCommit => 1, RaiseError => 0, PrintError => 0})
 	) {
 		$createdb = 1;
 		last;
@@ -275,36 +275,72 @@ if ($updatedb)
 	if (!$createdb) {
 		$dbh = DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbadmin", "$dbadminpass",{AutoCommit => 1});
 		if ($dbh) {
+			my $update_views_n_rules = 0;
 			my $sth_tekictrl;
 			my $sth_tekidata;
+			my $sth_update;
 			try {
 				$sth_tekictrl = $dbh->prepare("
-				            select tekictrl_port from sessions
-				              ");
+				                              select tekictrl_port from sessions
+				                              ");
 				$sth_tekictrl->execute();
 			} catch {
 				print "ADDING: tekictrl_port column to table sessions\n";
 				$sth_tekictrl = $dbh->prepare("
-				                  alter table sessions
-				                  add column tekictrl_port int
-				                  ");
+				                              alter table sessions
+				                              add column tekictrl_port int
+				                              ");
 				$sth_tekictrl->execute() or die;
 				$sth_tekictrl->finish();
+				$update_views_n_rules = 1;
 			};
 			try {
 				$sth_tekidata = $dbh->prepare("
-				              select tekidata_port from sessions
-				              ");
+				                              select tekidata_port from sessions
+				                              ");
 				$sth_tekidata->execute();
 			} catch {
 				print "ADDING: tekidata_port column to table sessions\n";
 				$sth_tekidata=$dbh->prepare("
-				                  alter table sessions
-				                  add column tekidata_port int
-				                  ");
+				                            alter table sessions
+				                            add column tekidata_port int
+				                            ");
 				$sth_tekidata->execute() or die;
 				$sth_tekidata->finish();
+				$update_views_n_rules = 1;
 			};
+
+			if ($update_views_n_rules) {
+			{
+				print "UPDATING VIEW: sessions_view\n";
+				$sth_update=$dbh->prepare("
+				                          create or replace VIEW sessions_view as
+				                          SELECT
+				                          agent_pid, session_id, display, server, status, init_time, cookie, client, gr_port,
+				                          sound_port, last_time, uname, fs_port, tekictrl_port, tekidata_port from  sessions
+				                          where creator_id = current_user
+				                          ");
+				print "UPDATING RULE: update_sess_view\n";
+				$sth_update=$dbh->prepare("
+				                          create or replace RULE update_sess_view AS ON UPDATE
+				                          TO sessions_view DO INSTEAD
+				                          update sessions set
+				                          status=NEW.status,
+				                          last_time=NEW.last_time,
+				                          cookie=NEW.cookie,
+				                          agent_pid=NEW.agent_pid,
+				                          client=NEW.client,
+				                          gr_port=NEW.gr_port,
+				                          sound_port=NEW.sound_port,
+				                          fs_port=NEW.fs_port,
+				                          tekictrl_port=NEW.tekictrl_port,
+				                          tekidata_port=NEW.tekidata_port
+				                          where session_id=OLD.session_id and creator_id=current_user
+				                          ");
+				$sth_update->execute() or die;
+				$sth_update->execute() or die;
+				$sth_update->finish();
+			}
 		}
 		if ($dbh) {
 			$dbh->disconnect();
@@ -530,8 +566,8 @@ sub create_tables()
 	                   client=NEW.client,
 	                   gr_port=NEW.gr_port,
 	                   sound_port=NEW.sound_port,
-	                   fs_port=NEW.fs_port
-	                   tekictrl_port=NEW.tekictrl_port
+	                   fs_port=NEW.fs_port,
+	                   tekictrl_port=NEW.tekictrl_port,
 	                   tekidata_port=NEW.tekidata_port
 	                   where session_id=OLD.session_id and creator_id=current_user
 	                   ");
