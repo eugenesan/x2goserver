@@ -21,7 +21,7 @@ Depends:
  ${misc:Depends},
  libfile-basedir-perl,
  libfile-readbackwards-perl,
- libtry-tiny-perl,
+ libtrycatch-perl,
  libx2go-server-perl (>= ${source:Version}), libx2go-server-perl (<< ${source:Version}.1~),
  x2goagent (>= 2:3.5.0.25-0~),
  lsof,
