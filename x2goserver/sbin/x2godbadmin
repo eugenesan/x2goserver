@@ -25,7 +25,7 @@ use Sys::Syslog qw( :standard :macros );
 use File::Path qw( make_path );
 use Getopt::Long;
 use DBI;
-use Try::Tiny;
+use TryCatch;
 
 use X2Go::Config qw( get_sqlconfig );
 use X2Go::Log qw( loglevel );
@@ -262,27 +262,71 @@ my $dbadminpass=<FL>;
 close(FL);
 chomp($dbadminpass);
 
-my $dbh;
+if ($updatedb)
+{
+	# check if the DB already exists, if not, create it...
+	my $dbh;
+	try {
+		$dbh = DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbadmin", "$dbadminpass",{AutoCommit => 1, RaiseError => 1, PrintError => 0});
+	} catch {
+		$createdb = 1;
+	};
+	if (!$createdb) {
+		if ($dbh) {
+			my $sth_tekictrl;
+			my $sth_tekidata;
+			try {
+				$sth_tekictrl = $dbh->prepare("
+				            select tekictrl_port from sessions
+				              ");
+				$sth_tekictrl->execute();
+			} catch {
+				print "ADDING: tekictrl_port column to table sessions\n";
+				$sth_tekictrl = $dbh->prepare("
+				                  alter table sessions
+				                  add column tekictrl_port int
+				                  ");
+				$sth_tekictrl->execute() or die;
+				$sth_tekictrl->finish();
+			}
+			try {
+				$sth_tekidata = $dbh->prepare("
+				              select tekidata_port from sessions
+				              ");
+				$sth_tekidata->execute();
+			} catch {
+				print "ADDING: tekidata_port column to table sessions\n";
+				$sth_tekidata=$dbh->prepare("
+				                  alter table sessions
+				                  add column tekidata_port int
+				                  ");
+				$sth_tekidata->execute() or die;
+				$sth_tekidata->finish();
+			}
+		}
+		if ($dbh) {
+			$dbh->disconnect();
+		}
+		exit(0);
+	} else {
+		print "No session DB found. Use --createdb instead of --updatedb.\n";
+	}
+}
+
 if ($createdb)
 {
-	$dbh=DBI->connect("dbi:Pg:dbname=postgres;host=$host;port=$port;sslmode=$sslmode", "$dbadmin", "$dbadminpass",{AutoCommit => 1}) or die $_;
 	create_database();
-	$dbh->disconnect();
-	$dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbadmin", "$dbadminpass",{AutoCommit => 1}) or die $_;
 	create_tables();
-	$dbh->disconnect();
 	exit(0);
 }
 
 if ($listusers)
 {
-	$dbh=DBI->connect("dbi:Pg:dbname=postgres;host=$host;port=$port;sslmode=$sslmode", "$dbadmin", "$dbadminpass",{AutoCommit => 1}) or die $_;
 	list_users();
-	$dbh->disconnect();
 	exit(0);
 }
 
-$dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbadmin", "$dbadminpass",{AutoCommit => 1}) or die $_;
+my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbadmin", "$dbadminpass",{AutoCommit => 1}) or die $_;
 if ($adduser)
 {
 	add_user($adduser);
@@ -318,6 +362,7 @@ $dbh->disconnect();
 
 sub list_users()
 {
+	my $dbh=DBI->connect("dbi:Pg:dbname=postgres;host=$host;port=$port;sslmode=$sslmode", "$dbadmin", "$dbadminpass",{AutoCommit => 1}) or die $_;
 	my $sth=$dbh->prepare("select rolname from pg_roles where rolname like 'x2gouser_%'");
 	$sth->execute()or die;
 	printf ("%-20s DB user\n","UNIX user");
@@ -329,6 +374,7 @@ sub list_users()
 		printf ("%-20s x2gouser_@data[0]\n",@data[0]);
 	}
 	$sth->finish();
+	$dbh->disconnect();
 }
 
 sub rm_user()
@@ -411,6 +457,7 @@ sub add_user()
 
 sub create_tables()
 {
+	$dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbadmin", "$dbadminpass",{AutoCommit => 1}) or die $_;
 	my $sth=$dbh->prepare("
 	                      create table sessions(
 	                      session_id text primary key,
@@ -587,10 +634,12 @@ sub create_tables()
 	$sth=$dbh->prepare("GRANT ALL PRIVILEGES ON sessions, messages, user_messages, used_ports, mounts TO $x2goadmin");
 	$sth->execute() or die;
 	$sth->finish();
+	$dbh->disconnect();
 }
 
 sub create_database
 {
+	my $dbh=DBI->connect("dbi:Pg:dbname=postgres;host=$host;port=$port;sslmode=$sslmode", "$dbadmin", "$dbadminpass",{AutoCommit => 1}) or die $_;
 	#drop db if exists
 	my $sth=$dbh->prepare("drop database if exists x2go_sessions");
 	$sth->execute();
@@ -608,4 +657,5 @@ sub create_database
 	print FL $x2goadminpass;
 	close(FL);
 	$sth->finish();
+	$dbh->disconnect();
 }
