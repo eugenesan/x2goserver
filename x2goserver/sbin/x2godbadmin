@@ -25,7 +25,7 @@ use Sys::Syslog qw( :standard :macros );
 use File::Path qw( make_path );
 use Getopt::Long;
 use DBI;
-use TryCatch;
+use Try::Tiny;
 
 use X2Go::Config qw( get_sqlconfig );
 use X2Go::Log qw( loglevel );
@@ -266,12 +266,14 @@ if ($updatedb)
 {
 	# check if the DB already exists, if not, create it...
 	my $dbh;
-	try {
-		$dbh = DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbadmin", "$dbadminpass",{AutoCommit => 1, RaiseError => 1, PrintError => 0});
-	} catch {
+	until (
+		$dbh = DBI->connect("dbi:Pg:dbname='test';host=$host;port=$port;sslmode=$sslmode", "$dbadmin", "$dbadminpass",{AutoCommit => 1, RaiseError => 0, PrintError => 0})
+	) {
 		$createdb = 1;
+		last;
 	};
 	if (!$createdb) {
+		$dbh = DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbadmin", "$dbadminpass",{AutoCommit => 1});
 		if ($dbh) {
 			my $sth_tekictrl;
 			my $sth_tekidata;
@@ -288,7 +290,7 @@ if ($updatedb)
 				                  ");
 				$sth_tekictrl->execute() or die;
 				$sth_tekictrl->finish();
-			}
+			};
 			try {
 				$sth_tekidata = $dbh->prepare("
 				              select tekidata_port from sessions
@@ -302,7 +304,7 @@ if ($updatedb)
 				                  ");
 				$sth_tekidata->execute() or die;
 				$sth_tekidata->finish();
-			}
+			};
 		}
 		if ($dbh) {
 			$dbh->disconnect();
