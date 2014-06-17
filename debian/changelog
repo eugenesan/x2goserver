@@ -98,6 +98,7 @@ x2goserver (4.1.0.0-0x2go1.1) UNRELEASED; urgency=low
       multiple times into various packages.
     + Make sure X2Go Server (x2gocleansessions) starts after installation.
     - Make sure X2Go session DB files get updated during postinst.
+    + Require perl(TryCatch) instead of perl(Try::Tiny).
 
   [ Guangzhou Nianguan Electronics Technology Co.Ltd. ]
   * New upstream version (4.1.0.0):
