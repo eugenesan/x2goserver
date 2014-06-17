@@ -320,6 +320,7 @@ if ($updatedb)
 				                          sound_port, last_time, uname, fs_port, tekictrl_port, tekidata_port from  sessions
 				                          where creator_id = current_user
 				                          ");
+				$sth_update->execute() or die;
 				print "UPDATING RULE: update_sess_view\n";
 				$sth_update=$dbh->prepare("
 				                          create or replace RULE update_sess_view AS ON UPDATE
@@ -337,7 +338,6 @@ if ($updatedb)
 				                          tekidata_port=NEW.tekidata_port
 				                          where session_id=OLD.session_id and creator_id=current_user
 				                          ");
-				$sth_update->execute() or die;
 				$sth_update->execute() or die;
 				$sth_update->finish();
 			}
