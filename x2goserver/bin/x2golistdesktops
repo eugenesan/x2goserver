@@ -61,27 +61,32 @@ my $rdisp=join("I",@rdisplays);
 $rdisp="I${rdisp}I";
 
 my $uname=$ENV{'USER'};
-my $outp=system_capture_stdout_output("ls",  "-1",  "/tmp/.X11-unix/");
-my @outp=split("\n","$outp");
+my system_capture_stdout_output("ss", "-lxu");
+my @lines=split("\n", "$lines");
+
+my @outp = grep ( /(@| )\/tmp\/.X11-unix\/X.*/, @lines);
+my @displays;
 for(my $i=0;$i<@outp;$i++)
 {
 	my $display=@outp[$i];
-	$display=~s/X/:/;
+	$display=~s|.*/tmp/.X11-unix/X([0-9]*).*|:$1|;
 	my $checkdisp=$display;
 	$checkdisp=~s/:/I/;
 	$checkdisp="${checkdisp}I";
 	if (!( $rdisp =~ m/$checkdisp/ ))
 	{
-		my $inf=system_capture_stdout_output("xwininfo", "-root", "-display", "$display");
-		if ( $inf=~ m/geometry/)
-		{
-			print "$uname\@$display\n";
+		if ( grep { $_ eq "$uname\@$display" } @displays ) {
+		} else {
+			my $inf=system_capture_stdout_output("xwininfo", "-root", "-display", "$display");
+			if ( $inf=~ m/geometry/)
+			{
+				push (@displays, "$uname\@$display");
+			}
 		}
 	}
 }
 
-# FIXME: finally get rid of this non-critical backtick expression
-$outp=`ls -1 /tmp/ | grep x2godesktopsharing_`;
+my $outp=`ls -1 /tmp/ | grep x2godesktopsharing_`;
 @outp=split("\n","$outp");
 
 for(my $i=0;$i<@outp;$i++)
@@ -89,9 +94,13 @@ for(my $i=0;$i<@outp;$i++)
 	my @ln=split("\@",@outp[$i]);
 	if ( @ln[1] ne $uname )
 	{
-		print "@ln[1]\@@ln[2]\n";
+		push (@displays, "@ln[1]\@@ln[2]\n");
 	}
 }
 
+if (@displays) {
+	print "@displays\n";
+}
 # closing syslog 
 closelog;
+
