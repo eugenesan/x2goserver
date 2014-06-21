@@ -76,7 +76,7 @@ for(my $i=0;$i<@outp;$i++)
 	{
 		if ( grep { $_ eq "$uname\@$display" } @displays ) {
 		} else {
-			my $inf=system_capture_stdout_output("xwininfo", "-root", "-display", "$display");
+			my $inf=`xwininfo -root -display $display`;
 			if ( $inf=~ m/geometry/)
 			{
 				push (@displays, "$uname\@$display");
