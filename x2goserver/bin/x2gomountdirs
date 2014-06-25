@@ -279,7 +279,7 @@ for (my $i=0;$i<@dirs;$i++)
 		print "inserted, $msg\n";
 
 		# FIXME: this system call should be converted to a multi-argument system call while pertaining the redirect of stderr to the mounts.log file
-		if (system("sshfs  $code_conv -o idmap=user,uid=`id -u`,gid=`id -g`,$umaskstr,ServerAliveInterval=300,Cipher=blowfish,IdentityFile=$key,UserKnownHostsFile=$key.ident \"$user\"\@$host:\"@dirs[$i]\" \"$mntpath\" -p $port 2>&1 1>>$sessiondir/sshfs-mounts.log")==0)
+		if (system("sshfs  $code_conv -o idmap=user,uid=`id -u`,gid=`id -g`,$umaskstr,ServerAliveInterval=300,Cipher=blowfish,IdentityFile=$key,UserKnownHostsFile=$key.ident \"$user\"\@$host:\"@dirs[$i]\" \"$mntpath\" -p $port 1>>$sessiondir/sshfs-mounts.log 2>&1")==0)
 		{
 			print "mount @dirs[$i] ok\n";
 			syslog('notice', "successfully mounted $user\@$host:$port@dirs[$i] to $mntpath");
