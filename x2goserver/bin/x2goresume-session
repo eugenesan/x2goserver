@@ -20,6 +20,12 @@
 # Copyright (C) 2007-2014 Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
 # Copyright (C) 2007-2014 Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
 
+if [ $# -lt 7 ]
+then
+	echo "not enough arguments"
+	exit -1
+fi
+
 SESSION_NAME="$1"
 X2GO_GEOMETRY="$2"
 X2GO_LINK="$3"
@@ -34,6 +40,55 @@ X2GO_AGENT_PID=`$X2GO_LIB_PATH/x2gogetagent "$SESSION_NAME"`
 X2GO_ROOT="${HOME}/.x2go"
 X2GO_RESIZE=0
 X2GO_FULLSCREEN=0
+
+
+STATE=`$X2GO_LIB_PATH/x2gogetagentstate "$SESSION_NAME"`
+
+# exit if session terminated
+if [ "$STATE" == "TERMINATED" ] || [ "$STATE" == "TERMINATING" ]
+then
+	echo "Session terminated"
+	exit -1
+fi
+
+i=0
+# wait 15 sec. for starting session
+while [ "$STATE" == "RESUMING" ] || [ "$STATE" == "STARTING" ]
+do
+	sleep 1
+	i=$(($i+1))
+	#if session still not started, try to suspend it
+	if [ $i -gt 15 ]
+	then
+		x2gosuspend-session "$SESSION_NAME"
+		sleep 2
+		i=0
+	fi
+	STATE=`$X2GO_LIB_PATH/x2gogetagentstate "$SESSION_NAME"`
+done
+
+#suspend running session
+if [ "$STATE" == "RUNNING" ]
+then
+	x2gosuspend-session "$SESSION_NAME"
+	sleep 2
+	STATE=`$X2GO_LIB_PATH/x2gogetagentstate "$SESSION_NAME"`
+fi
+
+i=0
+# wait 45 sec., while session suspending
+while [ "$STATE" == "SUSPENDING" ]
+do
+	sleep 1
+	i=$(($i+1))
+	if [ $i -gt 45 ]
+	then
+		echo "Error: taking too long to suspend session. Possible session is damaged"
+		exit -1;
+	fi
+	STATE=`$X2GO_LIB_PATH/x2gogetagentstate "$SESSION_NAME"`
+done
+
 
 NX_XINERAMA_CONF="$X2GO_ROOT/C-$SESSION_NAME/xinerama.conf"
 if [ -e "$NX_XINERAMA_CONF" ]

@@ -31,10 +31,9 @@ X2Go::Server::Agent::NX Perl package for X2Go::Server.
 =cut
 
 use strict;
-use DBI;
 use POSIX;
 use Sys::Syslog qw( :standard :macros );
-use File::ReadBackwards;
+use File::HomeDir;
 
 use X2Go::Log qw( loglevel );
 
@@ -43,22 +42,8 @@ setlogmask( LOG_UPTO(loglevel()) );
 
 sub session_has_terminated
 {
-	my $sess=shift;
-	my $user=shift;
-	my $log;
-	if ( -d "/tmp-inst/${user}/.x2go-${user}" ) {
-		$log="/tmp-inst/${user}/.x2go-${user}/session-C-${sess}.log";
-	} else {
-		$log="/tmp/.x2go-${user}/session-C-${sess}.log";
-	}
-	my $log_line;
-	my $log_file = File::ReadBackwards->new( $log ) or return 1;
-	while( defined( $log_line = $log_file->readline ) ) {
-		next if ( ! ( $log_line =~ m/^Session:/ ) );
-		last;
-	}
-	$log_file->close();
-	if (($log_line =~ m/Session terminated/) || ($log_line =~ m/Terminating session/) || ($log_line =~ m/Aborting session/))
+	my $state=get_agent_state(@_);
+	if(($state eq 'TERMINATING')||($state eq 'TERMINATED'))
 	{
 		return 1;
 	}
@@ -68,22 +53,8 @@ sub session_has_terminated
 
 sub session_is_suspended
 {
-	my $sess=shift;
-	my $user=shift;
-	my $log;
-	if ( -d "/tmp-inst/${user}/.x2go-${user}" ) {
-		$log="/tmp-inst/${user}/.x2go-${user}/session-C-${sess}.log";
-	} else {
-		$log="/tmp/.x2go-${user}/session-C-${sess}.log";
-	}
-	my $log_line;
-	my $log_file = File::ReadBackwards->new( $log ) or return 0;
-	while( defined( $log_line = $log_file->readline ) ) {
-		next if ( ! ( $log_line =~ m/^Session:/ ) );
-		last;
-	}
-	$log_file->close();
-	if (($log_line =~ m/Session suspended/) || ($log_line =~ m/Suspending session/) || ($log_line =~ m/Display failure detected/))
+	my $state=get_agent_state(@_);
+	if(($state eq 'SUSPENDING')||($state eq 'SUSPENDED'))
 	{
 		return 1;
 	}
@@ -93,26 +64,31 @@ sub session_is_suspended
 
 sub session_is_running
 {
-	my $sess=shift;
-	my $user=shift;
-	my $log;
-	if ( -d "/tmp-inst/${user}/.x2go-${user}" ) {
-		$log="/tmp-inst/${user}/.x2go-${user}/session-C-${sess}.log";
-	} else {
-		$log="/tmp/.x2go-${user}/session-C-${sess}.log";
-	}
-	my $log_line;
-	my $log_file = File::ReadBackwards->new( $log ) or return 0;
-	while( defined( $log_line = $log_file->readline ) ) {
-		next if ( ! ( $log_line =~ m/^Session:/ ) );
-		last;
-	}
-	$log_file->close();
-	if (($log_line =~ m/Session started/) || ($log_line =~ m/Starting session/) || ($log_line =~ m/Session resumed/) || ($log_line =~ m/Resuming session/))
+	my $state=get_agent_state(@_);
+	if(($state eq 'STARTING')||($state eq 'RESUMING')||($state eq 'RUNNING'))
 	{
 		return 1;
 	}
 	return 0;
+}
+
+sub get_agent_state
+{
+	my $sess=@_[1];
+	my $user=@_[2];
+	my $state;
+	my $stateFile = File::HomeDir->users_home($user) . "/.x2go/C-".$sess."/state";
+	if (! -e $stateFile )
+	{
+		die "state file not exists: $stateFile\n";
+	}
+	else
+	{
+		open(F,"<$stateFile");
+		$state=<F>;
+		close(F);
+	}
+	return $state;
 }
 
 1;

@@ -27,7 +27,7 @@ use Sys::Syslog qw( :standard :macros );
 use File::ReadBackwards;
 
 use X2Go::Server::DB qw(db_listsessions db_listsessions_all db_changestatus);
-use X2Go::Server::Agent qw(session_is_suspended);
+use X2Go::Server::Agent qw(session_is_suspended session_is_running);
 use X2Go::Log qw(loglevel);
 
 
@@ -79,6 +79,14 @@ for (my $i=0;$i<@outp;$i++)
 				db_changestatus( 'S', @sinfo[1] );
 				@outp[$i] =~ s/\|R\|/\|S\|/;
 				system("x2goumount-session", "@sinfo[1]");
+			}
+		}
+		elsif (@sinfo[4]eq 'S')
+		{
+			if(session_is_running(@sinfo[1], @sinfo[11]))
+			{
+				db_changestatus( 'R', @sinfo[1] );
+				@outp[$i] =~ s/\|S\|/\|R\|/;
 			}
 		}
 		print "@outp[$i]\n";
