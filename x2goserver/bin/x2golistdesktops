@@ -61,7 +61,7 @@ my $rdisp=join("I",@rdisplays);
 $rdisp="I${rdisp}I";
 
 my $uname=$ENV{'USER'};
-my system_capture_stdout_output("ss", "-lxu");
+my $lines=system_capture_stdout_output("ss", "-lxu");
 my @lines=split("\n", "$lines");
 
 my @outp = grep ( /(@| )\/tmp\/.X11-unix\/X.*/, @lines);
