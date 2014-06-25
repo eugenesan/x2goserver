@@ -157,6 +157,8 @@ x2goserver (4.0.1.16-0x2go1) UNRELEASED; urgency=low
       the X2Go session DB.
     - x2golistdesktops: Also detect sharable desktop sessions behind abstract
       kernel namespace sockets.
+    - Add logcheck rules for X2Go Server. Thanks to Frank Werner for sending
+      them in.
   * debian/control, x2goserver.spec:
     + Update versioned D: x2goagent (>= 3.5.0.25). This assures that X2Go
       works with poly-instantiated /tmp directories.

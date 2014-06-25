@@ -1,0 +1,4 @@
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ /usr/bin/x2gomountdirs\[[ 0-9]{1,6}\]: WARNING: mounting of /.*/spool failed$
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ /usr/bin/x2gosuspend-session: session with ID .* has been suspended successfully$
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ /usr/bin/x2gostartagent: successfully started X2Go agent session with ID .*$
+^\w{3} [ :0-9]{11} [._[:alnum:]-]+ /usr/bin/x2goresume-session: client .* has successfully resumed session with ID .*$

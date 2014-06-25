@@ -375,6 +375,7 @@ exit 0
 %doc debian/changelog
 %dir %{_sysconfdir}/x2go/
 %config(noreplace) %{_sysconfdir}/sudoers.d/x2goserver
+%config(noreplace) %{_sysconfdir}/logcheck/ignore.d.server/x2goserver
 %{_bindir}/x2go*
 %exclude %{_bindir}/x2goserver-run-extensions
 %exclude %{_bindir}/x2gofm
