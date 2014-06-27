@@ -52,6 +52,9 @@ x2goserver (4.0.1.16-0x2go1) UNRELEASED; urgency=low
     - Enforce immediate socket cleanup/closure after session suspension
       and termination. (Fixes: #302).
 
+  [ Oleksandr Shneyder ]
+  * Move session file to /tmp/.x2go-$USER.
+
  -- Mike DePaulo <mikedep333@gmail.com>  Thu, 23 Apr 2014 17:49:00 -0500
 
 x2goserver (4.0.1.15-0x2go1) unstable; urgency=low
