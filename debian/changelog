@@ -68,6 +68,7 @@ x2goserver (4.1.0.0-0x2go1.1) UNRELEASED; urgency=low
       for unversioned package conflicts.
     + Test if telekinesis-server is installed server-side. If so,
       prepare the telekinesis session sub-directory.
+    + Add D (bin:package libx2go-server-db-perl): libswitch-perl.
   * debian/x2goserver.postinst, debian/libx2go-server-db-perl:
     + Handle X2Go session DB creation in x2goserver _and_
       perl-X2Go-Server-DB on postinst.
@@ -97,6 +98,7 @@ x2goserver (4.1.0.0-0x2go1.1) UNRELEASED; urgency=low
       multiple times into various packages.
     + Make sure X2Go Server (x2gocleansessions) starts after installation.
     - Make sure X2Go session DB files get updated during postinst.
+    + Require Perl(Switch) (bin:package x2goserver).
 
   [ Guangzhou Nianguan Electronics Technology Co.Ltd. ]
   * New upstream version (4.1.0.0):
