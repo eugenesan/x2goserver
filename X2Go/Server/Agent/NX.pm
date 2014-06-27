@@ -80,7 +80,7 @@ sub get_agent_state
 	if ( -d "/tmp-inst/${user}/.x2go-${user}" ) {
 		$stateFile="/tmp-inst/${user}/.x2go-".$user."/C-".$sess."/state";
 	} else {
-		$stateFile = "/tmp/.x2go-".$user."/C-".$sess."/state";+
+		$stateFile = "/tmp/.x2go-".$user."/C-".$sess."/state";
 	}
 	if (! -e $stateFile )
 	{
