@@ -260,4 +260,3 @@ fi
 echo "gr_port=$GR_PORT"
 echo "sound_port=$SOUND_PORT"
 echo "fs_port=$FS_PORT"
-

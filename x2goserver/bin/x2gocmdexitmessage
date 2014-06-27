@@ -27,8 +27,8 @@ MESSAGE_FILE=$X2GO_ROOT/C-$1/cmdoutput
 $X2GO_LIB_PATH/x2gosyslog "$0" "info" "$(basename $0) called with options: $@"
 
 test -f "$MESSAGE_FILE" && {
-       $X2GO_LIB_PATH/x2gosyslog "$0" "debug" "command output starts with: $(head -n5 $MESSAGE_FILE | sed 's/\n/ /g')"
+	$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "command output starts with: $(head -n5 $MESSAGE_FILE | sed 's/\n/ /g')"
 
-       # return command output of the command that was issued by x2goruncommand
-       cat "$MESSAGE_FILE"
+	# return command output of the command that was issued by x2goruncommand
+	cat "$MESSAGE_FILE"
 }

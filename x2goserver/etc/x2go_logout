@@ -2,11 +2,11 @@
 # for Bash and Bash compatible shells (bash(1), ksh(1), ash(1), ...).
 
 if [ -d /etc/x2go/x2go_logout.d ]; then
-  for subscript in /etc/x2go/x2go_logout.d/*; do
-    if [ -r $subscript ]; then
-      # subscripts may fail, we ignore that here...
-      . $subscript || true
-    fi
-  done
-  unset subscript
+	for subscript in /etc/x2go/x2go_logout.d/*; do
+		if [ -r $subscript ]; then
+			# subscripts may fail, we ignore that here...
+			. $subscript || true
+		fi
+	done
+	unset subscript
 fi

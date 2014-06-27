@@ -34,7 +34,6 @@ openlog($0,'cons,pid','user');
 setlogmask( LOG_UPTO(x2gologlevel()) );
 
 
-
 sub check_pid
 {
 	my $pid=shift;
@@ -56,23 +55,23 @@ sub check_pid
 
 sub has_terminated
 {
-    my $state=get_agent_state(@_);
-    if(($state eq 'TERMINATING')||($state eq 'TERMINATED'))
-    {
-	return 1;
-    }
-    return 0;
+	my $state=get_agent_state(@_);
+	if(($state eq 'TERMINATING')||($state eq 'TERMINATED'))
+	{
+		return 1;
+	}
+	return 0;
 }
 
 
 sub is_suspended
 {
-    my $state=get_agent_state(@_);
-    if(($state eq 'SUSPENDING')||($state eq 'SUSPENDED'))
-    {
-	return 1;
-    }
-    return 0;
+	my $state=get_agent_state(@_);
+	if(($state eq 'SUSPENDING')||($state eq 'SUSPENDED'))
+	{
+		return 1;
+	}
+	return 0;
 }
 
 
@@ -88,23 +87,22 @@ sub is_running
 
 sub get_agent_state
 {
-    my $sess=@_[0];
-    my $user=@_[1];
-    my $state;
-    my $stateFile = "/tmp/.x2go-".$user."/C-".$sess."/state";
-    if (! -e $stateFile )
-    {
-	die "state file not exists: $stateFile\n";
-    }
-    else
-    {
-	open(F,"<$stateFile");
-	$state=<F>;
-	close(F);
-    }
-    return $state;
+	my $sess=@_[0];
+	my $user=@_[1];
+	my $state;
+	my $stateFile = "/tmp/.x2go-".$user."/C-".$sess."/state";
+	if (! -e $stateFile )
+	{
+		die "state file not exists: $stateFile\n";
+	}
+	else
+	{
+		open(F,"<$stateFile");
+		$state=<F>;
+		close(F);
+	}
+	return $state;
 }
-
 
 
 sub catch_term

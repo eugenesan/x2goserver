@@ -31,9 +31,9 @@ X2GO_FEATURE=$1
 
 # run x2gofeature scripts of X2Go extensions
 test -d "$X2GO_SHARE_PATH/x2gofeature.d" && {
-    for subscript in $X2GO_SHARE_PATH/x2gofeature.d/*.features; do
-        $subscript $@ && exit 0
-    done
+	for subscript in $X2GO_SHARE_PATH/x2gofeature.d/*.features; do
+		$subscript $@ && exit 0
+	done
 }
 
 echo "not available"

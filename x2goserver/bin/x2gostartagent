@@ -38,11 +38,11 @@ export NX_ROOT=$X2GO_ROOT
 X2GO_NXAGENT_DEFAULT_OPTIONS="-extension XFIXES -extension GLX -nolisten tcp"
 
 if [ -r /etc/x2go/x2goagent.options ]; then
-    source /etc/x2go/x2goagent.options
+	source /etc/x2go/x2goagent.options
 fi
 
 if [ -z "$X2GO_NXAGENT_OPTIONS" ]; then
-    X2GO_NXAGENT_OPTIONS="$X2GO_NXAGENT_DEFAULT_OPTIONS"
+	X2GO_NXAGENT_OPTIONS="$X2GO_NXAGENT_DEFAULT_OPTIONS"
 fi
 
 REMOTE=localhost

@@ -37,26 +37,26 @@ setlogmask( LOG_UPTO(x2gologlevel()) );
 syslog('info', "x2goumount-session has been called with options: @ARGV");
 
 # this function is a code duplication from x2gomountdirs and it will go away with
-# X2Go Server 3.2.0.0 (as the code has been moved into X2Go::Utils already in Vcs).
+# X2Go Server 4.1.0.0 (as the code has been moved into X2Go::Utils already in Vcs).
 sub source_environment {
-    my $name = shift;
+	my $name = shift;
 
-    open my $fh, "<", $name
-        or return -1;
+	open my $fh, "<", $name
+	or return -1;
 
-    while (<$fh>) {
-        chomp;
-        my $line = $_;
-        if ( $line =~ m/^#.*/ )
-        {
-            next;
-        }
-        my ($k, $v) = split /=/, $line, 2;
-        $v =~ s/^(['"])(.*)\1/$2/; #' fix highlighter
-        $v =~ s/\$([a-zA-Z]\w*)/$ENV{$1}/g;
-        $v =~ s/`(.*?)`/`$1`/ge; #dangerous
-        $ENV{$k} = $v;
-    }
+	while (<$fh>) {
+		chomp;
+		my $line = $_;
+		if ( $line =~ m/^#.*/ )
+		{
+			next;
+		}
+		my ($k, $v) = split /=/, $line, 2;
+		$v =~ s/^(['"])(.*)\1/$2/; #' fix highlighter
+		$v =~ s/\$([a-zA-Z]\w*)/$ENV{$1}/g;
+		$v =~ s/`(.*?)`/`$1`/ge; #dangerous
+		$ENV{$k} = $v;
+	}
 }
 
 my $tmp_dir = '/tmp';
@@ -270,4 +270,3 @@ rmdir ("$mimeboxdir");
 
 # closing syslog 
 closelog;
-
