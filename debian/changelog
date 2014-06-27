@@ -54,6 +54,9 @@ x2goserver (4.0.1.16-0x2go1) UNRELEASED; urgency=low
 
   [ Oleksandr Shneyder ]
   * Move session file to /tmp/.x2go-$USER.
+    - x2gostartagent, x2golistsession, x2gosuspend-session and x2goresume-session
+      getting agent state from ~/.x2go/C-$SID/state. This should help to avoid
+      session damage. Remove nxcleanup.
 
  -- Mike DePaulo <mikedep333@gmail.com>  Thu, 23 Apr 2014 17:49:00 -0500
 
