@@ -76,7 +76,12 @@ sub get_agent_state
 	my $sess=@_[1];
 	my $user=@_[2];
 	my $state;
-	my $stateFile = "/tmp/.x2go-".$user."/C-".$sess."/state";
+	my $stateFile;
+	if ( -d "/tmp-inst/${user}/.x2go-${user}" ) {
+		$stateFile="/tmp-inst/${user}/.x2go-".$user."/C-".$sess."/state";
+	} else {
+		$stateFile = "/tmp/.x2go-".$user."/C-".$sess."/state";+
+	}
 	if (! -e $stateFile )
 	{
 		print { \*STDERR } "WARNING: state file for session $sess does not exists: $stateFile\n";
