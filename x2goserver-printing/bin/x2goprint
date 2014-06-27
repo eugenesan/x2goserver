@@ -59,7 +59,7 @@ sub check_usage
 	elsif (scalar(@ARGV) != 4)
 	{
 		syslog('err', "ERROR: x2goprint was called with a wrong number of cmd line args, x2goprint exits now!");
-		print STDERR "ERROR: Usage:\nx2goprint user session file titleFile\nx2goprint user\n";
+		print { \*STDERR } "ERROR: Usage:\nx2goprint user session file titleFile\nx2goprint user\n";
 		exit 1;
 	}
 }
