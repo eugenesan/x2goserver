@@ -79,7 +79,7 @@ sub get_agent_state
 	my $stateFile = "/tmp/.x2go-".$user."/C-".$sess."/state";
 	if (! -e $stateFile )
 	{
-		print "state file session $sess does not exists: $stateFile\n";
+		print { STDERR } "WARNING: state file session $sess does not exists: $stateFile\n";
 		$state="UNKNOWN";
 	}
 	else
