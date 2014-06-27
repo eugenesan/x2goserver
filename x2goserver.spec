@@ -335,6 +335,7 @@ exit 0
 %{_libdir}/x2go/x2goresume
 %{_libdir}/x2go/x2gormport
 %{_libdir}/x2go/x2gosuspend-agent
+%{_libdir}/x2go/x2gogetagentstate
 %{_libdir}/x2go/x2gosyslog
 %{_sbindir}/x2go*
 %{_mandir}/man8/x2go*.8.gz
