@@ -231,7 +231,7 @@ if [ ! -d "$X2GO_ROOT" ]; then
 fi
 
 X2GO_TMP_ROOT="/tmp/.x2go-${USER}"
-if [ ! -d "$X2GO__TMP_ROOT" ]; then
+if [ ! -d "$X2GO_TMP_ROOT" ]; then
     mkdir "$X2GO_TMP_ROOT"
 fi
 
