@@ -247,31 +247,34 @@ if [ "$X2GO_STYPE" == "S" ]; then
 	X2GO_GEOMETRY=`echo "$X2GO_GEOMETRY" | sed  -e  "s/-geometry//"`
 fi
 
-SESSION_DIR="${X2GO_ROOT}/C-${SESSION_NAME}"
+if [ ! -d "$X2GO_ROOT" ]; then
+	mkdir "$X2GO_ROOT"
+fi
+
+X2GO_TMP_ROOT="/tmp/.x2go-${USER}"
+if [ ! -d "$X2GO__TMP_ROOT" ]; then
+	mkdir "$X2GO_TMP_ROOT"
+fi
+
+SESSION_DIR="${X2GO_TMP_ROOT}/C-${SESSION_NAME}"
 if [ "x$X2GO_TELEKINESIS_ENABLED" != "x0" ]; then
 	mkdir -p "${SESSION_DIR}/telekinesis/remote/"
 fi
 
-STATE_FILE="${X2GO_ROOT}/C-${SESSION_NAME}/state"
+STATE_FILE="${SESSION_DIR}/state"
 
 # do not use $TMP or $TEMP here, the session.log file location has to be accessible by root
-SESSION_LOG="/tmp/.x2go-${USER}/session-C-${SESSION_NAME}.log"
-mkdir -p $(dirname "${SESSION_LOG}")
-chmod -f 0700 $(dirname "${SESSION_LOG}")
+SESSION_LOG="${SESSION_DIR}/session.log"
+mkdir -p "${SESSION_DIR}"
+chmod -f 0700 "${SESSION_DIR}"
 touch "${SESSION_LOG}"
 chmod -f 0600 "${SESSION_LOG}"
 
-if [ ! -d "$X2GO_ROOT" ]; then
-	mkdir "$X2GO_ROOT"
-fi
 
 if [ ! -d "$X2GO_ROOT/ssh" ]; then
 	mkdir "$X2GO_ROOT/ssh"
 fi
 
-if [ ! -d "$SESSION_DIR" ]; then
-	mkdir "$SESSION_DIR"
-fi
 
 X2GO_COOKIE=`mcookie`
 
@@ -337,7 +340,7 @@ else
 	NX_TEMP=/tmp x2goagent $X2GO_NXAGENT_OPTIONS $NOLISTOPT $X2GODPIOPTION_ $XDMCPOPT -$SESSION_TYPE $NOEXITPARAM -auth "$XAUTHORITY" $agent_geometry -name "${SESSION_WINDOW_TITLE}"  "${NX_AGENT}" 2>"${SESSION_LOG}" &
 fi
 
-ln -s "${SESSION_LOG}" "${SESSION_DIR}/session.log" 
+ln -s "${SESSION_DIR}" "${X2GO_ROOT}/C-${SESSION_NAME}"
 
 X2GO_AGENT_PID=$!
 X2GO_AGENT_RETVAL=$?

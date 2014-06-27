@@ -35,14 +35,13 @@ X2Go::Utils Perl package.
 =cut
 
 use strict;
-use IO::Socket;
 
 use base 'Exporter';
 
 our @EXPORT = ( 'load_module', 'is_true',
                 'source_environment', 'clups', 'sanitizer',
                 'system_capture_merged_output', 'system_capture_stdout_output',
-                'check_x2go_sessionid', 'test_socket_state', );
+                'check_x2go_sessionid');
 
 use Sys::Syslog qw( :standard :macros );
 use Capture::Tiny qw ( :all );
@@ -178,18 +177,6 @@ sub check_x2go_sessionid {
 		return sanitizer("x2gosid",$ENV{'X2GO_SESSION'});
 	} else {
 		die "No X2Go Session ID in ARGV or ENV!\n";
-	}
-}
-
-sub test_socket_state {
-	my $portNum = sanitizer("num",$_[0]) or die "Port number not a number '$_[0]'?";
-	my $socket = IO::Socket::INET->new( PeerAddr => 'localhost', PeerPort => $portNum, Proto    => 'tcp');
-	if (defined $socket) {
-		print $socket "\n";
-		$socket->close;
-		return 1;
-	} else {
-		return 0;
 	}
 }
 

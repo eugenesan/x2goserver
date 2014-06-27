@@ -306,5 +306,5 @@ test -r /etc/x2go/x2go_logout && . /etc/x2go/x2go_logout
 
 # clean up session dir if not in debug mode and if session has been successful
 if [ "$($X2GO_LIB_PATH/x2gologlevel)" != "7" ] && [ "x$successful_run" = "xtrue" ]; then
-	(sleep 10; rm -Rf "${HOME}/.x2go/C-${X2GO_SESSION}"; rm -f "/tmp/.x2go-${USER}/session-C-${X2GO_SESSION}.log"; rmdir --ignore-fail-on-non-empty "/tmp/.x2go-${USER}"; )&
+	(sleep 10; rm -f "${HOME}/.x2go/C-${X2GO_SESSION}"; rm -Rf "/tmp/.x2go-${USER}/C-${X2GO_SESSION}"; rmdir --ignore-fail-on-non-empty "/tmp/.x2go-${USER}"; )&
 fi

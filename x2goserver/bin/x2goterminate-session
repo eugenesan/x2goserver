@@ -54,9 +54,6 @@ if kill -TERM $X2GO_AGENT_PID &>/dev/null; then
 	# run x2goserver-extensions for post-terminate
 	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions "$SESSION_NAME" post-terminate || true
 
-	# this makes sure that the socket on localhost blocked by NX agent gets released immediately
-	$X2GO_LIB_PATH/x2gonxcleanup
-
 else
 	err_msg="ERROR: failed to terminate session with ID $SESSION_NAME"
 

@@ -33,7 +33,6 @@ X2Go::Server::Agent::NX Perl package for X2Go::Server.
 use strict;
 use POSIX;
 use Sys::Syslog qw( :standard :macros );
-use File::HomeDir;
 
 use X2Go::Log qw( loglevel );
 
@@ -77,7 +76,7 @@ sub get_agent_state
 	my $sess=@_[1];
 	my $user=@_[2];
 	my $state;
-	my $stateFile = File::HomeDir->users_home($user) . "/.x2go/C-".$sess."/state";
+	my $stateFile = "/tmp/.x2go-".$user."/C-".$sess."/state";
 	if (! -e $stateFile )
 	{
 		die "state file not exists: $stateFile\n";
