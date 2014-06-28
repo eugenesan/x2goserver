@@ -33,6 +33,7 @@ X2GO_PACK="$4"
 X2GO_KBD_LAYOUT="$5"
 X2GO_KBD_TYPE="$6"
 X2GO_SET_KBD="$7"
+X2GO_CLIPBOARD="$8"
 
 X2GO_LIB_PATH="$(x2gopath libexec)";
 X2GO_AGENT_PID=`$X2GO_LIB_PATH/x2gogetagent "$SESSION_NAME"`
@@ -219,10 +220,12 @@ if [ -n "$test_GSTR" ]; then
 	RSTR=`echo "$OPTIONS" | awk -F, {'print $13'}`
 	FSTR=`echo "$OPTIONS" | awk -F, {'print $14'}`
 	LISTSTR=`echo "$OPTIONS" | awk -F, {'print $16'}`
+	CLIPBOARD=`echo "$OPTIONS" | awk -F, {'print $17'}`
 else
 	RSTR=`echo "$OPTIONS" | awk -F, {'print $14'}`
 	FSTR=`echo "$OPTIONS" | awk -F, {'print $15'}`
 	LISTSTR=`echo "$OPTIONS" | awk -F, {'print $17'}`
+	CLIPBOARD=`echo "$OPTIONS" | awk -F, {'print $18'}`
 fi
 
 KTSTR=`echo "$KTSTR" | sed "s/\//\\\\\\\\\//"`
@@ -234,13 +237,19 @@ else
 	keyboard_type="$X2GO_KBD_TYPE"
 fi
 
+if [ -n "$X2GO_CLIPBOARD" ] && [ -z "`echo $X2GO_CLIPBOARD | sed -re 's/(0|none|client|server|both|1)//'`" ]; then
+	clipboard="clipboard=$X2GO_CLIPBOARD"
+fi
+
 NEWOPTIONS=`echo "$OPTIONS" | sed  -e  "s/$LSTR/link=$X2GO_LINK/"\
  -e "s/$PSTR/pack=$X2GO_PACK/"\
  -e "s/$KTSTR/kbtype=$keyboard_type/"\
  -e "s/$GSTR/geometry=$X2GO_GEOMETRY/"\
  -e "s/$RSTR/resize=$X2GO_RESIZE/"\
  -e "s/$LISTSTR/listen=$GR_PORT/"\
- -e "s/$FSTR/fullscreen=$X2GO_FULLSCREEN/"`
+ -e "s/$FSTR/fullscreen=$X2GO_FULLSCREEN/" \
+ -e "s/$CLIPBOARD/$clipboard/" \
+`
 
 if [ -z "$X2GO_GEOMETRY" ] || [ "$X2GO_GEOMETRY" == "fullscreen" ]; then
 	NEWOPTIONS=`echo $NEWOPTIONS | sed -e "s/geometry=${X2GO_GEOMETRY},//"`
