@@ -5,14 +5,14 @@
 \\$2 \(la\\$1\(ra\\$3
 ..
 .if \n(.g .mso www.tmac
-.TH x2gofeature 8 "Jan 2013" "Version 4.1.0.0-preview" "X2Go Server Tool"
+.TH x2gofeature 8 "Jun 2014" "Version 4.1.0.0-preview" "X2Go Server Tool"
 .SH NAME
 x2gofeature \- Query X2Go Feature Availability on X2Go Server
 .SH SYNOPSIS
 'nh
 .fi
 .ad 1
-x2gofeature <feature_name>
+x2gofeature \fI<feature_name>\fR
 
 .SH DESCRIPTION
 \fBx2gofeature\fR allows client applications to query the server for certain features
@@ -20,7 +20,7 @@ before trying to use them.
 .PP
 \fBx2gofeature\fR can be run with user privileges.
 .SH RETURN VALUES
-If feature <feature_name> is available on the X2Go server, then ,,ok'' is written to stdout.
+If feature \fI<feature_name>\fR is available on the X2Go server, then ,,ok'' is written to stdout.
 Otherwise the expression ,,not available'' is written to stdout.
 .SH SEE ALSO
 /usr/share/x2go/x2gofeature.d/*.features

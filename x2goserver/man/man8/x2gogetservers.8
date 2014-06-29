@@ -5,7 +5,7 @@
 \\$2 \(la\\$1\(ra\\$3
 ..
 .if \n(.g .mso www.tmac
-.TH x2gogetservers 8 "Jan 2013" "Version 4.1.0.0-preview" "X2Go Server Tool"
+.TH x2gogetservers 8 "Jun 2014" "Version 4.1.0.0-preview" "X2Go Server Tool"
 .SH NAME
 x2gogetservers \- Retrieve list of available X2Go servers
 .SH SYNOPSIS
@@ -15,8 +15,9 @@ x2gogetservers \- Retrieve list of available X2Go servers
 x2gogetservers
 
 .SH DESCRIPTION
-\fBx2gogetservers\fR retrieves a list of available X2Go servers. This command is
-only used by \fIx2goclient\fR if it runs in LDAP mode.
+\fBx2gogetservers\fR retrieves a list of available X2Go servers.
+
+This command is used in X2Go load balancing scenarios.
 .PP
 The \fBx2gogetservers\fR is run with X2Go user privileges.
 

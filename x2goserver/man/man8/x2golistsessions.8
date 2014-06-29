@@ -5,17 +5,17 @@
 \\$2 \(la\\$1\(ra\\$3
 ..
 .if \n(.g .mso www.tmac
-.TH x2golistsessions 8 "Jan 2013" "Version 4.1.0.0-preview" "X2Go Server Tool"
+.TH x2golistsessions 8 "Jun 2014" "Version 4.1.0.0-preview" "X2Go Server Tool"
 .SH NAME
 x2golistsessions \- List Available X2Go Sessions for User
 .SH SYNOPSIS
 'nh
 .fi
 .ad l
-x2golistsessions [<server_hostname>|--all-servers]
+x2golistsessions [\fI<server_hostname>\fR|\fI--all-servers\fR]
 
 .SH DESCRIPTION
-\fBx2golistsessions\fR returns a list of running or suspended X2Go sessions for X2Go server <server_hostname>.
+\fBx2golistsessions\fR returns a list of running or suspended X2Go sessions for X2Go server \fI<server_hostname>\fR.
 If no server hostname is given at the command line, the session list query runs for the local system.
 .PP
 \fBx2golistsessions\fR is run with normal user privileges and it is used by X2Go clients to render
@@ -30,20 +30,22 @@ symbol (,,|'').
 .PP
 The meaning of the session attributes of each output line are shown below:
 
-  field 01: <agent_pid>
-  field 02: <session_id>
-  field 03: <port>
-  field 04: <host>
-  field 05: <state>
-  field 06: <init_time>
-  field 07: <session_cookie>
-  field 08: <client_ip>
-  field 09: <gr_port>
-  field 10: <snd_port>
-  field 11: <last_time>
-  field 12: <user>
-  field 13: <age_in_secs>
-  field 14: <sshfs_port>
+    field 01: \fI<agent_pid>\fR
+    field 02: \fI<session_id>\fR
+    field 03: \fI<port>\fR
+    field 04: \fI<host>\fR
+    field 05: \fI<state>\fR
+    field 06: \fI<init_time>\fR
+    field 07: \fI<session_cookie>\fR
+    field 08: \fI<client_ip>\fR
+    field 09: \fI<gr_port>\fR
+    field 10: \fI<snd_port>\fR
+    field 11: \fI<last_time>\fR
+    field 12: \fI<user>\fR
+    field 13: \fI<age_in_secs>\fR
+    field 14: \fI<sshfs_port>\fR
+    field 15: \fI<tekictrl_port>\fR (if Telekinesis is available/enabled)
+    field 15: \fI<tekidata_port>\fR (if Telekinesis is available/enabled)
 
 .PP
 As exitcode \fBx2golistsessions\fR always returns 0.

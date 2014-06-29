@@ -5,24 +5,71 @@
 \\$2 \(la\\$1\(ra\\$3
 ..
 .if \n(.g .mso www.tmac
-.TH x2goresume-session 8 "Jan 2013" "Version 4.1.0.0-preview" "X2Go Server Tool"
+.TH x2goresume-session 8 "Jun 2014" "Version 4.1.0.0-preview" "X2Go Server Tool"
 .SH NAME
 x2goresume-session \- Resume X2Go Session
 .SH SYNOPSIS
 'nh
 .fi
 .ad l
-x2goresume-session <session_id>
+\fBx2goresume-session\fR  \fI<session_id>\fR \ \\
+                    \fI<geometry>\fR \ \\
+                    \fI<link_quality>\fR \ \\
+                    \fI<nx_pack_meth>\fR \ \\
+                    \fI<kblayout>\fR \ \\
+                    \fI<kbtype>\fR \ \\
+                    \fI<setkbd>\fR \ \\
+                    \fI<clipboardmode>\fR
 
 .SH DESCRIPTION
-\fBx2goresume-session\fR resumes the suspended session with session ID <session_id>.
+\fBx2goresume-session\fR resumes the suspended session with session ID \fI<session_id>\fR.
 .PP
 This command is normally issued
 by an X2Go client application with X2Go user privileges.
+.SH ARGUMENTS
+.TP
+\*(T<\fI\<session_id>\fR\*(T>
+The session ID (or session name) of the suspend session that is to be resumed.
+.TP
+\*(T<\fI\<geometry>\fR\*(T>
+Session window size on screen (allowed values: <width>x<height> or fullscreen).
+.TP
+\*(T<\fI\<link_quality>\fR\*(T>
+Any value out of: modem, isdn, adsl, wan or lan.
+.TP
+\*(T<\fI\<nx_pack_method>\fR\*(T>
+NX compression method (see below for possible values).
+.TP
+\*(T<\fI\<cache_type+dpi>\fR\*(T>
+Cache type and color depth for X2Go session window. The most common value is: unix-kde-depth_24 where ,,24'' is the color depth in bit.
+.TP
+\*(T<\fI\<kblayout>\fR\*(T>
+Keyboard layout (e.g. us, de, etc.).
+.TP
+\*(T<\fI\<kbtype>\fR\*(T>
+Keyboard type/model (e.g. pc105/us).
+.TP
+\*(T<\fI\<setkbd>\fR\*(T>
+Force setting keyboard layout and type within the X2Go session on startup. Values: 0 or 1.
+.TP
+\*(T<\fI\<clipboardmode>\fR\*(T>
+The session's clipboard mode. Possible values: both, server, client, none. Allows to configure clipboard security
+per session via the connecting X2Go client. If the clipboard parameter is set server-side in /etc/x2go/x2goagent.options,
+then that value will override client-side settings.
 .SH RETURN VALUES
-\fBx2goresume-session\fR reports to stderr if resuming of session <session_id> failed. This
-very probably means that the session's X agent has died, so the session <session_id> will
+\fBx2goresume-session\fR reports to stderr if resuming of session \fI<session_id>\fR failed. This
+very probably means that the session's X agent has died, so the session \fI<session_id>\fR will
 be marked as finished in the X2Go session database.
+.PP
+If everything works out well, a list of session attributes is returned after successful session resumption. 
+Session attributes will be presented on a line-by-line basis:
+
+    field 01: \fI<graphics_port>\fR
+    field 02: \fI<sound_port>\fR
+    field 03: \fI<sshfs_port>\fR
+    field 04: \fI<tekictrl_port>\fR (if Telekinesis is available/enabled)
+    field 04: \fI<tekidata_port>\fR (if Telekinesis is available/enabled)
+
 .PP
 As exitcode \fBx2goresume-session\fR always returns 0.
 .SH SEE ALSO

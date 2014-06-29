@@ -5,18 +5,22 @@
 \\$2 \(la\\$1\(ra\\$3
 ..
 .if \n(.g .mso www.tmac
-.TH x2golistmounts 8 "Jan 2013" "Version 4.1.0.0-preview" "X2Go Server Tool"
+.TH x2golistmounts 8 "Jun 2014" "Version 4.1.0.0-preview" "X2Go Server Tool"
 .SH NAME
 x2golistmounts \- List Mounted Shares for an X2Go Session
 .SH SYNOPSIS
 'nh
 .fi
 .ad l
-x2golistmounts <session_id>
+x2golistmounts [\fI<session_id>\fR]
 
 .SH DESCRIPTION
 \fBx2golistmounts\fR returns a list of mounted client-side folders or devices for X2go
-session <session_id>.
+session \fI<session_id>\fR.
+.PP
+If this commands get evoked inside an X2Go session, the
+\fI<session_id>\fR parameter can be omitted (and the env var $X2GO_SESSION will be used
+instead).
 .PP
 \fBx2golistmounts\fR is run with normal user privileges and it is used by X2Go clients to render
 a list of SSHFS mounts for a given X2Go sessions.
@@ -26,8 +30,8 @@ two mount point attribute fields separated by the pipe symbol (,,|'').
 .PP
 The meanings of these mount point attributes are:
 
-  field 01: <sshfs_target_host_ip>
-  field 02: <mount_point_path_on_server>
+  field 01: \fI<sshfs_target_host_ip>\fR
+  field 02: \fI<mount_point_path_on_server>\fR
 
 As exitcode \fBx2golistmounts\fR always returns 0.
 .SH SEE ALSO
