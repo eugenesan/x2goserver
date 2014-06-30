@@ -116,9 +116,6 @@ x2goserver (4.1.0.0-0x2go1.1) UNRELEASED; urgency=low
   * New upstream version (4.1.0.0):
     - Use new script x2gopath in Perl::API. (Fixes: #86).
 
-  [ Oleksandr Shneyder ]
-  * Fix x2gostartagent fails if kbd is not "auto". Remove comma at end of options file.
-
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 09 May 2014 13:06:24 +0200
 
 x2goserver (4.0.1.16-0x2go1) UNRELEASED; urgency=low
@@ -185,6 +182,8 @@ x2goserver (4.0.1.16-0x2go1) UNRELEASED; urgency=low
       getting agent state from ~/.x2go/C-$SID/state. This should help to avoid
       session damage. Remove nxcleanup. (Fixes: #302).
     - Move session file to /tmp/.x2go-$USER. (Fixes: #523).
+    - Fix x2gostartagent failures if kbd is not "auto". Remove comma at end of
+      options file.
 
  -- Mike DePaulo <mikedep333@gmail.com>  Thu, 23 Apr 2014 17:49:00 -0500
 
