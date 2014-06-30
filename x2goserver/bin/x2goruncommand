@@ -173,10 +173,12 @@ elif [ "$cmd" == "TRINITY" ]; then
 fi
 
 if [ "$cmd" == "WWWBROWSER" ]; then
-	if [ -e "/usr/bin/firefox" ]; then
-		cmd="/usr/bin/firefox"
+	if [ -e "/usr/bin/firefox.real" ]; then
+		cmd="/usr/bin/firefox.real"
 	elif  [ -e "/usr/bin/iceweasel" ]; then
 		cmd="/usr/bin/iceweasel"
+	elif  [ -e "/usr/bin/firefox" ]; then
+		cmd="/usr/bin/firefox"
 	elif  [ -e "/usr/bin/abrowser" ]; then
 		cmd="/usr/bin/abrowser"
 	elif  [ -e "/usr/bin/konqueror" ]; then
@@ -209,17 +211,12 @@ if [ "$cmd" == "OFFICE" ]; then
 fi
 
 if [ "$cmd" == "TERMINAL" ]; then
-	IMEXIT="true"
 	if [ -e "/usr/bin/konsole" ]; then
 		cmd="/usr/bin/konsole"
-		# KDE4 konsole behaves differently from other terminals
-		IMEXIT="false"
 	elif  [ -e "/usr/bin/mate-terminal" ]; then
 		cmd="/usr/bin/mate-terminal"
 	elif  [ -e "/usr/bin/gnome-terminal" ]; then
 		cmd="/usr/bin/gnome-terminal"
-		# GNOME terminal starting with 3.8 also immediately exits
-		IMEXIT="false"
 	elif  [ -e "/usr/bin/lxterminal" ]; then
 		cmd="/usr/bin/lxterminal"
 	elif  [ -e "/usr/bin/rxvt" ]; then
@@ -236,7 +233,6 @@ EXEC_WRAPPER=""
 BNAME=`basename "$EXEC"`
 if [ "$BNAME" == "rdesktop" ]
 then
-	IMEXIT="true"
 	if type padsp >/dev/null; then
 		EXEC_WRAPPER="padsp"
 		args=" -r sound:local"
@@ -248,7 +244,7 @@ fi
 
 if [ "$X2GO_SESS_TYPE" == "P" ]
 then
-	IMEXIT="false"
+	IMEXIT="true"
 	EXEC="/bin/true"
 	X2GO_SESS_TYPE="R"
 fi
@@ -268,16 +264,29 @@ if [ "$EXEC" != "" ] && [ -x "$EXEC" ]; then
 		XSESSION_EXEC="$cmd" STARTUP="/usr/bin/env LD_LIBRARY_PATH=${LD_LIBRARY_PATH} ${STARTUP}" /etc/x2go/Xsession
 	} || {
 		"$X2GO_LIB_PATH/x2gosyslog" "$0" "debug" "executing command \"$cmd$args\"..."
-		$EXEC_WRAPPER $cmd$args
+
+		# This is gonna be a nasty trick now...
+		# Most applications run in foreground (fine!), but some fork to background (urgghh... e.g. konsole, iceweasel, etc.).
+		# By capturing their STDOUT, we force the process to remain in (sort of) foreground until the process has finished.
+		# This works fabulously with all applications that don't cleanly close their file descriptors (which is probably
+		# 99% of all applications out there...).
+
+		STDOUT=`$EXEC_WRAPPER $cmd$args`
+
+		if [  "$X2GO_SESS_TYPE" == "R" ] && [ "$IMEXIT" == "true" ]; then
+
+			# applications that managed to quit immediately, we catch here by waiting as long as x2goagent exists
+
+			"$X2GO_LIB_PATH/x2gosyslog" "$0" "debug" "waiting for x2goagent (PID: $X2GO_AGENT_PID) to finish"
+			while [ -d "/proc/$X2GO_AGENT_PID" ]; do
+				sleep 1
+			done
+			"$X2GO_LIB_PATH/x2gosyslog" "$0" "debug" "x2goagent (PID: $X2GO_AGENT_PID) has finished"
+		else
+			"$X2GO_LIB_PATH/x2gosyslog" "$0" "debug" "command $EXEC has finished"
+		fi
 	}
 
-	#### some applications can quit immediately, we will wait here as long as x2goagent exists
-	if [  "$X2GO_SESS_TYPE" == "R" ] && [ "$IMEXIT" == "false" ]; then
-		"$X2GO_LIB_PATH/x2gosyslog" "$0" "debug" "command $EXEC forked to background, waiting for agent to finish"
-		while [ -d "/proc/$X2GO_AGENT_PID" ]; do
-			sleep 1
-		done
-	fi
 	# if we reach here the possibility of a successful command execution is rather high
 	successful_run=true
 
