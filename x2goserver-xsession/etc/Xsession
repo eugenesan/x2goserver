@@ -53,7 +53,9 @@ internal_errormsg () {
 for file in "/etc/profile" "$HOME/.profile" "/etc/xprofile" "$HOME/.xprofile"; do
 	if [ -f "$file" ]; then
 		echo "Loading profile from $file";
+		set +e
 		. "$file"
+		set -e
 	fi
 done
 
