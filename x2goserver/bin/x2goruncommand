@@ -258,11 +258,11 @@ if [ "$EXEC" != "" ] && [ -x "$EXEC" ]; then
 
 	x2gosetkeyboard >/dev/null 2>/dev/null &
 
-	x2gofeature X2GO_XSESSION &>/dev/null && [ "x$X2GO_SESS_TYPE" = "xD" ] && {
+	if x2gofeature X2GO_XSESSION &>/dev/null && [ "x$X2GO_SESS_TYPE" = "xD" ]; then
 		STARTUP="$cmd$args"
 		"$X2GO_LIB_PATH/x2gosyslog" "$0" "notice" "launching session with Xsession-x2go mechanism, using STARTUP=\"$STARTUP\""
 		XSESSION_EXEC="$cmd" STARTUP="/usr/bin/env LD_LIBRARY_PATH=${LD_LIBRARY_PATH} ${STARTUP}" /etc/x2go/Xsession
-	} || {
+	else
 		"$X2GO_LIB_PATH/x2gosyslog" "$0" "debug" "executing command \"$cmd$args\"..."
 
 		# This is gonna be a nasty trick now...
@@ -273,19 +273,20 @@ if [ "$EXEC" != "" ] && [ -x "$EXEC" ]; then
 
 		STDOUT=`$EXEC_WRAPPER $cmd$args`
 
-		if [  "$X2GO_SESS_TYPE" == "R" ] && [ "$IMEXIT" == "true" ]; then
+	fi
 
-			# applications that managed to quit immediately, we catch here by waiting as long as x2goagent exists
+	if [  "$X2GO_SESS_TYPE" == "R" ] && [ "$IMEXIT" == "true" ]; then
 
-			"$X2GO_LIB_PATH/x2gosyslog" "$0" "debug" "waiting for x2goagent (PID: $X2GO_AGENT_PID) to finish"
-			while [ -d "/proc/$X2GO_AGENT_PID" ]; do
-				sleep 1
-			done
-			"$X2GO_LIB_PATH/x2gosyslog" "$0" "debug" "x2goagent (PID: $X2GO_AGENT_PID) has finished"
-		else
-			"$X2GO_LIB_PATH/x2gosyslog" "$0" "debug" "command $EXEC has finished"
-		fi
-	}
+		# applications that managed to quit immediately, we catch here by waiting as long as x2goagent exists
+
+		"$X2GO_LIB_PATH/x2gosyslog" "$0" "debug" "waiting for x2goagent (PID: $X2GO_AGENT_PID) to finish"
+		while [ -d "/proc/$X2GO_AGENT_PID" ]; do
+			sleep 1
+		done
+		"$X2GO_LIB_PATH/x2gosyslog" "$0" "debug" "x2goagent (PID: $X2GO_AGENT_PID) has finished"
+	else
+		"$X2GO_LIB_PATH/x2gosyslog" "$0" "debug" "command $EXEC has finished"
+	fi
 
 	# if we reach here the possibility of a successful command execution is rather high
 	successful_run=true

@@ -51,6 +51,7 @@ x2goserver (4.0.1.16-0x2go1) UNRELEASED; urgency=low
     - Use more quotes in x2goruncommand.
     - Detect the exit of rootless applications that forked to background on
       application execution. (Fixes: #122).
+    - Make x2goruncommand more robust.
   * debian/control, x2goserver.spec:
     + Update versioned D: x2goagent (>= 3.5.0.25). This assures that X2Go
       works with poly-instantiated /tmp directories.
