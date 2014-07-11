@@ -47,7 +47,7 @@ if( ! $serv)
 	$serv=hostname;
 }
 
-my $rsess=`x2golistsessions x2goserver |grep _stR`;
+my $rsess=`timeout 1s x2golistsessions x2goserver |grep _stR`;
 my @rsess=split("\n","$rsess");
 my @rdisplays;
 for (my $i=0;$i<@rsess;$i++)
@@ -76,7 +76,7 @@ for(my $i=0;$i<@outp;$i++)
 	{
 		if ( grep { $_ eq "$uname\@$display" } @displays ) {
 		} else {
-			my $inf=`xwininfo -root -display $display`;
+			my $inf=`timeout 1s xwininfo -root -display $display`;
 			if ( $inf=~ m/geometry/)
 			{
 				push (@displays, "$uname\@$display");
