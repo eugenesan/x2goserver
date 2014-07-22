@@ -31,6 +31,8 @@ use x2godbwrapper;
 use x2gologlevel;
 
 
+use X2Go::Utils qw( system_capture_stdout_output is_true );
+my $x2go_lib_path = system_capture_stdout_output("x2gopath", "libexec");
 
 openlog($0,'cons,pid','user');
 setlogmask( LOG_UPTO(x2gologlevel()) );
@@ -123,6 +125,7 @@ for (my $i=0;$i<@outp;$i++)
 				db_changestatus( 'S', @sinfo[1]);
 				@outp[$i] =~ s/\|R\|/\|S\|/;
 				system("x2goumount-session", "@sinfo[1]");
+				system("$x2go_lib_path/x2gormforward", "@sinfo[1]");
 			}
 		}
 		elsif (@sinfo[4]eq 'S')

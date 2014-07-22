@@ -1,0 +1,59 @@
+#!/usr/bin/perl
+
+# Copyright (C) 2007-2014 X2Go Project - http://wiki.x2go.org
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the
+# Free Software Foundation, Inc.,
+# 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
+#
+# Copyright (C) 2007-2014 Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
+# Copyright (C) 2007-2014 Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
+
+use strict;
+use Sys::Syslog qw( :standard :macros );
+
+use X2Go::Log qw(loglevel);
+
+openlog($0,'cons,pid','user');
+setlogmask( LOG_UPTO(loglevel()) );
+
+my $session=shift or die;
+
+my $pidfile="/tmp/.x2go-".getpwuid($>)."/C-$session/sshd.pid";
+if( ! -e $pidfile)
+{
+	#pid file not exists, forwarding already removed
+	exit 0;
+}
+
+open(F,"<$pidfile");
+my $output=<F>;
+close(F);
+
+unlink($pidfile);
+
+my @words=split(" ",$output);
+my $process=@words[@words-1];
+
+$output=`ps ax|grep $process`;
+
+if($output =~ m/sshd/)
+{
+	#terminate process
+	syslog('debug', "Terminating SSHD process: $process");
+	kill 'TERM', $process;
+}
+
+# closing syslog
+closelog;
