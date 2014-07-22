@@ -69,6 +69,7 @@ x2goserver (4.0.1.16-0x2go1) UNRELEASED; urgency=low
     - Move session file to /tmp/.x2go-$USER. (Fixes: #523).
     - Fix x2gostartagent failures if kbd is not "auto". Remove comma at end of
       options file.
+    - Set default value for clipboard to "both" in x2gostartagent and x2goresume-session.
 
  -- Mike DePaulo <mikedep333@gmail.com>  Thu, 23 Apr 2014 17:49:00 -0500
 

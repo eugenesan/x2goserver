@@ -206,6 +206,8 @@ fi
 
 if [ -n "$X2GO_CLIPBOARD" ] && [ -z "`echo $X2GO_CLIPBOARD | sed -re 's/(0|none|client|server|both|1)//'`" ]; then
 	clipboard="clipboard=$X2GO_CLIPBOARD"
+else
+	clipboard="clipboard=both"
 fi
 
 NEWOPTIONS=`echo "$OPTIONS" | sed  -e  "s/$LSTR/link=$X2GO_LINK/"\

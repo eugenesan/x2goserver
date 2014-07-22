@@ -271,6 +271,8 @@ fi
 
 if [ -n "$X2GO_CLIPBOARD" ] && [ -z "`echo $X2GO_CLIPBOARD | sed -re 's/(0|none|client|server|both|1)//'`" ]; then
 	clipboard=",clipboard=$X2GO_CLIPBOARD"
+else
+	clipboard=",clipboard=both"
 fi
 
 if [ "$X2GO_SET_KBD" == "0" ] || [ "$X2GO_KBD_TYPE" == "auto" ];then
