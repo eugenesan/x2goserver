@@ -30,6 +30,8 @@ use X2Go::Server::DB qw(db_listsessions db_listsessions_all db_changestatus);
 use X2Go::Server::Agent qw(session_is_suspended session_is_running);
 use X2Go::Log qw(loglevel);
 
+use X2Go::Utils qw( system_capture_stdout_output is_true );
+my $x2go_lib_path = system_capture_stdout_output("x2gopath", "libexec");
 
 openlog($0,'cons,pid','user');
 setlogmask( LOG_UPTO(loglevel()) );
@@ -79,6 +81,7 @@ for (my $i=0;$i<@outp;$i++)
 				db_changestatus( 'S', @sinfo[1] );
 				@outp[$i] =~ s/\|R\|/\|S\|/;
 				system("x2goumount-session", "@sinfo[1]");
+				system("$x2go_lib_path/x2gormforward", "@sinfo[1]");
 			}
 		}
 		elsif (@sinfo[4]eq 'S')

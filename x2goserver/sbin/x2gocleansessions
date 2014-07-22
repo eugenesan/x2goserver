@@ -188,6 +188,8 @@ elsif ($pid == 0 )
 						syslog('debug', "@sinfo[1] is suspended, changing status from @sinfo[4] to S");
 						syslog('debug', "@sinfo[1]: unmounting all shares");
 						system("su", "@sinfo[11]", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");
+						#remove port forwarding
+						system("su", "@sinfo[11]", "-c", "$x2go_lib_path/x2gormforward @sinfo[1]");
 					}
 				}
 				if (@sinfo[4] eq 'S')

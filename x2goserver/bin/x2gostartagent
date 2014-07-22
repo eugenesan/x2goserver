@@ -67,6 +67,7 @@ X2GO_FULLSCREEN=0
 
 XAUTHORITY=${XAUTHORITY:-"$HOME/.Xauthority"}
 
+
 if [ "$X2GO_STYPE" == "S" ]; then
 
 	SHADOW_MODE=`echo $X2GO_CMD |awk '{split($0,a,"XSHAD"); print a[1]}'`
@@ -275,6 +276,8 @@ chmod -f 0600 "${SESSION_LOG}"
 if [ ! -d "$X2GO_ROOT/ssh" ]; then
 	mkdir "$X2GO_ROOT/ssh"
 fi
+
+grep PPid /proc/$PPID/status > ${SESSION_DIR}/sshd.pid
 
 
 X2GO_COOKIE=`mcookie`
