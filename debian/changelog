@@ -80,6 +80,8 @@ x2goserver (4.0.1.16-0x2go1) UNRELEASED; urgency=low
     + Update versioned D: x2goagent (>= 3.5.0.25). This assures that X2Go
       works with poly-instantiated /tmp directories.
     + Make sure x2gogetagentstate gets packaged in bin:package x2goserver.
+  * x2goserver.spec:
+    + Install {libdir}/x2go/x2gormforward into bin:package x2goserver.
 
   [ Oleksandr Shneyder ]
   * New upstream version (4.0.1.16):
