@@ -394,6 +394,7 @@ exit 0
 %{_libdir}/x2go/x2golistsessions_sql
 %{_libdir}/x2go/x2gologlevel
 %{_libdir}/x2go/x2goresume
+%{_libdir}/x2go/x2gormforward
 %{_libdir}/x2go/x2gormport
 %{_libdir}/x2go/x2gosuspend-agent
 %{_libdir}/x2go/x2gogetagentstate
