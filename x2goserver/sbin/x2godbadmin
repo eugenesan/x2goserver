@@ -512,7 +512,7 @@ sub create_tables()
 	                      sound_port int,
 	                      fs_port int,
 	                      tekictrl_port int,
-	                      tekictrl_data int,
+	                      tekidata_port int,
 	                      creator_id text NOT NULL default current_user,
 	                      unique(display))
 	                      ");
