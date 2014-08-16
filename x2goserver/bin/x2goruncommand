@@ -156,9 +156,24 @@ elif ([ "$cmd" == "UNITY" ] || [ "$cmd" == "unity" ]); then
 	# on earlier Ubuntu versions or with non-Ubuntu Distros the ,,UNITY'' command in X2Go will launch the GNOME2 desktop shell
 
 elif ([ "$cmd" == "CINNAMON" ] || [ "$cmd" == "cinnamon" ]); then
-	cmd="/usr/bin/gnome-session"
-	export DESKTOP_SESSION="cinnamon2d"
-	args=" --session=$DESKTOP_SESSION"
+	# Cinnamon 2.0 and newer
+	# The cmd is a script that calls the "cinnamon-session" binary.
+	if [ -e /usr/bin/cinnamon-session-cinnamon2d ]; then
+		cmd="/usr/bin/cinnamon-session-cinnamon2d"
+	# Cinnamon 1.6 & 1.8
+	# The cmd is a script that calls the "gnome-session" binary.
+	elif [ -e /usr/bin/gnome-session-cinnamon2d ]; then
+		cmd="/usr/bin/gnome-session-cinnamon2d"
+	# Cinnamon 1.4
+	# The cmd is a script that calls the "gnome-session" binary.
+	elif [ -e /usr/bin/gnome-session-cinnamon ]; then
+		cmd="/usr/bin/gnome-session-cinnamon"
+	# Fallback to the old behavior.
+	else
+		cmd="/usr/bin/gnome-session"
+		export DESKTOP_SESSION="cinnamon2d"
+		args=" --session=$DESKTOP_SESSION"
+	fi
 
 elif [ "$cmd" == "MATE" ]; then
 	cmd="/usr/bin/mate-session"
