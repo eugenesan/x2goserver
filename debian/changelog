@@ -131,6 +131,14 @@ x2goserver (4.0.1.16-0x2go1) UNRELEASED; urgency=low
        It also currently requires that the gnome-session binary not require
        hardware 3D acceleration for said session.)
       (Thanks Eugene San (eugenesan@gmail.com))
+    - Fix support for Cinnamon 1.4 (Linux Mint 13) (Fixes: #569)
+    - Fix the logic for launching Cinnamon 2.0 and 2.2 (Linux Mint 17).
+      (Fixes: #572)
+      NOTE: Fixing this bug in x2goserver is not sufficient to make Cinnamon 2.0
+      & 2.2 to work properly with X2Go. Bug #150 in nx-libs is still a problem.
+      Fixing this bug enables Cinnamon 2.0 and 2.2 to launch to their
+      "fallback mode", which has many bugs and missing features when compared to
+      "software rendering" mode (cinnamon2d), but is still better than nothing.
   * debian/rules:
     + Improve dh_auto_clean override.
 
