@@ -169,7 +169,7 @@ while [ "$OUTPUT"  != "inserted" ]; do
 			SESSION_NAME=`echo "$SESSION_NAME" | perl -pe  "s/:/PP/g"`
 		fi
 		# sanitize session name
-		SESSION_NAME=`echo "$SESSION_NAME" | perl -pe  "s/[^a-zA-Z0-9\.\_\-]//g"`
+		SESSION_NAME=`echo "$SESSION_NAME" | perl -pe  "s/[^a-zA-Z0-9\.\_\-\@]//g"`
 
 		OUTPUT=`$X2GO_LIB_PATH/x2goinsertsession "$X2GO_PORT" "$HOSTNAME" "$SESSION_NAME"`
 	fi 
