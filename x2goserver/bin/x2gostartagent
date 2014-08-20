@@ -37,6 +37,12 @@ elif [ -z "$USER" ]; then
 elif [ -z "$SSH_CLIENT" ]; then
 	echo "The \$SSH_CLIENT environment variable is not set. Aborting session startup."
 	exit -3
+elif [ -z "$HOME" ]; then
+	echo "The \$HOME environment variable is not set. Aborting session startup."
+	exit -4
+elif ! echo $HOME | iconv -f ASCII -t ASCII 1>/dev/null 2>/dev/null; then
+	echo "Your home directory path contains non-ASCII characters. Aborting session startup."
+	exit -5
 fi
 
 X2GO_ROOT="${HOME}/.x2go"
