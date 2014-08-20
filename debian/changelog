@@ -200,10 +200,9 @@ x2goserver (4.0.1.16-0x2go1) UNRELEASED; urgency=low
 
   [ Oleksandr Shneyder ]
   * New upstream version (4.0.1.16):
-    - x2gostartagent, x2golistsession, x2gosuspend-session and
-      x2goresume-session getting agent state from ~/.x2go/C-$SID/state.
-      This should help to avoid session damage. Remove nxcleanup. (Fixes:
-      #302).
+    - x2gostartagent, x2golistsession, x2gosuspend-session and x2goresume-session
+      getting agent state from ~/.x2go/C-$SID/state. This should help to avoid
+      session damage. Remove nxcleanup. (Fixes: #302, #511).
     - Move session file to /tmp/.x2go-$USER. (Fixes: #523).
     - Fix x2gostartagent failures if kbd is not "auto". Remove comma at end of
       options file.
