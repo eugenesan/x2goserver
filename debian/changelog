@@ -208,7 +208,7 @@ x2goserver (4.0.1.16-0x2go1) UNRELEASED; urgency=low
       options file.
     - Set default value for clipboard to "both" in x2gostartagent and x2goresume-session.
     - Clean user SSHD process if connection between server and client lost. This should fix
-      error "Global request tcpip-forward failed". (Fixes: #495).
+      error "Global request tcpip-forward failed". (Fixes: #495, #547).
 
  -- Mike DePaulo <mikedep333@gmail.com>  Thu, 23 Apr 2014 17:49:00 -0500
 
