@@ -71,6 +71,8 @@ x2goserver (4.0.1.16-0x2go1) UNRELEASED; urgency=low
       #574).
     - Abort session if env var $HOME is not set or if $HOME contains non-ASCII
       characters. (Fixes: #397).
+    - Export XAUTHORITY env var in x2goruncommand to enable privilege upgrade
+      for applications started via pkexec. (Fixes: #458).
   * debian/control, x2goserver.spec:
     + Update versioned D: x2goagent (>= 3.5.0.25). This assures that X2Go
       works with poly-instantiated /tmp directories.

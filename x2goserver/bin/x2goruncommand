@@ -32,6 +32,7 @@ X2GO_LIB_PATH="$(x2gopath libexec)";
 "$X2GO_LIB_PATH/x2gosyslog" "$0" "info" "$(basename $0) called with options: $@"
 
 export DISPLAY
+export XAUTHORITY=${XAUTHORITY:-"$HOME/.Xauthority"}
 export X2GO_AGENT_PID
 export X2GO_SESSION
 cmd=`echo $cmd |sed 's/X2GO_SPACE_CHAR/ /g'`
