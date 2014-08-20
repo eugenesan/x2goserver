@@ -35,7 +35,7 @@ x2goserver (4.0.1.16-0x2go1) UNRELEASED; urgency=low
     - On suspend: Call x2goumount-session before sending SIGHUP to x2goagent.
     - Refuse client communcation if server-side hostname is not set up
       correctly (Fixes: #468).
-    - Fix string comparion in x2goumount-session.
+    - Fix string comparison in x2goumount-session.
     - Fix problems with unmounting shared folders on session suspension/
       termination. Remove extra parentheses from the fusermount execution
       call. (Fixes: #407).
