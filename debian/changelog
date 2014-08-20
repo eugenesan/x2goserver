@@ -204,15 +204,18 @@ x2goserver (4.0.1.16-0x2go1) UNRELEASED; urgency=low
 
   [ Oleksandr Shneyder ]
   * New upstream version (4.0.1.16):
-    - x2gostartagent, x2golistsession, x2gosuspend-session and x2goresume-session
-      getting agent state from ~/.x2go/C-$SID/state. This should help to avoid
-      session damage. Remove nxcleanup. (Fixes: #302, #511).
+    - x2gostartagent, x2golistsession, x2gosuspend-session and
+      x2goresume-session getting agent state from ~/.x2go/C-$SID/state. This
+      should help to avoid session damage. Remove nxcleanup. (Fixes: #302,
+      #511).
     - Move session file to /tmp/.x2go-$USER. (Fixes: #523).
     - Fix x2gostartagent failures if kbd is not "auto". Remove comma at end of
       options file.
-    - Set default value for clipboard to "both" in x2gostartagent and x2goresume-session.
-    - Clean user SSHD process if connection between server and client lost. This should fix
-      error "Global request tcpip-forward failed". (Fixes: #495, #547).
+    - Set default value for clipboard to "both" in x2gostartagent and
+      x2goresume-session.
+    - Clean user SSHD process if connection between server and client lost.
+      This should fix error "Global request tcpip-forward failed". (Fixes:
+      #495, #547).
 
  -- Mike DePaulo <mikedep333@gmail.com>  Thu, 23 Apr 2014 17:49:00 -0500
 
