@@ -84,7 +84,7 @@ sub get_agent_state
 	}
 	if (! -e $stateFile )
 	{
-		print { \*STDERR } "WARNING: state file for session $sess does not exists: $stateFile\n";
+		syslog('warning', "$sess: state file for this session does not exists: $stateFile (this can be ignored during session startups)");
 		$state="UNKNOWN";
 	}
 	else
