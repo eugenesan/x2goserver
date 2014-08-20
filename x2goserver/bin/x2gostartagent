@@ -27,9 +27,16 @@ $X2GO_LIB_PATH/x2gosyslog "$0" "info" "$(basename $0) called with options: $@"
 X2GO_PORT=49 #First port for X2GO=50
 SSH_PORT=30000 #First ssh port 30001
 
+# some sanity checks before session startup...
 if egrep "^backend[ ]*=[ ]*postgres" /etc/x2go/x2gosql/sql 1>/dev/null 2>/dev/null && [ "x$USER" = "xroot" ]; then
 	echo "The super-user \"root\" is not allowed to launch X2Go sessions."
 	exit -1
+elif [ -z "$USER" ]; then
+	echo "The \$USER environment variable is not set. Aborting session startup."
+	exit -2
+elif [ -z "$SSH_CLIENT" ]; then
+	echo "The \$SSH_CLIENT environment variable is not set. Aborting session startup."
+	exit -3
 fi
 
 X2GO_ROOT="${HOME}/.x2go"

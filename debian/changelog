@@ -65,6 +65,8 @@ x2goserver (4.0.1.16-0x2go1) UNRELEASED; urgency=low
     - Silently timeout in x2golistdesktops if calls to x2golistsessions and/or
       xwininfo don't produce output within one second. (Fixes: #543).
     - Allow email addresses as login usernames. (Fixes: #573).
+    - Abort session startup if env var $USER or $SSH_CLIENT are not set.
+      (Fixes: #558).
   * debian/control, x2goserver.spec:
     + Update versioned D: x2goagent (>= 3.5.0.25). This assures that X2Go
       works with poly-instantiated /tmp directories.
