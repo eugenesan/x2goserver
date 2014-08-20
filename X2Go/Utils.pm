@@ -171,8 +171,8 @@ sub system_capture_merged_output {
 }
 
 sub check_x2go_sessionid {
-	if (sanitizer("x2gosid",@ARGV[0])) {
-		return sanitizer("x2gosid",@ARGV[0]);
+	if (sanitizer("x2gosid",$ARGV[0])) {
+		return sanitizer("x2gosid",$ARGV[0]);
 	} elsif (sanitizer("x2gosid",$ENV{'X2GO_SESSION'})) {
 		return sanitizer("x2gosid",$ENV{'X2GO_SESSION'});
 	} else {
