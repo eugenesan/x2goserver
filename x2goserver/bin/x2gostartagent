@@ -37,6 +37,12 @@ elif [ -z "$USER" ]; then
 elif [ -z "$SSH_CLIENT" ]; then
 	echo "The \$SSH_CLIENT environment variable is not set. Aborting session startup."
 	exit -3
+elif [ -z "$HOME" ]; then
+	echo "The \$HOME environment variable is not set. Aborting session startup."
+	exit -4
+elif ! echo $HOME | iconv -f ASCII -t ASCII 1>/dev/null 2>/dev/null; then
+	echo "Your home directory path contains non-ASCII characters. Aborting session startup."
+	exit -5
 fi
 
 X2GO_TELEKINESIS_ENABLED=`echo 'use X2Go::Config qw( get_config ); use X2Go::Utils qw( is_true ); my $Config = get_config(); print is_true($Config->param("telekinesis.enable"));' | perl`
