@@ -67,6 +67,8 @@ x2goserver (4.0.1.16-0x2go1) UNRELEASED; urgency=low
     - Allow email addresses as login usernames. (Fixes: #573).
     - Abort session startup if env var $USER or $SSH_CLIENT are not set.
       (Fixes: #558).
+    - Allow length of username up to 48 characters (was: 32 characters). (Fixes:
+      #574).
   * debian/control, x2goserver.spec:
     + Update versioned D: x2goagent (>= 3.5.0.25). This assures that X2Go
       works with poly-instantiated /tmp directories.
