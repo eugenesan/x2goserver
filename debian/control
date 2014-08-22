@@ -230,6 +230,7 @@ Description: X2Go server daemon scripts (add-ons for pyhoca client)
  will work without.
  .
  Functionalities this package adds:
-    - renaming of session window titles
-    - setting detailled X keyboard parameters
+    - currently: none. All functionalities have been incorporated in the
+      main X2Go Server package (x2goserver).
+    - this package will be removed in the next major release of X2Go.
 
