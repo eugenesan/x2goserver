@@ -24,8 +24,6 @@ use strict;
 use Sys::Hostname;
 use Sys::Syslog qw( :standard :macros );
 
-use File::ReadBackwards;
-
 use X2Go::Server::DB qw(db_listsessions db_listsessions_all db_changestatus);
 use X2Go::Server::Agent qw(session_is_suspended session_is_running);
 use X2Go::Log qw(loglevel);

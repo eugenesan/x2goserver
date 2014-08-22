@@ -20,7 +20,6 @@ Depends:
  x2goserver-common (>= ${source:Version}), x2goserver-common (<< ${source:Version}.1~),
  ${misc:Depends},
  libfile-basedir-perl,
- libfile-readbackwards-perl,
  libtry-tiny-perl,
  libswitch-perl,
  libx2go-server-perl (>= ${source:Version}), libx2go-server-perl (<< ${source:Version}.1~),

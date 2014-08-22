@@ -35,7 +35,6 @@ Requires:       bc
 Requires:       net-tools
 Requires:       openssh-server
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
-Requires:       perl(File::ReadBackwards)
 Requires:       perl(Capture::Tiny)
 Requires:       perl(Try::Tiny)
 # We need a database

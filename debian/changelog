@@ -202,14 +202,17 @@ x2goserver (4.0.1.16-0x2go1) UNRELEASED; urgency=low
     - x2gocleansessions: Don't print to stderr if the session state file cannot
       be found. This can happen during session startups. Report to system log
       instead.
+    - Don't use Perl package File::ReadBackwards anymore.
   * debian/control, x2goserver.spec:
     + Update versioned D: x2goagent (>= 3.5.0.25). This assures that X2Go
       works with poly-instantiated /tmp directories.
     + Make sure x2gogetagentstate gets packaged in bin:package x2goserver.
     + Bump Standards: to 3.9.5. No changes needed.
     + Mark x2goserver-pyhoca bin:package as deprecated.
+    + Drop D (x2goserver): libfile-readbackwards-perl.
   * x2goserver.spec:
     + Install {libdir}/x2go/x2gormforward into bin:package x2goserver.
+    + Drop R (x2goserver): perl(File::ReadBackwards).
 
   [ Oleksandr Shneyder ]
   * New upstream version (4.0.1.16):
