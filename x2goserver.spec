@@ -73,24 +73,6 @@ This package contains the main daemon and tools for X2Go server-side session
 administrations.
 
 
-%package common
-Summary:        X2Go Server (common files)
-Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
-Group:          Applications/Communications
-
-%description common
-X2Go is a server based computing environment with
-    - session resuming
-    - low bandwidth support
-    - session brokerage support
-    - client side mass storage mounting support
-    - audio support
-    - authentication by smartcard and USB stick
-
-This package contains common files needed by the X2Go Server
-and the X2Go::Server Perl API.
-
-
 %package printing
 Summary:        X2Go Server (printing support)
 Requires:       %{name} = %{version}-%{release}
