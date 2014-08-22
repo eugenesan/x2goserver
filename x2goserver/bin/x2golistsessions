@@ -31,8 +31,7 @@ use x2godbwrapper;
 use x2gologlevel;
 
 
-use X2Go::Utils qw( system_capture_stdout_output is_true );
-my $x2go_lib_path = system_capture_stdout_output("x2gopath", "libexec");
+my $x2go_lib_path = `x2gopath libexec`;
 
 openlog($0,'cons,pid','user');
 setlogmask( LOG_UPTO(x2gologlevel()) );
