@@ -2,11 +2,14 @@ x2goserver (4.0.1.16-0x2go1) UNRELEASED; urgency=low
 
   [ Mike DePaulo ]
   * New upstream release (4.0.1.16):
-    - Support GNOME Flashback session on Ubuntu 13.10+ and on debian Jessie
+    - Support GNOME Flashback session (GNOME 3.8+) on distro releases such as
+      Ubuntu 13.10+ and debian Jessie
       (Note: This requires that gnome-flashback.session actually be installed.
        It also currently requires that the gnome-session binary not require
        hardware 3D acceleration for said session.)
       (Thanks Eugene San (eugenesan@gmail.com))
+    - Fix launching GNOME 3 Fallback session (GNOME 3.4 & 3.6) on distros other
+      than Ubuntu and Debian (Fixes: #599)
     - Fix support for Cinnamon 1.4 (Linux Mint 13) (Fixes: #569)
     - Fix the logic for launching Cinnamon 2.0 and 2.2 (Linux Mint 17).
       (Fixes: #572)

@@ -77,10 +77,10 @@ fi
 # NOTES on GNOME startup behaviour in different distributions
 # ===========================================================
 
-# Debian launches GNOME3 (in accelerated mode) when calling gnome-session
+# Debian and every other non-Ubuntu distro launchs GNOME3 (in accelerated mode) when calling gnome-session
 
 # Ubuntu launches Unity (in accelerated mode) when calling gnome-session.
-# To make the GNOME variants start up properly on Debian/Ubuntu we have to make the following differentiations
+# To make the GNOME variants start up properly on Ubuntu, we have to make the following differentiations
 
 # Ubuntu 10.10 and earlier (maverick):
 #		 GNOME -> gnome-session
@@ -101,18 +101,15 @@ fi
 #		 GNOME -> gnome-session --session=gnome-flashback
 #		 UNITY -> gnome-session --session=ubuntu
 #		 (GNOME3 based desktop shells)
-
-# Debian squeeze and earlier:
-#		 GNOME -> gnome-session
-#		 (would start GNOME2)
-# Debian wheezy:
-#		 GNOME -> gnome-session --session=gnome-fallback
-#		 UNITY: not available
-#		 (GNOME3 based desktop shells)
-# Debian jessie:
-#		 GNOME -> gnome-session --session=gnome-flashback
-#		 UNITY: not available
-#		 (GNOME3 based desktop shells)
+#		 Additionally, $GTK_MODULES must include "unity-gtk-module".
+#		 $GTK_MODULES does not need tha value for any other distro
+#                or any earlier release of Ubuntu.
+#
+#		 The logic for launching GNOME should be generic enough
+#                to work with every other distro.
+#
+#		 Also, it appears that some Linux GNOME2 distros need DESKTOP_SESSION="gnome"
+#                while others do not.
 
 if [ "$cmd" == "GNOME" ] || [ "$cmd" == "gnome-session" ]; then
 	cmd="/usr/bin/gnome-session"
@@ -124,23 +121,20 @@ if [ "$cmd" == "GNOME" ] || [ "$cmd" == "gnome-session" ]; then
 			export GTK_MODULES="$GTK_MODULES:unity-gtk-module"
 		fi
 		args=" --session=$DESKTOP_SESSION"
-	elif [ "$DISTRIB_ID" == "Ubuntu" ] && [ "$(echo "$DISTRIB_RELEASE >= 11.10" | bc)" == "1" ]; then
-		export DESKTOP_SESSION="gnome-fallback"
-		args=" --session=$DESKTOP_SESSION"
-	elif [ "$DISTRIB_ID" == "Ubuntu" ] && [ "$(echo "$DISTRIB_RELEASE == 11.04" | bc)" == "1" ]; then
-		export DESKTOP_SESSION="2d-gnome"
-		args=" --session=$DESKTOP_SESSION"
-	elif [ "$DISTRIB_ID" == "Ubuntu" ] && [ "$(echo "$DISTRIB_RELEASE <= 10.10" | bc)" == "1" ]; then
-		export DESKTOP_SESSION="gnome"
+        elif [ -e /usr/share/gnome-session/sessions/gnome-flashback.session ]; then
+                export DESKTOP_SESSION="gnome-flashback"
+                args=" --session=$DESKTOP_SESSION"
+        elif [ -e /usr/share/gnome-session/sessions/gnome-fallback.session ]; then
+                export DESKTOP_SESSION="gnome-fallback"
+                args=" --session=$DESKTOP_SESSION"
+        elif [ -e /usr/share/gnome-session/sessions/2d-gnome.session ]; then
+                export DESKTOP_SESSION="2d-gnome"
+                args=" --session=$DESKTOP_SESSION"
+        elif [ "$DISTRIB_ID" == "Ubuntu" ] && [ "$(echo "$DISTRIB_RELEASE <= 10.10" | bc)" == "1" ]; then
+                export DESKTOP_SESSION="gnome"
 	elif cat /etc/debian_version | egrep "^(squeeze|6\.).*" >/dev/null; then
-		export DESKTOP_SESSION="gnome"
-	elif cat /etc/debian_version | egrep "^(wheezy|7\.).*" >/dev/null; then
-		export DESKTOP_SESSION="gnome-fallback"
-		args=" --session=$DESKTOP_SESSION"
-	elif cat /etc/debian_version | egrep "^(jessie|8\.).*" >/dev/null; then
-		export DESKTOP_SESSION="gnome-flashback"
-		args=" --session=$DESKTOP_SESSION"
-	fi
+                export DESKTOP_SESSION="gnome"
+        fi
 
 elif ([ "$cmd" == "UNITY" ] || [ "$cmd" == "unity" ]); then
 	cmd="/usr/bin/gnome-session"
