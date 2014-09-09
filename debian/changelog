@@ -10,7 +10,7 @@ x2goserver (4.0.1.16-0x2go1) UNRELEASED; urgency=low
        It also requires that the gnome-session binary not require
        hardware 3D acceleration for said session. Currently, upstream GNOME
        and GNOME 3.8+ in all Linux distros do require this, only 3rd party
-       builds do not. See bug X2Go #599 for example.)
+       builds do not. See X2Go bug #599 for example.)
       (Thanks Eugene San (eugenesan@gmail.com))
     - Fix launching GNOME 3 Fallback session (GNOME 3.4 & 3.6) on distros other
       than Ubuntu and Debian (Fixes: #599)
