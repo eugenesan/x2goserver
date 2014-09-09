@@ -3,7 +3,6 @@ Version:        4.1.0.0
 Release:        0.0x2go1%{?dist}
 Summary:        X2Go Server
 
-
 Group:          Applications/Communications
 License:        GPLv2+
 URL:            http://www.x2go.org
@@ -19,29 +18,28 @@ Source2:        x2goserver.init
 BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 %endif
 
+BuildRequires:  desktop-file-utils
 BuildRequires:  perl(ExtUtils::MakeMaker)
-%if 0%{?fedora} || 0%{?el7}
+%if 0%{?fedora} || 0%{?rhel} >= 7
 BuildRequires:  man2html-core
 BuildRequires:  systemd
 %else
 BuildRequires:  man
 %endif
-BuildRequires:  desktop-file-utils
 # So XSESSIONDIR gets linked
 BuildRequires:  xorg-x11-xinit
 # For x2goruncommand - for now
 Requires:       bc
+# For x2goshowblocks
+Requires:       lsof
 # For netstat in x2goresume-session
 Requires:       net-tools
 Requires:       openssh-server
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
-Requires:       perl(Capture::Tiny)
 Requires:       perl(Try::Tiny)
 # We need a database
 # For killall in x2gosuspend-session
 Requires:       psmisc
-# For x2goshowblocks
-Requires:       lsof
 # For x2godbadmin
 Requires:       pwgen
 # For printing, file-sharing
@@ -49,10 +47,16 @@ Requires:       sshfs
 # For /etc/sudoers.d
 Requires:       sudo
 Requires:       x2goagent >= 3.5.0.25
-# For /etc/X11/Xresources
-Requires:       xorg-x11-xinit
 Requires:       xorg-x11-fonts-misc
+Requires:       xorg-x11-xauth
 Requires(pre):  shadow-utils
+Requires(post): grep
+Requires(post): perl(DBD::SQLite)
+%if 0%{?fedora} || 0%{?rhel} >= 7
+Requires(post): systemd
+Requires(preun): systemd
+Requires(postun): systemd
+%endif
 Requires:       x2goserver-extensions
 #Recommends:       x2goserver-xsession
 #Recommands:       x2goserver-fmbindings
@@ -168,7 +172,7 @@ X2Go is a server based computing environment with
 The X2Go Server printing package provides client-side printing support for
 X2Go.
 
-This package has to be installed on X2Go Servers that shall be able to pass
+This package has to be installed on X2Go servers that shall be able to pass
 X2Go print jobs on to the X2Go client.
 
 This package co-operates with the cups-x2go CUPS backend. If CUPS server and
@@ -202,6 +206,7 @@ without lack of features.
 %package xsession
 Summary:        X2Go Server (Xsession runner)
 Requires:       %{name} = %{version}-%{release}
+# For /etc/X11/Xresources
 Requires:       xorg-x11-xinit
 Group:          Applications/Communications
 
@@ -285,7 +290,7 @@ touch %{buildroot}%{_sharedstatedir}/x2go/x2go_sessions
 # Printing spool dir
 mkdir -p %{buildroot}%{_localstatedir}/spool/x2goprint
 
-%if 0%{?fedora} || 0%{?el7}
+%if 0%{?fedora} || 0%{?rhel} >= 7
 # System.d session cleanup script
 mkdir -p %{buildroot}%{_unitdir}
 install -pm0644 %SOURCE1 %{buildroot}%{_unitdir}
@@ -315,13 +320,14 @@ exit 0
 
 
 %post
-# Initialize the session database (first attempt, may fail if perl-X2Go-Server-DB is not yet installed
-[ ! -s %{_sharedstatedir}/x2go/x2go_sessions ] && egrep "^backend=sqlite.*" /etc/x2go/x2gosql/sql 1>/dev/null 2>/dev/null &&
-  %{_sbindir}/x2godbadmin --createdb 1>/dev/null 2>/dev/null || :
+# Initialize the session database
+[ ! -s %{_sharedstatedir}/x2go/x2go_sessions ] &&
+  egrep "^backend=sqlite.*" /etc/x2go/x2gosql/sql >/dev/null 2>&1 &&
+  %{_sbindir}/x2godbadmin --createdb >/dev/null 2>&1 || :
 
 egrep "^backend=sqlite.*" /etc/x2go/x2gosql/sql 1>/dev/null 2>/dev/null && { [ ! -s %{_sharedstatedir}/x2go/x2go_sessions ] && %{_sbindir}/x2godbadmin --createdb 1>/dev/null 2>/dev/null || %{_sbindir}/x2godbadmin --updatedb 1>/dev/null 2>/dev/null; }
 
-%if 0%{?fedora} || 0%{?el7}
+%if 0%{?fedora} || 0%{?rhel} >= 7
 %systemd_post x2goserver.service
 
 %preun
@@ -347,10 +353,10 @@ fi
 
 
 %post -n perl-X2Go-Server-DB
-# Initialize the session database (second attempt, may fail if x2goserver is not yet installed
-[ ! -s %{_sharedstatedir}/x2go/x2go_sessions ] && egrep "^backend=sqlite.*" /etc/x2go/x2gosql/sql 1>/dev/null 2>/dev/null &&
-  %{_sbindir}/x2godbadmin --createdb 1>/dev/null 2>/dev/null || :
-
+# Initialize the session database
+[ ! -s %{_sharedstatedir}/x2go/x2go_sessions ] &&
+  egrep "^backend=sqlite.*" /etc/x2go/x2gosql/sql >/dev/null 2>&1 &&
+  %{_sbindir}/x2godbadmin --createdb >/dev/null 2>&1 || 
 
 %post fmbindings
 /usr/bin/update-mime-database /usr/share/mime &>/dev/null || :
@@ -372,9 +378,10 @@ exit 0
 %files
 %doc debian/copyright
 %doc debian/changelog
-%dir %{_sysconfdir}/x2go/
-%config(noreplace) %{_sysconfdir}/sudoers.d/x2goserver
 %config(noreplace) %{_sysconfdir}/logcheck/ignore.d.server/x2goserver
+%config(noreplace) %{_sysconfdir}/sudoers.d/x2goserver
+%dir %{_sysconfdir}/x2go/
+%config(noreplace) %{_sysconfdir}/x2go/x2go*
 %{_bindir}/x2go*
 %exclude %{_bindir}/x2goserver-run-extensions
 %exclude %{_bindir}/x2gofm
@@ -399,16 +406,16 @@ exit 0
 %{_libdir}/x2go/x2gogetagentstate
 %{_libdir}/x2go/x2gosyslog
 %{_sbindir}/x2go*
-%{_mandir}/man8/x2go*.8.gz
-%exclude %{_mandir}/man8/x2goserver-run-extensions.8.gz
-%exclude %{_mandir}/man8/x2gofm.8.gz
-%exclude %{_mandir}/man8/x2goprint.8.gz
+%{_mandir}/man8/x2go*.8*
+%exclude %{_mandir}/man8/x2goserver-run-extensions.8*
+%exclude %{_mandir}/man8/x2gofm.8*
+%exclude %{_mandir}/man8/x2goprint.8*
 %dir %{_datadir}/x2go/x2gofeature.d/
 %{_datadir}/x2go/x2gofeature.d/x2goserver.features
 %{_datadir}/x2go/versions/VERSION.x2goserver
 %attr(0775,root,x2gouser) %dir %{_sharedstatedir}/x2go/
 %ghost %attr(0660,root,x2gouser) %{_sharedstatedir}/x2go/x2go_sessions
-%if 0%{?fedora} || 0%{?el7}
+%if 0%{?fedora} || 0%{?rhel} >= 7
 %{_unitdir}/x2goserver.service
 %else
 %if 0%{?el5}
@@ -462,16 +469,16 @@ exit 0
 %{_bindir}/x2goserver-run-extensions
 %{_datadir}/x2go/x2gofeature.d/x2goserver-extensions.features
 %{_datadir}/x2go/versions/VERSION.x2goserver-extensions
-%{_mandir}/man8/x2goserver-run-extensions.8.gz
+%{_mandir}/man8/x2goserver-run-extensions.8*
 
 
 %files fmbindings
-%{_datadir}/x2go/versions/VERSION.x2goserver-fmbindings
 %{_bindir}/x2gofm
-%{_datadir}/applications/
-%{_datadir}/mime/
+%{_datadir}/applications/x2gofm.desktop
+%{_datadir}/mime/packages/sshfs-x2go.xml
+%{_datadir}/x2go/versions/VERSION.x2goserver-fmbindings
 %{_datadir}/x2go/x2gofeature.d/x2goserver-fmbindings.features
-%{_mandir}/man8/x2gofm.8.gz
+%{_mandir}/man8/x2gofm.8*
 
 
 %files printing
@@ -479,7 +486,7 @@ exit 0
 %{_datadir}/x2go/versions/VERSION.x2goserver-printing
 %{_datadir}/x2go/x2gofeature.d/x2goserver-printing.features
 %attr(0700,x2goprint,x2goprint) %{_localstatedir}/spool/x2goprint
-%{_mandir}/man8/x2goprint.8.gz
+%{_mandir}/man8/x2goprint.8*
 
 
 %files xsession
@@ -489,5 +496,6 @@ exit 0
 %config(noreplace) %{_sysconfdir}/x2go/Xsession
 %{_datadir}/x2go/x2gofeature.d/x2goserver-xsession.features
 %{_datadir}/x2go/versions/VERSION.x2goserver-xsession
+
 
 %changelog

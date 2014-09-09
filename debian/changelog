@@ -232,6 +232,10 @@ x2goserver (4.0.1.16-0x2go1) UNRELEASED; urgency=low
       This should fix error "Global request tcpip-forward failed". (Fixes:
       #495, #547).
 
+  [ Orion Paplowski ]
+  * x2goserver.spec:
+    + Sync Fedora .spec file with our upstream-provided x2goserver.spec.
+
  -- Mike DePaulo <mikedep333@gmail.com>  Thu, 23 Apr 2014 17:49:00 -0500
 
 x2goserver (4.0.1.15-0x2go1) unstable; urgency=low
