@@ -72,7 +72,7 @@ if [ -e "/etc/lsb-release" ]; then
 	source /etc/lsb-release
 fi
 
-# let x2goruncommand choose what command to use for a given desktop shell name (GNOME, UNITY, KDE, XFCE4, LXDE, TRINITY, MATE)
+# let x2goruncommand choose what command to use for a given desktop shell name (GNOME, UNITY, KDE, XFCE4, LXDE, TRINITY, MATE, OPENBOX, ICEWM)
 
 # NOTES on GNOME startup behaviour in different distributions
 # ===========================================================
@@ -180,6 +180,10 @@ elif [ "$cmd" == "LXDE" ]; then
 	cmd="/usr/bin/startlxde"
 elif [ "$cmd" == "TRINITY" ]; then
 	cmd="/usr/bin/starttrinity"
+elif [ "$cmd" == "OPENBOX" ]; then
+	cmd="/usr/bin/openbox-session"
+elif [ "$cmd" == "ICEWM" ]; then
+	cmd="/usr/bin/icewm-session"
 fi
 
 if [ "$cmd" == "WWWBROWSER" ]; then

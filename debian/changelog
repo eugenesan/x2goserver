@@ -128,6 +128,10 @@ x2goserver (4.0.1.16-0x2go1) UNRELEASED; urgency=low
 
   [ Mike DePaulo ]
   * New upstream release (4.0.1.16):
+    - Make X2Go Server aware of the Openbox desktop environment
+      (Command: OPENBOX) (Fixes: #605)
+    - Make X2Go Server aware of the IceWM desktop environment
+      (Command: ICEWM) (Fixes: #606)
     - Support GNOME Flashback session (GNOME 3.8+) on distro releases such as
       Ubuntu 13.10+ and debian Jessie
       (NOTE: For most users, GNOME Flashback currently will not work.
