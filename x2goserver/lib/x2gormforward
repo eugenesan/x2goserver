@@ -23,10 +23,11 @@
 use strict;
 use Sys::Syslog qw( :standard :macros );
 
-use X2Go::Log qw(loglevel);
+use lib `x2gopath lib`;
+use x2gologlevel;
 
 openlog($0,'cons,pid','user');
-setlogmask( LOG_UPTO(loglevel()) );
+setlogmask( LOG_UPTO(x2gologlevel()) );
 
 my $session=shift or die;
 
