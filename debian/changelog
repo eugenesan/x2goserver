@@ -214,6 +214,9 @@ x2goserver (4.0.1.16-0x2go1) UNRELEASED; urgency=low
       be found. This can happen during session startups. Report to system log
       instead.
     - Don't use Perl package File::ReadBackwards anymore.
+    - Fix x2gormforward for 4.0.1.x release series (the X2Go::Log Perl module
+      only exists in X2Go Server >= 4.1.0.0, the 4.0.1.x release series has to
+      use x2gologlevel.pm in `x2gopath lib`. (Fixes: #617).
   * debian/control, x2goserver.spec:
     + Update versioned D: x2goagent (>= 3.5.0.25). This assures that X2Go
       works with poly-instantiated /tmp directories.
