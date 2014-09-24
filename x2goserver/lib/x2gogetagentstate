@@ -22,11 +22,6 @@
 
 use strict;
 
-#use strict;
-#use Sys::Hostname;
-#use Sys::Syslog qw( :standard :macros );
-
-
 use X2Go::Server::DB;
 use X2Go::Server::Agent;
 
