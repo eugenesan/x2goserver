@@ -1,0 +1,61 @@
+#!/usr/bin/perl
+
+# Copyright (C) 2007-2014 X2Go Project - http://wiki.x2go.org
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the
+# Free Software Foundation, Inc.,
+# 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
+#
+# Copyright (C) 2007-2014 Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
+# Copyright (C) 2007-2014 Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
+
+use strict;
+use Sys::Syslog qw( :standard :macros );
+
+use lib `x2gopath lib`;
+use x2gologlevel;
+
+openlog($0,'cons,pid','user');
+setlogmask( LOG_UPTO(x2gologlevel()) );
+
+sub get_agent_state
+{
+	my $sess=@_[1];
+	my $user=@_[2];
+	my $state;
+	my $stateFile;
+	if ( -d "/tmp-inst/${user}/.x2go-${user}" ) {
+		$stateFile="/tmp-inst/${user}/.x2go-".$user."/C-".$sess."/state";
+	} else {
+		$stateFile = "/tmp/.x2go-".$user."/C-".$sess."/state";
+	}
+	if (! -e $stateFile )
+	{
+		syslog('warning', "$sess: state file for this session does not exists: $stateFile (this can be ignored during session startups)");
+		$state="UNKNOWN";
+	}
+	else
+	{
+		open(F,"<$stateFile");
+		$state=<F>;
+		close(F);
+	}
+	return $state;
+}
+
+my $sid=shift or die "argument session id missed";
+my $user=getpwuid($<);
+
+print get_agent_state($sid, $user);
+
