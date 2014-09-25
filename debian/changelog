@@ -124,7 +124,7 @@ x2goserver (4.1.0.0-0x2go1.1) UNRELEASED; urgency=low
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 09 May 2014 13:06:24 +0200
 
-x2goserver (4.0.1.16-0x2go1) UNRELEASED; urgency=low
+x2goserver (4.0.1.16-0x2go1) unstable; urgency=low
 
   [ Mike DePaulo ]
   * New upstream release (4.0.1.16):
@@ -249,7 +249,7 @@ x2goserver (4.0.1.16-0x2go1) UNRELEASED; urgency=low
   * x2goserver.spec:
     + Sync Fedora .spec file with our upstream-provided x2goserver.spec.
 
- -- Mike DePaulo <mikedep333@gmail.com>  Thu, 23 Apr 2014 17:49:00 -0500
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 26 Sep 2014 00:36:32 +0200
 
 x2goserver (4.0.1.15-0x2go1) unstable; urgency=low
 
