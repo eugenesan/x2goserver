@@ -1,6 +1,8 @@
 x2goserver (4.0.1.17-0x2go1) UNRELEASED; urgency=medium
 
-  * Continue development...
+  * New upstream release (4.0.1.17):
+    - Fix breakage of X2Go Server when upgrading from 4.0.1.15 while
+      sessions are still in running / suspended state. (Fixes: #623).
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Thu, 02 Oct 2014 12:18:58 +0200
 

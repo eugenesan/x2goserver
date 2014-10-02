@@ -93,7 +93,7 @@ sub get_agent_state
 	my $stateFile = "/tmp/.x2go-".$user."/C-".$sess."/state";
 	if (! -e $stateFile )
 	{
-		syslog('warning', "$sess: state file for this session does not exists: $stateFile (this can be ignored during session startups)");
+		syslog('warning', "$sess: state file for this session does not exist: $stateFile (this can be ignored during session startups)");
 		$state = "UNKNOWN";
 	}
 	else
