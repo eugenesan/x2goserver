@@ -26,6 +26,7 @@ $ENV{'PATH'} = "/bin:/sbin:/usr/bin:/usr/sbin";
 
 use Sys::Hostname;
 use Sys::Syslog qw( :standard :macros );
+use File::Remove 'remove';
 use POSIX;
 
 use X2Go::Config qw( get_config );
@@ -163,6 +164,11 @@ elsif ($pid == 0 )
 					# send SIGKILL to dangling X-server processes
 					syslog('warning', "@sinfo[1]: found stale X-server process (@sinfo[0]), sending SIGKILL");
 					system("kill", "-9", "@sinfo[0]");
+					my $display = @sinfo[3];
+					if (-S "/tmp/.X11-unix/X$display") {
+						# remove the NX-X11 socket file (as the agent will not have managed after a kill -9)
+						remove("/tmp/.X11-unix/X$display");
+					}
 					delete $remembered_sessions_since{@sinfo[1]};
 				}
 				syslog('debug', "@sinfo[1]: unmounting all shares");
@@ -172,6 +178,12 @@ elsif ($pid == 0 )
 			elsif (! check_pid (@sinfo[0],@sinfo[1],@sinfo[12]))
 			{
 				system("su", "@sinfo[11]", "-c", "$x2go_lib_path/x2gochangestatus 'F' @sinfo[1]");
+				my $display = @sinfo[3];
+				if (-S "/tmp/.X11-unix/X$display") {
+					# remove the NX-X11 socket file (we don't know how the agent disappeared,
+					# someone might have shot it with kill -9)
+					remove("/tmp/.X11-unix/X$display");
+				}
 				syslog('debug', "@sinfo[1], pid @sinfo[0] does not exist, changing status from @sinfo[4] to F");
 				syslog('debug', "@sinfo[1]: unmounting all shares");
 				system("su", "@sinfo[11]", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");
