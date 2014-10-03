@@ -139,7 +139,7 @@ elsif ($pid == 0 )
 
 			my @sinfo=split('\\|',"@outp[$i]");
 
-			# clean up invalid sessions from the session
+			# clean up invalid sessions from the session database
 			if ( ( ! @sinfo[0] ) && ( $remembered_sessions_since{ @sinfo[1] } ge 10 ) )
 			{
 				dbsys_rmsessionsroot(@sinfo[1]);
