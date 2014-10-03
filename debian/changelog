@@ -131,6 +131,8 @@ x2goserver (4.0.1.17-0x2go1) UNRELEASED; urgency=medium
       sessions are still in running / suspended state. (Fixes: #623).
     - Handle stale X11 socket files in cases where x2goagent has
       mysteriously disappeared (e.g. kill -9). (Fixes: #626).
+    - Make sure that incompletely started up sessions get wiped from the
+      session DB after 10 seconds.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Thu, 02 Oct 2014 12:18:58 +0200
 
