@@ -1,4 +1,4 @@
-x2goserver (4.0.1.17-0x2go1) UNRELEASED; urgency=medium
+x2goserver (4.0.1.17-0x2go1) unstable; urgency=medium
 
   * New upstream release (4.0.1.17):
     - Fix breakage of X2Go Server when upgrading from 4.0.1.15 while
@@ -13,7 +13,7 @@ x2goserver (4.0.1.17-0x2go1) UNRELEASED; urgency=medium
   * debian/control:
     + Upgrade x2goserver-xsession from Suggests: to Recommends:.
 
- -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Thu, 02 Oct 2014 12:18:58 +0200
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 03 Oct 2014 17:09:23 +0200
 
 x2goserver (4.0.1.16-0x2go1) unstable; urgency=low
 
