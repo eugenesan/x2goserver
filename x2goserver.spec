@@ -49,7 +49,6 @@ Requires:       sudo
 Requires:       x2goagent >= 3.5.0.25
 Requires:       xorg-x11-fonts-misc
 Requires:       xorg-x11-xauth
-Requires:       perl(Files::Remove)
 Requires(pre):  shadow-utils
 Requires(post): grep
 Requires(post): perl(DBD::SQLite)
