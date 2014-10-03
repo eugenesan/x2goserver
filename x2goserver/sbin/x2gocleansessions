@@ -167,6 +167,7 @@ elsif ($pid == 0 )
 					my $display = @sinfo[3];
 					if (-S "/tmp/.X11-unix/X$display") {
 						# remove the NX-X11 socket file (as the agent will not have managed after a kill -9)
+						syslog('warning', "@sinfo[1], pid @sinfo[0] cleaning up stale X11 socket file: /tmp/.X11-unix/X$display");
 						File::Remove::remove("/tmp/.X11-unix/X$display");
 					}
 					delete $remembered_sessions_since{@sinfo[1]};
@@ -182,6 +183,7 @@ elsif ($pid == 0 )
 				if (-S "/tmp/.X11-unix/X$display") {
 					# remove the NX-X11 socket file (we don't know how the agent disappeared,
 					# someone might have shot it with kill -9)
+					syslog('warning', "@sinfo[1], pid @sinfo[0] cleaning up stale X11 socket file: /tmp/.X11-unix/X$display");
 					File::Remove::remove("/tmp/.X11-unix/X$display");
 				}
 				syslog('debug', "@sinfo[1], pid @sinfo[0] does not exist, changing status from @sinfo[4] to F");
