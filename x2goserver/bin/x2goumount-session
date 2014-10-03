@@ -236,8 +236,8 @@ break:
 			$desktop_file = "$remote\ (sshfs-cdrom$current_desktop)";
 		}
 
-		syslog('info', "Attempting removal of desktop file ,,$desktop_dir/$desktop_file''");
 		if ( -f "$desktop_dir/$desktop_file" ) {
+			syslog('info', "Attempting removal of desktop file ,,$desktop_dir/$desktop_file''");
 			open (DF,"<$desktop_dir/$desktop_file") or die "Can't open $desktop_file for reading";
 			my @desktop_file_content=<DF>;
 			close(DF);
