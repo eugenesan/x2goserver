@@ -9,6 +9,7 @@ x2goserver (4.0.1.17-0x2go1) UNRELEASED; urgency=medium
       session DB after 10 seconds.
     - Fix unreliable removal of client-side folder sharing desktop
       icons.
+    - Update date in several man pages.
   * debian/control:
     + Upgrade x2goserver-xsession from Suggests: to Recommends:.
 
