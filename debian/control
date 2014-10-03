@@ -28,7 +28,6 @@ Depends:
  libdbd-pg-perl,
  libdbd-sqlite3-perl,
  libfile-basedir-perl,
- libfile-remove-perl,
  libcapture-tiny-perl,
  adduser,
  xauth,

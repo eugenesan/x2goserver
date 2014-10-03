@@ -23,7 +23,6 @@
 use strict;
 use Sys::Hostname;
 use Sys::Syslog qw( :standard :macros );
-use File::Remove;
 use POSIX;
 
 
@@ -199,25 +198,26 @@ elsif ($pid == 0 )
 					# send SIGKILL to dangling X-server processes
 					syslog('warning', "@sinfo[1]: found stale X-server process (@sinfo[0]), sending SIGKILL");
 					system("kill", "-9", "@sinfo[0]");
-					my $display = @sinfo[3];
-					if (-S "/tmp/.X11-unix/X$display") {
-						# remove the NX-X11 socket file (as the agent will not have managed after a kill -9)
-						File::Remove::remove("/tmp/.X11-unix/X$display");
-					}
 					delete $remembered_sessions_since{@sinfo[1]};
+				}
+				my $display = @sinfo[2];
+				if (-S "/tmp/.X11-unix/X$display") {
+					# remove the NX-X11 socket file (as the agent will not have managed after a kill -9)
+					syslog('warning', "@sinfo[1], pid @sinfo[0] cleaning up stale X11 socket file: /tmp/.X11-unix/X$display");
+					unlink("/tmp/.X11-unix/X$display");
 				}
 				syslog('debug', "@sinfo[1]: unmounting all shares");
 				system( "su", "@sinfo[11]", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");
 			}
-
 			elsif (! check_pid (@sinfo[0],@sinfo[1],@sinfo[12]))
 			{
 				system("su", "@sinfo[11]", "-c", "$x2go_lib_path/x2gochangestatus 'F' @sinfo[1]");
-				my $display = @sinfo[3];
+				my $display = @sinfo[2];
 				if (-S "/tmp/.X11-unix/X$display") {
 					# remove the NX-X11 socket file (we don't know how the agent disappeared,
 					# someone might have shot it with kill -9)
-					File::Remove::remove("/tmp/.X11-unix/X$display");
+					syslog('warning', "@sinfo[1], pid @sinfo[0] cleaning up stale X11 socket file: /tmp/.X11-unix/X$display");
+					unlink("/tmp/.X11-unix/X$display");
 				}
 				syslog('debug', "@sinfo[1], pid @sinfo[0] does not exist, changing status from @sinfo[4] to F");
 				syslog('debug', "@sinfo[1]: unmounting all shares");
