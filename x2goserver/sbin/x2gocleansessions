@@ -206,6 +206,11 @@ elsif ($pid == 0 )
 					syslog('warning', "@sinfo[1], pid @sinfo[0] cleaning up stale X11 socket file: /tmp/.X11-unix/X$display");
 					unlink("/tmp/.X11-unix/X$display");
 				}
+				if (-e "/tmp/.X$display-lock") {
+					# remove the NX-X11 lock file (as the agent will not have managed after a kill -9)
+					syslog('warning', "@sinfo[1], pid @sinfo[0] cleaning up stale X11 lock file: /tmp/.X$display-lock");
+					unlink("/tmp/.X$display-lock");
+				}
 				syslog('debug', "@sinfo[1]: unmounting all shares");
 				system( "su", "@sinfo[11]", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");
 			}
@@ -219,7 +224,12 @@ elsif ($pid == 0 )
 					syslog('warning', "@sinfo[1], pid @sinfo[0] cleaning up stale X11 socket file: /tmp/.X11-unix/X$display");
 					unlink("/tmp/.X11-unix/X$display");
 				}
-				syslog('debug', "@sinfo[1], pid @sinfo[0] does not exist, changing status from @sinfo[4] to F");
+				if (-e "/tmp/.X$display-lock") {
+					# remove the NX-X11 lock file (we don't know how the agent disappeared,
+					# someone might have shot it with kill -9)
+					syslog('warning', "@sinfo[1], pid @sinfo[0] cleaning up stale X11 lock file: /tmp/.X$display-lock");
+					unlink("/tmp/.X$display-lock");
+				}				syslog('debug', "@sinfo[1], pid @sinfo[0] does not exist, changing status from @sinfo[4] to F");
 				syslog('debug', "@sinfo[1]: unmounting all shares");
 				system("su", "@sinfo[11]", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");
 			}
