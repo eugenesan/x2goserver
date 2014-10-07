@@ -320,9 +320,9 @@ sub db_createsession
 	my $sth;
 	if ($with_TeKi) {
 		my $tekictrl_port=shift or die"argument \"tekictrl_port\" missed";
-		$tekictrl_port = sanitizer('num', $tekictrl_port) or die "argument \"tekictrl_port\" malformed";
+		$tekictrl_port = sanitizer('pnnum', $tekictrl_port) or die "argument \"tekictrl_port\" malformed";
 		my $tekidata_port=shift or die"argument \"tekidata_port\" missed";
-		$tekidata_port = sanitizer('num', $tekidata_port) or die "argument \"tekidata_port\" malformed";
+		$tekidata_port = sanitizer('pnnum', $tekidata_port) or die "argument \"tekidata_port\" malformed";
 		$sth=$dbh->prepare("update sessions_view set status='R',last_time=now(),
 		                    cookie='$cookie',agent_pid='$pid',client='$client',gr_port='$gr_port',
 		                    sound_port='$snd_port',fs_port='$fs_port',tekictrl_port='$tekictrl_port',
@@ -383,9 +383,9 @@ sub db_resume
 	my $sth;
 	if ($with_TeKi) {
 		my $tekictrl_port=shift or die"argument \"tekictrl_port\" missed";
-		$tekictrl_port = sanitizer('num', $tekictrl_port) or die "argument \"tekictrl_port\" malformed";
+		$tekictrl_port = sanitizer('pnnum', $tekictrl_port) or die "argument \"tekictrl_port\" malformed";
 		my $tekidata_port=shift or die"argument \"tekidata_port\" missed";
-		$tekidata_port = sanitizer('num', $tekidata_port) or die "argument \"tekidata_port\" malformed";
+		$tekidata_port = sanitizer('pnnum', $tekidata_port) or die "argument \"tekidata_port\" malformed";
 		$sth=$dbh->prepare("update sessions_view set last_time=now(),status='R',client='$client',gr_port='$gr_port',
 		                    sound_port='$snd_port',fs_port='$fs_port',tekictrl_port='$tekictrl_port',
 		                    tekidata_port='$tekidata_port' where session_id = '$sid'");

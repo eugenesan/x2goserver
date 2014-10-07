@@ -54,6 +54,8 @@ x2goserver (4.1.0.0-0x2go1.1) UNRELEASED; urgency=low
       Make sure the session ID comes first and we have only optional parameters
       towards the end of the paramter array.
     - Fix accessing ARGV in X2Go::Utils:check_x2go_sessionid sub. (Fixes: #575).
+    - Fix TeKi storing Telekinesis ports in PgSQL-based session DB. Allow negative
+      port numbers for the case that Telekinesis is not installed.
   * debian/control:
     + Package X2Go::Log in separate package: libx2go-log-perl.
     + Package X2Go::Server::DB in separate package: libx2go-server-db-perl.
