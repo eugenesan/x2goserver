@@ -126,7 +126,13 @@ x2goserver (4.1.0.0-0x2go1.1) UNRELEASED; urgency=low
 
 x2goserver (4.0.1.19-0x2go1) UNRELEASED; urgency=medium
 
-  * Continue development...
+  * New upstream version (4.0.1.19):
+    - Use File::Which to detect if sshfs command is available
+      before trying to mount a client-side folder.
+  * debian/control:
+    + Add D (x2goserver): libfile-which-perl.
+  * x2goserver.spec:
+    + Add to R: perl(File::Which).
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 07 Oct 2014 15:35:38 +0200
 
