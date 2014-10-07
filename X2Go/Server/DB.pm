@@ -182,7 +182,7 @@ sub db_insertmount
 	}
 	if ($backend eq 'sqlite')
 	{
-		if( system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "insertmount", "$sid", "\"$path\"", "$client") eq "ok")
+		if( system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "insertmount", "$sid", "$path", "$client") eq "ok")
 		{
 			$res_ok=1;
 		}
