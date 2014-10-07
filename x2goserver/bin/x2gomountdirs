@@ -23,6 +23,7 @@
 use strict;
 use Sys::Syslog qw( :standard :macros );
 use File::BaseDir qw( xdg_config_home );
+use File::Which;
 
 use lib `x2gopath lib`;
 use x2godbwrapper;
@@ -33,6 +34,16 @@ setlogmask( LOG_UPTO(x2gologlevel()) );
 
 
 syslog('info', "x2gomountdirs has been called with options: @ARGV");
+
+my $msg;
+if (! which ("sshfs") ) {
+	$msg = "the sshfs command is not installed on this X2Go Server, cannot share client-side folders";
+	syslog('warning', "WARNING: $msg");
+	print "$msg\n";
+	# closing syslog
+	closelog;
+	exit 0;
+}
 
 sub source_environment {
     my $name = shift;
@@ -62,7 +73,6 @@ my $session=shift;
 my $user=shift;
 my $key=shift;
 my @dl;
-my $msg;
 my $i=0;
 @dl[$i]=shift;
 while(@dl[$i])
