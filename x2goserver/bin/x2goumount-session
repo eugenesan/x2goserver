@@ -242,7 +242,7 @@ break:
 			my @desktop_file_content=<DF>;
 			close(DF);
 
-			if ( "@desktop_file_content[1]" eq "$session\n" ) {
+			if ( @desktop_file_content[1] =~ m/$session\/ ) {
 				syslog('info', "removing desktop icon ,,$desktop_dir/$desktop_file''");
 				unlink("$desktop_dir/$desktop_file");
 			}
