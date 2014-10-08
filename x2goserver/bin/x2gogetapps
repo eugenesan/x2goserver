@@ -186,21 +186,23 @@ my ($name, $pass, $uid, $gid, $quota, $comment, $gcos, $homedir, $shell, $expire
 @dirs[2]="$homedir/.x2go/applications";
 foreach(@dirs)
 {
-	my $dirname=$_;
-	if( opendir(DIR, $dirname))
-	{
-		while (defined($file = readdir(DIR))) 
+	my $basedir=$_;
+	opendir my $basedh, $basedir;
+
+	for my $dirname (grep {-d "$basedir/$_" && ! /^\.{2}$/} readdir($basedh)) {
+		if( opendir(DIR, "$basedir/$dirname"))
 		{
-			if($file =~ m/.desktop/)
+			while (defined($file = readdir(DIR))) 
 			{
-				proc_desktop_file("$dirname/$file");
+				if($file =~ m/.desktop/)
+				{
+					proc_desktop_file("$basedir/$dirname/$file");
+				}
 			}
+			closedir(DIR);
+		} else {
+			syslog ('info', "x2gogetapps - can't opendir $basedir/$dirname: $!");
 		}
-		closedir(DIR);
-	}
-	else
-	{
-		syslog ('info', "x2gogetapps - can't opendir $dirname: $!");
 	}
 }
 # closing syslog 
