@@ -144,6 +144,7 @@ x2goserver (4.0.1.19-0x2go1) UNRELEASED; urgency=medium
     + Add D (x2goserver): libfile-which-perl.
   * x2goserver.spec:
     + Add to R: perl(File::Which).
+    + Additionally adapt to building on openSUSE/SLES.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 07 Oct 2014 15:35:38 +0200
 
