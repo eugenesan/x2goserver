@@ -31,7 +31,7 @@ BuildRequires:  man
 BuildRequires:  xinit
 %else
 BuildRequires:  xorg-x11-xinit
-%fi
+%if
 # For x2goruncommand - for now
 Requires:       bc
 # For x2goshowblocks
