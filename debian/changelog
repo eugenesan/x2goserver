@@ -142,6 +142,8 @@ x2goserver (4.0.1.19-0x2go1) UNRELEASED; urgency=medium
       purpose do not recursively dive into the complete subtree. (Fixes: #633).
     - Make man2html an optional tool. Don't fail if it is missing on the
       build system (required for openSUSE/SLES builds).
+    - Fix x2goserver-xsession/Makefile on SUSE. Detect SUSE distro and create
+      Xsession related directory symlinks (xinitrc.d and Xclients.d).
   * debian/control:
     + Add D (x2goserver): libfile-which-perl.
   * x2goserver.spec:
