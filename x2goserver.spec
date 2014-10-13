@@ -29,6 +29,7 @@ BuildRequires:  man
 # So XSESSIONDIR gets linked
 %if 0%{suse_version}
 BuildRequires:  xinit
+BuildRequires:  shadow
 %else
 BuildRequires:  xorg-x11-xinit
 %endif

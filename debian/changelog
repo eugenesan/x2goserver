@@ -164,6 +164,7 @@ x2goserver (4.0.1.19-0x2go1) UNRELEASED; urgency=medium
     + No %{_sysconfdir}/x2go/Xclients.d on SUSE systems.
     + Use %{_localstatedir} instead of %{_sharedstatedir}.
     + Use proper if... then... clauses.
+    + For SUSE builds: Add to R: shadow (useradd, groupadd).
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 07 Oct 2014 15:35:38 +0200
 
