@@ -23,7 +23,7 @@ FEATURE_SCRIPTS=$(shell cd share/x2gofeature.d && echo *.features .placeholder)
 
 man_pages = `cd man && find * -type f`
 
-MAN2HTML_BIN  = man2html
+MAN2HTML_BIN  = $(shell which man2html)
 MAN2HTML_SRC  = man
 MAN2HTML_DEST = .build_man2html/html
 
@@ -36,9 +36,11 @@ build-arch:
 build-indep: build_man2html
 
 build_man2html:
-	mkdir -p $(MAN2HTML_DEST)
-	for man_page in $(man_pages); do mkdir -p `dirname $(MAN2HTML_DEST)/$$man_page`; done
-	for man_page in $(man_pages); do $(MAN2HTML_BIN) $(MAN2HTML_SRC)/$$man_page > $(MAN2HTML_DEST)/$$man_page.html; done
+	if [ -n "$(MAN2HTML_BIN)" ]; then \
+	mkdir -p $(MAN2HTML_DEST); \
+	    for man_page in $(man_pages); do mkdir -p `dirname $(MAN2HTML_DEST)/$$man_page`; done; \
+	    for man_page in $(man_pages); do $(MAN2HTML_BIN) $(MAN2HTML_SRC)/$$man_page > $(MAN2HTML_DEST)/$$man_page.html; done; \
+	fi
 
 clean: clean_man2html
 
