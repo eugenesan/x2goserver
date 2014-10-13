@@ -20,6 +20,8 @@ x2goserver (4.0.1.19-0x2go1) UNRELEASED; urgency=medium
       is also considered to be a SUSE system.
     - Trigger Xsession code for SUSE systems (look for /etc/SUSE-brand for
       SUSE system recognition).
+    - x2gosqlitewrapper.c: Fix rpmlint error: no-return-in-nonvoid-function.
+      Return the exitcode of execve().
   * debian/control:
     + Add D (x2goserver): libfile-which-perl.
   * x2goserver.spec:
