@@ -39,7 +39,11 @@ Requires:       lsof
 # For netstat in x2goresume-session
 Requires:       net-tools
 Requires:       openssh-server
+%if 0%{suse_version}
+Requires:       perl
+%else
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+%endif
 Requires:       perl(Try::Tiny)
 # We need a database
 # For killall in x2gosuspend-session
@@ -83,8 +87,12 @@ administrations.
 
 
 %package common
-Summary:        X2Go Server (common files)
+Summiary:        X2Go Server (common files)
+%if 0%{suse_version}
+Requires:       perl
+%else
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+%endif
 Group:          Applications/Communications
 
 %description common
@@ -105,7 +113,11 @@ Summary:        Perl X2Go::Server package
 Requires:       x2goserver-common = %{version}-%{release}
 Requires:       perl-X2Go-Log = %{version}-%{release}
 Requires:       perl-X2Go-Server-DB = %{version}-%{release}
+%if 0%{suse_version}
+Requires:       perl
+%else
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+%endif
 Group:          Development/Libraries
 
 %description -n perl-X2Go-Server
@@ -126,7 +138,11 @@ Requires:       x2goserver-common = %{version}-%{release}
 Requires:       perl-X2Go-Log = %{version}-%{release}
 Requires:       perl(DBD::SQLite)
 Requires:       perl(DBD::Pg)
+%if 0%{suse_version}
+Requires:       perl
+%else
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+%endif
 Group:          Development/Libraries
 
 %description -n perl-X2Go-Server-DB
@@ -144,7 +160,11 @@ This package contains the X2Go::Server::DB Perl package.
 %package -n perl-X2Go-Log
 Summary:        Perl X2Go::Log package
 Requires:       x2goserver-common = %{version}-%{release}
+%if 0%{suse_version}
+Requires:       perl
+%else
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+%endif
 Group:          Development/Libraries
 
 %description -n perl-X2Go-Log
@@ -162,7 +182,11 @@ This package contains the X2Go::Log Perl package.
 %package printing
 Summary:        X2Go Server (printing support)
 Requires:       %{name} = %{version}-%{release}
+%if 0%{suse_version}
+Requires:       perl
+%else
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+%endif
 Group:          Applications/Communications
 
 %description printing
