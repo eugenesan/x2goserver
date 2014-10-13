@@ -218,23 +218,10 @@ make install DESTDIR=%{buildroot} PREFIX=%{_prefix}
 # Remove placeholder files (in a way that works on EPEL-5, as well)
 find %{buildroot}%{_libdir}/x2go/extensions/ -type f -name ".placeholder" | while read file; do rm -f "$file"; done
 
-%if 0%{suse_version}
 # x2gouser homedir, state dir
 mkdir -p %{buildroot}%{_localstatedir}/x2go
 # Create empty session file for %%ghost
 touch %{buildroot}%{_localstatedir}/x2go/x2go_sessions
-%else
-# x2gouser homedir, state dir
-%if 0%{suse_version}
-mkdir -p %{buildroot}%{_sharedstatedir}/x2go
-# Create empty session file for %%ghost
-touch %{buildroot}%{_sharedstatedir}/x2go/x2go_sessions
-%else
-mkdir -p %{buildroot}%{_sharedstatedir}/x2go
-# Create empty session file for %%ghost
-touch %{buildroot}%{_sharedstatedir}/x2go/x2go_sessions
-%endif
-%endif
 
 # Printing spool dir
 mkdir -p %{buildroot}%{_localstatedir}/spool/x2goprint
@@ -270,7 +257,7 @@ exit 0
 
 %post
 # Initialize the session database
-[ ! -s %{_sharedstatedir}/x2go/x2go_sessions ] && \
+[ ! -s %{_localstatedir}/x2go/x2go_sessions ] && \
   egrep "^backend=sqlite.*" /etc/x2go/x2gosql/sql >/dev/null 2>&1 && \
   %{_sbindir}/x2godbadmin --createdb >/dev/null 2>&1 || :
 
@@ -362,15 +349,9 @@ exit 0
 %dir %{_datadir}/x2go/x2gofeature.d/
 %{_datadir}/x2go/x2gofeature.d/x2goserver.features
 %{_datadir}/x2go/versions/VERSION.x2goserver
-%if 0%{suse_version}
 %dir %{_localstatedir}
 %attr(0775,root,x2gouser) %dir %{_localstatedir}/x2go/
 %ghost %attr(0660,root,x2gouser) %{_localstatedir}/x2go/x2go_sessions
-%else
-%dir %{_sharedstatedir}
-%attr(0775,root,x2gouser) %dir %{_sharedstatedir}/x2go/
-%ghost %attr(0660,root,x2gouser) %{_sharedstatedir}/x2go/x2go_sessions
-%endif
 %if 0%{?fedora} || 0%{?rhel} >= 7
 %{_unitdir}/x2goserver.service
 %else
@@ -381,12 +362,6 @@ exit 0
 %endif
 %endif
 
-
-%if 0%{suse_version}
-%dir %{_localstatedir}
-%else
-%dir %{_sharedstatedir}
-%endif
 
 %files extensions
 %{_libdir}/x2go/extensions
