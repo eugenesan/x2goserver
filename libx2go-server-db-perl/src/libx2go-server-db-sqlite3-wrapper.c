@@ -27,6 +27,6 @@ int main( int argc, char *argv[] ) {
 
 	argv[0] = "libx2go-server-db-sqlite3-wrapper.pl";
 	// execute the script, running with user-rights of this binary
-	execv(x2gosqlitewrapper, argv);
+	return execv(x2gosqlitewrapper, argv);
 
 }
