@@ -162,7 +162,7 @@ x2goserver (4.0.1.19-0x2go1) UNRELEASED; urgency=medium
     + Add to R: x2goserver-xsession.
     + Don't mention /etc/x2go/x2gosql/sql twice (directly and with wildcard).
     + No %{_sysconfdir}/x2go/Xclients.d on SUSE systems.
-    + The macro %{_sharedstatedir} is %{_localstatedir} on SUSE build systems.
+    + Use %{_localstatedir} instead of %{_sharedstatedir}.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 07 Oct 2014 15:35:38 +0200
 

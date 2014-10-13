@@ -311,17 +311,10 @@ rm -f %{buildroot}%{perl_vendorarch}/auto/x2goserver/.packlist
 # Remove placeholder files (in a way that works on EPEL-5, as well)
 find %{buildroot}%{_libdir}/x2go/extensions/ -type f -name ".placeholder" | while read file; do rm -f "$file"; done
 
-%if 0%{suse_version}
 # x2gouser homedir, state dir
 mkdir -p %{buildroot}%{_localstatedir}/x2go
 # Create empty session file for %%ghost
 touch %{buildroot}%{_localstatedir}/x2go/x2go_sessions
-%else
-# x2gouser homedir, state dir
-mkdir -p %{buildroot}%{_sharedstatedir}/x2go
-# Create empty session file for %%ghost
-touch %{buildroot}%{_sharedstatedir}/x2go/x2go_sessions
-%endif
 
 # Printing spool dir
 mkdir -p %{buildroot}%{_localstatedir}/spool/x2goprint
@@ -357,13 +350,13 @@ exit 0
 
 %post
 # Initialize the session database
-[ ! -s %{_sharedstatedir}/x2go/x2go_sessions ] && \
+[ ! -s %{_localstatedir}/x2go/x2go_sessions ] && \
   [ -d %{_datadir}/doc/packages/perl-X2Go-Server-DB ] && \
   egrep "^backend=sqlite.*" /etc/x2go/x2gosql/sql >/dev/null 2>&1 && \
   %{_sbindir}/x2godbadmin --createdb >/dev/null 2>&1 || :
 
 egrep "^backend=sqlite.*" /etc/x2go/x2gosql/sql 1>/dev/null 2>/dev/null && { \
-  [ ! -s %{_sharedstatedir}/x2go/x2go_sessions ] && \
+  [ ! -s %{_localstatedir}/x2go/x2go_sessions ] && \
     %{_sbindir}/x2godbadmin --createdb 1>/dev/null 2>/dev/null || \
     %{_sbindir}/x2godbadmin --updatedb 1>/dev/null 2>/dev/null; \
 }
@@ -395,7 +388,7 @@ fi
 
 %post -n perl-X2Go-Server-DB
 # Initialize the session database
-[ ! -s %{_sharedstatedir}/x2go/x2go_sessions ] && \
+[ ! -s %{_localstatedir}/x2go/x2go_sessions ] && \
   [ -x %{_sbindir}/x2godbadmin ] && \
   egrep "^backend=sqlite.*" /etc/x2go/x2gosql/sql >/dev/null 2>&1 && \
   %{_sbindir}/x2godbadmin --createdb >/dev/null 2>&1 || :
@@ -459,8 +452,9 @@ exit 0
 %dir %{_datadir}/x2go/x2gofeature.d/
 %{_datadir}/x2go/x2gofeature.d/x2goserver.features
 %{_datadir}/x2go/versions/VERSION.x2goserver
-%attr(0775,root,x2gouser) %dir %{_sharedstatedir}/x2go/
-%ghost %attr(0660,root,x2gouser) %{_sharedstatedir}/x2go/x2go_sessions
+%dir %{_localstatedir}
+%attr(0775,root,x2gouser) %dir %{_localstatedir}/x2go/
+%ghost %attr(0660,root,x2gouser) %{_localstatedir}/x2go/x2go_sessions
 %if 0%{?fedora} || 0%{?rhel} >= 7
 %{_unitdir}/x2goserver.service
 %else
@@ -503,11 +497,7 @@ exit 0
 
 
 %files common
-%if 0%{suse_version}
 %dir %{_localstatedir}
-%else
-%dir %{_sharedstatedir}
-%endif
 %dir %{_sysconfdir}/x2go/
 %dir %{_sysconfdir}/x2go/x2gosql
 %config(noreplace) %{_sysconfdir}/x2go/x2go*
