@@ -257,8 +257,8 @@ exit 0
 
 %post
 # Initialize the session database
-[ ! -s %{_sharedstatedir}/x2go/x2go_sessions ] &&
-  egrep "^backend=sqlite.*" /etc/x2go/x2gosql/sql >/dev/null 2>&1 &&
+[ ! -s %{_sharedstatedir}/x2go/x2go_sessions ] && \
+  egrep "^backend=sqlite.*" /etc/x2go/x2gosql/sql >/dev/null 2>&1 && \
   %{_sbindir}/x2godbadmin --createdb >/dev/null 2>&1 || :
 
 %if 0%{?fedora} || 0%{?rhel} >= 7
