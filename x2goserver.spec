@@ -350,15 +350,18 @@ exit 0
 
 %post
 # Initialize the session database
-[ ! -s %{_localstatedir}/x2go/x2go_sessions ] && \
-  [ -d %{_datadir}/doc/packages/perl-X2Go-Server-DB ] && \
-  egrep "^backend=sqlite.*" /etc/x2go/x2gosql/sql >/dev/null 2>&1 && \
-  %{_sbindir}/x2godbadmin --createdb >/dev/null 2>&1 || :
+if [ ! -s %{_localstatedir}/x2go/x2go_sessions ]; then
+  if [ -d %{_datadir}/doc/packages/perl-X2Go-Server-DB ]; then
+    if egrep "^backend=sqlite.*" /etc/x2go/x2gosql/sql >/dev/null 2>&1; then
+      %{_sbindir}/x2godbadmin --createdb >/dev/null 2>&1 || :
+    fi
+  fi
+fi
 
-egrep "^backend=sqlite.*" /etc/x2go/x2gosql/sql 1>/dev/null 2>/dev/null && { \
-  [ ! -s %{_localstatedir}/x2go/x2go_sessions ] && \
-    %{_sbindir}/x2godbadmin --createdb 1>/dev/null 2>/dev/null || \
-    %{_sbindir}/x2godbadmin --updatedb 1>/dev/null 2>/dev/null; \
+if egrep "^backend=sqlite.*" /etc/x2go/x2gosql/sql 1>/dev/null 2>/dev/null; then
+  if [ ! -s %{_localstatedir}/x2go/x2go_sessions ]; then
+    %{_sbindir}/x2godbadmin --createdb 1>/dev/null 2>/dev/null || :
+    %{_sbindir}/x2godbadmin --updatedb 1>/dev/null 2>/dev/null || :
 }
 
 %if 0%{?fedora} || 0%{?rhel} >= 7
@@ -388,10 +391,13 @@ fi
 
 %post -n perl-X2Go-Server-DB
 # Initialize the session database
-[ ! -s %{_localstatedir}/x2go/x2go_sessions ] && \
-  [ -x %{_sbindir}/x2godbadmin ] && \
-  egrep "^backend=sqlite.*" /etc/x2go/x2gosql/sql >/dev/null 2>&1 && \
-  %{_sbindir}/x2godbadmin --createdb >/dev/null 2>&1 || :
+if [ ! -s %{_localstatedir}/x2go/x2go_sessions ]; then
+  if [ -x %{_sbindir}/x2godbadmin ]; then
+    if egrep "^backend=sqlite.*" /etc/x2go/x2gosql/sql >/dev/null 2>&1; then
+      %{_sbindir}/x2godbadmin --createdb >/dev/null 2>&1 || :
+    fi
+  fi
+fi
 
 %post fmbindings
 /usr/bin/update-mime-database /usr/share/mime &>/dev/null || :
