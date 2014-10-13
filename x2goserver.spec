@@ -62,7 +62,7 @@ Requires(preun): systemd
 Requires(postun): systemd
 %endif
 Requires:       x2goserver-extensions
-#Recommends:       x2goserver-xsession
+Requires:       x2goserver-xsession
 #Recommands:       x2goserver-fmbindings
 #Recommends:       x2goserver-printing
 
