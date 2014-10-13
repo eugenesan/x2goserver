@@ -130,7 +130,7 @@ if [ -f /etc/debian_version ]; then
 		done
 		set -e
 	fi
-elif [ -f /etc/redhat-release ] || [ -f /etc/gentoo-release ]; then
+elif [ -f /etc/redhat-release ] || [ -f /etc/gentoo-release ] || [ -f /etc/SUSE-brand ]; then
 
 	# define a fallback... (should never be needed). The XSESSION_EXEC var gets set in
 	# X2Go's x2goruncommand script and can be used with obsolete switchdesk or with

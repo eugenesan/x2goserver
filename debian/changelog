@@ -15,6 +15,8 @@ x2goserver (4.0.1.19-0x2go1) UNRELEASED; urgency=medium
       build system (required for openSUSE/SLES builds).
     - Fix x2goserver-xsession/Makefile on SUSE. Detect SUSE distro and create
       Xsession related directory symlinks (xinitrc.d and Xclients.d).
+    - Trigger Xsession code for SUSE systems (look for /etc/SUSE-brand for
+      SUSE system recognition).
   * debian/control:
     + Add D (x2goserver): libfile-which-perl.
   * x2goserver.spec:
