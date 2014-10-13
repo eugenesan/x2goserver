@@ -413,7 +413,10 @@ exit 0
 %files
 %doc debian/copyright
 %doc debian/changelog
+%dir %{_sysconfdir}/logcheck
+%dir %{_sysconfdir}/logcheck/ignore.d.server
 %config(noreplace) %{_sysconfdir}/logcheck/ignore.d.server/x2goserver
+%dir %{_sysconfdir}/sudoers.d
 %config(noreplace) %{_sysconfdir}/sudoers.d/x2goserver
 %dir %{_sysconfdir}/x2go/
 %config(noreplace) %{_sysconfdir}/x2go/x2go*
@@ -445,6 +448,7 @@ exit 0
 %exclude %{_mandir}/man8/x2goserver-run-extensions.8*
 %exclude %{_mandir}/man8/x2gofm.8*
 %exclude %{_mandir}/man8/x2goprint.8*
+%dir %{_datadir}/x2go/
 %dir %{_datadir}/x2go/x2gofeature.d/
 %{_datadir}/x2go/x2gofeature.d/x2goserver.features
 %{_datadir}/x2go/versions/VERSION.x2goserver
