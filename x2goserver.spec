@@ -519,7 +519,9 @@ exit 0
 
 %files xsession
 %{_sysconfdir}/x2go/xinitrc.d
+%if 0%{?fedora} || 0%{?rhel}
 %{_sysconfdir}/x2go/Xclients.d
+%endif
 %{_sysconfdir}/x2go/Xresources
 %config(noreplace) %{_sysconfdir}/x2go/Xsession
 %{_datadir}/x2go/x2gofeature.d/x2goserver-xsession.features
