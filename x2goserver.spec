@@ -87,7 +87,7 @@ administrations.
 
 
 %package common
-Summiary:        X2Go Server (common files)
+Summary:        X2Go Server (common files)
 %if 0%{suse_version}
 Requires:       perl
 %else
