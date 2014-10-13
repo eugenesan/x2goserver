@@ -466,11 +466,13 @@ exit 0
 
 
 %files -n perl-X2Go-Log
+%dir %{perl_vendorlib}/X2Go
 %{perl_vendorlib}/X2Go/Log.pm
 %{_mandir}/man3/X2Go::Log.*
 
 
 %files -n perl-X2Go-Server
+%dir %{perl_vendorlib}/X2Go/Server
 %{perl_vendorlib}/X2Go/Config.pm
 %{perl_vendorlib}/X2Go/Server.pm
 %{perl_vendorlib}/X2Go/SupeReNicer.pm
