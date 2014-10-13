@@ -353,13 +353,13 @@ exit 0
 # Initialize the session database
 if [ ! -s %{_localstatedir}/x2go/x2go_sessions ]; then
   if [ -d %{_datadir}/doc/packages/perl-X2Go-Server-DB ]; then
-    if egrep "^backend=sqlite.*" /etc/x2go/x2gosql/sql >/dev/null 2>&1; then
+    if grep -E "^backend=sqlite.*" /etc/x2go/x2gosql/sql >/dev/null 2>&1; then
       %{_sbindir}/x2godbadmin --createdb >/dev/null 2>&1 || :
     fi
   fi
 fi
 
-if egrep "^backend=sqlite.*" /etc/x2go/x2gosql/sql 1>/dev/null 2>/dev/null; then
+if grep -E "^backend=sqlite.*" /etc/x2go/x2gosql/sql 1>/dev/null 2>/dev/null; then
   if [ ! -s %{_localstatedir}/x2go/x2go_sessions ]; then
     %{_sbindir}/x2godbadmin --createdb 1>/dev/null 2>/dev/null || :
     %{_sbindir}/x2godbadmin --updatedb 1>/dev/null 2>/dev/null || :
@@ -395,7 +395,7 @@ fi
 # Initialize the session database
 if [ ! -s %{_localstatedir}/x2go/x2go_sessions ]; then
   if [ -x %{_sbindir}/x2godbadmin ]; then
-    if egrep "^backend=sqlite.*" /etc/x2go/x2gosql/sql >/dev/null 2>&1; then
+    if grep -E "^backend=sqlite.*" /etc/x2go/x2gosql/sql >/dev/null 2>&1; then
       %{_sbindir}/x2godbadmin --createdb >/dev/null 2>&1 || :
     fi
   fi
