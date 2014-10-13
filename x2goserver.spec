@@ -426,8 +426,6 @@ exit 0
 %config(noreplace) %{_sysconfdir}/logcheck/ignore.d.server/x2goserver
 %dir %{_sysconfdir}/sudoers.d
 %config(noreplace) %{_sysconfdir}/sudoers.d/x2goserver
-%dir %{_sysconfdir}/x2go/
-%config(noreplace) %{_sysconfdir}/x2go/x2go*
 %{_bindir}/x2go*
 %exclude %{_bindir}/x2goserver-run-extensions
 %exclude %{_bindir}/x2gofm
