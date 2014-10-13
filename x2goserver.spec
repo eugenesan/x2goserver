@@ -39,7 +39,11 @@ Requires:       lsof
 # For netstat in x2goresume-session
 Requires:       net-tools
 Requires:       openssh-server
+%if 0%{suse_version}
+Requires:       perl
+%else
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+%endif
 # We need a database
 # For killall in x2gosuspend-session
 Requires:       psmisc
@@ -84,7 +88,11 @@ administrations.
 %package printing
 Summary:        X2Go Server (printing support)
 Requires:       %{name} = %{version}-%{release}
+%if 0%{suse_version}
+Requires:       perl
+%else
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+%endif
 Group:          Applications/Communications
 
 %description printing
