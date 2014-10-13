@@ -485,9 +485,8 @@ exit 0
 
 %files common
 %dir %{_sysconfdir}/x2go/
-%config(noreplace) %{_sysconfdir}/x2go/x2go*
 %dir %{_sysconfdir}/x2go/x2gosql
-%config(noreplace) %{_sysconfdir}/x2go/x2gosql/sql
+%config(noreplace) %{_sysconfdir}/x2go/x2go*
 %{_mandir}/man5/x2goserver.conf.5.gz
 %dir %{_datadir}/x2go/versions
 %{_datadir}/x2go/versions/VERSION.x2goserver-common
