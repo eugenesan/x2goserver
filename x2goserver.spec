@@ -311,10 +311,17 @@ rm -f %{buildroot}%{perl_vendorarch}/auto/x2goserver/.packlist
 # Remove placeholder files (in a way that works on EPEL-5, as well)
 find %{buildroot}%{_libdir}/x2go/extensions/ -type f -name ".placeholder" | while read file; do rm -f "$file"; done
 
+%if 0%{suse_version}
+# x2gouser homedir, state dir
+mkdir -p %{buildroot}%{_localstatedir}/x2go
+# Create empty session file for %%ghost
+touch %{buildroot}%{_localstatedir}/x2go/x2go_sessions
+%else
 # x2gouser homedir, state dir
 mkdir -p %{buildroot}%{_sharedstatedir}/x2go
 # Create empty session file for %%ghost
 touch %{buildroot}%{_sharedstatedir}/x2go/x2go_sessions
+%endif
 
 # Printing spool dir
 mkdir -p %{buildroot}%{_localstatedir}/spool/x2goprint
@@ -496,6 +503,11 @@ exit 0
 
 
 %files common
+%if 0%{suse_version}
+%dir %{_localstatedir}
+%else
+%dir %{_sharedstatedir}
+%endif
 %dir %{_sysconfdir}/x2go/
 %dir %{_sysconfdir}/x2go/x2gosql
 %config(noreplace) %{_sysconfdir}/x2go/x2go*
