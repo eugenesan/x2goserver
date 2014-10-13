@@ -351,6 +351,7 @@ exit 0
 %post
 # Initialize the session database
 [ ! -s %{_sharedstatedir}/x2go/x2go_sessions ] &&
+  [ -d %{_datadir}/doc/packages/perl-X2Go-Server-DB ] &&
   egrep "^backend=sqlite.*" /etc/x2go/x2gosql/sql >/dev/null 2>&1 &&
   %{_sbindir}/x2godbadmin --createdb >/dev/null 2>&1 || :
 
@@ -384,8 +385,9 @@ fi
 %post -n perl-X2Go-Server-DB
 # Initialize the session database
 [ ! -s %{_sharedstatedir}/x2go/x2go_sessions ] &&
+  [ -x %{_sbindir}/x2godbadmin ] &&
   egrep "^backend=sqlite.*" /etc/x2go/x2gosql/sql >/dev/null 2>&1 &&
-  %{_sbindir}/x2godbadmin --createdb >/dev/null 2>&1 || 
+  %{_sbindir}/x2godbadmin --createdb >/dev/null 2>&1 ||
 
 %post fmbindings
 /usr/bin/update-mime-database /usr/share/mime &>/dev/null || :
