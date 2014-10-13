@@ -27,7 +27,11 @@ BuildRequires:  systemd
 BuildRequires:  man
 %endif
 # So XSESSIONDIR gets linked
+%if 0%{suse_version}
+BuildRequires:  xinit
+%else
 BuildRequires:  xorg-x11-xinit
+%fi
 # For x2goruncommand - for now
 Requires:       bc
 # For x2goshowblocks
