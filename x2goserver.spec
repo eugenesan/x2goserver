@@ -110,6 +110,7 @@ Requires(postun): systemd
 %{?systemd_requires}
 %endif
 
+Requires:       perl-X2Go-Server = %{version}-%{release}
 Requires:       x2goserver-extensions
 Requires:       x2goserver-xsession
 #Recommands:       x2goserver-fmbindings
