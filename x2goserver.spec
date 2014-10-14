@@ -44,14 +44,15 @@ Requires:       bc
 Requires:       lsof
 # For netstat in x2goresume-session
 Requires:       net-tools
-Requires:       openssh-server
 %if 0%{?suse_version}
+Requires:       openssh
 %if 0%{?suse_version} < 1140
 Requires:     perl = %{perl_version}
 %else
 %{perl_requires}
 %endif
 %else
+Requires:       openssh-server
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 %endif
 Requires:       perl(Try::Tiny)
