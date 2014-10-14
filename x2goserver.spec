@@ -10,11 +10,13 @@ License:        GPLv2+
 Group:          Productivity/Networking/Remote Desktop
 License:        GPL-2.0+
 %endif
+
 URL:            http://www.x2go.org
 Source0:        http://code.x2go.org/releases/source/%{name}/%{name}-%{version}.tar.gz
 Source1:        %{name}.service
 Source2:        %{name}.init
 Source3:        %{name}-rpmlintrc
+
 %if 0%{?el5}
 # For compatibility with EPEL5
 BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
@@ -22,39 +24,55 @@ BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  perl(ExtUtils::MakeMaker)
+
 %if 0%{?fedora} || 0%{?rhel} >= 7
 BuildRequires:  man2html-core
 %else
 BuildRequires:  man
 %endif
+
 %if 0%{?fedora} || 0%{?rhel} >= 7 || 0%{?suse_version} >= 1210
 BuildRequires:  systemd
 %endif
+
 # for useradd/groupadd
-BuildRequires:  shadow
+%if 0%{?suse_version}
+BuildRequires:  pwdutils
+Requires(pre):  pwdutils
+%else
+BuildRequires:  shadow-utils
+Requires(pre):  shadow-utils
+%endif
+
 # So XSESSIONDIR gets linked
 %if 0%{?suse_version}
 BuildRequires:  xinit
 %else
 BuildRequires:  xorg-x11-xinit
 %endif
+
+%if 0%{?suse_version}
+Requires:       openssh
+%else
+Requires:       openssh-server
+%endif
+
+%if 0%{?suse_version}
+%if 0%{?suse_version} < 1140
+Requires:       perl = %{perl_version}
+%else
+%{perl_requires}
+%endif
+%else
+Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+%endif
+
 # For x2goruncommand - for now
 Requires:       bc
 # For x2goshowblocks
 Requires:       lsof
 # For netstat in x2goresume-session
 Requires:       net-tools
-%if 0%{?suse_version}
-Requires:       openssh
-%if 0%{?suse_version} < 1140
-Requires:     perl = %{perl_version}
-%else
-%{perl_requires}
-%endif
-%else
-Requires:       openssh-server
-Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
-%endif
 Requires:       perl(Try::Tiny)
 # We need a database
 # For killall in x2gosuspend-session
@@ -66,20 +84,32 @@ Requires:       sshfs
 # For /etc/sudoers.d
 Requires:       sudo
 Requires:       x2goagent >= 3.5.0.25
-Requires:       xorg-x11-fonts-misc
-Requires:       xorg-x11-xauth
-Requires:       perl(File::Which)
-Requires(pre):  shadow-utils
 Requires(post): grep
 Requires(post): perl(DBD::SQLite)
+Requires:       perl(File::Which)
+
+%if 0%{?suse_version}
+%if 0%{?suse_version} >= 1220
+Requires:       setxkbmap xmessage xwininfo
+%else
+Requires:       xorg-x11
+%endif
+%else
+Requires:       xorg-x11-fonts-misc
+Requires:       xorg-x11-xauth
+Requires:       which
+%endif
+
 %if 0%{?fedora} || 0%{?rhel} >= 7
 Requires(post): systemd
 Requires(preun): systemd
 Requires(postun): systemd
 %endif
+
 %if 0%{?suse_version} >= 1210
 %{?systemd_requires}
 %endif
+
 Requires:       x2goserver-extensions
 Requires:       x2goserver-xsession
 #Recommands:       x2goserver-fmbindings
