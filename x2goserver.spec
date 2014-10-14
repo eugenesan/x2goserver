@@ -444,6 +444,7 @@ getent passwd x2goprint >/dev/null || \
 exit 0
 
 %files
+%defattr(-,root,root)
 %doc debian/copyright
 %doc debian/changelog
 %dir %{_sysconfdir}/logcheck
@@ -500,12 +501,14 @@ exit 0
 %endif
 
 %files -n perl-X2Go-Log
+%defattr(-,root,root)
 %dir %{perl_vendorlib}/X2Go
 %{perl_vendorlib}/X2Go/Log.pm
 %{_mandir}/man3/X2Go::Log.*
 
 
 %files -n perl-X2Go-Server
+%defattr(-,root,root)
 %dir %{perl_vendorlib}/X2Go/Server
 %{perl_vendorlib}/X2Go/Config.pm
 %{perl_vendorlib}/X2Go/Server.pm
@@ -521,6 +524,7 @@ exit 0
 
 
 %files -n perl-X2Go-Server-DB
+%defattr(-,root,root)
 %dir %{_libdir}/x2go
 %{perl_vendorlib}/X2Go/Server/DB*
 %attr(2775,root,x2gouser) %{_libdir}/x2go/libx2go-server-db-sqlite3-wrapper
@@ -530,6 +534,7 @@ exit 0
 
 
 %files common
+%defattr(-,root,root)
 %dir %{_localstatedir}/lib/
 %dir %{_sysconfdir}/x2go/
 %dir %{_sysconfdir}/x2go/x2gosql
@@ -540,6 +545,7 @@ exit 0
 
 
 %files extensions
+%defattr(-,root,root)
 %{_libdir}/x2go/extensions
 %{_bindir}/x2goserver-run-extensions
 %{_datadir}/x2go/x2gofeature.d/x2goserver-extensions.features
@@ -548,6 +554,7 @@ exit 0
 
 
 %files fmbindings
+%defattr(-,root,root)
 %{_bindir}/x2gofm
 %{_datadir}/applications/x2gofm.desktop
 %{_datadir}/mime/packages/sshfs-x2go.xml
@@ -557,6 +564,7 @@ exit 0
 
 
 %files printing
+%defattr(-,root,root)
 %{_bindir}/x2goprint
 %{_datadir}/x2go/versions/VERSION.x2goserver-printing
 %{_datadir}/x2go/x2gofeature.d/x2goserver-printing.features
@@ -565,6 +573,7 @@ exit 0
 
 
 %files xsession
+%defattr(-,root,root)
 %{_sysconfdir}/x2go/xinitrc.d
 %if 0%{?fedora} || 0%{?rhel}
 %{_sysconfdir}/x2go/Xclients.d

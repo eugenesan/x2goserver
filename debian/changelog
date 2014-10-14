@@ -167,6 +167,7 @@ x2goserver (4.0.1.19-0x2go1) UNRELEASED; urgency=medium
     + For SUSE builds: Add to R: shadow (useradd, groupadd).
     + Replace historical "egrep" with "grep -E".
     + Systemd support for SUSE >= 12.10.
+    + Set %defattr macro for every bin:package.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 07 Oct 2014 15:35:38 +0200
 
