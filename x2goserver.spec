@@ -70,6 +70,9 @@ Requires(post): systemd
 Requires(preun): systemd
 Requires(postun): systemd
 %endif
+%if 0%{?suse_version} >= 1210
+%{?systemd_requires}
+%endif
 Requires:       x2goserver-extensions
 Requires:       x2goserver-xsession
 #Recommands:       x2goserver-fmbindings
@@ -373,13 +376,29 @@ if grep -E "^backend=sqlite.*" /etc/x2go/x2gosql/sql 1>/dev/null 2>/dev/null; th
 fi
 
 %if 0%{?fedora} || 0%{?rhel} >= 7 || 0%{?suse_version} >= 1210
+%if 0%{?fedora} || 0%{?rhel} >= 7
 %systemd_post x2goserver.service
+
+%pre
+%systemd_pre x2goserver.service
 
 %preun
 %systemd_preun x2goserver.service
 
 %postun
 %systemd_postun x2goserver.service
+%else
+%service_add_post x2goserver.service
+
+%pre
+%service_add_pre x2goserver.service
+
+%preun
+%service_add_preun x2goserver.service
+
+%postun
+%service_add_postun x2goserver.service
+%endif
 %else
 /sbin/chkconfig --add x2goserver
 /sbin/service x2goserver condrestart >/dev/null 2>&1 || :
