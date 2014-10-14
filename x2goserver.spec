@@ -3,7 +3,11 @@ Version:        4.1.0.0
 Release:        0.0x2go1%{?dist}
 Summary:        X2Go Server
 
+%if 0%{?fedora} || 0%{?rhel}
 Group:          Applications/Communications
+%else
+Group:          Productivity/Networking/Remote Desktop
+%endif
 License:        GPLv2+
 URL:            http://www.x2go.org
 Source0:        http://code.x2go.org/releases/source/%{name}/%{name}-%{version}.tar.gz
@@ -100,7 +104,11 @@ Requires:       perl
 %else
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 %endif
+%if 0%{?fedora} || 0%{?rhel}
 Group:          Applications/Communications
+%else
+Group:          Productivity/Networking/Remote Desktop
+%endif
 
 %description common
 X2Go is a server based computing environment with
@@ -125,7 +133,11 @@ Requires:       perl
 %else
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 %endif
+%if 0%{?fedora} || 0%{?rhel}
 Group:          Development/Libraries
+%else
+Group           Development/Libraries/Perl
+%endif
 
 %description -n perl-X2Go-Server
 X2Go is a server based computing environment with
@@ -150,7 +162,11 @@ Requires:       perl
 %else
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 %endif
+%if 0%{?fedora} || 0%{?rhel}
 Group:          Development/Libraries
+%else
+Group           Development/Libraries/Perl
+%endif
 
 %description -n perl-X2Go-Server-DB
 X2Go is a server based computing environment with
@@ -172,7 +188,11 @@ Requires:       perl
 %else
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 %endif
+%if 0%{?fedora} || 0%{?rhel}
 Group:          Development/Libraries
+%else
+Group           Development/Libraries/Perl
+%endif
 
 %description -n perl-X2Go-Log
 X2Go is a server based computing environment with
@@ -194,7 +214,11 @@ Requires:       perl
 %else
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 %endif
+%if 0%{?fedora} || 0%{?rhel}
 Group:          Applications/Communications
+%else
+Group:          Productivity/Networking/Remote Desktop
+%endif
 
 %description printing
 X2Go is a server based computing environment with
@@ -220,7 +244,11 @@ server).
 %package extensions
 Summary:        X2Go Server (extension support)
 Requires:       %{name} = %{version}-%{release}
+%if 0%{?fedora} || 0%{?rhel}
 Group:          Applications/Communications
+%else
+Group:          Productivity/Networking/Remote Desktop
+%endif
 
 %description extensions
 X2Go is a server based computing environment with
@@ -244,7 +272,11 @@ Summary:        X2Go Server (Xsession runner)
 Requires:       %{name} = %{version}-%{release}
 # For /etc/X11/Xresources
 Requires:       xorg-x11-xinit
+%if 0%{?fedora} || 0%{?rhel}
 Group:          Applications/Communications
+%else
+Group:          Productivity/Networking/Remote Desktop
+%endif
 
 %description xsession
  X2Go is a server based computing environment with
@@ -270,7 +302,11 @@ Requires:       xdg-utils
 Requires:       desktop-file-utils
 Requires(post):   desktop-file-utils
 Requires(postun): desktop-file-utils
+%if 0%{?fedora} || 0%{?rhel}
 Group:          Applications/Communications
+%else
+Group:          Productivity/Networking/Remote Desktop
+%endif
 
 %description fmbindings
 X2Go is a server based computing environment with
