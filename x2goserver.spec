@@ -195,6 +195,7 @@ This package contains the X2Go::Server::DB Perl package.
 
 %package -n perl-X2Go-Log
 Summary:        Perl X2Go::Log package
+PreReq:         permissions
 Requires:       x2goserver-common = %{version}-%{release}
 %if 0%{?suse_version}
 %if 0%{?suse_version} < 1140
@@ -482,6 +483,15 @@ if [ ! -s %{_localstatedir}/lib/x2go/x2go_sessions ]; then
   fi
 fi
 
+%if 0%{?suse_version}
+%set_permissions %{_libdir}/x2go/libx2go-server-db-sqlite3-wrapper
+
+
+%verifyscript -n perl-X2Go-Server-DB
+%verify_permissions %{_libdir}/x2go/libx2go-server-db-sqlite3-wrapper
+%endif
+
+
 %post fmbindings
 /usr/bin/update-mime-database /usr/share/mime &>/dev/null || :
 /usr/bin/update-desktop-database &>/dev/null || :
@@ -540,8 +550,6 @@ exit 0
 %dir %{_datadir}/x2go/x2gofeature.d/
 %{_datadir}/x2go/x2gofeature.d/x2goserver.features
 %{_datadir}/x2go/versions/VERSION.x2goserver
-%dir %{_localstatedir}/lib
-%attr(0775,root,x2gouser) %dir %{_localstatedir}/lib/x2go/
 %ghost %attr(0660,root,x2gouser) %{_localstatedir}/lib/x2go/x2go_sessions
 %if 0%{?fedora} || 0%{?rhel} >= 7 || 0%{?suse_version} >= 1210
 %{_unitdir}/x2goserver.service
@@ -591,7 +599,7 @@ exit 0
 
 %files common
 %defattr(-,root,root)
-%dir %{_localstatedir}/lib/
+%attr(0775,root,x2gouser) %dir %{_localstatedir}/lib/x2go/
 %dir %{_sysconfdir}/x2go/
 %dir %{_sysconfdir}/x2go/x2gosql
 %config(noreplace) %{_sysconfdir}/x2go/x2go*
