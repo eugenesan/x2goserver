@@ -468,8 +468,7 @@ if [ ! -s %{_localstatedir}/lib/x2go/x2go_sessions ]; then
 fi
 
 if grep -E "^backend=sqlite.*" /etc/x2go/x2gosql/sql 1>/dev/null 2>/dev/null; then
-  if [ ! -s %{_localstatedir}/lib/x2go/x2go_sessions ]; then
-    %{_sbindir}/x2godbadmin --createdb 1>/dev/null 2>/dev/null || :
+  if [ -s %{_localstatedir}/lib/x2go/x2go_sessions ]; then
     %{_sbindir}/x2godbadmin --updatedb 1>/dev/null 2>/dev/null || :
   fi
 fi

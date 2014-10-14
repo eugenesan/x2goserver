@@ -104,6 +104,7 @@ x2goserver (4.1.0.0-0x2go1.1) UNRELEASED; urgency=low
     + Make sure X2Go session DB files get updated during postinst.
     + Require Perl(Switch) (bin:package x2goserver).
     + Don't fail in %post during X2Go session DB creation.
+    + Fix call of x2godbadmin --updatedb during package upgrade.
 
   [ Guangzhou Nianguan Electronics Technology Co.Ltd. ]
   * New upstream version (4.1.0.0):
