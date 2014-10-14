@@ -1,8 +1,11 @@
 setBadness("permissions-unauthorized-file", 0);
+setBadness("permissions-file-setuid-bit", 0);
 addFilter("non-standard-group");
 
 addFilter("non-standard-uid /var/spool/x2goprint x2goprint");
 addFilter("non-standard-gid /usr/bin/x2goprint x2goprint");
-addFilter("non-standard-gid /usr/lib64/x2go/libx2go-server-db-sqlite3-wrapper x2gouser");
+addFilter("non-standard-gid /usr/lib/x2go/libx2go-server-db-sqlite3-wrapper x2gouser");
 addFilter("non-standard-gid /var/lib/x2go x2gouser");
 addFilter("non-standard-gid /var/spool/x2goprint x2goprint");
+
+addFilter("filename-too-long-for-joliet" *);
