@@ -326,7 +326,7 @@ without lack of features.
 Summary:        X2Go Server (Xsession runner)
 Requires:       %{name} = %{version}-%{release}
 # For /etc/X11/Xresources
-%if 0%{suse_version}
+%if 0%{?suse_version}
 Requires:       xinit
 %else
 Requires:       xorg-x11-xinit
