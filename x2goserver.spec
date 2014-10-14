@@ -319,9 +319,9 @@ rm -f %{buildroot}%{perl_vendorarch}/auto/x2goserver/.packlist
 find %{buildroot}%{_libdir}/x2go/extensions/ -type f -name ".placeholder" | while read file; do rm -f "$file"; done
 
 # x2gouser homedir, state dir
-mkdir -p %{buildroot}%{_localstatedir}/x2go
+mkdir -p %{buildroot}%{_localstatedir}/lib/x2go/
 # Create empty session file for %%ghost
-touch %{buildroot}%{_localstatedir}/x2go/x2go_sessions
+touch %{buildroot}%{_localstatedir}/lib/x2go/x2go_sessions
 
 # Printing spool dir
 mkdir -p %{buildroot}%{_localstatedir}/spool/x2goprint
@@ -360,7 +360,7 @@ exit 0
 
 %post
 # Initialize the session database
-if [ ! -s %{_localstatedir}/x2go/x2go_sessions ]; then
+if [ ! -s %{_localstatedir}/lib/x2go/x2go_sessions ]; then
   if [ -d %{_datadir}/doc/packages/perl-X2Go-Server-DB ]; then
     if grep -E "^backend=sqlite.*" /etc/x2go/x2gosql/sql >/dev/null 2>&1; then
       %{_sbindir}/x2godbadmin --createdb >/dev/null 2>&1 || :
@@ -369,7 +369,7 @@ if [ ! -s %{_localstatedir}/x2go/x2go_sessions ]; then
 fi
 
 if grep -E "^backend=sqlite.*" /etc/x2go/x2gosql/sql 1>/dev/null 2>/dev/null; then
-  if [ ! -s %{_localstatedir}/x2go/x2go_sessions ]; then
+  if [ ! -s %{_localstatedir}/lib/x2go/x2go_sessions ]; then
     %{_sbindir}/x2godbadmin --createdb 1>/dev/null 2>/dev/null || :
     %{_sbindir}/x2godbadmin --updatedb 1>/dev/null 2>/dev/null || :
   fi
@@ -394,10 +394,10 @@ fi
 %service_add_pre x2goserver.service
 
 %preun
-%service_add_preun x2goserver.service
+%service_del_preun x2goserver.service
 
 %postun
-%service_add_postun x2goserver.service
+%service_del_postun x2goserver.service
 %endif
 %else
 /sbin/chkconfig --add x2goserver
@@ -418,7 +418,7 @@ fi
 
 %post -n perl-X2Go-Server-DB
 # Initialize the session database
-if [ ! -s %{_localstatedir}/x2go/x2go_sessions ]; then
+if [ ! -s %{_localstatedir}/lib/x2go/x2go_sessions ]; then
   if [ -x %{_sbindir}/x2godbadmin ]; then
     if grep -E "^backend=sqlite.*" /etc/x2go/x2gosql/sql >/dev/null 2>&1; then
       %{_sbindir}/x2godbadmin --createdb >/dev/null 2>&1 || :
@@ -483,9 +483,9 @@ exit 0
 %dir %{_datadir}/x2go/x2gofeature.d/
 %{_datadir}/x2go/x2gofeature.d/x2goserver.features
 %{_datadir}/x2go/versions/VERSION.x2goserver
-%dir %{_localstatedir}
-%attr(0775,root,x2gouser) %dir %{_localstatedir}/x2go/
-%ghost %attr(0660,root,x2gouser) %{_localstatedir}/x2go/x2go_sessions
+%dir %{_localstatedir}/lib
+%attr(0775,root,x2gouser) %dir %{_localstatedir}/lib/x2go/
+%ghost %attr(0660,root,x2gouser) %{_localstatedir}/lib/x2go/x2go_sessions
 %if 0%{?fedora} || 0%{?rhel} >= 7 || 0%{?suse_version} >= 1210
 %{_unitdir}/x2goserver.service
 %else
@@ -530,7 +530,7 @@ exit 0
 
 
 %files common
-%dir %{_localstatedir}
+%dir %{_localstatedir}/lib/
 %dir %{_sysconfdir}/x2go/
 %dir %{_sysconfdir}/x2go/x2gosql
 %config(noreplace) %{_sysconfdir}/x2go/x2go*
