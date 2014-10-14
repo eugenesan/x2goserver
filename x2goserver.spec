@@ -5,16 +5,13 @@ Summary:        X2Go Server
 
 %if 0%{?fedora} || 0%{?rhel}
 Group:          Applications/Communications
+License:        GPLv2+
 %else
 Group:          Productivity/Networking/Remote Desktop
+License:        GPL-2.0+
 %endif
-License:        GPLv2+
 URL:            http://www.x2go.org
 Source0:        http://code.x2go.org/releases/source/%{name}/%{name}-%{version}.tar.gz
-# git clone git://code.x2go.org/x2goserver
-# cd x2goserver
-# git archive --prefix=x2goserver-4.1.0.0-20140722git65169c9/ 65169c9d65b117802e50631be0bbd719163d969e | gzip > ../x2goserver-4.1.0.0-20140722git65169c9.tar.gz
-#Source0:        %{name}/%{name}-%{version}-%{checkout}.tar.gz
 Source1:        x2goserver.service
 Source2:        x2goserver.init
 %if 0%{?el5}
@@ -48,7 +45,11 @@ Requires:       lsof
 Requires:       net-tools
 Requires:       openssh-server
 %if 0%{?suse_version}
-Requires:       perl
+%if 0%{?suse_version} < 1140
+Requires:     perl = %{perl_version}
+%else
+%{perl_requires}
+%endif
 %else
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 %endif
@@ -100,7 +101,11 @@ administrations.
 %package common
 Summary:        X2Go Server (common files)
 %if 0%{?suse_version}
-Requires:       perl
+%if 0%{?suse_version} < 1140
+Requires:       perl = %{perl_version}
+%else
+%{perl_requires}
+%endif
 %else
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 %endif
@@ -129,7 +134,11 @@ Requires:       x2goserver-common = %{version}-%{release}
 Requires:       perl-X2Go-Log = %{version}-%{release}
 Requires:       perl-X2Go-Server-DB = %{version}-%{release}
 %if 0%{?suse_version}
-Requires:       perl
+%if 0%{?suse_version} < 1140
+Requires:       perl = %{perl_version}
+%else
+%{perl_requires}
+%endif
 %else
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 %endif
@@ -158,7 +167,11 @@ Requires:       perl-X2Go-Log = %{version}-%{release}
 Requires:       perl(DBD::SQLite)
 Requires:       perl(DBD::Pg)
 %if 0%{?suse_version}
-Requires:       perl
+%if 0%{?suse_version} < 1140
+Requires:       perl = %{perl_version}
+%else
+%{perl_requires}
+%endif
 %else
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 %endif
@@ -184,7 +197,11 @@ This package contains the X2Go::Server::DB Perl package.
 Summary:        Perl X2Go::Log package
 Requires:       x2goserver-common = %{version}-%{release}
 %if 0%{?suse_version}
-Requires:       perl
+%if 0%{?suse_version} < 1140
+Requires:       perl = %{perl_version}
+%else
+%{perl_requires}
+%endif
 %else
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 %endif
@@ -210,7 +227,11 @@ This package contains the X2Go::Log Perl package.
 Summary:        X2Go Server (printing support)
 Requires:       %{name} = %{version}-%{release}
 %if 0%{?suse_version}
-Requires:       perl
+%if 0%{?suse_version} < 1140
+Requires:       perl = %{perl_version}
+%else
+%{perl_requires}
+%endif
 %else
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 %endif
@@ -334,7 +355,6 @@ corresponding desktop shell:
 %setup -q
 
 # Set path
-#find -type f | xargs sed -i -r -e '/^((LIBDIR|X2GO_LIB_PATH)=|use lib|my \$x2go_lib_path)/s,/lib/,/%{_lib}/,'
 find -type f | xargs sed -i -r -e '/^LIBDIR=/s,/lib/,/%{_lib}/,'
 sed -i -e 's,/lib/,/%{_lib}/,' x2goserver/bin/x2gopath
 # Don't try to be root
@@ -348,7 +368,7 @@ make CFLAGS="%{optflags} -fPIC" %{?_smp_mflags} PERL_INSTALLDIRS=vendor PREFIX=%
 %install
 make install DESTDIR=%{buildroot} PREFIX=%{_prefix}
 
-# Make sure the .packlist file is removed from %{perl_vendorarch}...
+# Make sure the .packlist file is removed from %%{perl_vendorarch}...
 rm -f %{buildroot}%{perl_vendorarch}/auto/x2goserver/.packlist
 
 # Remove placeholder files (in a way that works on EPEL-5, as well)
