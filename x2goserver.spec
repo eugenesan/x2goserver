@@ -145,7 +145,7 @@ Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $versi
 %if 0%{?fedora} || 0%{?rhel}
 Group:          Development/Libraries
 %else
-Group           Development/Libraries/Perl
+Group:           Development/Libraries/Perl
 %endif
 
 %description -n perl-X2Go-Server
@@ -178,7 +178,7 @@ Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $versi
 %if 0%{?fedora} || 0%{?rhel}
 Group:          Development/Libraries
 %else
-Group           Development/Libraries/Perl
+Group:          Development/Libraries/Perl
 %endif
 
 %description -n perl-X2Go-Server-DB
@@ -208,7 +208,7 @@ Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $versi
 %if 0%{?fedora} || 0%{?rhel}
 Group:          Development/Libraries
 %else
-Group           Development/Libraries/Perl
+Group:          Development/Libraries/Perl
 %endif
 
 %description -n perl-X2Go-Log
