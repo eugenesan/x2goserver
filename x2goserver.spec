@@ -196,7 +196,7 @@ This package contains the X2Go::Server::DB Perl package.
 
 %package -n perl-X2Go-Log
 Summary:        Perl X2Go::Log package
-PreReq:         permissions
+Requires(pre):         permissions
 Requires:       x2goserver-common = %{version}-%{release}
 %if 0%{?suse_version}
 %if 0%{?suse_version} < 1140
