@@ -339,6 +339,7 @@ install -pm0755 %SOURCE2 %{buildroot}%{_initddir}/x2goserver
 %if 0%{?suse_version} < 1210
 ln -sf %{_initddir}/x2goserver %{buildroot}%{_sbindir}/rcx2goserver
 %endif
+%endif
 
 %if 0%{?el5}
 echo "Encoding=UTF-8" >> %{buildroot}%{_datadir}/applications/x2gofm.desktop
