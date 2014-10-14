@@ -22,14 +22,17 @@ BuildRequires:  desktop-file-utils
 BuildRequires:  perl(ExtUtils::MakeMaker)
 %if 0%{?fedora} || 0%{?rhel} >= 7
 BuildRequires:  man2html-core
-BuildRequires:  systemd
 %else
 BuildRequires:  man
 %endif
-# So XSESSIONDIR gets linked
-%if 0%{suse_version}
-BuildRequires:  xinit
+%if 0%{?fedora} || 0%{?rhel} >= 7 || 0%{?suse_version} >= 1210
+BuildRequires:  systemd
+%endif
+# for useradd/groupadd
 BuildRequires:  shadow
+# So XSESSIONDIR gets linked
+%if 0%{?suse_version}
+BuildRequires:  xinit
 %else
 BuildRequires:  xorg-x11-xinit
 %endif
@@ -40,7 +43,7 @@ Requires:       lsof
 # For netstat in x2goresume-session
 Requires:       net-tools
 Requires:       openssh-server
-%if 0%{suse_version}
+%if 0%{?suse_version}
 Requires:       perl
 %else
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
@@ -89,7 +92,7 @@ administrations.
 
 %package common
 Summary:        X2Go Server (common files)
-%if 0%{suse_version}
+%if 0%{?suse_version}
 Requires:       perl
 %else
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
@@ -114,7 +117,7 @@ Summary:        Perl X2Go::Server package
 Requires:       x2goserver-common = %{version}-%{release}
 Requires:       perl-X2Go-Log = %{version}-%{release}
 Requires:       perl-X2Go-Server-DB = %{version}-%{release}
-%if 0%{suse_version}
+%if 0%{?suse_version}
 Requires:       perl
 %else
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
@@ -139,7 +142,7 @@ Requires:       x2goserver-common = %{version}-%{release}
 Requires:       perl-X2Go-Log = %{version}-%{release}
 Requires:       perl(DBD::SQLite)
 Requires:       perl(DBD::Pg)
-%if 0%{suse_version}
+%if 0%{?suse_version}
 Requires:       perl
 %else
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
@@ -161,7 +164,7 @@ This package contains the X2Go::Server::DB Perl package.
 %package -n perl-X2Go-Log
 Summary:        Perl X2Go::Log package
 Requires:       x2goserver-common = %{version}-%{release}
-%if 0%{suse_version}
+%if 0%{?suse_version}
 Requires:       perl
 %else
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
@@ -183,7 +186,7 @@ This package contains the X2Go::Log Perl package.
 %package printing
 Summary:        X2Go Server (printing support)
 Requires:       %{name} = %{version}-%{release}
-%if 0%{suse_version}
+%if 0%{?suse_version}
 Requires:       perl
 %else
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
@@ -320,7 +323,7 @@ touch %{buildroot}%{_localstatedir}/x2go/x2go_sessions
 # Printing spool dir
 mkdir -p %{buildroot}%{_localstatedir}/spool/x2goprint
 
-%if 0%{?fedora} || 0%{?rhel} >= 7
+%if 0%{?fedora} || 0%{?rhel} >= 7 || 0%{?suse_version} >= 1210
 # System.d session cleanup script
 mkdir -p %{buildroot}%{_unitdir}
 install -pm0644 %SOURCE1 %{buildroot}%{_unitdir}
@@ -333,6 +336,8 @@ install -pm0755 %SOURCE2 %{buildroot}%{_initrddir}/x2goserver
 mkdir -p %{buildroot}%{_initddir}
 install -pm0755 %SOURCE2 %{buildroot}%{_initddir}/x2goserver
 %endif
+%if 0%{?suse_version}
+ln -sf %{_initddir}/x2goserver %{buildroot}%{_sbindir}/rcx2goserver
 %endif
 
 %if 0%{?el5}
@@ -366,7 +371,7 @@ if grep -E "^backend=sqlite.*" /etc/x2go/x2gosql/sql 1>/dev/null 2>/dev/null; th
   fi
 fi
 
-%if 0%{?fedora} || 0%{?rhel} >= 7
+%if 0%{?fedora} || 0%{?rhel} >= 7 || 0%{?suse_version} >= 1210
 %systemd_post x2goserver.service
 
 %preun
@@ -461,7 +466,7 @@ exit 0
 %dir %{_localstatedir}
 %attr(0775,root,x2gouser) %dir %{_localstatedir}/x2go/
 %ghost %attr(0660,root,x2gouser) %{_localstatedir}/x2go/x2go_sessions
-%if 0%{?fedora} || 0%{?rhel} >= 7
+%if 0%{?fedora} || 0%{?rhel} >= 7 || 0%{?suse_version} >= 1210
 %{_unitdir}/x2goserver.service
 %else
 %if 0%{?el5}
@@ -469,6 +474,8 @@ exit 0
 %else
 %{_initddir}/x2goserver
 %endif
+%if 0%{?suse_version}
+%{_sbindir}/rcx2goserver
 %endif
 
 
