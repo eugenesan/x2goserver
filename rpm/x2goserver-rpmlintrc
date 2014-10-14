@@ -8,4 +8,4 @@ addFilter("non-standard-gid /usr/lib/x2go/libx2go-server-db-sqlite3-wrapper x2go
 addFilter("non-standard-gid /var/lib/x2go x2gouser");
 addFilter("non-standard-gid /var/spool/x2goprint x2goprint");
 
-addFilter("filename-too-long-for-joliet" *);
+addFilter("filename-too-long-for-joliet *");
