@@ -88,6 +88,9 @@ Requires(post): grep
 Requires(post): perl(DBD::SQLite)
 Requires:       perl(File::Which)
 
+Requires:       perl(Config::Simple)
+Requires:       perl(Switch)
+
 %if 0%{?suse_version}
 %if 0%{?suse_version} >= 1220
 Requires:       setxkbmap xmessage xwininfo
@@ -175,6 +178,7 @@ Requires:       perl = %{perl_version}
 %else
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 %endif
+Requires:       perl(Capture::Tiny)
 %if 0%{?fedora} || 0%{?rhel}
 Group:          Development/Libraries
 %else
@@ -197,6 +201,7 @@ This package contains the X2Go::Server Perl package.
 Summary:        Perl X2Go::Server::DB package
 Requires:       x2goserver-common = %{version}-%{release}
 Requires:       perl-X2Go-Log = %{version}-%{release}
+Requires:       perl(Config::Simple)
 Requires:       perl(DBD::SQLite)
 Requires:       perl(DBD::Pg)
 %if 0%{?suse_version}
