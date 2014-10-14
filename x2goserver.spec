@@ -438,7 +438,7 @@ install -pm0755 %SOURCE2 %{buildroot}%{_initrddir}/x2goserver
 mkdir -p %{buildroot}%{_initddir}
 install -pm0755 %SOURCE2 %{buildroot}%{_initddir}/x2goserver
 %endif
-%if 0%{?suse_version} < 1210
+%if 0%{?suse_version} && 0%{?suse_version} < 1210
 ln -sf %{_initddir}/x2goserver %{buildroot}%{_sbindir}/rcx2goserver
 %endif
 %endif
