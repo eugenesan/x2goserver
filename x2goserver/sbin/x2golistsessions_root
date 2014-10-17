@@ -25,7 +25,7 @@ use Sys::Syslog qw( :standard :macros );
 
 use X2Go::Log qw(loglevel);
 use X2Go::Utils qw(system_capture_stdout_output);
-use X2Go::Server::Agent qw(session_is_suspended);
+use X2Go::Server::Agent qw(session_is_suspended has_agent_state_file);
 my $x2go_lib_path = system_capture_stdout_output("x2gopath", "libexec");
 
 openlog($0,'cons,pid','user');
@@ -51,7 +51,7 @@ for (my $i=0;$i<@outp;$i++)
 	{
 		print "@outp[$i]\n";
 	}
-	else
+	else if (has_agent_state_file(@sinfo[1],@sinfo[11]))
 	{ 
 		if (@sinfo[4]eq 'R')
 		{
