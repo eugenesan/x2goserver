@@ -26,6 +26,13 @@ x2goserver (4.0.1.19-0x2go1) UNRELEASED; urgency=medium
     - x2gocleansessions: Call x2gormforward also on terminated sessions. This
       will make sure that re-assigned ports are really available on new session
       startup.
+    - x2golistsessions(_root): Only update session state in session DB if
+      x2goagent's state file really exists. This addresses a problem that occurs
+      when x2golistsessions gets called via an x2gobroker-agent. The
+      x2golistsessions script may show session states (--all-servers) of
+      sessions on other servers that have session states files on their remote
+      /tmp dirs. These files are not accessible for that x2golistsessions script
+      and should simply be ignored. (Fixes: #638).
   * debian/control:
     + Add D (x2goserver): libfile-which-perl.
   * x2goserver.spec:

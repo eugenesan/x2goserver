@@ -41,6 +41,18 @@ sub is_suspended
 	return 0;
 }
 
+sub has_agent_state_file
+{
+	my $sess=@_[0];
+	my $user=@_[1];
+	my $stateFile = "/tmp/.x2go-".$user."/C-".$sess."/state";
+	if ( -e $stateFile )
+	{
+		return 1;
+	}
+	return 0;
+}
+
 sub get_agent_state
 {
 	my $sess=@_[0];
@@ -83,7 +95,7 @@ for (my $i=0;$i<@outp;$i++)
 	{
 		print "@outp[$i]\n";
 	}
-	else
+	else if (has_agent_state_file(@sinfo[1],@sinfo[11]))
 	{ 
 		if (@sinfo[4]eq 'R')
 		{
