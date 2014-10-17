@@ -153,6 +153,7 @@ x2goserver (4.0.1.19-0x2go1) UNRELEASED; urgency=medium
       SUSE system recognition).
     - x2gosqlitewrapper.c: Fix rpmlint error: no-return-in-nonvoid-function.
       Return the exitcode of execve().
+    - Fix gramma in error message (in x2goresume-session).
   * debian/control:
     + Add D (x2goserver): libfile-which-perl.
   * x2goserver.spec:

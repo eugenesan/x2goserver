@@ -84,7 +84,7 @@ do
 	i=$(($i+1))
 	if [ $i -gt 45 ]
 	then
-		echo "Error: taking too long to suspend session. Possible session is damaged"
+		echo "Error: taking too long to suspend session. It is possible that the session is damaged."
 		exit -1;
 	fi
 	STATE=`$X2GO_LIB_PATH/x2gogetagentstate "$SESSION_NAME"`
