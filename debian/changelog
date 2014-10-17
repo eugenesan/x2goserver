@@ -23,6 +23,9 @@ x2goserver (4.0.1.19-0x2go1) UNRELEASED; urgency=medium
     - x2gosqlitewrapper.c: Fix rpmlint error: no-return-in-nonvoid-function.
       Return the exitcode of execve().
     - Fix gramma in error message (in x2goresume-session).
+    - x2gocleansessions: Call x2gormforward also on terminated sessions. This
+      will make sure that re-assigned ports are really available on new session
+      startup.
   * debian/control:
     + Add D (x2goserver): libfile-which-perl.
   * x2goserver.spec:

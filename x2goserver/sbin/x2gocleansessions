@@ -213,6 +213,8 @@ elsif ($pid == 0 )
 				}
 				syslog('debug', "@sinfo[1]: unmounting all shares");
 				system( "su", "@sinfo[11]", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");
+				#remove port forwarding
+				system("su", "@sinfo[11]", "-c", "$x2go_lib_path/x2gormforward @sinfo[1]");
 			}
 			elsif (! check_pid (@sinfo[0],@sinfo[1],@sinfo[12]))
 			{
@@ -265,6 +267,8 @@ elsif ($pid == 0 )
 						system("su", "@sinfo[11]", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");
 						system("su", "@sinfo[11]", "-c", "x2goterminate-session @sinfo[1]");
 						syslog('debug', "@sinfo[1] has been requested for termination via the session DB");
+						#remove port forwarding
+						system("su", "@sinfo[11]", "-c", "$x2go_lib_path/x2gormforward @sinfo[1]");
 					}
 				}
 			}
