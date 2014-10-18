@@ -95,7 +95,7 @@ for (my $i=0;$i<@outp;$i++)
 	{
 		print "@outp[$i]\n";
 	}
-	else if (has_agent_state_file(@sinfo[1],@sinfo[11]))
+	elsif (has_agent_state_file(@sinfo[1],@sinfo[11]))
 	{ 
 		if (@sinfo[4]eq 'R')
 		{
