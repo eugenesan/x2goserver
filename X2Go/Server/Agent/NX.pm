@@ -73,8 +73,8 @@ sub session_is_running
 
 sub has_agent_state_file
 {
-	my $sess=@_[0];
-	my $user=@_[1];
+	my $sess=@_[1];
+	my $user=@_[2];
 	my $stateFile = "/tmp/.x2go-".$user."/C-".$sess."/state";
 	if ( -e $stateFile )
 	{
