@@ -81,6 +81,8 @@ sub has_agent_state_file
 
 sub get_agent_state
 {
+	my $sess=@_[0];
+	my $user=@_[1];
 	my $state;
 	my $stateFile = "/tmp/.x2go-".$user."/C-".$sess."/state";
 	if (! -e $stateFile )
