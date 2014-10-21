@@ -45,7 +45,11 @@ sub has_agent_state_file
 {
 	my $sess=@_[0];
 	my $user=@_[1];
-	my $stateFile = "/tmp/.x2go-".$user."/C-".$sess."/state";
+	if ( -d "/tmp-inst/${user}/.x2go-${user}" ) {
+		$stateFile="/tmp-inst/${user}/.x2go-".$user."/C-".$sess."/state";
+	} else {
+		$stateFile = "/tmp/.x2go-".$user."/C-".$sess."/state";
+	}
 	if ( -e $stateFile )
 	{
 		return 1;

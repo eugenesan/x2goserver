@@ -33,6 +33,7 @@ x2goserver (4.0.1.19-0x2go1) UNRELEASED; urgency=medium
       sessions on other servers that have session states files on their remote
       /tmp dirs. These files are not accessible for that x2golistsessions script
       and should simply be ignored. (Fixes: #638).
+    - Provide pam_namespace support for has_agent_state_file() function.
   * debian/control:
     + Add D (x2goserver): libfile-which-perl.
   * x2goserver.spec:
