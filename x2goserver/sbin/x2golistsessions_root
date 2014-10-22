@@ -47,18 +47,18 @@ my @outp=split("\n","$outp");
 for (my $i=0;$i<@outp;$i++)
 {
 	my @sinfo=split('\\|',"@outp[$i]");
-	if (@sinfo[4]eq 'F')
-	{
+	if (@sinfo[4]eq 'F') {
 		print "@outp[$i]\n";
-	}
-	elsif (has_agent_state_file(@sinfo[1],@sinfo[11]))
-	{ 
-		if (@sinfo[4]eq 'R')
+	} else {
+		if (has_agent_state_file(@sinfo[1],@sinfo[11]))
 		{
-			if (session_is_suspended(@sinfo[1],@sinfo[11]))
+			if (@sinfo[4]eq 'R')
 			{
-				system("su", "-", "@sinfo[11]", "-c", "$x2go_lib_path/x2gochangestatus 'S' @sinfo[1] > /dev/null");
-				@outp[$i] =~ s/\|R\|/\|S\|/;
+				if (is_suspended(@sinfo[1],@sinfo[11]))
+				{
+					system("su", "-", "@sinfo[11]", "-c", "$x2go_lib_path/x2gochangestatus 'S' @sinfo[1] > /dev/null");
+					@outp[$i] =~ s/\|R\|/\|S\|/;
+				}
 			}
 		}
 		print "@outp[$i]\n";

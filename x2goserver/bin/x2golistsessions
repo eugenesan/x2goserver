@@ -66,28 +66,28 @@ for (my $i=0;$i<@outp;$i++)
 	@outp[$i] =~ s/ //g;
 	@outp[$i] =~ s/\*/ /g;
 	my @sinfo=split('\\|',"@outp[$i]");
-	if (@sinfo[4]eq 'F')
-	{
+	if (@sinfo[4]eq 'F') {
 		print "@outp[$i]\n";
-	}
-	elsif (has_agent_state_file(@sinfo[1], @sinfo[11]))
-	{ 
-		if (@sinfo[4]eq 'R')
+	} else {
+		if (has_agent_state_file(@sinfo[1], @sinfo[11]))
 		{
-			if(session_is_suspended(@sinfo[1], @sinfo[11]))
+			if (@sinfo[4]eq 'R')
 			{
-				db_changestatus( 'S', @sinfo[1] );
-				@outp[$i] =~ s/\|R\|/\|S\|/;
-				system("x2goumount-session", "@sinfo[1]");
-				system("$x2go_lib_path/x2gormforward", "@sinfo[1]");
+				if(is_suspended(@sinfo[1], @sinfo[11]))
+				{
+					db_changestatus( 'S', @sinfo[1]);
+					@outp[$i] =~ s/\|R\|/\|S\|/;
+					system("x2goumount-session", "@sinfo[1]");
+					system("$x2go_lib_path/x2gormforward", "@sinfo[1]");
+				}
 			}
-		}
-		elsif (@sinfo[4]eq 'S')
-		{
-			if(session_is_running(@sinfo[1], @sinfo[11]))
+			elsif (@sinfo[4]eq 'S')
 			{
-				db_changestatus( 'R', @sinfo[1] );
-				@outp[$i] =~ s/\|S\|/\|R\|/;
+				if(is_running(@sinfo[1], @sinfo[11]))
+				{
+					db_changestatus( 'R', @sinfo[1] );
+					@outp[$i] =~ s/\|S\|/\|R\|/;
+				}
 			}
 		}
 		print "@outp[$i]\n";
