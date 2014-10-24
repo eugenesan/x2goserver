@@ -73,7 +73,7 @@ for (my $i=0;$i<@outp;$i++)
 		{
 			if (@sinfo[4]eq 'R')
 			{
-				if(is_suspended(@sinfo[1], @sinfo[11]))
+				if(session_is_suspended(@sinfo[1], @sinfo[11]))
 				{
 					db_changestatus( 'S', @sinfo[1]);
 					@outp[$i] =~ s/\|R\|/\|S\|/;
@@ -83,7 +83,7 @@ for (my $i=0;$i<@outp;$i++)
 			}
 			elsif (@sinfo[4]eq 'S')
 			{
-				if(is_running(@sinfo[1], @sinfo[11]))
+				if(session_is_running(@sinfo[1], @sinfo[11]))
 				{
 					db_changestatus( 'R', @sinfo[1] );
 					@outp[$i] =~ s/\|S\|/\|R\|/;
