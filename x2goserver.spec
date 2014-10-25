@@ -205,6 +205,7 @@ Requires:       perl(Config::Simple)
 Requires:       perl(DBD::SQLite)
 Requires:       perl(DBD::Pg)
 %if 0%{?suse_version}
+Requires(pre):  permissions
 %if 0%{?suse_version} < 1140
 Requires:       perl = %{perl_version}
 %else
@@ -233,7 +234,6 @@ This package contains the X2Go::Server::DB Perl package.
 
 %package -n perl-X2Go-Log
 Summary:        Perl X2Go::Log package
-Requires(pre):         permissions
 Requires:       x2goserver-common = %{version}-%{release}
 %if 0%{?suse_version}
 %if 0%{?suse_version} < 1140
