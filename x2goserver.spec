@@ -338,6 +338,13 @@ getent passwd x2gouser >/dev/null || \
     -c "x2go" x2gouser
 exit 0
 
+%if 0%{?fedora} || 0%{?rhel} >= 7 || 0%{?suse_version} >= 1210
+%if 0%{?fedora} || 0%{?rhel} >= 7
+%systemd_pre x2goserver.service
+%else
+%service_add_pre x2goserver.service
+%endif
+%endif
 
 %post
 # Initialize the session database
@@ -355,12 +362,13 @@ if grep -E "^backend=sqlite.*" /etc/x2go/x2gosql/sql 1>/dev/null 2>/dev/null; th
   fi
 fi
 
+%if 0%{?suse_version}
+%set_permissions %{_libdir}/x2go/x2gosqlitewrapper
+%endif
+
 %if 0%{?fedora} || 0%{?rhel} >= 7 || 0%{?suse_version} >= 1210
 %if 0%{?fedora} || 0%{?rhel} >= 7
 %systemd_post x2goserver.service
-
-%pre
-%systemd_pre x2goserver.service
 
 %preun
 %systemd_preun x2goserver.service
@@ -369,9 +377,6 @@ fi
 %systemd_postun x2goserver.service
 %else
 %service_add_post x2goserver.service
-
-%pre
-%service_add_pre x2goserver.service
 
 %preun
 %service_del_preun x2goserver.service
@@ -383,15 +388,6 @@ fi
 /sbin/chkconfig --add x2goserver
 /sbin/service x2goserver condrestart >/dev/null 2>&1 || :
 
-%if 0%{?suse_version}
-%set_permissions %{_libdir}/x2go/x2gosqlitewrapper
-
-
-%verifyscript
-%verify_permissions %{_libdir}/x2go/x2gosqlitewrapper
-%endif
-
-
 %postun
 if [ "$1" -ge "1" ] ; then
     /sbin/service x2goserver condrestart >/dev/null 2>&1 || :
@@ -402,6 +398,12 @@ if [ "$1" = 0 ]; then
         /sbin/service x2goserver stop >/dev/null 2>&1
         /sbin/chkconfig --del x2goserver
 fi
+%endif
+
+
+%if 0%{?suse_version}
+%verifyscript
+%verify_permissions %{_libdir}/x2go/x2gosqlitewrapper
 %endif
 
 
@@ -468,9 +470,9 @@ exit 0
 %dir %{_datadir}/x2go/
 %dir %{_datadir}/x2go/x2gofeature.d/
 %{_datadir}/x2go/x2gofeature.d/x2goserver.features
+%dir %{_datadir}/x2go/versions/
 %{_datadir}/x2go/versions/VERSION.x2goserver
-%dir %{_localstatedir}
-%attr(0775,root,x2gouser) %dir %{_localstatedir}/x2go/
+%attr(0775,root,x2gouser) %dir %{_localstatedir}/lib/x2go/
 %ghost %attr(0660,root,x2gouser) %{_localstatedir}/lib/x2go/x2go_sessions
 %if 0%{?fedora} || 0%{?rhel} >= 7 || 0%{?suse_version} >= 1210
 %{_unitdir}/x2goserver.service
