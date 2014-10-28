@@ -47,6 +47,18 @@ x2goserver (4.0.1.19-0x2go1) UNRELEASED; urgency=medium
     + Don't mention /etc/x2go/x2gosql/sql twice (directly and with wildcard).
     + No %{_sysconfdir}/x2go/Xclients.d on SUSE systems.
     + Use %{_localstatedir} instead of %{_sharedstatedir}.
+    + Use proper if... then... clauses.
+    + For SUSE builds: Add to R: shadow (useradd, groupadd).
+    + Replace historical "egrep" with "grep -E".
+    + Systemd support for SUSE >= 12.10.
+    + Set %defattr macro for every bin:package.
+    + SUSE and Fedora/RHEL have different package group names.
+    + Add x2goserver-rpmlintrc file to handle some rpmlint errors and warnings.
+    + SUSE has openssh, but no openssh-server.
+    + Add to R (x2goserver): perl-X2Go-Server.
+    + Add to R (diverse): perl(Config::Simple), perl(Switch) and
+      perl(Capture::Tiny).
+    + Add to R (x2goserver): perl(File::BaseDir).
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 07 Oct 2014 15:35:38 +0200
 

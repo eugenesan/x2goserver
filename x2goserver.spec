@@ -3,16 +3,20 @@ Version:        4.0.1.19
 Release:        0.0x2go1%{?dist}
 Summary:        X2Go Server
 
+%if 0%{?fedora} || 0%{?rhel}
 Group:          Applications/Communications
 License:        GPLv2+
+%else
+Group:          Productivity/Networking/Remote Desktop
+License:        GPL-2.0+
+%endif
+
 URL:            http://www.x2go.org
 Source0:        http://code.x2go.org/releases/source/%{name}/%{name}-%{version}.tar.gz
-# git clone git://code.x2go.org/x2goserver
-# cd x2goserver
-# git archive --prefix=x2goserver-4.1.0.0-20130722git65169c9/ 65169c9d65b117802e50631be0bbd719163d969e | gzip > ../x2goserver-4.1.0.0-20130722git65169c9.tar.gz
-#Source0:        %{name}/%{name}-%{version}-%{checkout}.tar.gz
-Source1:        x2goserver.service
-Source2:        x2goserver.init
+Source1:        %{name}.service
+Source2:        %{name}.init
+Source3:        %{name}-rpmlintrc
+
 %if 0%{?el5}
 # For compatibility with EPEL5
 BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
@@ -20,30 +24,56 @@ BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  perl(ExtUtils::MakeMaker)
+
 %if 0%{?fedora} || 0%{?rhel} >= 7
 BuildRequires:  man2html-core
-BuildRequires:  systemd
 %else
 BuildRequires:  man
 %endif
+
+%if 0%{?fedora} || 0%{?rhel} >= 7 || 0%{?suse_version} >= 1210
+BuildRequires:  systemd
+%endif
+
+# for useradd/groupadd
+%if 0%{?suse_version}
+BuildRequires:  pwdutils
+Requires(pre):  pwdutils
+%else
+BuildRequires:  shadow-utils
+Requires(pre):  shadow-utils
+%endif
+
 # So XSESSIONDIR gets linked
-%if 0%{suse_version}
+%if 0%{?suse_version}
 BuildRequires:  xinit
 %else
 BuildRequires:  xorg-x11-xinit
-%fi
+%endif
+
+%if 0%{?suse_version}
+Requires:       openssh
+%else
+Requires:       openssh-server
+%endif
+
+%if 0%{?suse_version}
+%if 0%{?suse_version} < 1140
+Requires:       perl = %{perl_version}
+%else
+%{perl_requires}
+%endif
+%else
+Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+%endif
+
 # For x2goruncommand - for now
 Requires:       bc
 # For x2goshowblocks
 Requires:       lsof
 # For netstat in x2goresume-session
 Requires:       net-tools
-Requires:       openssh-server
-%if 0%{suse_version}
-Requires:       perl
-%else
-Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
-%endif
+Requires:       perl(Try::Tiny)
 # We need a database
 # For killall in x2gosuspend-session
 Requires:       psmisc
@@ -54,23 +84,49 @@ Requires:       sshfs
 # For /etc/sudoers.d
 Requires:       sudo
 Requires:       x2goagent >= 3.5.0.25
-Requires:       xorg-x11-fonts-misc
-Requires:       xorg-x11-xauth
-Requires:       perl(File::Which)
-Requires(pre):  shadow-utils
 Requires(post): grep
 Requires(post): perl(DBD::SQLite)
+Requires:       perl(DBD::Pg)
+Requires:       perl(File::Which)
+Requires:       perl(File::BaseDir)
+
+Requires:       perl(Config::Simple)
+Requires:       perl(Switch)
+
+%if 0%{?suse_version}
+%if 0%{?suse_version} >= 1220
+Requires:       setxkbmap xmessage xwininfo
+%else
+Requires:       xorg-x11
+%endif
+%else
+Requires:       xorg-x11-fonts-misc
+Requires:       xorg-x11-xauth
+Requires:       which
+%endif
+
 %if 0%{?fedora} || 0%{?rhel} >= 7
 Requires(post): systemd
 Requires(preun): systemd
 Requires(postun): systemd
 %endif
+
+%if 0%{?suse_version} >= 1210
+%{?systemd_requires}
+%endif
+
 Requires:       x2goserver-extensions
 Requires:       x2goserver-xsession
 #Recommands:       x2goserver-fmbindings
 #Recommends:       x2goserver-printing
 
 %{?perl_default_filter}
+
+Requires:       perl(Capture::Tiny)
+%if 0%{?suse_version}
+Requires(pre):  permissions
+%endif
+
 
 %description
 X2Go is a server based computing environment with
@@ -88,12 +144,20 @@ administrations.
 %package printing
 Summary:        X2Go Server (printing support)
 Requires:       %{name} = %{version}-%{release}
-%if 0%{suse_version}
-Requires:       perl
+%if 0%{?suse_version}
+%if 0%{?suse_version} < 1140
+Requires:       perl = %{perl_version}
+%else
+%{perl_requires}
+%endif
 %else
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 %endif
+%if 0%{?fedora} || 0%{?rhel}
 Group:          Applications/Communications
+%else
+Group:          Productivity/Networking/Remote Desktop
+%endif
 
 %description printing
 X2Go is a server based computing environment with
@@ -119,7 +183,11 @@ server).
 %package extensions
 Summary:        X2Go Server (extension support)
 Requires:       %{name} = %{version}-%{release}
+%if 0%{?fedora} || 0%{?rhel}
 Group:          Applications/Communications
+%else
+Group:          Productivity/Networking/Remote Desktop
+%endif
 
 %description extensions
 X2Go is a server based computing environment with
@@ -142,8 +210,16 @@ without lack of features.
 Summary:        X2Go Server (Xsession runner)
 Requires:       %{name} = %{version}-%{release}
 # For /etc/X11/Xresources
+%if 0%{?suse_version}
+Requires:       xinit
+%else
 Requires:       xorg-x11-xinit
+%endif
+%if 0%{?fedora} || 0%{?rhel}
 Group:          Applications/Communications
+%else
+Group:          Productivity/Networking/Remote Desktop
+%endif
 
 %description xsession
  X2Go is a server based computing environment with
@@ -162,6 +238,7 @@ Group:          Applications/Communications
  startups and many more Xsession related features on
  X2Go session login automagically.
 
+
 %package fmbindings
 Summary:        X2Go Server (file manager bindings)
 Requires:       %{name} = %{version}-%{release}
@@ -169,7 +246,11 @@ Requires:       xdg-utils
 Requires:       desktop-file-utils
 Requires(post):   desktop-file-utils
 Requires(postun): desktop-file-utils
+%if 0%{?fedora} || 0%{?rhel}
 Group:          Applications/Communications
+%else
+Group:          Productivity/Networking/Remote Desktop
+%endif
 
 %description fmbindings
 X2Go is a server based computing environment with
@@ -212,21 +293,21 @@ make CFLAGS="%{optflags} -fPIC" %{?_smp_mflags} PERL_INSTALLDIRS=vendor PREFIX=%
 %install
 make install DESTDIR=%{buildroot} PREFIX=%{_prefix}
 
-# Make sure the .packlist file is removed from %{perl_vendorarch}...
-#rm -f %{buildroot}%{perl_vendorarch}/auto/x2goserver/.packlist
+# Make sure the .packlist file is removed from %%{perl_vendorarch}...
+rm -f %{buildroot}%{perl_vendorarch}/auto/x2goserver/.packlist
 
 # Remove placeholder files (in a way that works on EPEL-5, as well)
 find %{buildroot}%{_libdir}/x2go/extensions/ -type f -name ".placeholder" | while read file; do rm -f "$file"; done
 
 # x2gouser homedir, state dir
-mkdir -p %{buildroot}%{_localstatedir}/x2go
+mkdir -p %{buildroot}%{_localstatedir}/lib/x2go/
 # Create empty session file for %%ghost
-touch %{buildroot}%{_localstatedir}/x2go/x2go_sessions
+touch %{buildroot}%{_localstatedir}/lib/x2go/x2go_sessions
 
 # Printing spool dir
 mkdir -p %{buildroot}%{_localstatedir}/spool/x2goprint
 
-%if 0%{?fedora} || 0%{?rhel} >= 7
+%if 0%{?fedora} || 0%{?rhel} >= 7 || 0%{?suse_version} >= 1210
 # System.d session cleanup script
 mkdir -p %{buildroot}%{_unitdir}
 install -pm0644 %SOURCE1 %{buildroot}%{_unitdir}
@@ -238,6 +319,9 @@ install -pm0755 %SOURCE2 %{buildroot}%{_initrddir}/x2goserver
 %else
 mkdir -p %{buildroot}%{_initddir}
 install -pm0755 %SOURCE2 %{buildroot}%{_initddir}/x2goserver
+%endif
+%if 0%{?suse_version} && 0%{?suse_version} < 1210
+ln -sf %{_initddir}/x2goserver %{buildroot}%{_sbindir}/rcx2goserver
 %endif
 %endif
 
@@ -257,12 +341,26 @@ exit 0
 
 %post
 # Initialize the session database
-[ ! -s %{_localstatedir}/x2go/x2go_sessions ] && \
-  egrep "^backend=sqlite.*" /etc/x2go/x2gosql/sql >/dev/null 2>&1 && \
-  %{_sbindir}/x2godbadmin --createdb >/dev/null 2>&1 || :
+if [ ! -s %{_localstatedir}/lib/x2go/x2go_sessions ]; then
+  if [ -d %{_datadir}/doc/packages/perl-X2Go-Server-DB ]; then
+    if grep -E "^backend=sqlite.*" /etc/x2go/x2gosql/sql >/dev/null 2>&1; then
+      %{_sbindir}/x2godbadmin --createdb >/dev/null 2>&1 || :
+    fi
+  fi
+fi
 
+if grep -E "^backend=sqlite.*" /etc/x2go/x2gosql/sql 1>/dev/null 2>/dev/null; then
+  if [ -s %{_localstatedir}/lib/x2go/x2go_sessions ]; then
+    %{_sbindir}/x2godbadmin --updatedb 1>/dev/null 2>/dev/null || :
+  fi
+fi
+
+%if 0%{?fedora} || 0%{?rhel} >= 7 || 0%{?suse_version} >= 1210
 %if 0%{?fedora} || 0%{?rhel} >= 7
 %systemd_post x2goserver.service
+
+%pre
+%systemd_pre x2goserver.service
 
 %preun
 %systemd_preun x2goserver.service
@@ -270,8 +368,29 @@ exit 0
 %postun
 %systemd_postun x2goserver.service
 %else
+%service_add_post x2goserver.service
+
+%pre
+%service_add_pre x2goserver.service
+
+%preun
+%service_del_preun x2goserver.service
+
+%postun
+%service_del_postun x2goserver.service
+%endif
+%else
 /sbin/chkconfig --add x2goserver
 /sbin/service x2goserver condrestart >/dev/null 2>&1 || :
+
+%if 0%{?suse_version}
+%set_permissions %{_libdir}/x2go/x2gosqlitewrapper
+
+
+%verifyscript
+%verify_permissions %{_libdir}/x2go/x2gosqlitewrapper
+%endif
+
 
 %postun
 if [ "$1" -ge "1" ] ; then
@@ -304,6 +423,7 @@ getent passwd x2goprint >/dev/null || \
 exit 0
 
 %files
+%defattr(-,root,root)
 %doc debian/copyright
 %doc debian/changelog
 %dir %{_sysconfdir}/logcheck
@@ -351,8 +471,8 @@ exit 0
 %{_datadir}/x2go/versions/VERSION.x2goserver
 %dir %{_localstatedir}
 %attr(0775,root,x2gouser) %dir %{_localstatedir}/x2go/
-%ghost %attr(0660,root,x2gouser) %{_localstatedir}/x2go/x2go_sessions
-%if 0%{?fedora} || 0%{?rhel} >= 7
+%ghost %attr(0660,root,x2gouser) %{_localstatedir}/lib/x2go/x2go_sessions
+%if 0%{?fedora} || 0%{?rhel} >= 7 || 0%{?suse_version} >= 1210
 %{_unitdir}/x2goserver.service
 %else
 %if 0%{?el5}
@@ -360,10 +480,14 @@ exit 0
 %else
 %{_initddir}/x2goserver
 %endif
+%if 0%{?suse_version}
+%{_sbindir}/rcx2goserver
+%endif
 %endif
 
 
 %files extensions
+%defattr(-,root,root)
 %{_libdir}/x2go/extensions
 %{_bindir}/x2goserver-run-extensions
 %{_datadir}/x2go/x2gofeature.d/x2goserver-extensions.features
@@ -372,6 +496,7 @@ exit 0
 
 
 %files fmbindings
+%defattr(-,root,root)
 %{_bindir}/x2gofm
 %{_datadir}/applications/x2gofm.desktop
 %{_datadir}/mime/packages/sshfs-x2go.xml
@@ -381,6 +506,7 @@ exit 0
 
 
 %files printing
+%defattr(-,root,root)
 %{_bindir}/x2goprint
 %{_datadir}/x2go/versions/VERSION.x2goserver-printing
 %{_datadir}/x2go/x2gofeature.d/x2goserver-printing.features
@@ -389,6 +515,7 @@ exit 0
 
 
 %files xsession
+%defattr(-,root,root)
 %{_sysconfdir}/x2go/xinitrc.d
 %if 0%{?fedora} || 0%{?rhel}
 %{_sysconfdir}/x2go/Xclients.d
