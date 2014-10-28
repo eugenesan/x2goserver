@@ -22,6 +22,7 @@ Source3:        %{name}-rpmlintrc
 BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 %endif
 
+BuildRequires:  findutils
 BuildRequires:  desktop-file-utils
 BuildRequires:  perl(ExtUtils::MakeMaker)
 
