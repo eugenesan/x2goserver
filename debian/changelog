@@ -190,6 +190,8 @@ x2goserver (4.0.1.19-0x2go1) UNRELEASED; urgency=medium
     + Add to R (diverse): perl(Config::Simple), perl(Switch) and
       perl(Capture::Tiny).
     + Add to R (x2goserver): perl(File::BaseDir).
+    + Don't hard-code /var/lib/ in $HOME path of to-be-created user
+      "x2gouser".
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 07 Oct 2014 15:35:38 +0200
 
