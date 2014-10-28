@@ -87,6 +87,7 @@ Requires:       x2goagent >= 3.5.0.25
 Requires(post): grep
 Requires(post): perl(DBD::SQLite)
 Requires:       perl(File::Which)
+Requires:       perl(File::BaseDir)
 
 Requires:       perl(Config::Simple)
 Requires:       perl(Switch)
