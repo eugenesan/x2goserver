@@ -360,6 +360,7 @@ Group:          Productivity/Networking/Remote Desktop
  startups and many more Xsession related features on
  X2Go session login automagically.
 
+
 %package fmbindings
 Summary:        X2Go Server (file manager bindings)
 Requires:       %{name} = %{version}-%{release}
