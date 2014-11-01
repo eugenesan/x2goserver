@@ -105,7 +105,7 @@ if [ "$X2GO_STYPE" == "S" ]; then
 		if [ "${OUTPUT:0:4}" == "DENY" ]; then
 			echo "ACCESS DENIED" 1>&2
 			$X2GO_LIB_PATH/x2gosyslog "$0" "err" "ERROR: user $SHADOW_USER denied desktop sharing session"
-			$X2GO_LIB_PATH/x2gosyslog "$0" "err" "ERROR: reason: for desktop sharing denial ${OUTPUT:4}"
+			$X2GO_LIB_PATH/x2gosyslog "$0" "err" "ERROR: reason: for desktop sharing denial ${OUTPUT:5}"
 			exit -1
 		fi
 		X2GO_COOKIE=`echo $OUTPUT | awk '{print $2}'`
