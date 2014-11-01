@@ -6,7 +6,8 @@ Uploaders:
  Mike Gabriel <mike.gabriel@das-netzwerkteam.de>,
  Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>,
  Reinhard Tartler <siretart@tauware.de>,
-Build-Depends: 
+Build-Depends:
+ dh-systemd | hello,
  debhelper (>= 7.0.50~),
  man2html-base | man2html,
 Standards-Version: 3.9.5
