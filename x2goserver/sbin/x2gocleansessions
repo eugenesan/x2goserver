@@ -212,13 +212,13 @@ elsif ($pid == 0 )
 					unlink("/tmp/.X$display-lock");
 				}
 				syslog('debug', "@sinfo[1]: unmounting all shares");
-				system( "su", "@sinfo[11]", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");
+				system( "su", "@sinfo[11]", "-s", "/bin/sh", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");
 				#remove port forwarding
-				system("su", "@sinfo[11]", "-c", "$x2go_lib_path/x2gormforward @sinfo[1]");
+				system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "$x2go_lib_path/x2gormforward @sinfo[1]");
 			}
 			elsif (! check_pid (@sinfo[0],@sinfo[1],@sinfo[12]))
 			{
-				system("su", "@sinfo[11]", "-c", "$x2go_lib_path/x2gochangestatus 'F' @sinfo[1]");
+				system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "$x2go_lib_path/x2gochangestatus 'F' @sinfo[1]");
 				my $display = @sinfo[2];
 				if (-S "/tmp/.X11-unix/X$display") {
 					# remove the NX-X11 socket file (we don't know how the agent disappeared,
@@ -233,7 +233,7 @@ elsif ($pid == 0 )
 					unlink("/tmp/.X$display-lock");
 				}				syslog('debug', "@sinfo[1], pid @sinfo[0] does not exist, changing status from @sinfo[4] to F");
 				syslog('debug', "@sinfo[1]: unmounting all shares");
-				system("su", "@sinfo[11]", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");
+				system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");
 			}
 			else
 			{
@@ -241,12 +241,12 @@ elsif ($pid == 0 )
 				{
 					if (is_suspended(@sinfo[1],@sinfo[11]))
 					{
-						system("su", "@sinfo[11]", "-c", "$x2go_lib_path/x2gochangestatus S @sinfo[1]");
+						system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "$x2go_lib_path/x2gochangestatus S @sinfo[1]");
 						syslog('debug', "@sinfo[1] is suspended, changing status from @sinfo[4] to S");
 						syslog('debug', "@sinfo[1]: unmounting all shares");
-						system("su", "@sinfo[11]", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");
+						system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");
 						#remove port forwarding
-						system("su", "@sinfo[11]", "-c", "$x2go_lib_path/x2gormforward @sinfo[1]");
+						system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "$x2go_lib_path/x2gormforward @sinfo[1]");
 					}
 				}
 				if (@sinfo[4] eq 'S')
@@ -254,8 +254,8 @@ elsif ($pid == 0 )
 					if (is_running(@sinfo[1],@sinfo[11]))
 					{
 						syslog('debug', "@sinfo[1]: unmounting all shares");
-						system("su", "@sinfo[11]", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");
-						system("su", "@sinfo[11]", "-c", "x2gosuspend-session @sinfo[1]");
+						system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");
+						system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "x2gosuspend-session @sinfo[1]");
 						syslog('debug', "@sinfo[1] was found running and has now been suspended");
 					}
 				}
@@ -264,11 +264,11 @@ elsif ($pid == 0 )
 					if (!has_terminated(@sinfo[1],@sinfo[11]))
 					{
 						syslog('debug', "@sinfo[1]: unmounting all shares");
-						system("su", "@sinfo[11]", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");
-						system("su", "@sinfo[11]", "-c", "x2goterminate-session @sinfo[1]");
+						system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");
+						system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "x2goterminate-session @sinfo[1]");
 						syslog('debug', "@sinfo[1] has been requested for termination via the session DB");
 						#remove port forwarding
-						system("su", "@sinfo[11]", "-c", "$x2go_lib_path/x2gormforward @sinfo[1]");
+						system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "$x2go_lib_path/x2gormforward @sinfo[1]");
 					}
 				}
 			}
