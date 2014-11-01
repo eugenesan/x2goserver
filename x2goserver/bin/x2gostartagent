@@ -105,9 +105,10 @@ if [ "$X2GO_STYPE" == "S" ]; then
 		OUTPUT=`x2godesktopsharing client "$X2GO_CLIENT" "$X2GO_GEOMETRY" "$X2GO_LINK" "$X2GO_PACK" "$X2GO_TYPE" "$X2GO_KBD_LAYOUT" "$X2GO_KBD_TYPE" "$X2GO_SET_KBD" "$X2GO_STYPE" "$X2GO_CMD" "$USER"`
 		OUTPUT=`echo $OUTPUT | sed -e 's/#012/ /g'`
 		$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "command result is: $OUTPUT"
-		if [ "$OUTPUT" == "DENY" ]; then
+		if [ "${OUTPUT:0:4}" == "DENY" ]; then
 			echo "ACCESS DENIED" 1>&2
 			$X2GO_LIB_PATH/x2gosyslog "$0" "err" "ERROR: user $SHADOW_USER denied desktop sharing session"
+			$X2GO_LIB_PATH/x2gosyslog "$0" "err" "ERROR: reason: for desktop sharing denial ${OUTPUT:4}"
 			exit -1
 		fi
 		X2GO_COOKIE=`echo $OUTPUT | awk '{print $2}'`
