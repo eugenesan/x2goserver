@@ -37,6 +37,9 @@ x2goserver (4.0.1.19-0x2go1) UNRELEASED; urgency=medium
     - Fix missing session list output if state file does not exist on the machine
       that runs x2golistsessions(_root).
     - Accept more verbose "DENY" output from x2godesktopsharing.
+    - Move X2Go Desktop Sharing options around. Make sure all desktop sharing
+      relevant options are provided at the beginning when evoking the
+      "x2godesktopsharing client" command.
   * debian/control:
     + Add D (x2goserver): libfile-which-perl.
   * x2goserver.spec:
