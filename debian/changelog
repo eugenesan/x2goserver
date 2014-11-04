@@ -129,6 +129,10 @@ x2goserver (4.1.0.0-0x2go1.1) UNRELEASED; urgency=low
     - Fix x2godbadmin. Set right column name "tekidata_port" in create table.
       (Fixes: #557).
 
+  [ Mark Pederson-Cook ]
+  * debian/po:
+    + Translate DebConf templates to Danish.
+
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 09 May 2014 13:06:24 +0200
 
 x2goserver (4.0.1.19-0x2go1) UNRELEASED; urgency=medium
