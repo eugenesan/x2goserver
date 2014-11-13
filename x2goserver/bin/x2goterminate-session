@@ -26,6 +26,8 @@ else
 	SESSION_NAME="$X2GO_SESSION"
 fi
 
+X2GO_ROOT="${HOME}/.x2go"
+
 X2GO_LIB_PATH="$(x2gopath libexec)";
 
 $X2GO_LIB_PATH/x2gosyslog "$0" "info" "$(basename $0) called with options: $@"
@@ -55,6 +57,12 @@ else
 
 	# run x2goserver-extensions for fail-terminate
 	x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions "$SESSION_NAME" fail-terminate || true
+fi
+
+# disable ssh-agent-forwarding socket file symlink
+X2GOSSH_AUTH_SOCK="$X2GO_ROOT/C-$SESSION_NAME/ssh-agent.PID"
+if [ -L "$X2GOSSH_AUTH_SOCK" ]; then
+	rm -f "$X2GOSSH_AUTH_SOCK"
 fi
 
 $X2GO_LIB_PATH/x2gochangestatus 'F' "$SESSION_NAME"  > /dev/null

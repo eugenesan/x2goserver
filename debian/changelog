@@ -42,6 +42,9 @@ x2goserver (4.0.1.19-0x2go1) UNRELEASED; urgency=medium
     - Also enforce /bin/sh as shell in su command in x2goprint.
     - README.i18n: Add file that explains the translation workflow for
       this package. Thanks to Mark Pedersen-Cook for drafting this file.
+    - Make SSH agent forwarding work after having reconnected via SSH and
+      having resumed a session. (Fixes: #672). Thanks to Robert Siemer for coming
+      up with that idea.
   * debian/control:
     + Add D (x2goserver): libfile-which-perl.
   * debian/x2goserver.docs:

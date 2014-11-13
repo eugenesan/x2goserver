@@ -26,6 +26,8 @@ else
 	SESSION_NAME="$X2GO_SESSION"
 fi
 
+X2GO_ROOT="${HOME}/.x2go"
+
 X2GO_LIB_PATH="$(x2gopath libexec)";
 
 $X2GO_LIB_PATH/x2gosyslog "$0" "info" "$(basename $0) called with options: $@"
@@ -71,4 +73,10 @@ then
 	fi
 else
 	$X2GO_LIB_PATH/x2gosyslog "$0" "notice" "session with ID $SESSION_NAME is not in running state"
+fi
+
+# disable ssh-agent-forwarding socket file symlink
+X2GOSSH_AUTH_SOCK="$X2GO_ROOT/C-$SESSION_NAME/ssh-agent.PID"
+if [ -L "$X2GOSSH_AUTH_SOCK" ]; then
+	rm -f "$X2GOSSH_AUTH_SOCK"
 fi

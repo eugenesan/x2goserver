@@ -42,6 +42,15 @@ X2GO_ROOT="${HOME}/.x2go"
 X2GO_RESIZE=1
 X2GO_FULLSCREEN=0
 
+# refresh up ssh-agent-forwarding socket file symlink
+X2GOSSH_AUTH_SOCK="$X2GO_ROOT/C-$SESSION_NAME/ssh-agent.PID"
+if [ -L "$X2GOSSH_AUTH_SOCK" ]; then
+	rm -f "$X2GOSSH_AUTH_SOCK"
+fi
+if [ -S "$SSH_AUTH_SOCK" ]; then
+	ln -sf "$SSH_AUTH_SOCK" "$X2GOSSH_AUTH_SOCK"
+fi
+
 STATE=`$X2GO_LIB_PATH/x2gogetagentstate "$SESSION_NAME"`
 
 # exit if session terminated
