@@ -1,0 +1,104 @@
+Translating X2Go Server
+======================
+
+Translating with gettext
+------------------------
+
+X2Go Server uses gettext as translation service/mechanism (.po/.mo/.pot files).
+The translation files can be found in the /debian/po folder of this source project.
+
+The x2goserver X2Go component currently only requires translation for the
+DebConf templates (configuration screens of Debian/Ubuntu/<derivative> packages.
+A translation of upstream code is currently not necessary, but this may vary in
+the future.
+
+
+New team member --- new language for X2Go Server
+-----------------------------------------------
+If you are a new member in the x2go-i18n team, the first we say is: WELCOME!!! and
+THANKS!!! for the time you give to the X2Go project.
+
+And, if you are new to the team and language files for the language you want to feel
+responsible for do not yet exist, please subscribe to this mailing list first:
+
+  http://lists.x2go.org/listinfo/x2go-i18n 
+
+Once you are subscribed, send an email to
+
+  x2go-i18n@lists.x2go.org
+
+that explains your willingness to translate this-and-that language.
+
+The developers will then provide a language file for you in the above mentioned /po
+folder.
+
+
+Git cloning
+-----------
+Next thing to do is to obtained the latest sources from X2Go Git.
+
+  $ # git needs to be installed, on Debian/Ubuntu this is
+  $ sudo apt-get install git
+  $ # then checkout the code
+  $ git clone git://code.x2go.org/x2goserver.git
+
+In your current working directory there should now be a subfolder named ,,x2goserver''.
+
+
+Creating Your Language File
+---------------------------
+First, Copy the de.po file with terminal.
+
+you do this by typing the following commands:
+
+1. cd x2goserver/debian/po
+
+2. sudo cp templates.pot da.po 
+   (or whatever langauge you are going to work on)
+
+Now the file is ready for translating it into the language you are going to work on.
+
+Editing Your Language File
+--------------------------
+The recommended tool for editing gettext translation files is ,,poedit''
+
+  $ aptitude install poedit       <--for debian
+
+  $ sudo apt-get install poedit   <--for ubuntu
+
+Run poedit and configure it first (mostly personalizing, full name, email address, etc.).
+
+Now open your language file in <current_dir>/x2goserver/debian/po/<lang>.po and edit it with
+poedit.
+
+NOTE: Make sure you translate all boldly marked items: non-translated as well as fuzzy
+(i.e. inaccurate) items.
+
+
+
+Sending in the Translation File
+-------------------------------
+When done, please send the complete translation file 
+
+  <current_dir>/x2goserver/debian/po/<lang>.po
+
+to x2go-i18n@lists.x2go.org and remove your working copy of X2Go Server from
+your system (or read how to use Git and keep the folder).
+
+
+Next time...
+------------
+You will get informed on x2go-i18n if a translation update is necessary. So check
+your mails there regularly.
+
+For updating a translation, either keep the X2Go Server source project folder and
+read more on Git by your self. 
+
+Alternatively, just remove the folder (once you have sent in the translation file)
+and start with this documentation all over again.
+
+THANKS AGAIN FOR YOUR TIME!!!
+
+light+love,
+
+  Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
