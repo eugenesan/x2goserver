@@ -53,6 +53,15 @@ export QT_GRAPHICSSYSTEM="native"
 
 IMEXIT="false"
 
+# symlink to SSH_AUTH_SOCKET (ssh agent forwarding) so that we
+# can survive session suspension / resumption...
+X2GOSSH_AUTH_SOCK="$X2GO_ROOT/C-$X2GO_SESSION/ssh-agent.PID"
+if [ -S "$SSH_AUTH_SOCK" ]; then
+	ln -sf "$SSH_AUTH_SOCK" "$X2GOSSH_AUTH_SOCK"
+fi
+export SSH_AUTH_SOCK="$X2GOSSH_AUTH_SOCK"
+
+
 NX_XINERAMA_LIBS="$(x2gopath xinerama)"
 NX_LIBS="$(x2gopath nx-x11)"
 test -n "$LD_LIBRARY_PATH" && \
