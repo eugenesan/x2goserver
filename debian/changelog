@@ -156,7 +156,7 @@ x2goserver (4.0.1.19-0x2go1) UNRELEASED; urgency=medium
       directoy /usr/share/doc/packages/brp-check-suse is present, the build env
       is also considered to be a SUSE system.
     - Trigger Xsession code for SUSE systems (look for /etc/SUSE-brand for
-      SUSE system recognition).
+      SUSE system recognition). (Fixes: #671).
     - x2gosqlitewrapper.c: Fix rpmlint error: no-return-in-nonvoid-function.
       Return the exitcode of execve().
     - Fix gramma in error message (in x2goresume-session).
