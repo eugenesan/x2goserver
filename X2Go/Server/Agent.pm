@@ -42,7 +42,7 @@ load_module $agent_module;
 
 use base 'Exporter';
 
-our @EXPORT=( 'session_has_terminated', 'session_is_running', 'session_is_suspended' , 'has_agent_state_file', 'get_agent_state' );
+our @EXPORT=( 'session_has_terminated', 'session_is_running', 'session_is_suspended' , 'get_agent_state_file', 'has_agent_state_file', 'get_agent_state' );
 
 
 
@@ -58,6 +58,10 @@ sub session_is_running {
 
 sub session_is_suspended {
 	return $agent_module->session_is_suspended(@_);
+}
+
+sub get_agent_state_file {
+	return $agent_module->get_agent_state_file(@_);
 }
 
 sub has_agent_state_file {

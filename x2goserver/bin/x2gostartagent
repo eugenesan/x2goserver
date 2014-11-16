@@ -34,9 +34,6 @@ if egrep "^backend[ ]*=[ ]*postgres" /etc/x2go/x2gosql/sql 1>/dev/null 2>/dev/nu
 elif [ -z "$USER" ]; then
 	echo "The \$USER environment variable is not set. Aborting session startup."
 	exit -2
-elif [ -z "$SSH_CLIENT" ]; then
-	echo "The \$SSH_CLIENT environment variable is not set. Aborting session startup."
-	exit -3
 elif [ -z "$HOME" ]; then
 	echo "The \$HOME environment variable is not set. Aborting session startup."
 	exit -4
@@ -62,7 +59,11 @@ fi
 
 REMOTE=localhost
 
-X2GO_CLIENT=`echo $SSH_CLIENT | awk '{print $1}'`
+if [ -z "$X2GO_CLIENT" ] && [ -n "$SSH_CLIENT" ]; then
+	X2GO_CLIENT=`echo $SSH_CLIENT | awk '{print $1}'`
+elif [ -z "$X2GO_CLIENT" ] && [ -n "$SSH_CONNECTION" ]; then
+	X2GO_CLIENT=`echo $SSH_CONNECTION | awk '{print $1}'`
+fi
 $X2GO_LIB_PATH/x2gosyslog "$0" "debug" "client announced itself as ,,$X2GO_CLIENT''"
 
 X2GO_GEOMETRY="$1"; shift
@@ -74,9 +75,10 @@ X2GO_KBD_TYPE="$1"; shift
 X2GO_SET_KBD="$1"; shift
 X2GO_STYPE="$1"; shift
 X2GO_CMD="$1"; shift
-X2GO_CLIPBOARD="$1"; shift
 X2GO_RESIZE=1
 X2GO_FULLSCREEN=0
+
+X2GO_CLIPBOARD=""
 
 XAUTHORITY=${XAUTHORITY:-"$HOME/.Xauthority"}
 
@@ -87,16 +89,16 @@ if [ "$X2GO_STYPE" == "S" ]; then
 	SHADOW_USER=`echo $X2GO_CMD |awk '{split($0,a,"XSHAD"); print a[2]}'`
 	SHADOW_DESKTOP=`echo $X2GO_CMD |awk '{split($0,a,"XSHAD"); print a[3]}'`
 
-	test -z $1 && { 
+	if [ -z "$1" ]; then
 
 		# can this line be removed?
 		#echo "suser $SHADOW_USER user $USER " >> /tmp/uagent
 
 		$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "shadow session requested: mode $SHADOW_MODE, user: $SHADOW_USER, desktop: $SHADOW_DESKTOP"
-	} || {
+	else
 		SHADREQ_USER="$1"; shift
 		$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "preparing shadow session request for user $SHADREQ_USER, agent starts for user ${USER}"
-	}
+	fi
 
 	if [ "$SHADOW_USER" != "$USER" ]; then
 
@@ -107,8 +109,12 @@ if [ "$X2GO_STYPE" == "S" ]; then
 		$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "command result is: $OUTPUT"
 		if [ "${OUTPUT:0:4}" == "DENY" ]; then
 			echo "ACCESS DENIED" 1>&2
+			DENIAL_REASON="${OUTPUT:5}"
+			if [ -z "$DENIAL_REASON" ]; then
+				DENIAL_REASON="the user ,,$SHADOW_USER'' does not seem to have desktop sharing activated"
+			fi
 			$X2GO_LIB_PATH/x2gosyslog "$0" "err" "ERROR: user $SHADOW_USER denied desktop sharing session"
-			$X2GO_LIB_PATH/x2gosyslog "$0" "err" "ERROR: reason: for desktop sharing denial ${OUTPUT:5}"
+			$X2GO_LIB_PATH/x2gosyslog "$0" "err" "ERROR: reason for desktop sharing denial: ${DENIAL_REASON}"
 			exit -1
 		fi
 		X2GO_COOKIE=`echo $OUTPUT | awk '{print $2}'`
@@ -127,6 +133,15 @@ if [ "$X2GO_STYPE" == "S" ]; then
 		echo $OUTPUT | awk '{print $7}'
 		exit 0
 	fi
+else
+
+	# only check the SSH_CLIENT variable for non-shadow sessions
+	if [ -z "$SSH_CLIENT" ]; then
+		echo "The \$SSH_CLIENT environment variable is not set. Aborting session startup."
+		exit -3
+	fi
+
+	X2GO_CLIPBOARD="$1"; shift
 fi
 
 LIMIT=`x2gosessionlimit`
@@ -202,7 +217,7 @@ while [ "$OUTPUT"  != "inserted" ]; do
 	fi 
 done
 
-if [ "x$X2GO_TELEKINESIS_ENABLED" == "x0" ] || ! type -p telekinesis-server 1>/dev/null; then
+if [ "x$X2GO_TELEKINESIS_ENABLED" == "x0" ] || [ "x$X2GO_STYPE" = "xS" ] || ! type -p telekinesis-server 1>/dev/null; then
 	TEKICTRL_PORT="-1"
 	TEKIDATA_PORT="-1"
 	X2GO_TELEKINESIS_ENABLED="0"
@@ -273,7 +288,7 @@ if [ ! -d "$X2GO_TMP_ROOT" ]; then
 fi
 
 SESSION_DIR="${X2GO_TMP_ROOT}/C-${SESSION_NAME}"
-if [ "x$X2GO_TELEKINESIS_ENABLED" != "x0" ]; then
+if [ "x$X2GO_TELEKINESIS_ENABLED" != "x0" ] && [ "x$X2GO_STYPE" != "xS" ]; then
 	mkdir -p "${SESSION_DIR}/telekinesis/remote/"
 fi
 
@@ -282,10 +297,17 @@ STATE_FILE="${SESSION_DIR}/state"
 # do not use $TMP or $TEMP here, the session.log file location has to be accessible by root
 SESSION_LOG="${SESSION_DIR}/session.log"
 mkdir -p "${SESSION_DIR}"
-chmod -f 0700 "${SESSION_DIR}"
+if [ "x$X2GO_STYPE" = "xS" ]; then
+	chmod -f 0710 "${SESSION_DIR}"
+	if groups "$USER" | grep x2godesktopsharing 1>/dev/null 2>/dev/null; then
+		$X2GO_LIB_PATH/x2gosyslog "$0" "info" "user ,,$USER'' grants access to ${SESSION_DIR} for group ,,x2godesktopsharing''"
+		chown :x2godesktopsharing "${SESSION_DIR}"
+	fi
+else
+	chmod -f 0700 "${SESSION_DIR}"
+fi
 touch "${SESSION_LOG}"
 chmod -f 0600 "${SESSION_LOG}"
-
 
 if [ ! -d "$X2GO_ROOT/ssh" ]; then
 	mkdir "$X2GO_ROOT/ssh"
@@ -372,8 +394,10 @@ X2GO_AGENT_RETVAL=$?
 X2GO_SND_PORT=1024
 
 if [ -n "$SHADREQ_USER" ]; then
-	$X2GO_LIB_PATH/x2gocreateshadowsession "$SESSION_NAME"  "$X2GO_COOKIE" "$X2GO_AGENT_PID" "$X2GO_CLIENT" "$GR_PORT" "$SOUND_PORT" "$FS_PORT""$SHADREQ_USER" > /dev/null
+	$X2GO_LIB_PATH/x2gosyslog "$0" "info" "creating new shadow session: $SESSION_NAME $X2GO_COOKIE $X2GO_AGENT_PID $X2GO_CLIENT $GR_PORT $SOUND_PORT $FS_PORT $SHADREQ_USER"
+	$X2GO_LIB_PATH/x2gocreateshadowsession "$SESSION_NAME" "$X2GO_COOKIE" "$X2GO_AGENT_PID" "$X2GO_CLIENT" "$GR_PORT" "$SOUND_PORT" "$FS_PORT" "$SHADREQ_USER" > /dev/null
 else
+	 $X2GO_LIB_PATH/x2gosyslog "$0" "info" "creating new session: $SESSION_NAME $X2GO_COOKIE $X2GO_AGENT_PID $X2GO_CLIENT $GR_PORT $SOUND_PORT $FS_PORT $TEKICTRL_PORT $TEKIDATA_PORT"
 	$X2GO_LIB_PATH/x2gocreatesession "$SESSION_NAME" "$X2GO_COOKIE" "$X2GO_AGENT_PID" "$X2GO_CLIENT" "$GR_PORT" "$SOUND_PORT" "$FS_PORT" "$TEKICTRL_PORT" "$TEKIDATA_PORT"  > /dev/null
 fi
 

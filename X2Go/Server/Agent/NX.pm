@@ -71,17 +71,32 @@ sub session_is_running
 	return 0;
 }
 
-sub has_agent_state_file
+sub get_agent_state_file
 {
 	my $sess=@_[1];
-	my $user=@_[2];
+	my $user;
+
+	if ( $sess =~ m/.*-[0-9]{2,}-[0-9]{10,}_stS(0|1)XSHAD.*XSHADPP.*/ ) {
+		my $shadow_user = $sess;
+		$shadow_user =~ s/.*XSHAD(.*)XSHADPP.*/$1/;
+		$user = $shadow_user;
+	} else {
+		$user=@_[2];
+	}
+
 	my $stateFile;
 	if ( -d "/tmp-inst/${user}/.x2go-${user}" ) {
 		$stateFile="/tmp-inst/${user}/.x2go-".$user."/C-".$sess."/state";
 	} else {
 		$stateFile = "/tmp/.x2go-".$user."/C-".$sess."/state";
 	}
-	if ( -e $stateFile )
+	return $stateFile;
+}
+
+sub has_agent_state_file
+{
+	my $stateFile = get_agent_state_file(@_);
+	if ( -e "$stateFile" )
 	{
 		return 1;
 	}
@@ -90,18 +105,11 @@ sub has_agent_state_file
 
 sub get_agent_state
 {
-	my $sess=@_[1];
-	my $user=@_[2];
 	my $state;
-	my $stateFile;
-	if ( -d "/tmp-inst/${user}/.x2go-${user}" ) {
-		$stateFile="/tmp-inst/${user}/.x2go-".$user."/C-".$sess."/state";
-	} else {
-		$stateFile = "/tmp/.x2go-".$user."/C-".$sess."/state";
-	}
-	if (! -e $stateFile )
+	my $stateFile = get_agent_state_file(@_);
+	if (! -e "$stateFile" )
 	{
-		syslog('warning', "$sess: state file for this session does not exists: $stateFile (this can be ignored during session startups)");
+		syslog('warning', "@_[1]: state file for this session does not exist: $stateFile (this can be ignored during session startups)");
 		$state="UNKNOWN";
 	}
 	else

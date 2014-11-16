@@ -68,7 +68,9 @@ for (my $i=0;$i<@outp;$i++)
 	{ 
 		if (@sinfo[4]eq 'R')
 		{
-			if(session_is_suspended(@sinfo[1], @sinfo[11]))
+			my $shadow_user = @sinfo[1];
+			$shadow_user =~ s/.*XSHAD(.*)XSHADPP.*/$1/;
+			if(session_is_suspended(@sinfo[1], $shadow_user))
 			{
 				db_changestatus( 'S', @sinfo[1] );
 				@outp[$i] =~ s/\|R\|/\|S\|/;

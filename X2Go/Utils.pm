@@ -132,7 +132,7 @@ sub sanitizer {
 		$string =~ s/[^a-zA-Z0-9\_\-\$\.\@]//g;
 		if ($string =~ /^([a-zA-Z0-9\_\-\$\.\@]*)$/) {
 			$string = $1;
-			if ($string =~ /^([a-zA-Z\_][a-zA-Z0-9\_\-\.\@]{0,31}[\$]?)\-([\d]{2,4})\-([\d]{9,12})\_[a-zA-Z0-9\_\-]*\_dp[\d]{1,2}$/) {
+			if ($string =~ /^([a-zA-Z\_][a-zA-Z0-9\_\-\.\@]{0,31}[\$]?)\-([\d]{2,4})\-([\d]{9,12})\_[a-zA-Z0-9\_\-\.]*\_dp[\d]{1,2}$/) {
 				if ((length($1) > 0) and (length($1) < 32)){
 					return $string;
 				} else {return 0;}
@@ -159,7 +159,8 @@ sub system_capture_stdout_output {
 	my $cmd = shift;
 	my @args = @_;
 	syslog("debug", "executing external command ,,$cmd'' with args: ".join(",", @args));
-	return capture_stdout { system( $cmd, @args ); };
+	my ($stdout, $stderr, @result) = capture { system( $cmd, @args ); };
+	return $stdout;
 }
 
 

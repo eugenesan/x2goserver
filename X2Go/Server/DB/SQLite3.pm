@@ -297,11 +297,9 @@ sub db_createshadowsession
 	my $fs_port=shift or die"argument \"fs_port\" missed";
 	$fs_port = sanitizer('num', $fs_port) or die "argument \"fs_port\" malformed";
 	my $shadreq_user = shift or die "argument \"shadreq_user\" missed";
-	my $fake_sid = $sid;
-	$fake_sid =~ s/^$shadreq_user-/$realuser-/;
-	check_user($fake_sid);
+	check_user($sid);
 	my $sth=$dbh->prepare("update sessions set status='R',last_time=datetime('now','localtime'),cookie=?,agent_pid=?,
-	                       client=?,gr_port=?,sound_port=?,fs_port=? where session_id=? and uname=?");
+	                       client=?,gr_port=?,sound_port=?,fs_port=?,tekictrl_port=-1,tekidata_port=-1 where session_id=? and uname=?");
 	$sth->execute($cookie, $pid, $client, $gr_port, $snd_port, $fs_port, $sid, $shadreq_user);
 	if ($sth->err())
 	{
@@ -658,7 +656,7 @@ sub check_user
 	# session id looks like someuser-51-1304005895_stDgnome-session_dp24
 	# during DB insertsession it only looks like someuser-51-1304005895
 	my $user = "$sid";
-	$user =~ s/$realuser-[0-9]{2,}-[0-9]{10,}.*/$realuser/;
+	$user =~ s/($realuser-[0-9]{2,}-[0-9]{10,}_st(D|R).*|.*-[0-9]{2,}-[0-9]{10,}_stS(0|1)XSHAD$realuser.*)/$realuser/;
 	$user eq $realuser or die "$realuser is not authorized";
 }
 

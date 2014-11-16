@@ -86,20 +86,24 @@ for(my $i=0;$i<@outp;$i++)
 	}
 }
 
-my $outp=`ls -1 /tmp/ | grep x2godesktopsharing_`;
+my $outp=`ls -1 /tmp/ | grep x2godesktopsharing_\@*\@:*`;
 @outp=split("\n","$outp");
 
 for(my $i=0;$i<@outp;$i++)
 {
-	my @ln=split("\@",@outp[$i]);
-	if ( @ln[1] ne $uname )
-	{
-		push (@displays, "@ln[1]\@@ln[2]\n");
+	if (( -r "/tmp/@outp[$i]" ) and ( -w "/tmp/@outp[$i]" )) {
+		my @ln=split("\@",@outp[$i]);
+		if ( @ln[1] ne $uname )
+		{
+			push (@displays, "@ln[1]\@@ln[2]");
+		}
 	}
 }
 
-if (@displays) {
-	print "@displays\n";
+for(my $i=0;$i<@displays;$i++) {
+	if ( @displays[$i] ) {
+		print "@displays[$i]\n";
+	}
 }
 # closing syslog 
 closelog;
