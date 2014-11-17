@@ -64,6 +64,18 @@ if [ -z "$X2GO_CLIENT" ] && [ -n "$SSH_CLIENT" ]; then
 elif [ -z "$X2GO_CLIENT" ] && [ -n "$SSH_CONNECTION" ]; then
 	X2GO_CLIENT=`echo $SSH_CONNECTION | awk '{print $1}'`
 fi
+
+# shadow sessions (via x2godesktopsharing) set the X2GO_CLIENT var in the process environment
+# so either it is already set or we obtain it from SSH_CLIENT/SSH_CONNECTION
+if [ -z "$X2GO_CLIENT" ] && [ -n "$SSH_CLIENT" ]; then
+	X2GO_CLIENT=`echo $SSH_CLIENT | awk '{print $1}'`
+elif [ -z "$X2GO_CLIENT" ] && [ -n "$SSH_CONNECTION" ]; then
+	X2GO_CLIENT=`echo $SSH_CONNECTION | awk '{print $1}'`
+fi
+if [ -z "$X2GO_CLIENT" ]; then
+	echo "The \$X2GO_CLIENT environment variable is not set (due to neither \$SSH_CLIENT nor \$SSH_CONNECTION variable being set). Aborting session startup."
+	exit -3
+fi
 $X2GO_LIB_PATH/x2gosyslog "$0" "debug" "client announced itself as ,,$X2GO_CLIENT''"
 
 X2GO_GEOMETRY="$1"; shift
@@ -134,13 +146,6 @@ if [ "$X2GO_STYPE" == "S" ]; then
 		exit 0
 	fi
 else
-
-	# only check the SSH_CLIENT variable for non-shadow sessions
-	if [ -z "$SSH_CLIENT" ]; then
-		echo "The \$SSH_CLIENT environment variable is not set. Aborting session startup."
-		exit -3
-	fi
-
 	X2GO_CLIPBOARD="$1"; shift
 fi
 
