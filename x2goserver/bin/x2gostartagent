@@ -73,7 +73,7 @@ elif [ -z "$X2GO_CLIENT" ] && [ -n "$SSH_CONNECTION" ]; then
 	X2GO_CLIENT=`echo $SSH_CONNECTION | awk '{print $1}'`
 fi
 if [ -z "$X2GO_CLIENT" ]; then
-	msg="The \$X2GO_CLIENT environment variable is not set (due to neither \$SSH_CLIENT nor \$SSH_CONNECTION variable being set). Aborting session startup."
+	msg="The \$X2GO_CLIENT environment variable is not set. Possible reasons: \$SSH_CLIENT not set or \$SSH_CONNECTION not set. Or \$X2GO_CLIENT not set by ,,X2Go Desktop Sharing'' applet. Aborting session startup."
 	echo "$msg"
 	$X2GO_LIB_PATH/x2gosyslog "$0" "error" "$msg"
 	exit -3
