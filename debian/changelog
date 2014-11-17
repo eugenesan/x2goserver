@@ -1,4 +1,4 @@
-x2goserver (4.1.0.0-0x2go1.1~0) UNRELEASED; urgency=low
+x2goserver (4.1.0.0-0x2go1.1) UNRELEASED; urgency=low
 
   [ Mike Gabriel ]
   * Bump development upstream version to 4.1.0.0.
@@ -48,19 +48,15 @@ x2goserver (4.1.0.0-0x2go1.1~0) UNRELEASED; urgency=low
     - Only use teki_* fields with PostgreSQL DB backend if TeKi is enabled.
     - Provide --updatedb feature in x2godbadmin if DB backend is PostgreSQL.
     - Execute post-start.d extension scripts _after_ the session information has
-      been submitted to the session DB. This allows execution of
-      x2golistsessions and other X2Go commands in post-start.d extension
-      scripts.
+      been submitted to the session DB. This allows execution of x2golistsessions
+      and other X2Go commands in post-start.d extension scripts.
     - Re-arrange parameter order of x2gocreatesession and related DB functions.
       Make sure the session ID comes first and we have only optional parameters
       towards the end of the paramter array.
-    - Fix accessing ARGV in X2Go::Utils:check_x2go_sessionid sub. (Fixes:
-      #575).
-    - Fix TeKi storing Telekinesis ports in PgSQL-based session DB. Allow
-      negative
+    - Fix accessing ARGV in X2Go::Utils:check_x2go_sessionid sub. (Fixes: #575).
+    - Fix TeKi storing Telekinesis ports in PgSQL-based session DB. Allow negative
       port numbers for the case that Telekinesis is not installed.
-    - Fix db_insertmount (SQLite). Pathnames must not be enclosed by
-      parentheses.
+    - Fix db_insertmount (SQLite). Pathnames must not be enclosed by parentheses.
   * debian/control:
     + Package X2Go::Log in separate package: libx2go-log-perl.
     + Package X2Go::Server::DB in separate package: libx2go-server-db-perl.
