@@ -47,6 +47,8 @@ x2goserver (4.0.1.19-0x2go1) UNRELEASED; urgency=medium
       up with that idea.
     - Fix cross-user X2Go Desktop Sharing after being broken by implementing
       clipboard mode feature (and probably other code changes).
+    - Document session startup / resumption failures (and their reasons) in
+      server-side log output.
   * debian/control:
     + Add D (x2goserver): libfile-which-perl.
   * debian/x2goserver.docs:

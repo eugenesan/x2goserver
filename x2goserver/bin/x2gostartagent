@@ -29,19 +29,29 @@ SSH_PORT=30000 #First ssh port 30001
 
 # some sanity checks before session startup...
 if egrep "^backend[ ]*=[ ]*postgres" /etc/x2go/x2gosql/sql 1>/dev/null 2>/dev/null && [ "x$USER" = "xroot" ]; then
-	echo "The super-user \"root\" is not allowed to launch X2Go sessions."
+	msg="The super-user \"root\" is not allowed to launch X2Go sessions."
+	echo "$msg"
+	$X2GO_LIB_PATH/x2gosyslog "$0" "error" "$msg"
 	exit -1
 elif [ -z "$USER" ]; then
-	echo "The \$USER environment variable is not set. Aborting session startup."
+	msg="The \$USER environment variable is not set. Aborting session startup."
+	echo "$msg"
+	$X2GO_LIB_PATH/x2gosyslog "$0" "error" "$msg"
 	exit -2
 elif [ -z "$SSH_CLIENT" ]; then
-	echo "The \$SSH_CLIENT environment variable is not set. Aborting session startup."
+	msg="The \$SSH_CLIENT environment variable is not set. Aborting session startup."
+	echo "$msg"
+	$X2GO_LIB_PATH/x2gosyslog "$0" "error" "$msg"
 	exit -3
 elif [ -z "$HOME" ]; then
-	echo "The \$HOME environment variable is not set. Aborting session startup."
+	msg="The \$HOME environment variable is not set. Aborting session startup."
+	echo "$msg"
+	$X2GO_LIB_PATH/x2gosyslog "$0" "error" "$msg"
 	exit -4
 elif ! echo $HOME | iconv -f ASCII -t ASCII 1>/dev/null 2>/dev/null; then
-	echo "Your home directory path contains non-ASCII characters. Aborting session startup."
+	msg="Your home directory path contains non-ASCII characters. Aborting session startup."
+	echo "$msg"
+	$X2GO_LIB_PATH/x2gosyslog "$0" "error" "$msg"
 	exit -5
 fi
 
@@ -68,7 +78,9 @@ elif [ -z "$X2GO_CLIENT" ] && [ -n "$SSH_CONNECTION" ]; then
 	X2GO_CLIENT=`echo $SSH_CONNECTION | awk '{print $1}'`
 fi
 if [ -z "$X2GO_CLIENT" ]; then
-	echo "The \$X2GO_CLIENT environment variable is not set (due to neither \$SSH_CLIENT nor \$SSH_CONNECTION variable being set). Aborting session startup."
+	msg="The \$X2GO_CLIENT environment variable is not set (due to neither \$SSH_CLIENT nor \$SSH_CONNECTION variable being set). Aborting session startup."
+	echo "$msg"
+	$X2GO_LIB_PATH/x2gosyslog "$0" "error" "$msg"
 	exit -3
 fi
 
@@ -149,6 +161,7 @@ LWORD=`echo $LIMIT | awk '{print $1}'`
 
 if [ "$LWORD" == "LIMIT" ]; then
 	echo  $LIMIT 1>&2
+	$X2GO_LIB_PATH/x2gosyslog "$0" "error" "session limit has been reached for user ,,$USER'', cannot start new session"
 	exit -1
 fi
 
