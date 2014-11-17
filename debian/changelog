@@ -53,7 +53,7 @@ x2goserver (4.1.0.0-0x2go1.1) UNRELEASED; urgency=low
       scripts.
     - Re-arrange parameter order of x2gocreatesession and related DB functions.
       Make sure the session ID comes first and we have only optional parameters
-      towards the end of the paramter array.
+      towards the end of the parameter array.
     - Fix accessing ARGV in X2Go::Utils:check_x2go_sessionid sub. (Fixes:
       #575).
     - Fix TeKi storing Telekinesis ports in PgSQL-based session DB. Allow
