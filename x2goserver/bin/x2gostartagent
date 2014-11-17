@@ -60,7 +60,18 @@ fi
 
 REMOTE=localhost
 
-X2GO_CLIENT=`echo $SSH_CLIENT | awk '{print $1}'`
+# shadow sessions (via x2godesktopsharing) set the X2GO_CLIENT var in the process environment
+# so either it is already set or we obtain it from SSH_CLIENT/SSH_CONNECTION
+if [ -z "$X2GO_CLIENT" ] && [ -n "$SSH_CLIENT" ]; then
+	X2GO_CLIENT=`echo $SSH_CLIENT | awk '{print $1}'`
+elif [ -z "$X2GO_CLIENT" ] && [ -n "$SSH_CONNECTION" ]; then
+	X2GO_CLIENT=`echo $SSH_CONNECTION | awk '{print $1}'`
+fi
+if [ -z "$X2GO_CLIENT" ]; then
+	echo "The \$X2GO_CLIENT environment variable is not set (due to neither \$SSH_CLIENT nor \$SSH_CONNECTION variable being set). Aborting session startup."
+	exit -3
+fi
+
 $X2GO_LIB_PATH/x2gosyslog "$0" "debug" "client announced itself as ,,$X2GO_CLIENT''"
 
 X2GO_GEOMETRY="$1"; shift
@@ -72,9 +83,10 @@ X2GO_KBD_TYPE="$1"; shift
 X2GO_SET_KBD="$1"; shift
 X2GO_STYPE="$1"; shift
 X2GO_CMD="$1"; shift
-X2GO_CLIPBOARD="$1"; shift
 X2GO_RESIZE=1
 X2GO_FULLSCREEN=0
+
+X2GO_CLIPBOARD=""
 
 XAUTHORITY=${XAUTHORITY:-"$HOME/.Xauthority"}
 
@@ -85,16 +97,16 @@ if [ "$X2GO_STYPE" == "S" ]; then
 	SHADOW_USER=`echo $X2GO_CMD |awk '{split($0,a,"XSHAD"); print a[2]}'`
 	SHADOW_DESKTOP=`echo $X2GO_CMD |awk '{split($0,a,"XSHAD"); print a[3]}'`
 
-	test -z $1 && { 
+	if [ -z "$1" ]; then
 
 		# can this line be removed?
 		#echo "suser $SHADOW_USER user $USER " >> /tmp/uagent
 
 		$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "shadow session requested: mode $SHADOW_MODE, user: $SHADOW_USER, desktop: $SHADOW_DESKTOP"
-	} || {
+	else
 		SHADREQ_USER="$1"; shift
 		$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "preparing shadow session request for user $SHADREQ_USER, agent starts for user ${USER}"
-	}
+	fi
 
 	if [ "$SHADOW_USER" != "$USER" ]; then
 
@@ -104,8 +116,12 @@ if [ "$X2GO_STYPE" == "S" ]; then
 		$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "command result is: $OUTPUT"
 		if [ "${OUTPUT:0:4}" == "DENY" ]; then
 			echo "ACCESS DENIED" 1>&2
+			DENIAL_REASON="${OUTPUT:5}"
+			if [ -z "$DENIAL_REASON" ]; then
+				DENIAL_REASON="the user ,,$SHADOW_USER'' does not seem to have desktop sharing activated"
+			fi
 			$X2GO_LIB_PATH/x2gosyslog "$0" "err" "ERROR: user $SHADOW_USER denied desktop sharing session"
-			$X2GO_LIB_PATH/x2gosyslog "$0" "err" "ERROR: reason: for desktop sharing denial ${OUTPUT:5}"
+			$X2GO_LIB_PATH/x2gosyslog "$0" "err" "ERROR: reason: for desktop sharing denial ${DENIAL_REASON}"
 			exit -1
 		fi
 		X2GO_COOKIE=`echo $OUTPUT | awk '{print $2}'`
@@ -123,6 +139,8 @@ if [ "$X2GO_STYPE" == "S" ]; then
 		echo $OUTPUT | awk '{print $6}'
 		echo $OUTPUT | awk '{print $7}'
 		exit 0
+	else
+		X2GO_CLIPBOARD="$1"; shift
 	fi
 fi
 
@@ -257,7 +275,15 @@ STATE_FILE="${X2GO_ROOT}/C-${SESSION_NAME}/state"
 # do not use $TMP or $TEMP here, the session.log file location has to be accessible by root
 SESSION_LOG="${SESSION_DIR}/session.log"
 mkdir -p "${SESSION_DIR}"
-chmod -f 0700 "${SESSION_DIR}"
+if [ "x$X2GO_STYPE" = "xS" ]; then
+	chmod -f 0710 "${SESSION_DIR}"
+	if groups "$USER" | grep x2godesktopsharing 1>/dev/null 2>/dev/null; then
+		$X2GO_LIB_PATH/x2gosyslog "$0" "info" "user ,,$USER'' grants access to ${SESSION_DIR} for group ,,x2godesktopsharing''"
+		chown :x2godesktopsharing "${SESSION_DIR}"
+	fi
+else
+	chmod -f 0700 "${SESSION_DIR}"
+fi
 touch "${SESSION_LOG}"
 chmod -f 0600 "${SESSION_LOG}"
 

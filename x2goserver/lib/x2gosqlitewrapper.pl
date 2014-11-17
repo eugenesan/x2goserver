@@ -522,7 +522,7 @@ sub check_user
 	# session id looks like someuser-51-1304005895_stDgnome-session_dp24
 	# during DB insertsession it only looks like someuser-51-1304005895
 	my $user = "$sid";
-	$user =~ s/$realuser-[0-9]{2,}-[0-9]{10,}.*/$realuser/;
+	$user =~ s/($realuser-[0-9]{2,}-[0-9]{10,}_st(D|R).*|.*-[0-9]{2,}-[0-9]{10,}_stS(0|1)XSHAD$realuser.*)/$realuser/;
 	$user eq $realuser or die "$realuser is not authorized";
 }
 

@@ -49,7 +49,7 @@ sub sanitizer {
 		$string =~ s/[^a-zA-Z0-9\_\-\$\.\@]//g;
 		if ($string =~ /^([a-zA-Z0-9\_\-\$\.\@]*)$/) {
 			$string = $1;
-			if ($string =~ /^([a-zA-Z\_][a-zA-Z0-9\_\-\.\@]{0,47}[\$]?)\-([\d]{2,4})\-([\d]{9,12})\_[a-zA-Z0-9\_\-]*\_dp[\d]{1,2}$/) {
+			if ($string =~ /^([a-zA-Z\_][a-zA-Z0-9\_\-\.\@]{0,31}[\$]?)\-([\d]{2,4})\-([\d]{9,12})\_[a-zA-Z0-9\_\-\.]*\_dp[\d]{1,2}$/) {
 				if ((length($1) > 0) and (length($1) < 48)){
 					return $string;
 				} else {return 0;}

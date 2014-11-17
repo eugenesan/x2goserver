@@ -44,7 +44,16 @@ sub is_suspended
 sub has_agent_state_file
 {
 	my $sess=@_[0];
-	my $user=@_[1];
+	my $user;
+
+	if ( $sess =~ m/.*-[0-9]{2,}-[0-9]{10,}_stS(0|1)XSHAD.*XSHADPP.*/ ) {
+		my $shadow_user = $sess;
+		$shadow_user =~ s/.*XSHAD(.*)XSHADPP.*/$1/;
+		$user = $shadow_user;
+	} else {
+		$user=@_[1];
+	}
+
 	my $stateFile;
 	if ( -d "/tmp-inst/${user}/.x2go-${user}" ) {
 		$stateFile="/tmp-inst/${user}/.x2go-".$user."/C-".$sess."/state";
@@ -61,7 +70,16 @@ sub has_agent_state_file
 sub get_agent_state
 {
 	my $sess=@_[0];
-	my $user=@_[1];
+	my $user;
+
+	if ( $sess =~ m/.*-[0-9]{2,}-[0-9]{10,}_stS(0|1)XSHAD.*XSHADPP.*/ ) {
+		my $shadow_user = $sess;
+		$shadow_user =~ s/.*XSHAD(.*)XSHADPP.*/$1/;
+		$user = $shadow_user;
+	} else {
+		$user=@_[1];
+	}
+
 	my $state;
 	my $stateFile = "/tmp/.x2go-".$user."/C-".$sess."/state";
 	if (! -e $stateFile )
