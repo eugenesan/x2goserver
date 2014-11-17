@@ -38,11 +38,6 @@ elif [ -z "$USER" ]; then
 	echo "$msg"
 	$X2GO_LIB_PATH/x2gosyslog "$0" "error" "$msg"
 	exit -2
-elif [ -z "$SSH_CLIENT" ]; then
-	msg="The \$SSH_CLIENT environment variable is not set. Aborting session startup."
-	echo "$msg"
-	$X2GO_LIB_PATH/x2gosyslog "$0" "error" "$msg"
-	exit -3
 elif [ -z "$HOME" ]; then
 	msg="The \$HOME environment variable is not set. Aborting session startup."
 	echo "$msg"
