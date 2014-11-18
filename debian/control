@@ -60,6 +60,8 @@ Breaks:
 Replaces:
  x2goserver-one,
  x2goserver-home,
+Conflicts:
+ x2godesktopsharing (<< 3.1.1.2),
 Description: X2Go server daemon scripts
  X2Go is a server based computing environment with
     - session resuming
