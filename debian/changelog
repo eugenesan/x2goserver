@@ -79,6 +79,13 @@ x2goserver (4.0.1.19-0x2go1) UNRELEASED; urgency=medium
       "x2gouser".
     + Add to BR: findutils.
 
+  [ Matthew L. Dailey ]
+  * New upstream version (4.0.1.19):
+    - x2gocleansessions: Redirect stdin, stdout and stderr to /dev/null, test
+      for the existence of the file descriptor before issuing the close,
+      only capture the file descriptor backreference in the regex and
+      send any close failures to syslog. (Fixes: #678).
+
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 07 Oct 2014 15:35:38 +0200
 
 x2goserver (4.0.1.18-0x2go1) unstable; urgency=medium

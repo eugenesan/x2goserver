@@ -139,22 +139,20 @@ elsif ($pid == 0 )
 	# close any open file descriptor left open by our parent before the fork
 	my $fd;
 	for (glob "/proc/$$/fd/*") {
-		if ($_ =~ m/\/proc\/(\d+)\/fd\/(\d+)/) {
-			$fd = $2;
-			if ( $fd == 0 ) { next; }
-			if ( $fd == 1 ) { next; }
-			if (POSIX::close($fd)) {
-				print "";
-				#print "Closed:II$_\n";
-			} else {
-				print "";
-				#print "Error Closing:I$_\n";
+		if ( ! -e $_ ) { next; }
+		if ($_ =~ m/\/proc\/\d+\/fd\/(\d+)/) {
+			$fd = $1;
+			if ( $fd < 3 ) { next; }
+			if (! POSIX::close($fd)) {
+				syslog('warning', "Error Closing $_: $!");
 			}
-		} else {
-			print "";
-			#print "ERROR: $_\n";
 		}
 	}
+
+	# redirect stdin, stdout and stderr
+	open *STDIN, q{<}, '/dev/null';
+	open *STDOUT, q{>>}, '/dev/null';
+	open *STDERR, q{>>}, '/dev/null';
 
 	$SIG{TERM}=\&catch_term;
 	$SIG{CHLD} = sub { wait };
