@@ -1,11 +1,11 @@
 # x2goserver-xsession
-This folder contains the scripts to enable you to use your own Xsessions file instead of the system ones.
+This folder contains the scripts to enable you to use your own Xsession file instead of the system ones.
 
- * doc 
+ * doc
 
    documentation folder
 
- * etx
+ * etc
 
    contains the default Xsession file
 
