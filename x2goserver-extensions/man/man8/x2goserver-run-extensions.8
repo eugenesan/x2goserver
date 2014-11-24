@@ -25,19 +25,22 @@ provided by third-party X2Go extension packages.
 What this man page is about is not the script usage itself but the way of how to provide X2Go server
 extensions and features without the need to change the core X2Go server scripts.
 .SH MODALITIES
-\fBx2goserver-run-extensions\fR is called with user privileges, as first cmd line argument the session ID is provided
-as the second cmd line argument a (what we call it) modality is provided.
+\fBx2goserver-run-extensions\fR is called with user privileges. As first
+command line argument the session ID and as the second command line argument a
+so-called modality is provided.
 .PP
-This modality tells \fBx2goserver-run-extensions\fR at what stage of an X2go
+This modality tells \fBx2goserver-run-extensions\fR at what stage of an X2Go
 session startup, resumption, suspension or termination the calling script currently is at.
 .PP
-Calling X2Go Server core scripts currently are: \fBx2gostartagent(8)\fR, \fBx2goruncommand(8)\fR, \fBx2goresume-session(8)\fR,
-\fBx2gosuspend-session(8)\fR or \fBx2goterminate-session(8)\fR.
+These X2Go Server core scripts currently call \fBx2goserver-run-extensions\fR:
+\fBx2gostartagent(8)\fR, \fBx2goruncommand(8)\fR, \fBx2goresume-session(8)\fR,
+\fBx2gosuspend-session(8)\fR and \fBx2goterminate-session(8)\fR.
 .PP
 The modality names all refer to a sub-directory of the path:
 
-  \fI<libexecdir>/x2go/extensions\fR,
+  \fI<libexecdir>/x2go/extensions\fR
 
+.\" FIXME: use @@LIBEXECDIR@@ here and generate the manpage at build time, replacing @@LIBEXECDIR@@ with whatever is appropriate.
 where <libexecdir> is /usr/libexec/x2go or /usr/lib/x2go on commonly-used GNU/Linux systems.
 .PP
 In any of these sub-directories third-party X2Go extension packages can place scripts or binaries that will then get executed by the core X2Go server
@@ -65,21 +68,23 @@ The following table shows the available modalities, the calling scripts and the 
                        post-terminate    extensions/post-terminate.d/
                        fail-terminate    extensions/fail-terminate.d/
 
-\fIIMPORTANT:\fR When providing X2Go Server extensions by this mechanism, please pretty well make sure that these extension scripts of yours that you place
+.TP
+\fIIMPORTANT:\fR
+When providing X2Go Server extensions by this mechanism, please pretty well make sure that extension scripts you place
 in either of the above folders do under no circumstance fail during execution. Return codes are ignored and failures are therefore not (yet) propagated.
 .SH EXECUTION OF EXTENSIONS
 Scripts (or binaries) that have been placed into one of the pre/post/fail modality folders (see above) are executed in alpha-numerical sorting order.
 .PP
-Extensions will only get executed if their file names start with three digits.
-This restriction is there to make sure that X2Go Server extensions get executed in the correct/wanted order:
+Extensions will only get executed if their file names start with three digits followed by an underscore character.
+This restriction is in place to make sure that X2Go Server extensions get executed in the correct/wanted order:
 .PP
 For example:
   010_x2goserver-statistics
   020_x2goserver-mail-notify
   021_x2goserver-monitoring
-  etc.pp.
+  etc. pp.
 .SH RETURN VALUES
-As exitcode \fBx2goserver-run-extensions\fR always returns 0 and pretends to be permanently happy :-).
+\fBx2goserver-run-extensions\fR always returns 0 as exit code and pretends to be permanently happy :-).
 .SH SEE ALSO
 \fBx2gostartagent(8)\fR, \fBx2goruncommand(8)\fR, \fBx2goresume-session(8)\fR, \fBx2gosuspend-session(8)\fR and \fBx2goterminate-session(8)\fR.
 .SH AUTHOR

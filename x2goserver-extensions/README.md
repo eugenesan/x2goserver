@@ -1,5 +1,5 @@
 # x2goserver-extensions
-This folder contains the entrypoints for server extensions. This is the namespace in which you'll write your server side contributions.
+This folder contains the entry-points for server extensions. This is the namespace in which you'll write your server side contributions.
 
  * bin
 
@@ -7,12 +7,12 @@ This folder contains the entrypoints for server extensions. This is the namespac
 
  * lib
 
-   contains the different entry points for extensions in order to start have entry points to different scripts running on one of these points in time. these folders will contain your extensions scripts.
+   contains the different entry-points for extensions in order to start have entry points to different scripts running on one of these points in time. these folders will contain your extensions scripts.
 
  * man
- 
-   man page documentations
+
+   man page documentation
 
  * share
 
-   feature starting deamon script 
+   feature starting daemon script
