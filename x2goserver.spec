@@ -557,10 +557,7 @@ exit 0
 %defattr(-,root,root)
 %doc debian/copyright
 %doc debian/changelog
-%dir %{_sysconfdir}/logcheck
-%dir %{_sysconfdir}/logcheck/ignore.d.server
 %config(noreplace) %{_sysconfdir}/logcheck/ignore.d.server/x2goserver
-%dir %{_sysconfdir}/sudoers.d
 %config(noreplace) %{_sysconfdir}/sudoers.d/x2goserver
 %{_bindir}/x2go*
 %exclude %{_bindir}/x2goserver-run-extensions
