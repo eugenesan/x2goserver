@@ -88,6 +88,10 @@ x2goserver (4.0.1.19-0x2go1) UNRELEASED; urgency=medium
       only capture the file descriptor backreference in the regex and
       send any close failures to syslog. (Fixes: #678).
 
+  [ Lars Wendler ]
+  * New upstream version (4.0.1.19):
+    - Use "printf" instead of "echo -n". (Fixes: #668).
+
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 07 Oct 2014 15:35:38 +0200
 
 x2goserver (4.0.1.18-0x2go1) unstable; urgency=medium
