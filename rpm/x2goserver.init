@@ -35,7 +35,7 @@ start() {
 		mkdir $XSOCKDIR
 		chmod 1777 $XSOCKDIR
 	fi
-	echo -n $"Starting $prog: "
+	printf '%s' $"Starting $prog: "
 	daemon $exec $OPTS
 	retval=$?
 	echo
@@ -43,7 +43,7 @@ start() {
 }
 
 stop() {
-	echo -n $"Stopping $prog: "
+	printf '%s' $"Stopping $prog: "
 	killproc $exec
 	retval=$?
 	echo
