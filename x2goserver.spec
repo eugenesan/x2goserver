@@ -557,6 +557,11 @@ exit 0
 %defattr(-,root,root)
 %doc debian/copyright
 %doc debian/changelog
+%if 0%{?suse_version}
+%dir %{_sysconfdir}/logcheck
+%dir %{_sysconfdir}/logcheck/ignore.d.server
+%dir %{_sysconfdir}/sudoers.d
+%endif
 %config(noreplace) %{_sysconfdir}/logcheck/ignore.d.server/x2goserver
 %config(noreplace) %{_sysconfdir}/sudoers.d/x2goserver
 %{_bindir}/x2go*
