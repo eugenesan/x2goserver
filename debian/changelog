@@ -191,6 +191,8 @@ x2goserver (4.0.1.19-0x2go1) UNRELEASED; urgency=medium
       clipboard mode feature (and probably other code changes).
     - Document session startup / resumption failures (and their reasons) in
       server-side log output.
+    - Handle AD domain users gracefully when X2Go is used with SQLite DB
+      backend. (Fixes: #664).
   * debian/control:
     + Add D (x2goserver): libfile-which-perl.
     + Add C (x2goserver: x2godesktopsharing (<< 3.1.1.2).
