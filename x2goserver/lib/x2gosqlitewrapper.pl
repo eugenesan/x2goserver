@@ -519,9 +519,17 @@ sub check_user
 {
 	my $sid=shift or die "argument \"session_id\" missed";
 	return if $realuser eq "root";
+
 	# session id looks like someuser-51-1304005895_stDgnome-session_dp24
 	# during DB insertsession it only looks like someuser-51-1304005895
+
+	# derive the session's user from the session name/id
 	my $user = "$sid";
+
+	# handle ActiveDirectory Domain user accounts gracefully
+	$realuser =~ s/\\//;
+
+	# perform the user check
 	$user =~ s/($realuser-[0-9]{2,}-[0-9]{10,}_st(D|R).*|.*-[0-9]{2,}-[0-9]{10,}_stS(0|1)XSHAD$realuser.*)/$realuser/;
 	$user eq $realuser or die "$realuser is not authorized";
 }
