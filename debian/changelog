@@ -54,6 +54,7 @@ x2goserver (4.0.1.19-0x2go1) UNRELEASED; urgency=medium
       backend. (Fixes: #664).
     - Improve sanitizer, use 'x2gosid' sanitizer for session IDs everywhere.
       Drop unused 'pnixusername' sanitizer in 4.0.1.x release of X2Go Server.
+    - Allow usernames in session IDs of length 48 chars.
   * debian/control:
     + Add D (x2goserver): libfile-which-perl.
     + Add C (x2goserver: x2godesktopsharing (<< 3.1.1.2).
