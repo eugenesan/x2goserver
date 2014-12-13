@@ -459,7 +459,6 @@ getent passwd x2gouser >/dev/null || \
     -c "x2go" x2gouser
 exit 0
 
-
 %post
 # Initialize the session database
 if [ ! -s %{_localstatedir}/lib/x2go/x2go_sessions ]; then
@@ -479,9 +478,6 @@ fi
 %if 0%{?fedora} || 0%{?rhel} >= 7 || 0%{?suse_version} >= 1210
 %if 0%{?fedora} || 0%{?rhel} >= 7
 %systemd_post x2goserver.service
-
-%pre
-%systemd_pre x2goserver.service
 
 %preun
 %systemd_preun x2goserver.service

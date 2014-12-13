@@ -232,6 +232,8 @@ x2goserver (4.0.1.19-0x2go1) UNRELEASED; urgency=medium
     + Add to BR: findutils.
     + For Fedora-like systems, don't make x2goserver bin:package authoritative
       for non-X2Go directories. (Fixes: #676).
+    + Remove macro call %systemd_pre for Fedora/EPEL-7 builds. No such macro in
+      Fedora/RHEL7. (Fixes: 698).
 
   [ Matthew L. Dailey ]
   * New upstream version (4.0.1.19):
