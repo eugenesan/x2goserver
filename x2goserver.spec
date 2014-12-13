@@ -339,12 +339,8 @@ getent passwd x2gouser >/dev/null || \
     -c "x2go" x2gouser
 exit 0
 
-%if 0%{?fedora} || 0%{?rhel} >= 7 || 0%{?suse_version} >= 1210
-%if 0%{?fedora} || 0%{?rhel} >= 7
-%systemd_pre x2goserver.service
-%else
+%if 0%{?suse_version} >= 1210
 %service_add_pre x2goserver.service
-%endif
 %endif
 
 %post
