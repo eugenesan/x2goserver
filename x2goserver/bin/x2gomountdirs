@@ -284,12 +284,12 @@ for (my $i=0;$i<@dirs;$i++)
 		{
 			syslog('debug', "SSH host key has arrived: $key.ident");
 		}
-		$msg = "sshfs $code_conv -o idmap=user,uid=`id -u`,gid=`id -g`,$umaskstr,ServerAliveInterval=300,Cipher=blowfish,IdentityFile=$key,UserKnownHostsFile=$key.ident \"$user\"\@$host:\"@dirs[$i]\" \"$mntpath\" -p $port";
+		$msg = "timeout 30 sshfs $code_conv -o idmap=user,uid=`id -u`,gid=`id -g`,$umaskstr,ServerAliveInterval=300,Cipher=blowfish,IdentityFile=$key,UserKnownHostsFile=$key.ident \"$user\"\@$host:\"@dirs[$i]\" \"$mntpath\" -p $port";
 		syslog('debug', "executing: $msg");
 		print "inserted, $msg\n";
 
 		# FIXME: this system call should be converted to a multi-argument system call while pertaining the redirect of stderr to the mounts.log file
-		if (system("sshfs  $code_conv -o idmap=user,uid=`id -u`,gid=`id -g`,$umaskstr,ServerAliveInterval=300,Cipher=blowfish,IdentityFile=$key,UserKnownHostsFile=$key.ident \"$user\"\@$host:\"@dirs[$i]\" \"$mntpath\" -p $port 1>>$sessiondir/sshfs-mounts.log 2>&1")==0)
+		if (system("timeout 30 sshfs $code_conv -o idmap=user,uid=`id -u`,gid=`id -g`,$umaskstr,ServerAliveInterval=300,Cipher=blowfish,IdentityFile=$key,UserKnownHostsFile=$key.ident \"$user\"\@$host:\"@dirs[$i]\" \"$mntpath\" -p $port 1>>$sessiondir/sshfs-mounts.log 2>&1")==0)
 		{
 			print "mount @dirs[$i] ok\n";
 			syslog('notice', "successfully mounted $user\@$host:$port@dirs[$i] to $mntpath");
@@ -371,9 +371,12 @@ for (my $i=0;$i<@dirs;$i++)
 		else
 		{
 			$msg = "mounting of @dirs[$i] failed";
-			print "$msg\n";
+			print STDERR "$msg\n";
 			syslog('warning', "WARNING: $msg");
 			db_deletemount( $session, $mntpath);
+			# it maybe possible that the sshfs mount is already registered with the
+			# kernel, but dysfunctional. Attempting removal...
+			system("fusermount", "-u", "$mntpath");
 			rmdir($mntpath);
 		}
 	}
@@ -381,7 +384,7 @@ for (my $i=0;$i<@dirs;$i++)
 	{
 		$msg = "insertion of @dirs[$i] failed (already mounted?), not mounting";
 		syslog('warning', "WARNING: $msg");
-		print "$msg\n";
+		print STDERR "$msg\n";
 	}
 }
 
