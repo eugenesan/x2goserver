@@ -60,6 +60,8 @@ x2goserver (4.0.1.19-0x2go1) UNRELEASED; urgency=medium
       mountpoints erroneously registered sshfs mountpoints if sshfs command
       times out. Furthermore, print errors to STDERR (not STDOUT). (Fixes:
       #405).
+    - Handle execution of ss command from Perl script x2golistdesktops in a way
+      that not only works on Debian, but also on Fedora et al. (Fixes: #727).
   * debian/control:
     + Add D (x2goserver): libfile-which-perl.
     + Add C (x2goserver: x2godesktopsharing (<< 3.1.1.2).

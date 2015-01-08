@@ -60,7 +60,15 @@ my $rdisp=join("I",@rdisplays);
 $rdisp="I${rdisp}I";
 
 my $uname=$ENV{'USER'};
+
+# on Debian the ss command is in /usr/bin, on Fedora, it is in /usr/sbin...
+# -> so we need to tweak the PATH env var a little here...
+my $old_PATH=$ENV{'PATH'};
+$ENV{'PATH'}="$ENV{'PATH'}:/usr/sbin:/sbin";
 my $lines=`ss -lxu`;
+$ENV{'PATH'}=$old_PATH;
+undef $old_PATH;
+
 my @lines=split("\n", "$lines");
 
 my @outp = grep ( /(@| )\/tmp\/.X11-unix\/X.*/, @lines);
