@@ -57,7 +57,7 @@ Conflicts:
  x2goserver-home,
  x2goserver-compat,
  x2goserver-pyhoca,
- x2godesktopsharing (<< 3.1.1.2),
+ x2godesktopsharing (<< 3.1.1.2-0~),
 Replaces:
  x2goserver-one,
  x2goserver-home,
