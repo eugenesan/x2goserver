@@ -39,9 +39,9 @@ Files: X2Go/Config.pm
  debian/tmp/usr/share/perl5/X2Go/Server/DB/PostgreSQL.pm
  debian/tmp/usr/share/perl5/X2Go/Server/DB/SQLite3.pm
  libx2go-server-db-perl/lib/libx2go-server-db-sqlite3-wrapper.pl
-Copyright: 2007-2014, Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
-  2007-2014, Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
-  2007-2014, X2Go Project - http://wiki.x2go.org
+Copyright: 2007-2015, Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
+  2007-2015, Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
+  2007-2015, X2Go Project - http://wiki.x2go.org
 License: GPL-2+
  FIXME
 
@@ -49,11 +49,11 @@ Files: X2Go/Utils.pm
  blib/lib/X2Go/Utils.pm
  debian/libx2go-server-perl/usr/share/perl5/X2Go/Utils.pm
  debian/tmp/usr/share/perl5/X2Go/Utils.pm
-Copyright: 2007-2014, Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
-  2007-2014, Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
-  2007-2014, X2Go Project - http://wiki.x2go.org
-  2013-2014, Guangzhou Nianguan Electronics Technology Co.Ltd. <opensource@gznianguan.com>
-  2013-2014, Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
+Copyright: 2007-2015, Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
+  2007-2015, Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
+  2007-2015, X2Go Project - http://wiki.x2go.org
+  2013-2015, Guangzhou Nianguan Electronics Technology Co.Ltd. <opensource@gznianguan.com>
+  2013-2015, Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
 License: GPL-2+
  FIXME
 
@@ -61,9 +61,9 @@ Files: X2Go/SupeReNicer.pm
  blib/lib/X2Go/SupeReNicer.pm
  debian/libx2go-server-perl/usr/share/perl5/X2Go/SupeReNicer.pm
  debian/tmp/usr/share/perl5/X2Go/SupeReNicer.pm
-Copyright: 2013-2014, Guangzhou Nianguan Electronics Technology Co.Ltd. <opensource@gznianguan.com>
-  2013-2014, Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
-  2013-2014, X2Go Project - http://wiki.x2go.org
+Copyright: 2013-2015, Guangzhou Nianguan Electronics Technology Co.Ltd. <opensource@gznianguan.com>
+  2013-2015, Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
+  2013-2015, X2Go Project - http://wiki.x2go.org
 License: GPL-2+
  FIXME
 
@@ -75,8 +75,8 @@ License: UNKNOWN
  FIXME
 
 Files: libx2go-server-db-perl/src/libx2go-server-db-sqlite3-wrapper.c
-Copyright: 2011-2014, Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
-  2011-2014, Moritz 'Morty' Strübe <morty@gmx.net>
+Copyright: 2011-2015, Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
+  2011-2015, Moritz 'Morty' Strübe <morty@gmx.net>
 License: GPL-2+
  FIXME
 

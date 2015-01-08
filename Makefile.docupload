@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 # Makefile.docupload file - for x2goserver
-# Copyright 2010-2011 by Mike Gabriel <mike.gabriel@das-netzwerkteam.de>, GPLv3 applies to this file
+# Copyright 2010-2015 by Mike Gabriel <mike.gabriel@das-netzwerkteam.de>, GPLv3 applies to this file
 
 VERSION=`head -n1 debian/changelog | sed 's,.*(\(.*\)).*,\1,' | cut -d"-" -f1`
 DOC_HOST=code.x2go.org
