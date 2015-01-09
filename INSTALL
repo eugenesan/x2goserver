@@ -1,7 +1,7 @@
 TARBALL INSTALLATION OF x2goserver
 ==================================
 
-1.) USERS + GROUPS for X2go
+1.) USERS + GROUPS for X2Go
 ---------------------------
 Set up x2gouser account and its group if they do not exist
 already:
@@ -56,7 +56,7 @@ Alternatively, you can add a single line to /etc/rc.local:
 
 5.) LOCAL FOLDER SHARING
 ------------------------
-Users that shall be able to use X2go's local folder sharing functionality (via sshfs)
+Users that shall be able to use X2Go's local folder sharing functionality (via sshfs)
 have to be members of your server system's ,,fuse'' group
 
  $ usermod -a -G fuse <username>
@@ -85,7 +85,7 @@ This variant is the default X2Go database setup. The X2Go database keeps track o
 running/suspended/finished X2Go sessions, mounted devices, etc. If you use SQLite3
 as DB backend, X2Go will run on one single server.
 
-For multi-X2goServer support use the PostgreSQL setup variant of X2Go server. All files
+For multi-X2GoServer support use the PostgreSQL setup variant of X2Go server. All files
 are already resent for this setup. If not, please report it as a bug.
 
 
