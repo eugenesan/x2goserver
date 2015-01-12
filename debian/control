@@ -126,7 +126,7 @@ Depends:
  ${misc:Depends},
  ${shlibs:Depends},
  libconfig-simple-perl,
- libdbd-pg-perl,
+ libdbd-pg-perl [!armhf],
  libdbd-sqlite3-perl,
  libx2go-log-perl (>= ${source:Version}), libx2go-log-perl (<< ${source:Version}.1~),
  x2goserver-common (>= ${source:Version}), x2goserver-common (<< ${source:Version}.1~),
