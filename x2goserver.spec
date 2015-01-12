@@ -335,7 +335,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/x2gofm.desktop
 %pre
 getent group x2gouser >/dev/null || groupadd -r x2gouser
 getent passwd x2gouser >/dev/null || \
-    useradd -r -g x2gouser -d %{_localstatedir}/x2go -s /sbin/nologin \
+    useradd -r -g x2gouser -d %{_localstatedir}/lib/x2go -s /sbin/nologin \
     -c "x2go" x2gouser
 exit 0
 

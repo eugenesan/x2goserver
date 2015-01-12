@@ -96,6 +96,7 @@ x2goserver (4.0.1.19-0x2go1) UNRELEASED; urgency=medium
       for non-X2Go directories. (Fixes: #676).
     + Remove macro call %systemd_pre for Fedora/EPEL-7 builds. No such macro in
       Fedora/RHEL7. (Fixes: 698).
+    + Create system user x2gouser with $HOME in /var/lib/x2go. (Fixes: #697).
 
   [ Matthew L. Dailey ]
   * New upstream version (4.0.1.19):
