@@ -34,6 +34,7 @@ Depends:
  xauth,
  psmisc,
  net-tools,
+ xfonts-base,
 Recommends:
  sshfs,
  x11-apps,
@@ -46,7 +47,6 @@ Recommends:
  xinit,
  x2goserver-extensions (= ${source:Version}),
  x2goserver-xsession (= ${source:Version}),
- xfonts-base,
 Suggests:
  x2goserver-printing (= ${source:Version}),
  x2goserver-compat (= ${source:Version}),
