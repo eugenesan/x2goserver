@@ -34,6 +34,7 @@ Depends:
  xauth,
  psmisc,
  net-tools,
+ xfonts-base,
 Recommends:
  sshfs,
  x11-apps,
@@ -48,7 +49,6 @@ Recommends:
  x2goserver-xsession (>= ${source:Version}), x2goserver-xsession (<< ${source:Version}.1~),
  x2goserver-fmbindings (>= ${source:Version}), x2goserver-fmbindings (<< ${source:Version}.1~),
  x2goserver-printing (>= ${source:Version}), x2goserver-printing (<< ${source:Version}.1~),
- xfonts-base,
 Suggests:
  rdesktop,
  pulseaudio-utils
