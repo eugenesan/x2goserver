@@ -47,7 +47,11 @@ Requires(pre):  shadow-utils
 
 # So XSESSIONDIR gets linked
 %if 0%{?suse_version}
-BuildRequires:  xinit
+%if 0%{?suse_version} <= 1130
+BuildRequires: xorg-x11
+%else
+BuildRequires: xinit
+%endif
 %else
 BuildRequires:  xorg-x11-xinit
 %endif

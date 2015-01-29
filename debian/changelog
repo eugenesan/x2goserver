@@ -250,6 +250,7 @@ x2goserver (4.0.1.19-0x2go1) UNRELEASED; urgency=medium
       Fedora/RHEL7. (Fixes: 698).
     + Create system user x2gouser with $HOME in /var/lib/x2go. (Fixes: #697).
     + Always set BuildRoot: parameter.
+    + BuildRequires: SUSE <= 11.3 has xorg-x11, xinit.
 
   [ Matthew L. Dailey ]
   * New upstream version (4.0.1.19):
