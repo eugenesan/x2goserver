@@ -25,6 +25,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %endif
 
 BuildRequires:  findutils
+BuildRequires:  xdg-utils
 BuildRequires:  desktop-file-utils
 BuildRequires:  perl(ExtUtils::MakeMaker)
 
