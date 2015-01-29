@@ -239,7 +239,6 @@ X2Go is a server based computing environment with
 
 This package contains the X2Go::Server::DB Perl package.
 
-
 %package -n perl-X2Go-Log
 Summary:        Perl X2Go::Log package
 Requires:       x2goserver-common = %{version}-%{release}
@@ -459,8 +458,7 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/x2gofm.desktop
 
 
 %pre common
-getent group x2gouser >/dev/null || groupadd -r x2gouser
-getent passwd x2gouser >/dev/null || \
+getent group x2gouser 1>/dev/null || groupadd -r x2gouser
     useradd -r -g x2gouser -d %{_localstatedir}/lib/x2go -s /sbin/nologin \
     -c "x2go" x2gouser
 exit 0
@@ -469,8 +467,8 @@ exit 0
 # Initialize the session database
 if [ ! -s %{_localstatedir}/lib/x2go/x2go_sessions ]; then
   if [ -d %{_datadir}/doc/packages/perl-X2Go-Server-DB ]; then
-    if grep -E "^backend=sqlite.*" /etc/x2go/x2gosql/sql >/dev/null 2>&1; then
-      %{_sbindir}/x2godbadmin --createdb >/dev/null 2>&1 || :
+    if grep -E "^backend=sqlite.*" /etc/x2go/x2gosql/sql 1>/dev/null 2>&1; then
+      %{_sbindir}/x2godbadmin --createdb 1>/dev/null 2>&1 || :
     fi
   fi
 fi
@@ -504,16 +502,16 @@ fi
 %endif
 %else
 /sbin/chkconfig --add x2goserver
-/sbin/service x2goserver condrestart >/dev/null 2>&1 || :
+/sbin/service x2goserver condrestart 1>/dev/null 2>&1 || :
 
 %postun
 if [ "$1" -ge "1" ] ; then
-    /sbin/service x2goserver condrestart >/dev/null 2>&1 || :
+    /sbin/service x2goserver condrestart 1>/dev/null 2>&1 || :
 fi
 
 %preun
 if [ "$1" = 0 ]; then
-        /sbin/service x2goserver stop >/dev/null 2>&1
+        /sbin/service x2goserver stop 1>/dev/null 2>&1
         /sbin/chkconfig --del x2goserver
 fi
 %endif
@@ -523,8 +521,8 @@ fi
 # Initialize the session database
 if [ ! -s %{_localstatedir}/lib/x2go/x2go_sessions ]; then
   if [ -x %{_sbindir}/x2godbadmin ]; then
-    if grep -E "^backend=sqlite.*" /etc/x2go/x2gosql/sql >/dev/null 2>&1; then
-      %{_sbindir}/x2godbadmin --createdb >/dev/null 2>&1 || :
+    if grep -E "^backend=sqlite.*" /etc/x2go/x2gosql/sql 1>/dev/null 2>&1; then
+      %{_sbindir}/x2godbadmin --createdb 1>/dev/null 2>&1 || :
     fi
   fi
 fi
@@ -539,18 +537,18 @@ fi
 
 
 %post fmbindings
-/usr/bin/update-mime-database /usr/share/mime &>/dev/null || :
-/usr/bin/update-desktop-database &>/dev/null || :
+/usr/bin/update-mime-database /usr/share/mime &1>/dev/null 2>/dev/null|| :
+/usr/bin/update-desktop-database &1>/dev/null 2>/dev/null || :
 
 %postun fmbindings
 if [ $1 -eq 0 ] ; then
-        /usr/bin/update-mime-database /usr/share/mime &>/dev/null || :
-        /usr/bin/update-desktop-database &>/dev/null || :
+        /usr/bin/update-mime-database /usr/share/mime &1>/dev/null 2>/dev/null || :
+        /usr/bin/update-desktop-database &1>/dev/null 2>/dev/null || :
 fi
 
 %pre printing
-getent group x2goprint >/dev/null || groupadd -r x2goprint
-getent passwd x2goprint >/dev/null || \
+getent group x2goprint 1>/dev/null || groupadd -r x2goprint
+getent passwd x2goprint 1>/dev/null || \
     useradd -r -g x2goprint -d /var/spool/x2goprint -s /sbin/nologin \
     -c "x2go" x2goprint
 exit 0
