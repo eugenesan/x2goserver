@@ -361,7 +361,7 @@ getent passwd x2gouser 1>/dev/null || \
     -c "x2go" x2gouser
 exit 0
 
-%if 0%{?suse_version} && 0%{?suse_version} >= 1210
+%if 0%{?suse_version} >= 1210
 %service_add_pre x2goserver.service
 %endif
 
@@ -382,10 +382,6 @@ if grep -E "^backend=sqlite.*" /etc/x2go/x2gosql/sql 1>/dev/null 2>/dev/null; th
 fi
 
 %if 0%{?suse_version}
-mkdir -p "%{buildroot}/%_sysconfdir/permissions.d"
-cat > "%{buildroot}/%_sysconfdir/permissions.d/%name" <<-EOF
-    %{_libdir}/x2go/libx2go-server-db-sqlite3-wrapper root:x2gouser 02755
-EOF
 %if 0%{?suse_version} <= 1130
 %run_permissions
 %else
