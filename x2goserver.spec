@@ -24,6 +24,10 @@ BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %endif
 
+%if 0%{?suse_version} && 0%{?suse_version} <= 1120
+BuildRequires: glib2-branding-SLES
+%endif
+
 BuildRequires:  findutils
 
 %if 0%{?suse_version} || 0%{?suse_version} <= 1130
