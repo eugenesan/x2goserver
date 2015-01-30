@@ -548,14 +548,14 @@ fi
 
 %if 0%{?suse_version}
 %if 0%{?suse_version} <= 1130
-%run permissions
+%run_permissions
 %else
 %set_permissions %{_libdir}/x2go/libx2go-server-db-sqlite3-wrapper
 %endif
 
 
 %verifyscript -n perl-X2Go-Server-DB
-%verify permissions -e %{_libdir}/x2go/libx2go-server-db-sqlite3-wrapper
+%verify_permissions -e %{_libdir}/x2go/libx2go-server-db-sqlite3-wrapper
 %endif
 
 
@@ -587,6 +587,7 @@ exit 0
 %endif
 %config(noreplace) %{_sysconfdir}/logcheck/ignore.d.server/x2goserver
 %config(noreplace) %{_sysconfdir}/sudoers.d/x2goserver
+%config(noreplace) %{_sysconfdir}/permissions.d/%name
 %{_bindir}/x2go*
 %exclude %{_bindir}/x2goserver-run-extensions
 %exclude %{_bindir}/x2gofm
@@ -659,6 +660,7 @@ exit 0
 %files -n perl-X2Go-Server-DB
 %defattr(-,root,root)
 %dir %{_libdir}/x2go
+%config(noreplace) %{_sysconfdir}/permissions.d/perl-X2Go-Server-DB
 %{perl_vendorlib}/X2Go/Server/DB*
 %attr(2775,root,x2gouser) %{_libdir}/x2go/libx2go-server-db-sqlite3-wrapper
 %{_libdir}/x2go/libx2go-server-db-sqlite3-wrapper.pl
