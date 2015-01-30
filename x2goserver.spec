@@ -391,7 +391,7 @@ fi
 %if 0%{?suse_version} <= 1130
 %run_permissions
 %else
-%set_permissions %{_libdir}/x2go/libx2go-server-db-sqlite3-wrapper
+%set_permissions %{_libdir}/x2go/x2gosqlitewrapper
 %endif
 %endif
 
