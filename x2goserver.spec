@@ -543,11 +543,15 @@ if [ ! -s %{_localstatedir}/lib/x2go/x2go_sessions ]; then
 fi
 
 %if 0%{?suse_version}
+%if 0%{?suse_version} <= 1130
+%run permissions
+%else
 %set_permissions %{_libdir}/x2go/libx2go-server-db-sqlite3-wrapper
+%endif
 
 
 %verifyscript -n perl-X2Go-Server-DB
-%verify_permissions %{_libdir}/x2go/libx2go-server-db-sqlite3-wrapper
+%verify permissions -e %{_libdir}/x2go/libx2go-server-db-sqlite3-wrapper
 %endif
 
 
