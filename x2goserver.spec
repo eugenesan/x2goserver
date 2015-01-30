@@ -384,7 +384,7 @@ fi
 %if 0%{?suse_version}
 mkdir -p "%{buildroot}/%_sysconfdir/permissions.d"
 cat > "%{buildroot}/%_sysconfdir/permissions.d/%name" <<-EOF
-    %{_libdir}/x2go/libx2go-server-db-sqlite3-wrapper root:x2gouser 02755
+    %{_libdir}/x2go/x2gosqlitewrapper root:x2gouser 02755
 EOF
 %if 0%{?suse_version} <= 1130
 %run_permissions
