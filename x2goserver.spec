@@ -477,6 +477,7 @@ mkdir -p "%{buildroot}/%_sysconfdir/permissions.d"
 cat > "%{buildroot}/%_sysconfdir/permissions.d/perl-X2Go-Server-DB" <<-EOF
 %{_libdir}/x2go/libx2go-server-db-sqlite3-wrapper	root:x2gouser	02755
 EOF
+%endif
 
 %pre common
 if getent group x2gouser 1>/dev/null; then
