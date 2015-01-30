@@ -378,7 +378,11 @@ if grep -E "^backend=sqlite.*" /etc/x2go/x2gosql/sql 1>/dev/null 2>/dev/null; th
 fi
 
 %if 0%{?suse_version}
-%set_permissions %{_libdir}/x2go/x2gosqlitewrapper
+%if 0%{?suse_version} <= 1130
+%run permissions
+%else
+%set_permissions %{_libdir}/x2go/libx2go-server-db-sqlite3-wrapper
+%endif
 %endif
 
 %if 0%{?fedora} || 0%{?rhel} >= 7 || 0%{?suse_version} >= 1210
@@ -418,7 +422,7 @@ fi
 
 %if 0%{?suse_version}
 %verifyscript
-%verify_permissions %{_libdir}/x2go/x2gosqlitewrapper
+%verify permissions -e %{_libdir}/x2go/x2gosqlitewrapper
 %endif
 
 
