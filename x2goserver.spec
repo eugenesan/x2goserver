@@ -387,7 +387,7 @@ cat > "%{buildroot}/%_sysconfdir/permissions.d/%name" <<-EOF
     %{_libdir}/x2go/libx2go-server-db-sqlite3-wrapper root:x2gouser 02755
 EOF
 %if 0%{?suse_version} <= 1130
-%run permissions
+%run_permissions
 %else
 %set_permissions %{_libdir}/x2go/libx2go-server-db-sqlite3-wrapper
 %endif
@@ -430,7 +430,7 @@ fi
 
 %if 0%{?suse_version}
 %verifyscript
-%verify permissions -e %{_libdir}/x2go/x2gosqlitewrapper
+%verify_permissions -e %{_libdir}/x2go/x2gosqlitewrapper
 %endif
 
 
@@ -462,6 +462,7 @@ exit 0
 %endif
 %config(noreplace) %{_sysconfdir}/logcheck/ignore.d.server/x2goserver
 %config(noreplace) %{_sysconfdir}/sudoers.d/x2goserver
+%config(noreplace) %{_sysconfdir}/permissions.d/%name
 %dir %{_sysconfdir}/x2go/
 %config(noreplace) %{_sysconfdir}/x2go/x2go*
 %{_bindir}/x2go*
