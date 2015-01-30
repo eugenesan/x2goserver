@@ -126,7 +126,7 @@ Requires(preun): systemd
 Requires(postun): systemd
 %endif
 
-%if 0%{?suse_version} >= 1210
+%if 0%{?suse_version} && 0%{?suse_version} >= 1210
 %{?systemd_requires}
 %endif
 
