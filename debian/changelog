@@ -108,6 +108,7 @@ x2goserver (4.0.1.19-0x2go1) UNRELEASED; urgency=medium
     + "%set_permissions" / "%verify_permissions" macros are not know in SLE <=
       11.3. Using "%run permissions" and "%verify permissions" instead.
     + Forceful BR on glib2-branding-SLES for SUSE <= 11.2.
+    + On SUSE, add permissions.d/x2goserver.
 
   [ Matthew L. Dailey ]
   * New upstream version (4.0.1.19):
