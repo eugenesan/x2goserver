@@ -253,7 +253,7 @@ x2goserver (4.0.1.19-0x2go1) UNRELEASED; urgency=medium
     + BuildRequires: SUSE <= 11.3 has xorg-x11, not xinit.
     + Requires (x2goserver-xsession): SUSE <= 11.3 has xorg-x11, not xinit.
     + No Bashisms in scriptlets.
-    + rpmlint requires xdg-utils at build time.
+    + rpmlint requires shared-mime-info at build time on SLE <= 11.3.
 
   [ Matthew L. Dailey ]
   * New upstream version (4.0.1.19):

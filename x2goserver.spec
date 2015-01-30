@@ -25,7 +25,11 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %endif
 
 BuildRequires:  findutils
-BuildRequires:  xdg-utils
+
+%if 0%{?suse_version} || 0%{?suse_version} <= 1130
+BuildRequires: shared-mime-info
+%endif
+
 BuildRequires:  desktop-file-utils
 BuildRequires:  perl(ExtUtils::MakeMaker)
 
@@ -375,6 +379,9 @@ Group:          Productivity/Networking/Remote Desktop
 %package fmbindings
 Summary:        X2Go Server (file manager bindings)
 Requires:       %{name} = %{version}-%{release}
+%if 0%{?suse_version} || 0%{?suse_version} <= 1130
+PreReq: shared-mime-info
+%endif
 Requires:       xdg-utils
 Requires:       desktop-file-utils
 Requires(post):   desktop-file-utils
