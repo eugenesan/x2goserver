@@ -25,7 +25,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %endif
 
 %if 0%{?suse_version} && 0%{?suse_version} <= 1120
-BuildRequires: glib2-branding-SLES
+BuildRequires: glib2-branding-SLED
 %endif
 
 BuildRequires:  findutils
