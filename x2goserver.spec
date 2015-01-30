@@ -24,7 +24,7 @@ BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %endif
 
-%if 0%{?suse_version} && 0%{?suse_version} <= 1120
+%if 0%{?suse_version} && 0%{?suse_version} <= 1130
 BuildRequires: glib2-branding-SLED
 %endif
 
