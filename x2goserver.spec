@@ -459,10 +459,13 @@ desktop-file-validate %{buildroot}%{_datadir}/applications/x2gofm.desktop
 
 
 %pre common
-getent group x2gouser 1>/dev/null || groupadd -r x2gouser
+if getent group x2gouser 1>/dev/null; then
+    groupadd -r x2gouser
+fi
+if getent passwd x2gouser >/dev/null; then
     useradd -r -g x2gouser -d %{_localstatedir}/lib/x2go -s /sbin/nologin \
-    -c "x2go" x2gouser
-exit 0
+            -c "x2go" x2gouser
+fi
 
 %post
 # Initialize the session database
