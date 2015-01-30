@@ -472,6 +472,11 @@ echo "Encoding=UTF-8" >> %{buildroot}%{_datadir}/applications/x2gofm.desktop
 %endif
 desktop-file-validate %{buildroot}%{_datadir}/applications/x2gofm.desktop
 
+%if 0%{?suse_version}
+mkdir -p "%{buildroot}/%_sysconfdir/permissions.d"
+cat > "%{buildroot}/%_sysconfdir/permissions.d/perl-X2Go-Server-DB" <<-EOF
+    %{_libdir}/x2go/libx2go-server-db-sqlite3-wrapper root:x2gouser 02755
+EOF
 
 %pre common
 if getent group x2gouser 1>/dev/null; then
@@ -587,7 +592,6 @@ exit 0
 %endif
 %config(noreplace) %{_sysconfdir}/logcheck/ignore.d.server/x2goserver
 %config(noreplace) %{_sysconfdir}/sudoers.d/x2goserver
-%config(noreplace) %{_sysconfdir}/permissions.d/%name
 %{_bindir}/x2go*
 %exclude %{_bindir}/x2goserver-run-extensions
 %exclude %{_bindir}/x2gofm
