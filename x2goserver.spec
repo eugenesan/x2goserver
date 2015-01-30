@@ -353,6 +353,11 @@ echo "Encoding=UTF-8" >> %{buildroot}%{_datadir}/applications/x2gofm.desktop
 %endif
 desktop-file-validate %{buildroot}%{_datadir}/applications/x2gofm.desktop
 
+%if 0%{?suse_version}
+mkdir -p "%{buildroot}/%_sysconfdir/permissions.d"
+cat > "%{buildroot}/%_sysconfdir/permissions.d/%name" <<-EOF
+    %{_libdir}/x2go/x2gosqlitewrapper root:x2gouser 02755
+EOF
 
 %pre
 getent group x2gouser 1>/dev/null || groupadd -r x2gouser
@@ -381,11 +386,6 @@ if grep -E "^backend=sqlite.*" /etc/x2go/x2gosql/sql 1>/dev/null 2>/dev/null; th
   fi
 fi
 
-%if 0%{?suse_version}
-mkdir -p "%{buildroot}/%_sysconfdir/permissions.d"
-cat > "%{buildroot}/%_sysconfdir/permissions.d/%name" <<-EOF
-    %{_libdir}/x2go/x2gosqlitewrapper root:x2gouser 02755
-EOF
 %if 0%{?suse_version} <= 1130
 %run_permissions
 %else
