@@ -476,10 +476,10 @@ EOF
 %endif
 
 %pre common
-if getent group x2gouser 1>/dev/null; then
+if ! getent group x2gouser 1>/dev/null; then
     groupadd -r x2gouser
 fi
-if getent passwd x2gouser >/dev/null; then
+if ! getent passwd x2gouser >/dev/null; then
     useradd -r -g x2gouser -d %{_localstatedir}/lib/x2go -s /sbin/nologin \
             -c "x2go" x2gouser
 fi
