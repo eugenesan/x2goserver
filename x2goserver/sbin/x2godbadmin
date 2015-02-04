@@ -228,10 +228,10 @@ if ($createdb)
 {
 	$dbh=DBI->connect("dbi:Pg:dbname=postgres;host=$host;port=$port;sslmode=$sslmode", "$dbadmin", "$dbadminpass",{AutoCommit => 1}) or die $_;
 	create_database();
-	$dbh->disconnect();
+	undef $dbh;
 	$dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbadmin", "$dbadminpass",{AutoCommit => 1}) or die $_;
 	create_tables();
-	$dbh->disconnect();
+	undef $dbh;
 	exit(0);
 }
 
@@ -239,7 +239,7 @@ if ($listusers)
 {
 	$dbh=DBI->connect("dbi:Pg:dbname=postgres;host=$host;port=$port;sslmode=$sslmode", "$dbadmin", "$dbadminpass",{AutoCommit => 1}) or die $_;
 	list_users();
-	$dbh->disconnect();
+	undef $dbh;
 	exit(0);
 }
 
@@ -275,7 +275,7 @@ if ($rmgroup)
 		rm_user($_);
 	}
 }
-$dbh->disconnect();
+undef $dbh;
 
 sub list_users()
 {

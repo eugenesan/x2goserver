@@ -119,7 +119,7 @@ sub dbsys_deletemounts
 		my $sth=$dbh->prepare("delete from mounts where session_id='$sid'");
 		$sth->execute();
 		$sth->finish();
-		$dbh->disconnect();
+		undef $dbh;
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -150,7 +150,7 @@ sub dbsys_listsessionsroot
 			@strings[$i++]=join('|',@data);
 		}
 		$sth->finish();
-		$dbh->disconnect();
+		undef $dbh;
 		return @strings;
 	}
 	if($backend eq 'sqlite')
@@ -178,7 +178,7 @@ sub dbsys_listsessionsroot_all
 			@strings[$i++]=join('|',@data);
 		}
 		$sth->finish();
-		$dbh->disconnect();
+		undef $dbh;
 		return @strings;
 	}
 	if ($backend eq 'sqlite')
@@ -205,7 +205,7 @@ sub dbsys_getmounts
 			@strings[$i++]=join("|",@data);
 		}
 		$sth->finish();
-		$dbh->disconnect();
+		undef $dbh;
 		@mounts = @strings;
 	}
 	if ($backend eq 'sqlite')
@@ -235,7 +235,7 @@ sub db_getmounts
 			@strings[$i++]=join("|",@data);
 		}
 		$sth->finish();
-		$dbh->disconnect();
+		undef $dbh;
 		@mounts = @strings;
 	}
 	if ($backend eq 'sqlite')
@@ -258,7 +258,7 @@ sub db_deletemount
 		my $sth=$dbh->prepare("delete from mounts_view where session_id='$sid' and path='$path'");
 		$sth->execute();
 		$sth->finish();
-		$dbh->disconnect();
+		undef $dbh;
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -284,7 +284,7 @@ sub db_insertmount
 			$res_ok=1;
 		}
 		$sth->finish();
-		$dbh->disconnect();
+		undef $dbh;
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -310,7 +310,7 @@ sub db_insertsession
 		my $sth=$dbh->prepare("insert into sessions (display,server,uname,session_id) values ('$display','$server','$uname','$sid')");
 		$sth->execute()or die $_;
 		$sth->finish();
-		$dbh->disconnect();
+		undef $dbh;
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -345,7 +345,7 @@ sub db_createsession
 		                      sound_port='$snd_port',fs_port='$fs_port' where session_id='$sid'");
 		$sth->execute()or die;
 		$sth->finish();
-		$dbh->disconnect();
+		undef $dbh;
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -370,7 +370,7 @@ sub db_insertport
 		my $sth=$dbh->prepare("insert into used_ports (server,session_id,port) values  ('$server','$sid','$sshport')");
 		$sth->execute()or die;
 		$sth->finish();
-		$dbh->disconnect();
+		undef $dbh;
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -390,7 +390,7 @@ sub db_rmport
 		my $sth=$dbh->prepare("delete from used_ports where server='$server' and session_id='$sid' and port='$sshport'");
 		$sth->execute()or die;
 		$sth->finish();
-		$dbh->disconnect();
+		undef $dbh;
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -417,7 +417,7 @@ sub db_resume
 			sound_port='$snd_port',fs_port='$fs_port' where session_id = '$sid'");
 		$sth->execute()or die;
 		$sth->finish();
-		$dbh->disconnect();
+		undef $dbh;
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -437,7 +437,7 @@ sub db_changestatus
 		my $sth=$dbh->prepare("update sessions_view set last_time=now(),status='$status' where session_id = '$sid'");
 		$sth->execute()or die;
 		$sth->finish();
-		$dbh->disconnect();
+		undef $dbh;
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -462,7 +462,7 @@ sub db_getstatus
 			$status=@data[0];
 		}
 		$sth->finish();
-		$dbh->disconnect();
+		undef $dbh;
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -490,7 +490,7 @@ sub db_getdisplays
 			@strings[$i++]='|'.@data[0].'|';
 		}
 		$sth->finish();
-		$dbh->disconnect();
+		undef $dbh;
 		@displays = @strings;
 	}
 	if ($backend eq 'sqlite')
@@ -520,7 +520,7 @@ sub db_getports
 			@strings[$i++]='|'.@data[0].'|';
 		}
 		$sth->finish();
-		$dbh->disconnect();
+		undef $dbh;
 		@ports = @strings;
 	}
 	if ($backend eq 'sqlite')
@@ -548,7 +548,7 @@ sub db_getservers
 			@strings[$i++]=@data[0]." ".@data[1];
 		}
 		$sth->finish();
-		$dbh->disconnect();
+		undef $dbh;
 		@servers = @strings;
 	}
 	if ($backend eq 'sqlite')
@@ -578,7 +578,7 @@ sub db_getagent
 			$agent=@data[0];
 		}
 		$sth->finish();
-		$dbh->disconnect();
+		undef $dbh;
 	}
 	if($backend eq 'sqlite')
 	{
@@ -606,7 +606,7 @@ sub db_getdisplay
 			$display=@data[0];
 		}
 		$sth->finish();
-		$dbh->disconnect();
+		undef $dbh;
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -637,7 +637,7 @@ sub db_listsessions
 			@strings[$i++]=join('|',@data);
 		}
 		$sth->finish();
-		$dbh->disconnect();
+		undef $dbh;
 		return @strings;
 	}
 	if ($backend eq 'sqlite')
@@ -666,7 +666,7 @@ sub db_listsessions_all
 			@strings[$i++]=join('|',@data);
 		}
 		$sth->finish();
-		$dbh->disconnect();
+		undef $dbh;
 		return @strings;
 	}
 	if ($backend eq 'sqlite')

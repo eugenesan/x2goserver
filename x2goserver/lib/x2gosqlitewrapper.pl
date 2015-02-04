@@ -509,7 +509,7 @@ else
 	print "unknown command $cmd\n";
 }
 
-$dbh->disconnect();
+undef $dbh;
 
 sub checkroot
 {
