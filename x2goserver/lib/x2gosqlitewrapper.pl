@@ -91,7 +91,12 @@ my ($uname, $pass, $uid, $pgid, $quota, $comment, $gcos, $homedir, $shell, $expi
 my $realuser=$uname;
 
 my $dbh=DBI->connect("dbi:SQLite:dbname=$dbfile","","",{sqlite_use_immediate_transaction => 1, AutoCommit => 1, }) or die $_;
-$dbh->sqlite_busy_timeout( 2000 );
+
+# on SLE 11.x the sqlite_busy_timeout function does not exist, trying to work around that...
+if ( $dbh->can('sqlite_busy_timeout') )
+{
+	$dbh->sqlite_busy_timeout( 2000 );
+}
 
 my $cmd=shift or die "command not specified";
 my $rc=0;
