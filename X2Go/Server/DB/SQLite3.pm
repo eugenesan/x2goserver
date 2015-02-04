@@ -83,6 +83,7 @@ sub dbsys_rmsessionsroot
 	}
 	$sth->finish();
 	undef $dbh;
+	return 1;
 }
 
 sub dbsys_listsessionsroot
@@ -149,6 +150,7 @@ sub dbsys_deletemounts
 	}
 	$sth->finish();
 	undef $dbh;
+	return 1;
 }
 
 sub db_getmounts
@@ -187,6 +189,7 @@ sub db_deletemount
 	}
 	$sth->finish();
 	undef $dbh;
+	return 1;
 }
 
 sub db_insertmount
@@ -328,6 +331,7 @@ sub db_insertport
 	}
 	$sth->finish();
 	undef $dbh;
+	return 1;
 }
 
 sub db_rmport
@@ -346,6 +350,7 @@ sub db_rmport
 	}
 	$sth->finish();
 	undef $dbh;
+	return 1;
 }
 
 sub db_resume
@@ -375,6 +380,7 @@ sub db_resume
 	}
 	$sth->finish();
 	undef $dbh;
+	return 1;
 }
 
 sub db_changestatus
@@ -394,6 +400,7 @@ sub db_changestatus
 	}
 	$sth->finish();
 	undef $dbh;
+	return 1;
 }
 
 sub db_getstatus

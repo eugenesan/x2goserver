@@ -120,6 +120,7 @@ sub dbsys_rmsessionsroot
 	$sth->execute() or die;
 	$sth->finish();
 	undef $dbh;
+	return 1;
 }
 
 sub dbsys_deletemounts
@@ -131,6 +132,7 @@ sub dbsys_deletemounts
 	$sth->execute();
 	$sth->finish();
 	undef $dbh;
+	return 1;
 }
 
 sub dbsys_listsessionsroot
@@ -248,6 +250,7 @@ sub db_deletemount
 	$sth->execute();
 	$sth->finish();
 	undef $dbh;
+	return 1;
 }
 
 sub db_insertmount
@@ -283,6 +286,7 @@ sub db_insertsession
 	$sth->execute()or die $_;
 	$sth->finish();
 	undef $dbh;
+	return 1;
 }
 
 sub db_insertshadowsession
@@ -299,6 +303,7 @@ sub db_insertshadowsession
 	$sth->execute()or die $_;
 	$sth->finish();
 	undef $dbh;
+	return 1;
 }
 
 sub db_createsession
@@ -337,6 +342,7 @@ sub db_createsession
 	$sth->execute() or die;
 	$sth->finish();
 	undef $dbh;
+	return 1;
 }
 
 sub db_insertport
@@ -351,6 +357,7 @@ sub db_insertport
 	$sth->execute()or die;
 	$sth->finish();
 	undef $dbh;
+	return 1;
 }
 
 sub db_rmport
@@ -365,6 +372,7 @@ sub db_rmport
 	$sth->execute()or die;
 	$sth->finish();
 	undef $dbh;
+	return 1;
 }
 
 sub db_resume
@@ -396,6 +404,7 @@ sub db_resume
 	$sth->execute()or die;
 	$sth->finish();
 	undef $dbh;
+	return 1;
 }
 
 sub db_changestatus
@@ -409,6 +418,7 @@ sub db_changestatus
 	$sth->execute()or die;
 	$sth->finish();
 	undef $dbh;
+	return 1;
 }
 
 sub db_getstatus
