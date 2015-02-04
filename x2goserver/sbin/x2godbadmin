@@ -22,7 +22,7 @@
 
 use strict;
 use Sys::Syslog qw( :standard :macros );
-use File::Path qw( make_path );
+use File::Path;
 use Getopt::Long;
 use DBI;
 use Try::Tiny;
@@ -131,7 +131,12 @@ if ($Config->param("backend") eq 'sqlite')
 	{
 		if (! -d "$dir" )
 		{
-			make_path("$dir");
+			if defined (File::Path::make_path)
+				File::Path::make_path("$dir");
+			elsif defined (File::Path::mkpath)
+				File::Path::mkpath("$dir");
+			else
+				die "Unable to create folders with File::Path";
 		}
 		if ( -e $dbfile)
 		{
@@ -480,7 +485,12 @@ sub add_user()
 
 	if (! -d "$dir/.x2go" )
 	{
-		make_path("$dir/.x2go");
+			if defined (File::Path::make_path)
+				File::Path::make_path("$dir/.x2go");
+			elsif defined (File::Path::mkpath)
+				File::Path::mkpath("$dir/.x2go");
+			else
+				die "Unable to create folders with File::Path";
 	}
 
 	#save user password
