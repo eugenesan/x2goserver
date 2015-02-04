@@ -65,7 +65,12 @@ sub init_db
 	my ($uname, $pass, $uid, $pgid, $quota, $comment, $gcos, $homedir, $shell, $expire) = getpwnam($x2gouser);
 	my $dbfile="$homedir/x2go_sessions";
 	my $dbh=DBI->connect("dbi:SQLite:dbname=$dbfile","","",{sqlite_use_immediate_transaction => 1, AutoCommit => 1, }) or die $_;
-	$dbh->sqlite_busy_timeout( 2000 );
+
+	# on SLE 11.x the sqlite_busy_timeout function does not exist, trying to work around that...
+	if ( $dbh->can('sqlite_busy_timeout') )
+	{
+		$dbh->sqlite_busy_timeout( 2000 );
+	}
 	return $dbh;
 }
 
