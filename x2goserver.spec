@@ -665,7 +665,7 @@ exit 0
 %config(noreplace) %{_sysconfdir}/permissions.d/perl-X2Go-Server-DB
 %endif
 %{perl_vendorlib}/X2Go/Server/DB*
-%attr(2775,root,x2gouser) %{_libdir}/x2go/libx2go-server-db-sqlite3-wrapper
+%attr(2755,root,x2gouser) %{_libdir}/x2go/libx2go-server-db-sqlite3-wrapper
 %{_libdir}/x2go/libx2go-server-db-sqlite3-wrapper.pl
 %{_mandir}/man3/X2Go::Server::DB.*
 %{_mandir}/man3/X2Go::Server::DB::*
