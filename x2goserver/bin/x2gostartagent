@@ -31,22 +31,22 @@ SSH_PORT=30000 #First ssh port 30001
 if egrep "^backend[ ]*=[ ]*postgres" /etc/x2go/x2gosql/sql 1>/dev/null 2>/dev/null && [ "x$USER" = "xroot" ]; then
 	msg="The super-user \"root\" is not allowed to launch X2Go sessions."
 	echo "$msg"
-	$X2GO_LIB_PATH/x2gosyslog "$0" "error" "$msg"
+	$X2GO_LIB_PATH/x2gosyslog "$0" "err" "$msg"
 	exit -1
 elif [ -z "$USER" ]; then
 	msg="The \$USER environment variable is not set. Aborting session startup."
 	echo "$msg"
-	$X2GO_LIB_PATH/x2gosyslog "$0" "error" "$msg"
+	$X2GO_LIB_PATH/x2gosyslog "$0" "err" "$msg"
 	exit -2
 elif [ -z "$HOME" ]; then
 	msg="The \$HOME environment variable is not set. Aborting session startup."
 	echo "$msg"
-	$X2GO_LIB_PATH/x2gosyslog "$0" "error" "$msg"
+	$X2GO_LIB_PATH/x2gosyslog "$0" "err" "$msg"
 	exit -4
 elif ! echo $HOME | iconv -f ASCII -t ASCII 1>/dev/null 2>/dev/null; then
 	msg="Your home directory path contains non-ASCII characters. Aborting session startup."
 	echo "$msg"
-	$X2GO_LIB_PATH/x2gosyslog "$0" "error" "$msg"
+	$X2GO_LIB_PATH/x2gosyslog "$0" "err" "$msg"
 	exit -5
 fi
 
@@ -75,7 +75,7 @@ fi
 if [ -z "$X2GO_CLIENT" ]; then
 	msg="The \$X2GO_CLIENT environment variable is not set. Possible reasons: \$SSH_CLIENT not set or \$SSH_CONNECTION not set. Or \$X2GO_CLIENT not set by ,,X2Go Desktop Sharing'' applet. Aborting session startup."
 	echo "$msg"
-	$X2GO_LIB_PATH/x2gosyslog "$0" "error" "$msg"
+	$X2GO_LIB_PATH/x2gosyslog "$0" "err" "$msg"
 	exit -3
 fi
 
@@ -156,7 +156,7 @@ LWORD=`echo $LIMIT | awk '{print $1}'`
 
 if [ "$LWORD" == "LIMIT" ]; then
 	echo  $LIMIT 1>&2
-	$X2GO_LIB_PATH/x2gosyslog "$0" "error" "session limit has been reached for user ,,$USER'', cannot start new session"
+	$X2GO_LIB_PATH/x2gosyslog "$0" "err" "session limit has been reached for user ,,$USER'', cannot start new session"
 	exit -1
 fi
 
