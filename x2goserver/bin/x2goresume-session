@@ -26,7 +26,7 @@ if [ $# -lt 7 ]
 then
 	msg="not enough command line arguments"
 	echo "$msg"
-	$X2GO_LIB_PATH/x2gosyslog "$0" "error" "$msg"
+	$X2GO_LIB_PATH/x2gosyslog "$0" "err" "$msg"
 	exit -1
 fi
 
@@ -61,7 +61,7 @@ if [ "$STATE" == "TERMINATED" ] || [ "$STATE" == "TERMINATING" ]
 then
 	msg="session $SESSION_NAME terminated"
 	echo "$msg"
-	$X2GO_LIB_PATH/x2gosyslog "$0" "error" "$msg"
+	$X2GO_LIB_PATH/x2gosyslog "$0" "err" "$msg"
 	exit -1
 fi
 
@@ -99,7 +99,7 @@ do
 	then
 		msg="it is taking too long to suspend the session-to-be-resumed; it is possible that the session is in a damaged state"
 		echo "$msg"
-		$X2GO_LIB_PATH/x2gosyslog "$0" "error" "$msg"
+		$X2GO_LIB_PATH/x2gosyslog "$0" "err" "$msg"
 		exit -1;
 	fi
 	STATE=`$X2GO_LIB_PATH/x2gogetagentstate "$SESSION_NAME"`
