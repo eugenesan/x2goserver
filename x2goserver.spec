@@ -473,7 +473,7 @@ exit 0
 %exclude %{_bindir}/x2goprint
 %dir %{_libdir}/x2go
 %{_libdir}/x2go/x2gosqlitewrapper.pl
-%attr(2775,root,x2gouser) %{_libdir}/x2go/x2gosqlitewrapper
+%attr(2755,root,x2gouser) %{_libdir}/x2go/x2gosqlitewrapper
 %{_libdir}/x2go/x2gochangestatus
 %{_libdir}/x2go/x2gocreatesession
 %{_libdir}/x2go/x2godbwrapper.pm
