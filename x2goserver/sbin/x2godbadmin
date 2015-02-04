@@ -354,7 +354,7 @@ if ($updatedb)
 			}
 		}
 		if ($dbh) {
-			$dbh->disconnect();
+			undef $dbh;
 		}
 		exit(0);
 	} else {
@@ -407,7 +407,7 @@ if ($rmgroup)
 		rm_user($_);
 	}
 }
-$dbh->disconnect();
+undef $dbh;
 
 sub list_users()
 {
@@ -423,7 +423,7 @@ sub list_users()
 		printf ("%-20s x2gouser_@data[0]\n",@data[0]);
 	}
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 }
 
 sub rm_user()
@@ -694,7 +694,7 @@ sub create_tables()
 	$sth=$dbh->prepare("GRANT ALL PRIVILEGES ON sessions, messages, user_messages, used_ports, mounts TO $x2goadmin");
 	$sth->execute() or die;
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 }
 
 sub create_database
@@ -717,5 +717,5 @@ sub create_database
 	print FL $x2goadminpass;
 	close(FL);
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 }

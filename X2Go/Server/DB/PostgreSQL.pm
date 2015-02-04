@@ -119,7 +119,7 @@ sub dbsys_rmsessionsroot
 	$sth=$dbh->prepare("delete from used_ports where session_id='$sid'");
 	$sth->execute() or die;
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 }
 
 sub dbsys_deletemounts
@@ -130,7 +130,7 @@ sub dbsys_deletemounts
 	my $sth=$dbh->prepare("delete from mounts where session_id='$sid'");
 	$sth->execute();
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 }
 
 sub dbsys_listsessionsroot
@@ -162,7 +162,7 @@ sub dbsys_listsessionsroot
 		@strings[$i++]=join('|',@data);
 	}
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 	return @strings;
 }
 
@@ -193,7 +193,7 @@ sub dbsys_listsessionsroot_all
 		@strings[$i++]=join('|',@data);
 	}
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 	return @strings;
 }
 
@@ -213,7 +213,7 @@ sub dbsys_getmounts
 		@mounts[$i++]=join("|",@data);
 	}
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 	return @mounts;
 }
 
@@ -233,7 +233,7 @@ sub db_getmounts
 		@mounts[$i++]=join("|",@data);
 	}
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 	return @mounts;
 }
 
@@ -247,7 +247,7 @@ sub db_deletemount
 	my $sth=$dbh->prepare("delete from mounts_view where session_id='$sid' and path='$path'");
 	$sth->execute();
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 }
 
 sub db_insertmount
@@ -266,7 +266,7 @@ sub db_insertmount
 		$res_ok = 1;
 	}
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 	return $res_ok;
 }
 
@@ -282,7 +282,7 @@ sub db_insertsession
 	my $sth=$dbh->prepare("insert into sessions (display,server,uname,session_id) values ('$display','$server','$uname','$sid')");
 	$sth->execute()or die $_;
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 }
 
 sub db_insertshadowsession
@@ -298,7 +298,7 @@ sub db_insertshadowsession
 	my $sth=$dbh->prepare("insert into sessions (display,server,uname,session_id) values ('$display','$server','$shadreq_user','$sid')");
 	$sth->execute()or die $_;
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 }
 
 sub db_createsession
@@ -336,7 +336,7 @@ sub db_createsession
 	}
 	$sth->execute() or die;
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 }
 
 sub db_insertport
@@ -350,7 +350,7 @@ sub db_insertport
 	my $sth=$dbh->prepare("insert into used_ports (server,session_id,port) values  ('$server','$sid','$sshport')");
 	$sth->execute()or die;
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 }
 
 sub db_rmport
@@ -364,7 +364,7 @@ sub db_rmport
 	my $sth=$dbh->prepare("delete from used_ports where server='$server' and session_id='$sid' and port='$sshport'");
 	$sth->execute()or die;
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 }
 
 sub db_resume
@@ -395,7 +395,7 @@ sub db_resume
 	}
 	$sth->execute()or die;
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 }
 
 sub db_changestatus
@@ -408,7 +408,7 @@ sub db_changestatus
 	my $sth=$dbh->prepare("update sessions_view set last_time=now(),status='$status' where session_id = '$sid'");
 	$sth->execute()or die;
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 }
 
 sub db_getstatus
@@ -426,7 +426,7 @@ sub db_getstatus
 		$status=@data[0];
 	}
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 	return $status;
 }
 
@@ -446,7 +446,7 @@ sub db_getdisplays
 		@displays[$i++]='|'.@data[0].'|';
 	}
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 	return @displays;
 }
 
@@ -466,7 +466,7 @@ sub db_getports
 		@ports[$i++]='|'.@data[0].'|';
 	}
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 	return @ports;
 }
 
@@ -484,7 +484,7 @@ sub db_getservers
 		@servers[$i++]=@data[0]." ".@data[1];
 	}
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 	return @servers;
 }
 
@@ -505,7 +505,7 @@ sub db_getagent
 		$agent=@data[0];
 	}
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 	return $agent;
 }
 
@@ -526,7 +526,7 @@ sub db_getdisplay
 		$display=@data[0];
 	}
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 	return $display;
 }
 
@@ -560,7 +560,7 @@ sub db_listsessions
 		@sessions[$i++]=join('|',@data);
 	}
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 	return @sessions;
 }
 
@@ -593,7 +593,7 @@ sub db_listsessions_all
 		@sessions[$i++]=join('|',@data);
 	}
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 	return @sessions;
 }
 
@@ -617,7 +617,7 @@ sub db_listshadowsessions
 		@sessions[$i++]=join('|',@data);
 	}
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 	return @sessions;
 }
 
@@ -640,7 +640,7 @@ sub db_listshadowsessions_all
 		@sessions[$i++]=join('|',@data);
 	}
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 	return @sessions;
 }
 

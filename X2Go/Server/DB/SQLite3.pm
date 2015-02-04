@@ -82,7 +82,7 @@ sub dbsys_rmsessionsroot
 		die;
 	}
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 }
 
 sub dbsys_listsessionsroot
@@ -106,7 +106,7 @@ sub dbsys_listsessionsroot
 	}
 	my @sessions = fetchrow_array_datasets($sth);
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 	return @sessions;
 }
 
@@ -131,7 +131,7 @@ sub dbsys_listsessionsroot_all
 	}
 	my @sessions = fetchrow_array_datasets($sth);
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 	return @sessions;
 }
 
@@ -148,7 +148,7 @@ sub dbsys_deletemounts
 		die();
 	}
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 }
 
 sub db_getmounts
@@ -167,7 +167,7 @@ sub db_getmounts
 	}
 	my @mounts = fetchrow_array_datasets($sth);
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 	return @mounts;
 }
 
@@ -186,7 +186,7 @@ sub db_deletemount
 		die();
 	}
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 }
 
 sub db_insertmount
@@ -207,7 +207,7 @@ sub db_insertmount
 		syslog('debug', "insertmount (SQLite3 session db backend) failed with exitcode: $sth->err(), this issue will be interpreted as: SSHFS share already mounted");
 	}
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 	return $success;
 }
 
@@ -224,7 +224,7 @@ sub db_insertsession
 	                       (?, ?, ?, ?, datetime('now','localtime'), datetime('now','localtime'))");
 	$sth->execute($display, $server, $realuser, $sid) or die $_;
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 	return 1;
 }
 
@@ -244,7 +244,7 @@ sub db_insertshadowsession
 	                       (?, ?, ?, ?, datetime('now','localtime'), datetime('now','localtime'))");
 	$sth->execute($display, $server, $shadreq_user, $sid) or die $_;
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 	return 1;
 }
 
@@ -277,7 +277,7 @@ sub db_createsession
 		die();
 	}
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 	return 1;
 }
 
@@ -307,7 +307,7 @@ sub db_createshadowsession
 		die();
 	}
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 	return 1;
 }
 
@@ -327,7 +327,7 @@ sub db_insertport
 		die();
 	}
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 }
 
 sub db_rmport
@@ -345,7 +345,7 @@ sub db_rmport
 		die();
 	}
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 }
 
 sub db_resume
@@ -374,7 +374,7 @@ sub db_resume
 		die();
 	}
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 }
 
 sub db_changestatus
@@ -393,7 +393,7 @@ sub db_changestatus
 		die();
 	}
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 }
 
 sub db_getstatus
@@ -416,7 +416,7 @@ sub db_getstatus
 		$status = $data[0];
 	}
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 	return $status;
 }
 
@@ -439,7 +439,7 @@ sub db_getdisplays
 		$strings[$i++]='|'.$data[0].'|';
 	}
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 	return join("\n",@strings);
 }
 
@@ -463,7 +463,7 @@ sub db_getports
 		$strings[$i++]='|'.$data[0].'|';
 	}
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 	return join("\n",@strings);
 }
 
@@ -485,7 +485,7 @@ sub db_getservers
 		$strings[$i++]=$data[0];
 	}
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 	return join("\n",@strings);
 }
 
@@ -511,7 +511,7 @@ sub db_getagent
 		$agent=$data[0];
 	}
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 	return $agent;
 }
 
@@ -537,7 +537,7 @@ sub db_getdisplay
 		$display=$data[0];
 	}
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 	return $display;
 }
 
@@ -563,7 +563,7 @@ sub db_listsessions
 	}
 	my @sessions = fetchrow_array_datasets($sth);
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 	return @sessions;
 }
 
@@ -588,7 +588,7 @@ sub db_listsessions_all
 	}
 	my @sessions = fetchrow_array_datasets($sth);
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 	return @sessions;
 }
 
@@ -613,7 +613,7 @@ sub db_listshadowsessions
 	}
 	my @sessions = fetchrow_array_datasets($sth);
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 	return @sessions;
 }
 
@@ -637,7 +637,7 @@ sub db_listshadowsessions_all
 	}
 	my @sessions = fetchrow_array_datasets($sth);
 	$sth->finish();
-	$dbh->disconnect();
+	undef $dbh;
 	return @sessions;
 }
 
