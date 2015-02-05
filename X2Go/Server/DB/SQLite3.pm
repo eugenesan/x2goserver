@@ -395,9 +395,16 @@ sub db_changestatus
 	my $sid=shift or die "argument \"session_id\" missed";
 	$sid = sanitizer('x2gosid', $sid) or die "argument \"session_id\" malformed";
 	check_user($sid);
+
+	# we need to be able to change the state of normal sessions ($realuser == $effective_user)
+	# _and_ desktop sharing session ($realuser != $effective_user). Thus, extracting the effective
+	# username from the session ID...
+	my $effective_user = $sid;
+	$effective_user =~ s/\-[0-9]+\-[0-9]{10}_.*//;
+
 	my $sth=$dbh->prepare("update sessions set last_time=datetime('now','localtime'),
 	                       status=? where session_id = ? and uname=?");
-	$sth->execute($status, $sid, $realuser);
+	$sth->execute($status, $sid, $effective_user);
 	if ($sth->err())
 	{
 		syslog('error', "changestatus (SQLite3 session db backend) failed with exitcode: $sth->err()");
