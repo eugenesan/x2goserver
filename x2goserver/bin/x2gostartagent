@@ -67,12 +67,6 @@ fi
 
 REMOTE=localhost
 
-if [ -z "$X2GO_CLIENT" ] && [ -n "$SSH_CLIENT" ]; then
-	X2GO_CLIENT=`echo $SSH_CLIENT | awk '{print $1}'`
-elif [ -z "$X2GO_CLIENT" ] && [ -n "$SSH_CONNECTION" ]; then
-	X2GO_CLIENT=`echo $SSH_CONNECTION | awk '{print $1}'`
-fi
-
 # shadow sessions (via x2godesktopsharing) set the X2GO_CLIENT var in the process environment
 # so either it is already set or we obtain it from SSH_CLIENT/SSH_CONNECTION
 if [ -z "$X2GO_CLIENT" ] && [ -n "$SSH_CLIENT" ]; then
