@@ -357,11 +357,13 @@ EOF
 %endif
 
 %pre
-getent group x2gouser 1>/dev/null || groupadd -r x2gouser
-getent passwd x2gouser 1>/dev/null || \
+if ! getent group x2gouser 1>/dev/null; then
+    groupadd -r x2gouser
+fi
+if ! getent passwd x2gouser 1>/dev/null; then
     useradd -r -g x2gouser -d %{_localstatedir}/lib/x2go -s /sbin/nologin \
-    -c "x2go" x2gouser
-exit 0
+            -c "x2go" x2gouser
+fi
 
 %if 0%{?suse_version} >= 1210
 %service_add_pre x2goserver.service
@@ -442,12 +444,13 @@ if [ $1 -eq 0 ] ; then
         /usr/bin/update-desktop-database &1>/dev/null 2>/dev/null || :
 fi
 
+
 %pre printing
 getent group x2goprint 1>/dev/null || groupadd -r x2goprint
 getent passwd x2goprint 1>/dev/null || \
     useradd -r -g x2goprint -d /var/spool/x2goprint -s /sbin/nologin \
     -c "x2go" x2goprint
-exit 0
+
 
 %files
 %defattr(-,root,root)
@@ -517,6 +520,8 @@ exit 0
 
 
 %files extensions
+%doc debian/copyright
+%doc debian/changelog
 %defattr(-,root,root)
 %{_libdir}/x2go/extensions
 %{_bindir}/x2goserver-run-extensions
@@ -526,6 +531,8 @@ exit 0
 
 
 %files fmbindings
+%doc debian/copyright
+%doc debian/changelog
 %defattr(-,root,root)
 %{_bindir}/x2gofm
 %{_datadir}/applications/x2gofm.desktop
@@ -537,6 +544,8 @@ exit 0
 
 %files printing
 %defattr(-,root,root)
+%doc debian/copyright
+%doc debian/changelog
 %{_bindir}/x2goprint
 %{_datadir}/x2go/versions/VERSION.x2goserver-printing
 %{_datadir}/x2go/x2gofeature.d/x2goserver-printing.features
@@ -546,6 +555,8 @@ exit 0
 
 %files xsession
 %defattr(-,root,root)
+%doc debian/copyright
+%doc debian/changelog
 %{_sysconfdir}/x2go/xinitrc.d
 %if 0%{?fedora} || 0%{?rhel}
 %{_sysconfdir}/x2go/Xclients.d
