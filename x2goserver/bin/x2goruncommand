@@ -31,6 +31,13 @@ X2GO_LIB_PATH="$(x2gopath libexec)";
 
 "$X2GO_LIB_PATH/x2gosyslog" "$0" "info" "$(basename $0) called with options: $@"
 
+# newer SSH daemons don't set $SSH_CLIENT anymore...
+if [ -z "$SSH_CLIENT" ] && [ -n "$SSH_CONNECTION" ]; then
+	set -- $SSH_CONNECTION
+	SSH_CLIENT="$1 $2 $4"
+	export SSH_CLIENT
+fi
+
 export DISPLAY
 export XAUTHORITY=${XAUTHORITY:-"$HOME/.Xauthority"}
 export X2GO_AGENT_PID

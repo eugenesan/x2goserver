@@ -69,6 +69,8 @@ x2goserver (4.0.1.19-0x2go1) UNRELEASED; urgency=medium
       SLE 11.x.
     - Only call $dbh->sqlite_busy_timeout() if the $dbh object is capable of
       that. Works around a too-old DBD::SQLite package on SLE 11.x.
+    - Legacy for applications (and X2Go scripts) that expect $SSH_CLIENT to be
+      set in the X2Go session's environment. (Fixes: #644).
   * debian/control:
     + Add D (x2goserver): libfile-which-perl.
     + Add C (x2goserver: x2godesktopsharing (<< 3.1.1.2-0~). (Fixes: #700).
