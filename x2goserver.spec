@@ -97,7 +97,6 @@ Requires:       sshfs
 Requires:       sudo
 Requires:       x2goagent >= 3.5.0.25
 Requires(post): grep
-Requires(post): perl(DBD::SQLite)
 Requires:       perl(File::Which)
 Requires:       perl(File::BaseDir)
 
@@ -215,7 +214,7 @@ Summary:        Perl X2Go::Server::DB package
 Requires:       x2goserver-common = %{version}-%{release}
 Requires:       perl-X2Go-Log = %{version}-%{release}
 Requires:       perl(Config::Simple)
-Requires:       perl(DBD::SQLite)
+Requires(post): perl(DBD::SQLite)
 Requires:       perl(DBD::Pg)
 %if 0%{?suse_version}
 Requires(pre):  permissions
@@ -479,7 +478,7 @@ EOF
 if ! getent group x2gouser 1>/dev/null; then
     groupadd -r x2gouser
 fi
-if ! getent passwd x2gouser >/dev/null; then
+if ! getent passwd x2gouser 1>/dev/null; then
     useradd -r -g x2gouser -d %{_localstatedir}/lib/x2go -s /sbin/nologin \
             -c "x2go" x2gouser
 fi
@@ -571,12 +570,13 @@ if [ $1 -eq 0 ] ; then
         /usr/bin/update-desktop-database &1>/dev/null 2>/dev/null || :
 fi
 
+
 %pre printing
 getent group x2goprint 1>/dev/null || groupadd -r x2goprint
 getent passwd x2goprint 1>/dev/null || \
     useradd -r -g x2goprint -d /var/spool/x2goprint -s /sbin/nologin \
     -c "x2go" x2goprint
-exit 0
+
 
 %files
 %defattr(-,root,root)
@@ -637,6 +637,8 @@ exit 0
 
 %files -n perl-X2Go-Log
 %defattr(-,root,root)
+%doc debian/copyright
+%doc debian/changelog
 %dir %{perl_vendorlib}/X2Go
 %{perl_vendorlib}/X2Go/Log.pm
 %{_mandir}/man3/X2Go::Log.*
@@ -644,6 +646,8 @@ exit 0
 
 %files -n perl-X2Go-Server
 %defattr(-,root,root)
+%doc debian/copyright
+%doc debian/changelog
 %dir %{perl_vendorlib}/X2Go/Server
 %{perl_vendorlib}/X2Go/Config.pm
 %{perl_vendorlib}/X2Go/Server.pm
@@ -660,6 +664,8 @@ exit 0
 
 %files -n perl-X2Go-Server-DB
 %defattr(-,root,root)
+%doc debian/copyright
+%doc debian/changelog
 %dir %{_libdir}/x2go
 %if 0%{?suse_version}
 %config(noreplace) %{_sysconfdir}/permissions.d/perl-X2Go-Server-DB
@@ -673,6 +679,8 @@ exit 0
 
 %files common
 %defattr(-,root,root)
+%doc debian/copyright
+%doc debian/changelog
 %attr(0775,root,x2gouser) %dir %{_localstatedir}/lib/x2go/
 %dir %{_sysconfdir}/x2go/
 %dir %{_sysconfdir}/x2go/x2gosql
@@ -684,6 +692,8 @@ exit 0
 
 %files extensions
 %defattr(-,root,root)
+%doc debian/copyright
+%doc debian/changelog
 %{_libdir}/x2go/extensions
 %{_bindir}/x2goserver-run-extensions
 %{_datadir}/x2go/x2gofeature.d/x2goserver-extensions.features
@@ -693,6 +703,8 @@ exit 0
 
 %files fmbindings
 %defattr(-,root,root)
+%doc debian/copyright
+%doc debian/changelog
 %{_bindir}/x2gofm
 %{_datadir}/applications/x2gofm.desktop
 %{_datadir}/mime/packages/sshfs-x2go.xml
@@ -703,6 +715,8 @@ exit 0
 
 %files printing
 %defattr(-,root,root)
+%doc debian/copyright
+%doc debian/changelog
 %{_bindir}/x2goprint
 %{_datadir}/x2go/versions/VERSION.x2goserver-printing
 %{_datadir}/x2go/x2gofeature.d/x2goserver-printing.features
@@ -712,6 +726,8 @@ exit 0
 
 %files xsession
 %defattr(-,root,root)
+%doc debian/copyright
+%doc debian/changelog
 %{_sysconfdir}/x2go/xinitrc.d
 %if 0%{?fedora} || 0%{?rhel}
 %{_sysconfdir}/x2go/Xclients.d
