@@ -64,6 +64,8 @@ x2goserver (4.1.0.0-0x2go1.1) UNRELEASED; urgency=low
     - Make sure to return "1" in X2Go::Server::DB Perl functions that don't
       return anything by default.
     - Make it possible to change the state of shadow sessions.
+    - Provide --debug option for x2gocleansession that allows running
+      x2gocleansessions in foreground (and in debug mode).
   * debian/control:
     + Package X2Go::Log in separate package: libx2go-log-perl.
     + Package X2Go::Server::DB in separate package: libx2go-server-db-perl.

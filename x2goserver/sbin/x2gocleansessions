@@ -35,9 +35,22 @@ use X2Go::Server::Agent qw( session_is_suspended session_is_running session_has_
 use X2Go::Server::DB qw( dbsys_rmsessionsroot );
 use X2Go::Utils qw( system_capture_stdout_output is_true );
 my $x2go_lib_path = system_capture_stdout_output("x2gopath", "libexec");
+use Getopt::Long;
+
+
+my $debug;
+GetOptions( 'debug' => \$debug );
 
 openlog($0,'cons,pid','user');
-setlogmask( LOG_UPTO(loglevel()) );
+if ($debug)
+{
+	setlogmask( LOG_DEBUG );
+}
+else
+{
+	setlogmask( LOG_UPTO(loglevel()) );
+}
+
 
 sub check_pid
 {
@@ -64,10 +77,27 @@ sub catch_term
 	exit;
 }
 
+sub log_message
+{
+	my $loglevel=shift;
+	my $msg=shift;
+	syslog($loglevel, $msg);
+	if ($debug)
+	{
+		print "$loglevel ::: $msg\n";
+	}
+}
+
 my $uname;
 my $serv = hostname;
-my $pid = fork();
-if (not defined $pid) 
+my $pid;
+
+if (! $debug)
+{
+	$pid = fork();
+}
+
+if ((!$debug) && (not defined $pid)) 
 {
 	print "resources not avilable.\n";
 }
@@ -79,7 +109,6 @@ elsif ($pid != 0)
 }
 elsif ($pid == 0 )
 {
-
 	# check if we are to use the superenicer script for throttling does the nice level
         # of suspended sessions...
 	my $Config = get_config();
@@ -91,23 +120,27 @@ elsif ($pid == 0 )
 	my $superenice_idle=$Config->param("superenicer.idle-nice-level");
 	my $superenice_ignoredusers=$Config->param("superenicer.ignored-users");
 
-	# close any open file descriptor left open by our parent before the fork
-	my $fd;
-	for (glob "/proc/$$/fd/*") {
-		if ( ! -e $_ ) { next; }
-		if ($_ =~ m/\/proc\/\d+\/fd\/(\d+)/) {
-			$fd = $1;
-			if ( $fd < 3 ) { next; }
-			if (! POSIX::close($fd)) {
-				syslog('warning', "Error Closing $_: $!");
+	if ( ! $debug )
+	{
+		# close any open file descriptor left open by our parent before the fork
+		my $fd;
+		for (glob "/proc/$$/fd/*") {
+			if ( ! -e $_ ) { next; }
+			if ($_ =~ m/\/proc\/\d+\/fd\/(\d+)/) {
+				$fd = $1;
+				if ( $fd < 3 ) { next; }
+				if (! POSIX::close($fd)) {
+					log_message('warning', "Error Closing $_: $!");
+				}
 			}
 		}
-	}
 
-	# redirect stdin, stdout and stderr
-	open *STDIN, q{<}, '/dev/null';
-	open *STDOUT, q{>>}, '/dev/null';
-	open *STDERR, q{>>}, '/dev/null';
+		# redirect stdin, stdout and stderr
+		open *STDIN, q{<}, '/dev/null';
+		open *STDOUT, q{>>}, '/dev/null';
+		open *STDERR, q{>>}, '/dev/null';
+
+	}
 
 	$SIG{TERM}=\&catch_term;
 	$SIG{CHLD} = sub { wait };
@@ -155,26 +188,26 @@ elsif ($pid == 0 )
 
 			if (@sinfo[4]eq 'F')
 			{
-				syslog('debug', "@sinfo[1] is blocked");
+				log_message('debug', "@sinfo[1] is blocked");
 				if ($remembered_sessions_since{@sinfo[1]} ge 20)
 				{
 					# send SIGKILL to dangling X-server processes
-					syslog('warning', "@sinfo[1]: found stale X-server process (@sinfo[0]), sending SIGKILL");
+					log_message('warning', "@sinfo[1]: found stale X-server process (@sinfo[0]), sending SIGKILL");
 					system("kill", "-9", "@sinfo[0]");
 					delete $remembered_sessions_since{@sinfo[1]};
 				}
 				my $display = @sinfo[2];
 				if (-S "/tmp/.X11-unix/X$display") {
 					# remove the NX-X11 socket file (as the agent will not have managed after a kill -9)
-					syslog('warning', "@sinfo[1], pid @sinfo[0] cleaning up stale X11 socket file: /tmp/.X11-unix/X$display");
+					log_message('warning', "@sinfo[1], pid @sinfo[0] cleaning up stale X11 socket file: /tmp/.X11-unix/X$display");
 					unlink("/tmp/.X11-unix/X$display");
 				}
 				if (-e "/tmp/.X$display-lock") {
 					# remove the NX-X11 lock file (as the agent will not have managed after a kill -9)
-					syslog('warning', "@sinfo[1], pid @sinfo[0] cleaning up stale X11 lock file: /tmp/.X$display-lock");
+					log_message('warning', "@sinfo[1], pid @sinfo[0] cleaning up stale X11 lock file: /tmp/.X$display-lock");
 					unlink("/tmp/.X$display-lock");
 				}
-				syslog('debug', "@sinfo[1]: unmounting all shares");
+				log_message('debug', "@sinfo[1]: unmounting all shares");
 				system( "su", "@sinfo[11]", "-s", "/bin/sh", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");
 				#remove port forwarding
 				system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "$x2go_lib_path/x2gormforward @sinfo[1]");
@@ -186,16 +219,16 @@ elsif ($pid == 0 )
 				if (-S "/tmp/.X11-unix/X$display") {
 					# remove the NX-X11 socket file (we don't know how the agent disappeared,
 					# someone might have shot it with kill -9)
-					syslog('warning', "@sinfo[1], pid @sinfo[0] cleaning up stale X11 socket file: /tmp/.X11-unix/X$display");
+					log_message('warning', "@sinfo[1], pid @sinfo[0] cleaning up stale X11 socket file: /tmp/.X11-unix/X$display");
 					unlink("/tmp/.X11-unix/X$display");
 				}
 				if (-e "/tmp/.X$display-lock") {
 					# remove the NX-X11 lock file (we don't know how the agent disappeared,
 					# someone might have shot it with kill -9)
-					syslog('warning', "@sinfo[1], pid @sinfo[0] cleaning up stale X11 lock file: /tmp/.X$display-lock");
+					log_message('warning', "@sinfo[1], pid @sinfo[0] cleaning up stale X11 lock file: /tmp/.X$display-lock");
 					unlink("/tmp/.X$display-lock");
-				}				syslog('debug', "@sinfo[1], pid @sinfo[0] does not exist, changing status from @sinfo[4] to F");
-				syslog('debug', "@sinfo[1]: unmounting all shares");
+				}				log_message('debug', "@sinfo[1], pid @sinfo[0] does not exist, changing status from @sinfo[4] to F");
+				log_message('debug', "@sinfo[1]: unmounting all shares");
 				system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");
 			}
 			else
@@ -205,8 +238,8 @@ elsif ($pid == 0 )
 					if (session_is_suspended(@sinfo[1],@sinfo[11]))
 					{
 						system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "$x2go_lib_path/x2gochangestatus S @sinfo[1]");
-						syslog('debug', "@sinfo[1] is suspended, changing status from @sinfo[4] to S");
-						syslog('debug', "@sinfo[1]: unmounting all shares");
+						log_message('debug', "@sinfo[1] is suspended, changing status from @sinfo[4] to S");
+						log_message('debug', "@sinfo[1]: unmounting all shares");
 						system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");
 						#remove port forwarding
 						system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "$x2go_lib_path/x2gormforward @sinfo[1]");
@@ -216,20 +249,20 @@ elsif ($pid == 0 )
 				{
 					if (session_is_running(@sinfo[1],@sinfo[11]))
 					{
-						syslog('debug', "@sinfo[1]: unmounting all shares");
+						log_message('debug', "@sinfo[1]: unmounting all shares");
 						system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");
 						system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "x2gosuspend-session @sinfo[1]");
-						syslog('debug', "@sinfo[1] was found running and has now been suspended");
+						log_message('debug', "@sinfo[1] was found running and has now been suspended");
 					}
 				}
 				if (@sinfo[4] eq 'T')
 				{
 					if (!session_has_terminated(@sinfo[1],@sinfo[11]))
 					{
-						syslog('debug', "@sinfo[1]: unmounting all shares");
+						log_message('debug', "@sinfo[1]: unmounting all shares");
 						system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");
 						system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "x2goterminate-session @sinfo[1]");
-						syslog('debug', "@sinfo[1] has been requested for termination via the session DB");
+						log_message('debug', "@sinfo[1] has been requested for termination via the session DB");
 						#remove port forwarding
 						system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "$x2go_lib_path/x2gormforward @sinfo[1]");
 					}
