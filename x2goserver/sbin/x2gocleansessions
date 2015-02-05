@@ -149,6 +149,9 @@ elsif ($pid == 0 )
 	my %remembered_sessions_since = ();
 	my $last_reniced = 0;
 
+	my $user;
+	my $effective_user;
+
 	while(sleep 2)
 	{
 		my $outp=system_capture_stdout_output("$x2go_lib_path/x2golistsessions_sql", "$serv");
@@ -214,7 +217,18 @@ elsif ($pid == 0 )
 			}
 			elsif (! check_pid (@sinfo[0],@sinfo[1],@sinfo[12]))
 			{
-				system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "$x2go_lib_path/x2gochangestatus 'F' @sinfo[1]");
+				$user = @sinfo[11];
+
+				# For shadow sessions we need to su to the user who provided the shared desktop (not the one who
+				# requested the desktop sharing)...
+				if ( @sinfo[1] =~ m/$user-[0-9]{2,}-[0-9]{10,}_stS(0|1)XSHAD.*XSHAD.*/ )
+				{
+					$effective_user = @sinfo[1];
+					$effective_user =~ s/$user\-[0-9]{2,}\-[0-9]{10}_stS[0-1]XSHAD(.*)XSHAD.*/$1/;
+					$user = $effective_user;
+				}
+
+				system("su", "$user", "-s", "/bin/sh", "-c", "$x2go_lib_path/x2gochangestatus 'F' @sinfo[1]");
 				my $display = @sinfo[2];
 				if (-S "/tmp/.X11-unix/X$display") {
 					# remove the NX-X11 socket file (we don't know how the agent disappeared,
