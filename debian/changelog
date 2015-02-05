@@ -99,7 +99,7 @@ x2goserver (4.1.0.0-0x2go1.1) UNRELEASED; urgency=low
     + Provide DEP-5 compliant copyright file.
     + Add copyright.in auto-generated file (by licensecheck+CDBS) for later
       reference.
-  * x2goclient.spec:
+  * x2goserver.spec:
     + Bring debian/control and x2goclient.spec in sync.
     + Make sure x2godbadmin is evoked from package x2goserver.
     + Handle X2Go session DB creation in x2goserver _and_
@@ -228,9 +228,9 @@ x2goserver (4.0.1.19-0x2go1) UNRELEASED; urgency=medium
     + Add D (x2goserver): libfile-which-perl.
     + Add C (x2goserver: x2godesktopsharing (<< 3.1.1.2-0~). (Fixes: #700).
     + Bump Standards: to 3.9.6. No changes needed.
-    - Don't depend on libdb-pg-perl for armhf builds. (Fixes: #712). Thanks to
+    + Don't depend on libdb-pg-perl for armhf builds. (Fixes: #712). Thanks to
       Heinrich Schuchardt for providing information on this.
-    - Upgrade to D again (bin:package x2goserver): xfonts-base (Fixes: #770).
+    + Upgrade to D again (bin:package x2goserver): xfonts-base (Fixes: #770).
   * debian/x2goserver.docs:
     + Install README.i18n file into bin:package x2goserver.
   * x2goserver.spec:
