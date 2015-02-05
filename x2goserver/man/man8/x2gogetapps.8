@@ -1,0 +1,58 @@
+'\" -*- coding: utf-8 -*-
+.if \n(.g .ds T< \\FC
+.if \n(.g .ds T> \\F[\n[.fam]]
+.de URL
+\\$2 \(la\\$1\(ra\\$3
+..
+.if \n(.g .mso www.tmac
+.TH x2gogetapps 8 "Feb 2015" "Version 4.1.0.0-preview" "X2Go Server Tool"
+.SH NAME
+x2gogetapps \- Generate list of Published Applications
+.SH SYNOPSIS
+'nh
+.fi
+.ad l
+x2gogetapps
+
+.SH DESCRIPTION
+\fBx2gogetapps\fR returns a machine-readable list of X2Go Published Applications.
+This command is evoked from connected X2Go client applications.
+.PP
+\fBx2gogetapps\fR is run with normal user privileges.
+
+.SH RETURN VALUES
+\fBx2gogetapps\fR returns one or multiple items in the below format:
+
+  <icon>
+  [ ... base64 encoded image information ...]
+  </icon>
+  <desktop>
+  [ ... selected fields form .desktop file ... ]
+  </desktop>
+  ...
+
+As exitcode \fBx2gogetapps\fR always returns 0.
+
+.SH SECURITY INFORMATION / DISCLAIMER
+Users are advised to not misinterpret X2GoServer's Published Application
+Mode as a security feature.
+.PP
+Even when using Published Application Mode, it is still possible for
+users to locally configure an X2Go Client with any setting they want, and
+use that to connect.
+.PP
+So if you're trying to keep users from running a
+certain application on the host, using Published Application Mode to
+"lock" the configuration is the *wrong* way.  The users will still be
+able to run that application by creating their own, local configuration
+file and using that.
+.PP
+To keep users from running an application on the
+server, you have to use *filesystem permissions*.  In the simplest case,
+this means setting chmod 750 or 550 on the particular application on the
+host, and making sure the users in question are not the owner and also
+not a member of the group specified for the application.
+
+.SH AUTHOR
+This manual has been written by Mike Gabriel <mike.gabriel@das-netzwerkteam.de> for the X2Go project
+(http://www.x2go.org).
