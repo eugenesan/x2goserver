@@ -540,7 +540,8 @@ fi
 
 %post -n perl-X2Go-Server-DB
 # Initialize the session database
-if [ ! -s %{_localstatedir}/lib/x2go/x2go_sessions ]; then
+# ... only, if the DB does not exist OR (it exists AND the file is empty)
+if [ ! -e %{_localstatedir}/lib/x2go/x2go_sessions ] || ( [ -e %{_localstatedir}/lib/x2go/x2go_sessions ] && [ ! -s %{_localstatedir}/lib/x2go/x2go_sessions ] ); then
   if [ -x %{_sbindir}/x2godbadmin ]; then
     if grep -E "^backend=sqlite.*" /etc/x2go/x2gosql/sql 1>/dev/null 2>&1; then
       %{_sbindir}/x2godbadmin --createdb 1>/dev/null 2>&1 || :
