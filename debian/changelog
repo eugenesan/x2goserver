@@ -274,7 +274,8 @@ x2goserver (4.0.1.19-0x2go1) UNRELEASED; urgency=medium
     + "%set_permissions" / "%verify_permissions" macros are not know in SLE <=
       11.3. Using "%run permissions" and "%verify permissions" instead.
     + On SUSE, add permissions.d/x2goserver.
-    + Fix SQLite wrapper permissions (02775 -> 02755).
+    + Fix SQLite wrapper permissions (02775 -> 02755)
+    + Use if then clauses for creating user/group x2goprint.
 
   [ Matthew L. Dailey ]
   * New upstream version (4.0.1.19):

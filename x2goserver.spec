@@ -572,11 +572,13 @@ fi
 
 
 %pre printing
-getent group x2goprint 1>/dev/null || groupadd -r x2goprint
-getent passwd x2goprint 1>/dev/null || \
+if ! getent group x2goprint 1>/dev/null; then
+    groupadd -r x2goprint
+fi
+if ! getent passwd x2goprint 1>/dev/null; then
     useradd -r -g x2goprint -d /var/spool/x2goprint -s /sbin/nologin \
-    -c "x2go" x2goprint
-
+            -c "x2go" x2goprint
+fi
 
 %files
 %defattr(-,root,root)
