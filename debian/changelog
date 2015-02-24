@@ -579,6 +579,7 @@ x2goserver (4.0.0.11-0x2go1) unstable; urgency=low
   * New upstream version (4.0.0.11):
     - Use perl instead of sed for search+replace in session names sanitizing.
       (Fixes: #404).
+
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Mon, 20 Jan 2014 14:00:42 +0100
 
 x2goserver (4.0.0.10-0x2go1) unstable; urgency=low
