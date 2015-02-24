@@ -310,6 +310,7 @@ x2goserver (4.0.1.17-0x2go1) unstable; urgency=medium
       session DB after 10 seconds.
     - Fix unreliable removal of client-side folder sharing desktop
       icons.
+    - Update date in several man pages.
   * debian/control:
     + Upgrade x2goserver-xsession from Suggests: to Recommends:.
 
@@ -522,7 +523,7 @@ x2goserver (4.0.1.12-0x2go2) unstable; urgency=low
   * Build hotfix for RPM packages (x2goserver.spec):
     + Add perl(Capture::Tiny) to Requires: field of x2goserver.
 
- -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 07 Jan 2014 18:35:49 +0100
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 07 Jan 2014 18:36:38 +0100
 
 x2goserver (4.0.1.12-0x2go1) unstable; urgency=low
 
@@ -565,7 +566,8 @@ x2goserver (4.0.1.10-0x2go1) unstable; urgency=low
     - Provide man page for x2goserver.conf.
   * x2goserver.spec:
     + Ship x2goserver.spec (RPM package definitions) in upstream project.
-      (Thanks to the Fedora package maintainers).
+      (Thanks to the Fedora package maintainers). File differs from the Fedora
+      file already.
     + Add init script for RPM based distro. Taken from the Fedora
       package.
     + Clear (Fedora package) changelog.
@@ -717,6 +719,9 @@ x2goserver (4.0.0.12-0x2go1) UNRELEASED; urgency=low
       file are expected by x2goresume-session at very specific positions. This
       we broke by trying to fix the fullscreen/geometry issue in x2gostartagent.
       Thanks to Harvey Eneman for tracking this down!!!
+    - Detect suspended sessions from NX log file. Also interpret a session as
+      suspended if suspending just has started.
+    - Interpret NX display failures as (about to be) suspended sessions.
 
   [ Oleksandr Shneyder ]
   * New upstream version (4.0.0.12):
@@ -789,7 +794,7 @@ x2goserver (4.0.0.6-0~x2go1) unstable; urgency=low
       is set to "query", we force X2GO_SET_KBD to 1.
       (Partly resolves: #112).
 
- -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Wed, 25 Sep 2013 12:19:16 +0200
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 22 Nov 2013 21:56:44 +0100
 
 x2goserver (4.0.0.5-0~x2go1) unstable; urgency=low
 
@@ -797,7 +802,7 @@ x2goserver (4.0.0.5-0~x2go1) unstable; urgency=low
     - Make x2goumount-session tolerant towards usernames that contain spaces
       (Fixes: #202).
 
- -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Thu, 13 Jun 2013 14:56:28 +0200
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Sun, 28 Jul 2013 01:47:03 +0200
 
 x2goserver (4.0.0.4-0~x2go1) unstable; urgency=low
 
@@ -859,7 +864,7 @@ x2goserver (4.0.0.1-0~x2go1) unstable; urgency=low
     - Allow for deploying X2Go Published Applications system-wide on a
       per-user basis (in /etc/x2go/applications-per-user/<username>).
 
- -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Mon, 11 Feb 2013 11:42:32 +0100
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 22 Mar 2013 13:52:43 +0100
 
 x2goserver (4.0.0.0-0~x2go1) unstable; urgency=low
 
@@ -870,6 +875,7 @@ x2goserver (4.0.0.0-0~x2go1) unstable; urgency=low
       components.
 
   [ Mike Gabriel ]
+  * Bump version to 4.0.0.0 (for Baikal bundle release).
   * New upstream version (4.0.0.0):
     - Adapt Xinerama path in x2gopath: use $base for detecting the path to the
       Xinerama libs, as well, as is done with all the other paths.
@@ -887,8 +893,8 @@ x2goserver (4.0.0.0-0~x2go1) unstable; urgency=low
   [ Reinhard Tartler ]
   * New upstream version (4.0.0.0):
     - Introduce /etc/x2go/x2goagent.options to allow overriding x2goagent
-      options. This new configuration file specifies default options that
-      clients can override.
+      options. This new configuration file specifies default options
+      that clients can override.
     - Disable XFIXES and GLX. Both are known to cause certain
       problems. Hopefully we find better solutions so that we can reenable
       them soon.
@@ -912,7 +918,7 @@ x2goserver (3.1.1.8-0~x2go1) unstable; urgency=low
 
 x2goserver (3.1.1.7-0~x2go1) unstable; urgency=low
 
-  * New upstream+bufix release (3.1.1.7):
+  * New upstream+bugfix release (3.1.1.7):
     - Use DISTRIB_RELEASE to query Ubuntu release versions and detect Unity launch
       command.
     - Detect GNOME and UNITY startup commands via DISTRIB_RELEASE version number
@@ -946,7 +952,7 @@ x2goserver (3.1.1.5-0~x2go1) unstable; urgency=low
     - Put option of database call in x2gogetagent into parantheses.
   * /debian/control:
     + Depend on libfile-basedir-perl.
- 
+
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Wed, 07 Nov 2012 16:36:36 +0100
 
 x2goserver (3.1.1.4-0~x2go1) unstable; urgency=low
