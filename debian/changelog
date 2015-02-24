@@ -153,6 +153,13 @@ x2goserver (4.1.0.0-0x2go1.1) UNRELEASED; urgency=low
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 09 May 2014 13:06:24 +0200
 
+x2goserver (4.0.1.20-0x2go1) UNRELEASED; urgency=low
+
+  * New upstream version (4.0.1.20):
+    - Continue development...
+
+ -- X2Go Release Manager <git-admin@x2go.org>  Tue, 24 Feb 2015 22:11:49 +0100
+
 x2goserver (4.0.1.19-0x2go1) UNRELEASED; urgency=medium
 
   [ Mike Gabriel ]
@@ -288,7 +295,7 @@ x2goserver (4.0.1.19-0x2go1) UNRELEASED; urgency=medium
   * New upstream version (4.0.1.19):
     - Use "printf" instead of "echo -n". (Fixes: #668).
 
- -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 07 Oct 2014 15:35:38 +0200
+ -- X2Go Release Manager <git-admin@x2go.org>  Tue, 24 Feb 2015 21:49:22 +0100
 
 x2goserver (4.0.1.18-0x2go1) unstable; urgency=medium
 
