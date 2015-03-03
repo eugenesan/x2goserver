@@ -150,6 +150,11 @@ x2goserver (4.1.0.0-0x2go1.1) UNRELEASED; urgency=low
   [ Mihai Moldovan ]
   * New upstream version (4.1.0.0):
     - Change string "X2go" to "X2Go" where appropriate.
+  * x2goserver.spec:
+    - Only create session DB in x2goserver's post install script. Do use
+      proper Requires(post) statements to make sure perl-X2Go-Server-DB and
+      x2goserver-common are available when x2goserver's post install script is
+      being executed. Fixes installation bugs reported by Michael DePaulo.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 09 May 2014 13:06:24 +0200
 

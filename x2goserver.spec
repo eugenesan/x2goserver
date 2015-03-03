@@ -126,6 +126,8 @@ Requires(postun): systemd
 %endif
 
 Requires:       perl-X2Go-Server = %{version}-%{release}
+Requires(post): perl-X2Go-Server-DB
+Requires(post): x2goserver-common
 Requires:       x2goserver-extensions
 Requires:       x2goserver-xsession
 #Recommands:       x2goserver-fmbindings
@@ -486,10 +488,8 @@ fi
 %post
 # Initialize the session database
 if [ ! -s %{_localstatedir}/lib/x2go/x2go_sessions ]; then
-  if [ -d %{_datadir}/doc/packages/perl-X2Go-Server-DB ]; then
-    if grep -E "^backend=sqlite.*" /etc/x2go/x2gosql/sql 1>/dev/null 2>&1; then
+  if grep -E "^backend=sqlite.*" /etc/x2go/x2gosql/sql 1>/dev/null 2>&1; then
       %{_sbindir}/x2godbadmin --createdb 1>/dev/null 2>&1 || :
-    fi
   fi
 fi
 
@@ -538,15 +538,6 @@ fi
 
 
 %post -n perl-X2Go-Server-DB
-# Initialize the session database
-if [ ! -s %{_localstatedir}/lib/x2go/x2go_sessions ]; then
-  if [ -x %{_sbindir}/x2godbadmin ]; then
-    if grep -E "^backend=sqlite.*" /etc/x2go/x2gosql/sql 1>/dev/null 2>&1; then
-      %{_sbindir}/x2godbadmin --createdb 1>/dev/null 2>&1 || :
-    fi
-  fi
-fi
-
 %if 0%{?suse_version}
 %if 0%{?suse_version} <= 1130
 %run_permissions
