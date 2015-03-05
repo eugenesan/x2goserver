@@ -512,8 +512,9 @@ fi
 %service_add_post x2goserver.service
 %endif
 %else
-%{_sbindir}/chkconfig --add x2goserver
-%{_sbindir}/service x2goserver condrestart 1>/dev/null 2>&1 || :
+# Do not use %{_sbindir} here. It's a macro for /usr/sbin.
+/sbin/chkconfig --add x2goserver
+/sbin/service x2goserver condrestart 1>/dev/null 2>&1 || :
 %endif
 
 %preun
@@ -538,13 +539,13 @@ fi
 %endif
 %else
 if [ "$1" = 0 ]; then
-  %{_sbindir}/service x2goserver stop 1>/dev/null 2>&1
-  %{_sbindir}/chkconfig --del x2goserver
+  /sbin/service x2goserver stop 1>/dev/null 2>&1
+  /sbin/chkconfig --del x2goserver
 fi
 
 %postun
 if [ "$1" -ge "1" ] ; then
-  %{_sbindir}/service x2goserver condrestart 1>/dev/null 2>&1 || :
+  /sbin/service x2goserver condrestart 1>/dev/null 2>&1 || :
 fi
 %endif
 
