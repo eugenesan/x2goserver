@@ -499,40 +499,52 @@ if grep -E "^backend=sqlite.*" /etc/x2go/x2gosql/sql 1>/dev/null 2>/dev/null; th
   fi
 fi
 
+# create /etc/x2go/applications symlink if not already there
+# as a regular file, as a symlink, as a special file or as a directory
+if ! [ -e %{_sysconfdir}/x2go/applications ]; then
+  ln -s %{_datadir}/applications %{_sysconfdir}/x2go/applications
+fi
+
 %if 0%{?fedora} || 0%{?rhel} >= 7 || 0%{?suse_version} >= 1210
 %if 0%{?fedora} || 0%{?rhel} >= 7
 %systemd_post x2goserver.service
+%else
+%service_add_post x2goserver.service
+%endif
+%else
+%{_sbindir}/chkconfig --add x2goserver
+%{_sbindir}/service x2goserver condrestart 1>/dev/null 2>&1 || :
+%endif
 
 %preun
+if [ -L %{_sysconfdir}/x2go/applications ]; then
+  rm -f %{_sysconfdir}/x2go/applications || :
+fi
+
+%if 0%{?fedora} || 0%{?rhel} >= 7 || 0%{?suse_version} >= 1210
+%if 0%{?fedora} || 0%{?rhel} >= 7
 %systemd_preun x2goserver.service
 
 %postun
 %systemd_postun x2goserver.service
 %else
-%service_add_post x2goserver.service
+%service_del_preun x2goserver.service
 
 %pre
 %service_add_pre x2goserver.service
-
-%preun
-%service_del_preun x2goserver.service
 
 %postun
 %service_del_postun x2goserver.service
 %endif
 %else
-/sbin/chkconfig --add x2goserver
-/sbin/service x2goserver condrestart 1>/dev/null 2>&1 || :
+if [ "$1" = 0 ]; then
+  %{_sbindir}/service x2goserver stop 1>/dev/null 2>&1
+  %{_sbindir}/chkconfig --del x2goserver
+fi
 
 %postun
 if [ "$1" -ge "1" ] ; then
-    /sbin/service x2goserver condrestart 1>/dev/null 2>&1 || :
-fi
-
-%preun
-if [ "$1" = 0 ]; then
-        /sbin/service x2goserver stop 1>/dev/null 2>&1
-        /sbin/chkconfig --del x2goserver
+  %{_sbindir}/service x2goserver condrestart 1>/dev/null 2>&1 || :
 fi
 %endif
 

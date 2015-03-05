@@ -155,6 +155,10 @@ x2goserver (4.1.0.0-0x2go1.1) UNRELEASED; urgency=low
       proper Requires(post) statements to make sure perl-X2Go-Server-DB and
       x2goserver-common are available when x2goserver's post install script is
       being executed. Fixes installation bugs reported by Michael DePaulo.
+    - Add support for %{_datadir}/applications symlink in %{_sysconfdir}/x2go.
+      + Add creation and deletion bits to %post and %preun scriptlets.
+      + Refactor %post, %pre, %postun and %preun scriptlets to accommodate for
+        last change.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 09 May 2014 13:06:24 +0200
 
