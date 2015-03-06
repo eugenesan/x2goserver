@@ -381,7 +381,7 @@ Group:          Productivity/Networking/Remote Desktop
 Summary:        X2Go Server (file manager bindings)
 Requires:       %{name} = %{version}-%{release}
 %if 0%{?suse_version} || 0%{?suse_version} <= 1130
-PreReq: shared-mime-info
+Requires(pre): shared-mime-info
 %endif
 Requires:       xdg-utils
 Requires:       desktop-file-utils

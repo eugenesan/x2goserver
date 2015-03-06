@@ -162,6 +162,7 @@ x2goserver (4.1.0.0-0x2go1.1) UNRELEASED; urgency=low
       + Don't use %{_sbindir} for chkconfig and service on SLE{S,D}.
         %{_sbindir} is a macro for /usr/sbin/, whereas chkconfig and service
         reside in /sbin/.
+    - Change deprecated and removed PreReq to Requires(pre) header.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 09 May 2014 13:06:24 +0200
 
