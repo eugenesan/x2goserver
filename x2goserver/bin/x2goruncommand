@@ -249,6 +249,8 @@ if [ "$cmd" == "TERMINAL" ]; then
 		cmd="/usr/bin/gnome-terminal"
 	elif  [ -e "/usr/bin/lxterminal" ]; then
 		cmd="/usr/bin/lxterminal"
+	elif  [ -e "/usr/bin/qterminal" ]; then
+		cmd="/usr/bin/qterminal"
 	elif  [ -e "/usr/bin/rxvt" ]; then
 		cmd="/usr/bin/rxvt"
 	elif  [ -e "/usr/bin/xterm" ]; then

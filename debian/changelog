@@ -168,8 +168,10 @@ x2goserver (4.1.0.0-0x2go1.1) UNRELEASED; urgency=low
 
 x2goserver (4.0.1.20-0x2go1) UNRELEASED; urgency=low
 
+  [ Mike DePaulo ]
   * New upstream version (4.0.1.20):
-    - Continue development...
+    - TERMINAL Session: Add support for qterminal
+      (Lightweight terminal emulator written in Qt)
 
  -- X2Go Release Manager <git-admin@x2go.org>  Tue, 24 Feb 2015 22:11:49 +0100
 
