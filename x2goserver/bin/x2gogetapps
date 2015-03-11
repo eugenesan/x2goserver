@@ -93,24 +93,27 @@ sub findicon_ext
 	return "";
 }
 
-sub printicon
+sub geticon
 {
 	my $file=shift;
+	my @ret;
 	if (open(I,"<$file"))
 	{
 		my $buf;
-		print "<icon>\n";
+		push(@ret, "<icon>");
 		while (read(I, $buf, 60*57)) 
 		{
-			print encode_base64($buf);
+			push(@ret, encode_base64($buf));
 		}
-		print "</icon>\n";
+		push(@ret, "</icon>\n");
 		close(I);
 	}
 	else
 	{
-		syslog ('info', "x2gogetapps:printicon - can't open file $file: $!");
+		syslog ('info', "x2gogetapps:geticon - can't open file $file: $!");
 	}
+
+	return @ret;
 }
 
 sub proc_desktop_file
@@ -118,53 +121,73 @@ sub proc_desktop_file
 	my $file=shift;
 	if (open(F,"<$file"))
 	{
-		print("<desktop>\n");
+		push(@output, "<desktop>");
+		my @output;
+		my $nodisplay = 0;
 		my $is_desktop_entry = 0;
-		while(!eof(F))
+		READ_FILE: while(!eof(F))
 		{
 			my $line=<F>;
+			# Hopefully strip most whitespace and newlines surrounding $line.
+			chomp($line);
+			# Desktop Entry block search.
 			if ( $line=~m/^\[Desktop Entry\] */ )
 			{
 				$is_desktop_entry = 1;
 				next;
 			}
+			# Consume random data.
 			if ( ! $is_desktop_entry )
 			{
 				next;
 			}
+			# Stop reading when seeing a non-Desktop Entry block.
 			if ( $line=~m/^\[.*\] */ )
 			{
 				$is_desktop_entry = 0;
-				next;
+				last READ_FILE;
 			}
-			if( $line=~m/^Categories/i || $line=~m/^Name/i || $line=~m/^Terminal/i || $line=~m/^Comment/i ||  $line=~m/^Exec/i)
+			# Breaking out when finding NoDisplay=true or Hidden=true.
+			# Do not use \s here as newlines are not allowed within key-value sets.
+			# Generally, we're reading lines anyway and a newline can't possibly be part of
+			# a line, as lines are split on newlines, but play it safe still.
+			if ( $line=~m/^NoDisplay[ \t]*?=[ \t]*?true/ || $line=~m/^Hidden[ \t]*?=[ \t]*?true/ )
 			{
-				print $line;
+				$nodisplay = 1;
+				last READ_FILE;
 			}
-			if( $line =~ m/^Icon/ )
+			if ( $line=~m/^Categories/i || $line=~m/^Name/i || $line=~m/^Terminal/i || $line=~m/^Comment/i ||  $line=~m/^Exec/i)
+			{
+				push(@output, $line);
+			}
+			if ( $line =~ m/^Icon/ )
 			{
 				my $icon=$line;
-				$icon =~ s/Icon=//;
-				chop($icon);
-				#$line is absolute path
-				if($icon =~ m/\//)
+				$icon =~ s/Icon[ \t]*?=//;
+				#$line is not absolute path
+				if(!($icon =~ m/\//))
 				{
-					$icon=$icon;
+					#$line have format ext.
+					if ($line =~ m/\./)
+					{
+						$icon=findicon_ext($icon);
+					}
+					else
+					{
+						$icon=findicon($icon);
+					}
 				}
-				#$line have format ext.
-				elsif ($line =~ m/\./)
-				{
-					$icon=findicon_ext($icon);
-				}
-				else
-				{
-					$icon=findicon($icon);
-				}
-				printicon($icon);
+				@output = (@output, geticon($icon));
 			}
 		}
 		close (F);
-		print("</desktop>\n");
+		push(@output, "</desktop>\n");
+
+		# Print out parsed entry if it's not hidden or marked NoDisplay.
+		if (! $nodisplay)
+		{
+			print join("\n", @output);
+		}
 	}
 	else
 	{
