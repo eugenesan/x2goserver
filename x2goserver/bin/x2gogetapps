@@ -121,10 +121,10 @@ sub proc_desktop_file
 	my $file=shift;
 	if (open(F,"<$file"))
 	{
-		push(@output, "<desktop>");
 		my @output;
 		my $nodisplay = 0;
 		my $is_desktop_entry = 0;
+		push(@output, "<desktop>");
 		READ_FILE: while(!eof(F))
 		{
 			my $line=<F>;
