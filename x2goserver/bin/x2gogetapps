@@ -105,7 +105,7 @@ sub geticon
 		{
 			push(@ret, encode_base64($buf));
 		}
-		push(@ret, "</icon>\n");
+		push(@ret, "</icon>");
 		close(I);
 	}
 	else
@@ -181,12 +181,13 @@ sub proc_desktop_file
 			}
 		}
 		close (F);
-		push(@output, "</desktop>\n");
+		push(@output, "</desktop>");
 
 		# Print out parsed entry if it's not hidden or marked NoDisplay.
 		if (! $nodisplay)
 		{
 			print join("\n", @output);
+			print "\n";
 		}
 	}
 	else

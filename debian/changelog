@@ -153,6 +153,7 @@ x2goserver (4.1.0.0-0x2go1.1) UNRELEASED; urgency=low
     - x2goserver/bin/x2gogetapps: respect NoDisplay and Hidden values, don't
       parse the full desktop file if there are non-Desktop Entries groups.
       Based on a patch submitted by Jason Alavaliant. Fixes: #812.
+    - x2goserver/bin/x2gogetapps: do not print spurious newlines.
   * x2goserver.spec:
     - Only create session DB in x2goserver's post install script. Do use
       proper Requires(post) statements to make sure perl-X2Go-Server-DB and
