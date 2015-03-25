@@ -136,7 +136,7 @@ Requires(post): perl-X2Go-Server-DB
 Requires(post): x2goserver-common
 Requires:       x2goserver-extensions
 Requires:       x2goserver-xsession
-#Recommands:       x2goserver-fmbindings
+#Recommends:       x2goserver-fmbindings
 #Recommends:       x2goserver-printing
 
 %{?perl_default_filter}
