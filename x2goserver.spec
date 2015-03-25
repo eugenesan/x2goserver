@@ -63,6 +63,12 @@ BuildRequires: xinit
 BuildRequires:  xorg-x11-xinit
 %endif
 
+# Packages only needed for file system paths.
+BuildRequires:  sudo
+%if 0%{?fedora} > 19 || 0%{?el5} || 0%{?el6} || 0%{?el7}
+BuildRequires:  logcheck
+%endif
+
 %if 0%{?suse_version}
 Requires:       openssh
 %else
@@ -588,10 +594,11 @@ fi
 %defattr(-,root,root)
 %doc debian/copyright
 %doc debian/changelog
-%if 0%{?suse_version}
+# logcheck is not available on OpenSUSE, SLES/SLED, FC19 and RHEL.
+# Please re-check this periodically.
+%if 0%{?suse_version} || 0%{?fedora} < 20 || 0%{?rhel}
 %dir %{_sysconfdir}/logcheck
 %dir %{_sysconfdir}/logcheck/ignore.d.server
-%dir %{_sysconfdir}/sudoers.d
 %endif
 %config(noreplace) %{_sysconfdir}/logcheck/ignore.d.server/x2goserver
 %config(noreplace) %{_sysconfdir}/sudoers.d/x2goserver
