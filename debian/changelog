@@ -149,11 +149,6 @@ x2goserver (4.1.0.0-0x2go1.1) UNRELEASED; urgency=low
 
   [ Mihai Moldovan ]
   * New upstream version (4.1.0.0):
-    - Change string "X2go" to "X2Go" where appropriate.
-    - x2goserver/bin/x2gogetapps: respect NoDisplay and Hidden values, don't
-      parse the full desktop file if there are non-Desktop Entries groups.
-      Based on a patch submitted by Jason Alavaliant. Fixes: #812.
-    - x2goserver/bin/x2gogetapps: do not print spurious newlines.
   * x2goserver.spec:
     - Only create session DB in x2goserver's post install script. Do use
       proper Requires(post) statements to make sure perl-X2Go-Server-DB and
@@ -177,7 +172,36 @@ x2goserver (4.0.1.20-0x2go1) UNRELEASED; urgency=low
     - TERMINAL Session: Add support for qterminal
       (Lightweight terminal emulator written in Qt)
 
+  [ Mihai Moldovan ]
+  * New upstream version (4.0.1.20):
+    - x2goserver/bin/x2gogetapps: respect NoDisplay and Hidden values, don't
+      parse the full desktop file if there are non-Desktop Entries groups.
+      Based on a patch submitted by Jason Alavaliant. Fixes: #812.
+    - x2goserver/bin/x2gogetapps: do not print spurious newlines.
+    - Change string "X2go" to "X2Go" where appropriate.
+
  -- X2Go Release Manager <git-admin@x2go.org>  Tue, 24 Feb 2015 22:11:49 +0100
+
+x2goserver (4.0.1.19-0x2go2) UNRELEASED; urgency=low
+
+  [ Mihai Moldovan ]
+  * New upstream version (4.0.1.19):
+  * x2goserver.spec:
+    - Do not search for unavailable file in x2goserver's post
+      install script.  Fixes installation bugs reported by Michael DePaulo.
+    - Add support for %{_datadir}/applications symlink in %{_sysconfdir}/x2go.
+      + Add creation and deletion bits to %post and %preun scriptlets.
+      + Refactor %post, %pre, %postun and %preun scriptlets to accommodate for
+        last change.
+      + Don't use %{_sbindir} for chkconfig and service on SLE{S,D}.
+        %{_sbindir} is a macro for /usr/sbin/, whereas chkconfig and service
+        reside in /sbin/.
+    - Change deprecated and removed PreReq to Requires(pre) header.
+    - Only use /etc/permissions.d on SUSE. Unsupported on RHEL/FC/EPEL.
+    - Fix RPM build failure due to misplaced fi in %pre scriptlet.
+    - %defattr must come before %doc, OR ELSE. Fixes SLE{S,D} 11 builds.
+
+ -- X2Go Release Manager <git-admin@x2go.org>  Fri, 06 Mar 2015 05:37:18 +0100
 
 x2goserver (4.0.1.19-0x2go1) unstable; urgency=medium
 
