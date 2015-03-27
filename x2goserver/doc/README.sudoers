@@ -1,0 +1,22 @@
+WORKAROUND FOR OPENSUSE 11 and SLES/SLED 11
+===========================================
+
+Problem Description
+-------------------
+
+OpenSUSE 11 and SLES/SLED 11 do not support /etc/sudoers.d as a place for
+custom sudoers config files.
+
+If you are using any of these distributions and
+are having issues regarding running Qt applications with elevated privileges
+(e.g., via kdesu or sudo), please use this workaround.
+
+
+Necessary Actions
+-----------------
+
+1.) Copy the contents of the "x2goserver" file in this directory.
+2.) Get elevated privileges. Either via su or sudo -i.
+3.) Launch visudo.
+4.) Paste the previously copied content at the end of the sudoers file.
+5.) Save and exit your editor.
