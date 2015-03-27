@@ -65,6 +65,9 @@ install_scripts:
 	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/extensions/pre-terminate.d
 	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/extensions/post-terminate.d
 	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/extensions/fail-terminate.d
+	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/extensions/pre-runcommand.d
+	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/extensions/post-runcommand.d
+	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/extensions/fail-runcommand.d
 	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)
 	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)/x2gofeature.d
 	$(INSTALL_PROGRAM) bin/*                $(DESTDIR)$(BINDIR)/
@@ -80,6 +83,9 @@ install_scripts:
 	$(INSTALL_FILE) lib/extensions/pre-terminate.d/.placeholder $(DESTDIR)$(LIBDIR)/extensions/pre-terminate.d/
 	$(INSTALL_FILE) lib/extensions/post-terminate.d/.placeholder $(DESTDIR)$(LIBDIR)/extensions/post-terminate.d/
 	$(INSTALL_FILE) lib/extensions/fail-terminate.d/.placeholder $(DESTDIR)$(LIBDIR)/extensions/fail-terminate.d/
+	$(INSTALL_FILE) lib/extensions/pre-runcommand.d/.placeholder $(DESTDIR)$(LIBDIR)/extensions/pre-runcommand.d/
+	$(INSTALL_FILE) lib/extensions/post-runcommand.d/.placeholder $(DESTDIR)$(LIBDIR)/extensions/post-runcommand.d/
+	$(INSTALL_FILE) lib/extensions/fail-runcommand.d/.placeholder $(DESTDIR)$(LIBDIR)/extensions/fail-runcommand.d/
 	$(INSTALL_PROGRAM) share/x2gofeature.d/*.features $(DESTDIR)$(SHAREDIR)/x2gofeature.d/
 
 install_config:
@@ -112,6 +118,9 @@ uninstall_scripts:
 	$(RM_FILE) $(DESTDIR)$(LIBDIR)/extensions/pre-terminate.d/.placeholder
 	$(RM_FILE) $(DESTDIR)$(LIBDIR)/extensions/post-terminate.d/.placeholder
 	$(RM_FILE) $(DESTDIR)$(LIBDIR)/extensions/fail-terminate.d/.placeholder
+	$(RM_FILE) $(DESTDIR)$(LIBDIR)/extensions/pre-runcommand.d/.placeholder
+	$(RM_FILE) $(DESTDIR)$(LIBDIR)/extensions/post-runcommand.d/.placeholder
+	$(RM_FILE) $(DESTDIR)$(LIBDIR)/extensions/fail-runcommand.d/.placeholder
 	$(RM_DIR) $(DESTDIR)$(LIBDIR)/extensions/pre-start.d/
 	$(RM_DIR) $(DESTDIR)$(LIBDIR)/extensions/post-start.d/
 	$(RM_DIR) $(DESTDIR)$(LIBDIR)/extensions/fail-start.d/
@@ -124,6 +133,9 @@ uninstall_scripts:
 	$(RM_DIR) $(DESTDIR)$(LIBDIR)/extensions/pre-terminate.d/
 	$(RM_DIR) $(DESTDIR)$(LIBDIR)/extensions/post-terminate.d/
 	$(RM_DIR) $(DESTDIR)$(LIBDIR)/extensions/fail-terminate.d/
+	$(RM_DIR) $(DESTDIR)$(LIBDIR)/extensions/pre-runcommand.d/
+	$(RM_DIR) $(DESTDIR)$(LIBDIR)/extensions/post-runcommand.d/
+	$(RM_DIR) $(DESTDIR)$(LIBDIR)/extensions/fail-runcommand.d/
 	for file in $(FEATURE_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(SHAREDIR)/x2gofeature.d/$$file; done
 
 uninstall_config:
