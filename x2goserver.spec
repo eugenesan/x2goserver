@@ -44,12 +44,20 @@ BuildRequires:  systemd
 %endif
 
 # for useradd/groupadd
+# OpenSUSE 12.3 and SLE{S,D} 12 (has suse_version 1315) switched to shadow.
+%if 0%{?suse_version} >= 1230
+BuildRequires:  shadow
+Requires(pre):  shadow
+%else
+# Older SuSE versions (prior to 12.3) only have pwdutils.
 %if 0%{?suse_version}
 BuildRequires:  pwdutils
 Requires(pre):  pwdutils
+# Fedora, EPEL and RedHat use shadow-utils.
 %else
 BuildRequires:  shadow-utils
 Requires(pre):  shadow-utils
+%endif
 %endif
 
 # So XSESSIONDIR gets linked

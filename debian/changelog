@@ -184,6 +184,8 @@ x2goserver (4.0.1.20-0x2go1) UNRELEASED; urgency=low
       available on *SUSE, FC < 20 and RHEL, so for those distros still own the
       directories.
     - Typo fix in comment: Recommands -> Recommends.
+    - Fix installation on OpenSUSE 12.3 and higher: has replaced pwdutils with
+      shadow. Also affects SLE{S,D} 12.
 
  -- X2Go Release Manager <git-admin@x2go.org>  Tue, 24 Feb 2015 22:11:49 +0100
 
