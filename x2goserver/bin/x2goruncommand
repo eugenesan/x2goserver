@@ -202,11 +202,7 @@ elif [ "$cmd" == "ICEWM" ]; then
 	cmd="/usr/bin/icewm-session"
 fi
 
-# Note: RICKROLL will not be a selectable option in X2Go Client or the
-# PyHoca clients. Users must type it in as the Command for a Single Application.
-
-if [ "$cmd" == "WWWBROWSER" ] || [ "$cmd" == "RICKROLL" ]; then
-	orig_cmd="$cmd"
+if [ "$cmd" == "WWWBROWSER" ]; then
 	if [ -e "/usr/bin/firefox.real" ]; then
 		cmd="/usr/bin/firefox.real"
 	elif  [ -e "/usr/bin/iceweasel" ]; then
@@ -222,10 +218,6 @@ if [ "$cmd" == "WWWBROWSER" ] || [ "$cmd" == "RICKROLL" ]; then
 	elif  [ -e "/usr/bin/chromium-browser" ]; then
 		cmd="/usr/bin/chromium-browser"
 	fi
-fi
-
-if [ "$orig_cmd" == "RICKROLL" ] ; then
-	cmd="${cmd} https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 fi
 
 if [ "$cmd" == "MAILCLIENT" ]; then

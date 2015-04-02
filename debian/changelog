@@ -173,9 +173,6 @@ x2goserver (4.0.1.20-0x2go1) UNRELEASED; urgency=low
   * New upstream version (4.0.1.20):
     - TERMINAL Session: Add support for qterminal
       (Lightweight terminal emulator written in Qt)
-    - Make X2Go Server aware of Rick Astley
-      (Single Application: Command: RICKROLL
-       Must be typed in manually in the client)
 
   [ Mihai Moldovan ]
   * New upstream version (4.0.1.20):
