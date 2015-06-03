@@ -76,6 +76,8 @@ Requires:       perl = %{perl_version}
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 %endif
 
+# For running any command, really.
+Requires:       bash
 # For x2goruncommand - for now
 Requires:       bc
 # For x2goshowblocks
