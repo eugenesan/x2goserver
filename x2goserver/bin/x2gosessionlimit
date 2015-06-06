@@ -27,6 +27,8 @@ use X2Go::Config qw( get_config);
 use X2Go::Log qw( loglevel );
 use X2Go::Utils qw( system_capture_merged_output );
 
+use English;
+
 openlog($0,'cons,pid','user');
 setlogmask( LOG_UPTO(loglevel()) );
 
@@ -81,24 +83,15 @@ if($strlimit ne "")
 }
 
 
-my ($name, $pass, $uid, $pgid, $quota, $comment, $gcos, $dir, $shell, $expire) = getpwnam($uname);
+my @assigned_groups = split (" ", $REAL_GROUP_ID);
 
-while (my ($name, $passwd, $gid, $members)  = getgrent()) 
-{
-	if ( $pgid eq $gid)
-	{
+foreach my $current_group (@assigned_groups) {
+	my $name = getgrgid ($current_group);
+
+	if (defined ($name)) {
 		getGroupLimit $name;
 	}
-	my @memebers=split(" ",$members);
-	foreach my $member (@memebers) 
-	{
-		if ($uname eq $member  )
-		{
-			getGroupLimit $name;
-		}
-	}
 }
-
 
 if ($scount < $maxlimit)
 {

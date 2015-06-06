@@ -183,6 +183,10 @@ x2goserver (4.0.1.20-0x2go1) UNRELEASED; urgency=low
     - x2goserver/bin/x2gogetapps: do not print spurious newlines.
     - Change string "X2go" to "X2Go" where appropriate.
     - Add runcommand.d hooks to x2goserver-extensions Makefile.
+    - x2goserver/bin/x2gosessionlimit: don't iterate over the whole groups
+      file. Only check the primary and secondary groups as returned by
+      getgid()/getgroups(). Fixes long delays in session startup on machines
+      with a gazillion of groups.
   * x2goserver.spec:
     - Add sudo and logcheck as BuildRequires and Requires. Don't own
       directories that are owned by sudo and logcheck. Logcheck is not
