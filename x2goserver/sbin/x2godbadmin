@@ -52,10 +52,10 @@ my $addgroup='';
 my $rmgroup='';
 my $listusers='';
 
-GetOptions('listusers' => \$listusers, 'createdb' => \$createdb, 'updatedb' => \$updatedb, 'help' => \$help, 'adduser=s' => \$adduser, 
+GetOptions('listusers' => \$listusers, 'createdb' => \$createdb, 'updatedb' => \$updatedb, 'help' => \$help, 'adduser=s' => \$adduser,
            'addgroup=s' => \$addgroup, 'rmuser=s' => \$rmuser, 'rmgroup=s' => \$rmgroup);
 
-if ($help  || ! ( $createdb || $updatedb || $adduser || $rmuser || $addgroup || $rmgroup || $listusers))
+if ($help || ! ( $createdb || $updatedb || $adduser || $rmuser || $addgroup || $rmgroup || $listusers))
 {
 	show_usage();
 	exit(0);
@@ -66,7 +66,7 @@ my $Config = get_sqlconfig();
 if ($Config->param("backend") eq 'sqlite')
 {
 	my $user="x2gouser";
-	my  ($name, $pass, $uid, $pgid, $quota, $comment, $gcos, $dir, $shell, $expire) = getpwnam($user);
+	my ($name, $pass, $uid, $pgid, $quota, $comment, $gcos, $dir, $shell, $expire) = getpwnam($user);
 	my $dbfile="$dir/x2go_sessions";
 
 	if (! $uid)
@@ -90,7 +90,7 @@ if ($Config->param("backend") eq 'sqlite')
 		} else {
 
 			# Update the session DB file
-			my $dbh=DBI->connect("dbi:SQLite:dbname=$dbfile","","",{AutoCommit => 1, PrintError => 0, PrintWarn  => 1, RaiseError => 1 }) or die $_;
+			my $dbh=DBI->connect("dbi:SQLite:dbname=$dbfile","","",{AutoCommit => 1, PrintError => 0, PrintWarn => 1, RaiseError => 1 }) or die $_;
 			my $coltest;
 			my $sth;
 			# Update missing column on sessions table: tekictrl_port
@@ -215,19 +215,19 @@ if ($Config->param("backend") eq 'sqlite')
 		                      END;
 		                      END;
 		                      ");
-		$sth->execute() or die; 
+		$sth->execute() or die;
 		$sth->finish();
 
 		my $sth=$dbh->prepare("
 		                      CREATE TRIGGER fkd_ports_session_id
 		                      BEFORE DELETE ON sessions
-		                      FOR EACH ROW 
+		                      FOR EACH ROW
 		                      BEGIN
-		                      DELETE  FROM used_ports WHERE session_id = OLD.session_id;
+		                      DELETE FROM used_ports WHERE session_id = OLD.session_id;
 		                      END;
 		                      END;
 		                      ");
-		$sth->execute() or die; 
+		$sth->execute() or die;
 		$sth->finish();
 
 		# undef $dbh should be preferred to $dbh->disconnect(), see
@@ -328,7 +328,7 @@ if ($updatedb)
 				                          create or replace VIEW sessions_view as
 				                          SELECT
 				                          agent_pid, session_id, display, server, status, init_time, cookie, client, gr_port,
-				                          sound_port, last_time, uname, fs_port, tekictrl_port, tekidata_port from  sessions
+				                          sound_port, last_time, uname, fs_port, tekictrl_port, tekidata_port from sessions
 				                          where creator_id = current_user
 				                          ");
 				$sth_update->execute() or die;
@@ -383,7 +383,7 @@ if ($adduser)
 
 if ($addgroup)
 {
-	my ($name, $passwd, $gid, $members)  = getgrnam( $addgroup); 
+	my ($name, $passwd, $gid, $members) = getgrnam( $addgroup);
 	my @grp_members=split(' ',$members);
 	foreach (@grp_members)
 	{
@@ -399,7 +399,7 @@ if ($rmuser)
 
 if ($rmgroup)
 {
-	my ($name, $passwd, $gid, $members)  = getgrnam( $rmgroup); 
+	my ($name, $passwd, $gid, $members) = getgrnam( $rmgroup);
 	my @grp_members=split(' ',$members);
 	foreach (@grp_members)
 	{
@@ -417,7 +417,7 @@ sub list_users()
 	printf ("%-20s DB user\n","UNIX user");
 	print "---------------------------------------\n";
 	my @data;
-	while (@data = $sth->fetchrow_array) 
+	while (@data = $sth->fetchrow_array)
 	{
 		@data[0]=~s/x2gouser_//;
 		printf ("%-20s x2gouser_@data[0]\n",@data[0]);
@@ -430,10 +430,10 @@ sub rm_user()
 {
 	my $user=shift;
 
-	print ("rm DB user \"x2gouser_$user\"\n"); 
+	print ("rm DB user \"x2gouser_$user\"\n");
 
 	my $sth=$dbh->prepare("DROP OWNED BY \"x2gouser_$user\"");
-	$sth->execute();      
+	$sth->execute();
 
 	my $sth=$dbh->prepare("drop USER if exists \"x2gouser_$user\"");
 	$sth->execute();
@@ -475,7 +475,7 @@ sub add_user()
 	$sth->{PrintError}=0;
 	$sth->execute();
 
-	print ("create DB user \"x2gouser_$user\"\n"); 
+	print ("create DB user \"x2gouser_$user\"\n");
 	$sth=$dbh->prepare("create USER \"x2gouser_$user\" WITH ENCRYPTED PASSWORD '$pass'");
 	$sth->execute();
 
@@ -541,18 +541,18 @@ sub create_tables()
 	$sth->execute() or die;
 
 	$sth=$dbh->prepare("
-	                   create VIEW sessions_view as 
-	                   SELECT 
+	                   create VIEW sessions_view as
+	                   SELECT
 	                   agent_pid, session_id, display, server, status, init_time, cookie, client, gr_port,
-	                   sound_port, last_time, uname, fs_port, tekictrl_port, tekidata_port from  sessions
+	                   sound_port, last_time, uname, fs_port, tekictrl_port, tekidata_port from sessions
 	                   where creator_id = current_user
 	                   ");
 	$sth->execute() or die;
 
 	$sth=$dbh->prepare("
-	                   create VIEW servers_view as 
-	                   SELECT 
-	                   server, display, status from  sessions
+	                   create VIEW servers_view as
+	                   SELECT
+	                   server, display, status from sessions
 	                   ");
 	$sth->execute() or die;
 
@@ -579,8 +579,8 @@ sub create_tables()
 
 	$sth=$dbh->prepare("
 	                   create or replace RULE update_sess_view AS ON UPDATE
-	                   TO sessions_view DO INSTEAD 
-	                   update sessions set 
+	                   TO sessions_view DO INSTEAD
+	                   update sessions set
 	                   status=NEW.status,
 	                   last_time=NEW.last_time,
 	                   cookie=NEW.cookie,
@@ -617,7 +617,7 @@ sub create_tables()
 	$sth->execute() or die;
 
 	$sth=$dbh->prepare("
-	                   create VIEW ports_view as 
+	                   create VIEW ports_view as
 	                   SELECT
 	                   server, port from used_ports
 	                   ");
@@ -655,7 +655,7 @@ sub create_tables()
 	$sth->execute() or die;
 
 	$sth=$dbh->prepare("
-	                   create VIEW mounts_view as 
+	                   create VIEW mounts_view as
 	                   SELECT
 	                   client,path, session_id from mounts
 	                   where creator_id = current_user
@@ -664,11 +664,11 @@ sub create_tables()
 
 	$sth=$dbh->prepare("
 	                   create or replace RULE delete_mounts_view AS ON DELETE
-	                   TO mounts_view DO INSTEAD 
+	                   TO mounts_view DO INSTEAD
 	                   delete from mounts
 	                   where session_id=OLD.session_id and creator_id=current_user and path=OLD.path
 	                   ");
-	$sth->execute() or die;	  
+	$sth->execute() or die;
 
 	$sth=$dbh->prepare("
 	                   create or replace RULE insert_mount_priv AS ON INSERT

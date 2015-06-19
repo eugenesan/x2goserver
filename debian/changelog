@@ -202,6 +202,10 @@ x2goserver (4.0.1.20-0x2go1) UNRELEASED; urgency=low
   * debian/control:
     - Add new dependency on bash.
 
+  [ Henning Heinold ]
+  * New upstream version (4.0.1.20):
+    - x2goserver/sbin/x2godbadmin: remove trailing whitespace.
+
  -- X2Go Release Manager <git-admin@x2go.org>  Tue, 24 Feb 2015 22:11:49 +0100
 
 x2goserver (4.0.1.19-0x2go2) UNRELEASED; urgency=low
