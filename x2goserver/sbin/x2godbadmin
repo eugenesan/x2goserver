@@ -432,6 +432,12 @@ sub rm_user()
 
 	print ("rm DB user \"x2gouser_$user\"\n");
 
+	my $sth=$dbh->prepare("REVOKE ALL PRIVILEGES ON sessions, used_ports, mounts FROM \"x2gouser_$user\"");
+	$sth->execute();
+
+	my $sth=$dbh->prepare("REVOKE ALL PRIVILEGES ON sessions_view, mounts_view, servers_view, ports_view FROM \"x2gouser_$user\"");
+	$sth->execute();
+
 	my $sth=$dbh->prepare("DROP OWNED BY \"x2gouser_$user\"");
 	$sth->execute();
 
@@ -464,6 +470,16 @@ sub add_user()
 	}
 	$pass=`pwgen 8 1`;
 	chomp($pass);
+
+	my $sth=$dbh->prepare("REVOKE ALL PRIVILEGES ON sessions, used_ports, mounts FROM \"x2gouser_$user\"");
+	$sth->{Warn}=0;
+	$sth->{PrintError}=0;
+	$sth->execute();
+
+	my $sth=$dbh->prepare("REVOKE ALL PRIVILEGES ON sessions_view, mounts_view, servers_view, ports_view FROM \"x2gouser_$user\"");
+	$sth->{Warn}=0;
+	$sth->{PrintError}=0;
+	$sth->execute();
 
 	my $sth=$dbh->prepare("DROP OWNED BY \"x2gouser_$user\"");
 	$sth->{Warn}=0;
