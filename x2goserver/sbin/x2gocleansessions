@@ -189,6 +189,9 @@ elsif ($pid == 0 )
 
 			#print @sinfo[1], ': ', $remembered_sessions_since{@sinfo[1]},' ',$remembered_sessions_status{@sinfo[1]},"\n";
 
+			# Update current status once per session. Avoids race conditions.
+			@sinfo[4] = system_capture_stdout_output ("$x2go_lib_path/x2gogetstatus", "@sinfo[1]");
+
 			if (@sinfo[4]eq 'F')
 			{
 				log_message('debug', "@sinfo[1] is blocked");

@@ -187,6 +187,11 @@ x2goserver (4.0.1.20-0x2go1) UNRELEASED; urgency=low
       file. Only check the primary and secondary groups as returned by
       getgid()/getgroups(). Fixes long delays in session startup on machines
       with a gazillion of groups.
+    - x2goserver/sbin/x2gocleansessions: re-fetch the current sessions' status
+      before handling it. Using the "cached" value from the initial
+      x2golistsessions run may be desynchronized with the actual current
+      value. Avoids a race condition logging users out after they attached to a
+      session.
   * x2goserver.spec:
     - Add sudo and logcheck as BuildRequires and Requires. Don't own
       directories that are owned by sudo and logcheck. Logcheck is not
