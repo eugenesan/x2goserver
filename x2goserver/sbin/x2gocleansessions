@@ -146,7 +146,9 @@ elsif ($pid == 0 )
 	$SIG{CHLD} = sub { wait };
 
 	my %remembered_sessions_status = ();
-	my %remembered_sessions_status_since = ();
+	my %remembered_sessions_status_since_time = ();
+	my %remembered_sessions_status_since_iterations = ();
+
 	my $last_reniced = 0;
 
 	my $user;
@@ -158,12 +160,13 @@ elsif ($pid == 0 )
 		my @outp=split("\n","$outp");
 
 		# forget earlier remembered blocked sessions
-		while ( my ($session, $remembered_since) = each(%remembered_sessions_status_since) )
+		while ( my ($session, $remembered_since) = each(%remembered_sessions_status_since_time) )
 		{
 			if (! join(',', @outp)=~m/$session/)
 			{
 				delete $remembered_sessions_status{$session};
-				delete $remembered_sessions_status_since{$session};
+				delete $remembered_sessions_status_since_time{$session};
+				delete $remembered_sessions_status_since_iterations{$session};
 			}
 		}
 
@@ -174,19 +177,25 @@ elsif ($pid == 0 )
 
 			# Clean up invalid sessions (i.e., those for which no nxagent process is running anymore)
 			# from the session database, if the status didn't change for more than 10 seconds.
-			if ((!@sinfo[0]) && (defined ($remembered_sessions_status_since{@sinfo[1]})) && ((gmtime (time) - $remembered_sessions_status_since{@sinfo[1]}) >= 10))
+			if ((!@sinfo[0]) && (defined ($remembered_sessions_status_since_time{@sinfo[1]})) && ((gmtime (time) - $remembered_sessions_status_since_time{@sinfo[1]}) >= 10))
 			{
 				dbsys_rmsessionsroot(@sinfo[1]);
 				next;
 			}
 
-			# Record the status of previously unseen sessions and the current time.
-			if (!(defined ($remembered_sessions_status_since{@sinfo[1]})) || ($remembered_sessions_status{@sinfo[1]} !~ m/@sinfo[4]/)) {
+			# Record the status of either previously unseen or status-changing sessions and the current time.
+			if (!(defined ($remembered_sessions_status_since_time{@sinfo[1]})) || ($remembered_sessions_status{@sinfo[1]} !~ m/@sinfo[4]/)) {
 				$remembered_sessions_status{@sinfo[1]} = @sinfo[4];
-				$remembered_sessions_status_since{@sinfo[1]} = gmtime (time);
+				$remembered_sessions_status_since_time{@sinfo[1]} = gmtime (time);
+				$remembered_sessions_status_since_iterations{@sinfo[1]} = 0;
+			}
+			else {
+				# Current status matches previously seen status and a time is recorded.
+				# Increment counter for this session.
+				++$remembered_sessions_status_since_iterations{$sinfo[1]};
 			}
 
-			#print @sinfo[1], ': ', $remembered_sessions_status_since{@sinfo[1]},' ',$remembered_sessions_status{@sinfo[1]},"\n";
+			#print @sinfo[1], ': ', $remembered_sessions_status_since_time{@sinfo[1]},' (' , $remembered_sessions_status_since_iterations{@sinfo[1]} ,'iterations) ',$remembered_sessions_status{@sinfo[1]},"\n";
 
 			# Update current status once per session. Avoids race conditions.
 			@sinfo[4] = system_capture_stdout_output ("$x2go_lib_path/x2gogetstatus", "@sinfo[1]");
@@ -195,12 +204,12 @@ elsif ($pid == 0 )
 			{
 				log_message('debug', "@sinfo[1] is blocked");
 				# Kill the process if blocked for more than 20 seconds.
-				if ((gmtime (time) - $remembered_sessions_status_since{@sinfo[1]}) >= 20)
+				if ((gmtime (time) - $remembered_sessions_status_since_time{@sinfo[1]}) >= 20)
 				{
 					# send SIGKILL to dangling X-server processes
 					log_message('warning', "@sinfo[1]: found stale X-server process (@sinfo[0]), sending SIGKILL");
 					system("kill", "-9", "@sinfo[0]");
-					delete $remembered_sessions_status_since{@sinfo[1]};
+					delete $remembered_sessions_status_since_time{@sinfo[1]};
 				}
 				my $display = @sinfo[2];
 				if (-S "/tmp/.X11-unix/X$display") {

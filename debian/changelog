@@ -198,6 +198,11 @@ x2goserver (4.0.1.20-0x2go1) UNRELEASED; urgency=low
       include a timestamp instead of the "iteration count multiplied by two"
       value. Compare timestamps to see if killing hanging nxagent processes is
       necessary.
+    - x2goserver/sbin/x2gocleansessions: rename
+      %remembered_sessions_status_since to
+      %remembered_sessions_status_since_time. Add
+      %remembered_sessions_status_since_iterations that will come in handy for
+      the next change.
   * x2goserver.spec:
     - Add sudo and logcheck as BuildRequires and Requires. Don't own
       directories that are owned by sudo and logcheck. Logcheck is not
