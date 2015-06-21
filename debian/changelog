@@ -192,6 +192,12 @@ x2goserver (4.0.1.20-0x2go1) UNRELEASED; urgency=low
       x2golistsessions run may be desynchronized with the actual current
       value. Avoids a race condition logging users out after they attached to a
       session.
+    - x2goserver/sbin/x2gocleansessions: rename %remembered_sessions_since to
+      %remembered_sessions_status_since. That's what it really is. Add
+      comments to further clarify what it's actually doing. Change it to
+      include a timestamp instead of the "iteration count multiplied by two"
+      value. Compare timestamps to see if killing hanging nxagent processes is
+      necessary.
   * x2goserver.spec:
     - Add sudo and logcheck as BuildRequires and Requires. Don't own
       directories that are owned by sudo and logcheck. Logcheck is not
