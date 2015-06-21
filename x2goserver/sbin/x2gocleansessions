@@ -273,12 +273,20 @@ elsif ($pid == 0 )
 				}
 				if (@sinfo[4] eq 'S')
 				{
-					if (session_is_running(@sinfo[1],@sinfo[11]))
-					{
-						log_message('debug', "@sinfo[1]: unmounting all shares");
-						system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");
-						system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "x2gosuspend-session @sinfo[1]");
-						log_message('debug', "@sinfo[1] was found running and has now been suspended");
+					if (session_is_running(@sinfo[1],@sinfo[11])) {
+						# Give the session a grace period of one iteration.
+						# If it didn't change into suspended state by then, suspend it "forcefully".
+						if ($remembered_sessions_status_since_iterations{@sinfo[1]} == 1) {
+							log_message('debug', "@sinfo[1]: unmounting all shares");
+							system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");
+							system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "x2gosuspend-session @sinfo[1]");
+							log_message('debug', "@sinfo[1] was found running and has now been suspended");
+						}
+						elsif ($remembered_sessions_status_since_iterations{@sinfo[1]} == 2) {
+							# Issue a diagnostic warning in case suspension was already tried, but failed to
+							# actually change the status for some reason.
+							log_message('warning', "@sinfo[1]: session status @sinfo[4] desynchronized with current status (R) and session suspend already tried unsuccessfully");
+						}
 					}
 				}
 				if (@sinfo[4] eq 'T')
