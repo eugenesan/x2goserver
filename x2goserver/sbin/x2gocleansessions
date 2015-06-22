@@ -222,22 +222,23 @@ elsif ($pid == 0 )
 					delete $remembered_sessions_status{@sinfo[1]};
 					delete $remembered_sessions_status_since_time{@sinfo[1]};
 					delete $remembered_sessions_status_since_iterations{@sinfo[1]};
+
+					my $display = @sinfo[2];
+					if (-S "/tmp/.X11-unix/X$display") {
+						# remove the NX-X11 socket file (as the agent will not have managed after a kill -9)
+						log_message('warning', "@sinfo[1], pid @sinfo[0]: cleaning up stale X11 socket file: /tmp/.X11-unix/X$display");
+						unlink("/tmp/.X11-unix/X$display");
+					}
+					if (-e "/tmp/.X$display-lock") {
+						# remove the NX-X11 lock file (as the agent will not have managed after a kill -9)
+						log_message('warning', "@sinfo[1], pid @sinfo[0]: cleaning up stale X11 lock file: /tmp/.X$display-lock");
+						unlink("/tmp/.X$display-lock");
+					}
+					log_message('debug', "@sinfo[1]: unmounting all shares");
+					system( "su", "@sinfo[11]", "-s", "/bin/sh", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");
+					#remove port forwarding
+					system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "$x2go_lib_path/x2gormforward @sinfo[1]");
 				}
-				my $display = @sinfo[2];
-				if (-S "/tmp/.X11-unix/X$display") {
-					# remove the NX-X11 socket file (as the agent will not have managed after a kill -9)
-					log_message('warning', "@sinfo[1], pid @sinfo[0]: cleaning up stale X11 socket file: /tmp/.X11-unix/X$display");
-					unlink("/tmp/.X11-unix/X$display");
-				}
-				if (-e "/tmp/.X$display-lock") {
-					# remove the NX-X11 lock file (as the agent will not have managed after a kill -9)
-					log_message('warning', "@sinfo[1], pid @sinfo[0]: cleaning up stale X11 lock file: /tmp/.X$display-lock");
-					unlink("/tmp/.X$display-lock");
-				}
-				log_message('debug', "@sinfo[1]: unmounting all shares");
-				system( "su", "@sinfo[11]", "-s", "/bin/sh", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");
-				#remove port forwarding
-				system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "$x2go_lib_path/x2gormforward @sinfo[1]");
 			}
 			elsif (! check_pid (@sinfo[0],@sinfo[1],@sinfo[12]))
 			{
