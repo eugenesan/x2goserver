@@ -145,6 +145,7 @@ elsif ($pid == 0 )
 	$SIG{TERM}=\&catch_term;
 	$SIG{CHLD} = sub { wait };
 
+	my @remembered_finished_sessions = ();
 	my %remembered_sessions_status = ();
 	my %remembered_sessions_status_since_time = ();
 	my %remembered_sessions_status_since_iterations = ();
@@ -169,6 +170,8 @@ elsif ($pid == 0 )
 				delete $remembered_sessions_status_since_iterations{$session};
 			}
 		}
+
+		push (@outp, @remembered_finished_sessions);
 
 		for (my $i=0;$i<@outp;$i++)
 		{
@@ -209,6 +212,7 @@ elsif ($pid == 0 )
 			if (@sinfo[4] eq 'F')
 			{
 				log_message ('debug', "@sinfo[1]: is blocked, adding to finished list.");
+				push (@remembered_finished_sessions, join ('|', @sinfo));
 
 				# Kill the process if blocked for more than 20 seconds.
 				if ((gmtime (time) - $remembered_sessions_status_since_time{@sinfo[1]}) >= 20)
@@ -219,6 +223,7 @@ elsif ($pid == 0 )
 					system("kill", "-9", "@sinfo[0]");
 
 					# Remove all references to this sessions. We will never see it again.
+					@remembered_finished_sessions = grep (!/\Q@sinfo[1]\E/, @remembered_finished_sessions);
 					delete $remembered_sessions_status{@sinfo[1]};
 					delete $remembered_sessions_status_since_time{@sinfo[1]};
 					delete $remembered_sessions_status_since_iterations{@sinfo[1]};

@@ -216,6 +216,10 @@ x2goserver (4.0.1.20-0x2go1) UNRELEASED; urgency=low
       overlooked hashes.
     - x2goserver/sbin/x2gocleansessions: move socket and lock file cleanup
       into time-based block for finished/failed sessions.
+    - x2goserver/sbin/x2gocleansessions: add @remembered_finished_sessions
+      array. Merge with session list as queried from the database (won't
+      include finished/failed sessions) and remember F-state sessions via this
+      array. Only delete elements once work on these has been finished.
   * x2goserver.spec:
     - Add sudo and logcheck as BuildRequires and Requires. Don't own
       directories that are owned by sudo and logcheck. Logcheck is not
