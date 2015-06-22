@@ -208,10 +208,12 @@ elsif ($pid == 0 )
 
 			if (@sinfo[4] eq 'F')
 			{
-				log_message('debug', "@sinfo[1] is blocked");
+				log_message ('debug', "@sinfo[1]: is blocked, adding to finished list.");
+
 				# Kill the process if blocked for more than 20 seconds.
 				if ((gmtime (time) - $remembered_sessions_status_since_time{@sinfo[1]}) >= 20)
 				{
+					log_message ('debug', "@sinfo[1]: blocked for more than 20 seconds.");
 					# send SIGKILL to dangling X-server processes
 					log_message('warning', "@sinfo[1]: found stale X-server process (@sinfo[0]), sending SIGKILL");
 					system("kill", "-9", "@sinfo[0]");
@@ -220,12 +222,12 @@ elsif ($pid == 0 )
 				my $display = @sinfo[2];
 				if (-S "/tmp/.X11-unix/X$display") {
 					# remove the NX-X11 socket file (as the agent will not have managed after a kill -9)
-					log_message('warning', "@sinfo[1], pid @sinfo[0] cleaning up stale X11 socket file: /tmp/.X11-unix/X$display");
+					log_message('warning', "@sinfo[1], pid @sinfo[0]: cleaning up stale X11 socket file: /tmp/.X11-unix/X$display");
 					unlink("/tmp/.X11-unix/X$display");
 				}
 				if (-e "/tmp/.X$display-lock") {
 					# remove the NX-X11 lock file (as the agent will not have managed after a kill -9)
-					log_message('warning', "@sinfo[1], pid @sinfo[0] cleaning up stale X11 lock file: /tmp/.X$display-lock");
+					log_message('warning', "@sinfo[1], pid @sinfo[0]: cleaning up stale X11 lock file: /tmp/.X$display-lock");
 					unlink("/tmp/.X$display-lock");
 				}
 				log_message('debug', "@sinfo[1]: unmounting all shares");
@@ -246,20 +248,21 @@ elsif ($pid == 0 )
 					$user = $effective_user;
 				}
 
+				log_message('debug', "@sinfo[1], pid @sinfo[0]: does not exist, changing status from @sinfo[4] to F");
 				system("su", "$user", "-s", "/bin/sh", "-c", "$x2go_lib_path/x2gochangestatus 'F' @sinfo[1]");
 				my $display = @sinfo[2];
 				if (-S "/tmp/.X11-unix/X$display") {
 					# remove the NX-X11 socket file (we don't know how the agent disappeared,
 					# someone might have shot it with kill -9)
-					log_message('warning', "@sinfo[1], pid @sinfo[0] cleaning up stale X11 socket file: /tmp/.X11-unix/X$display");
+					log_message('warning', "@sinfo[1], pid @sinfo[0]: cleaning up stale X11 socket file: /tmp/.X11-unix/X$display");
 					unlink("/tmp/.X11-unix/X$display");
 				}
 				if (-e "/tmp/.X$display-lock") {
 					# remove the NX-X11 lock file (we don't know how the agent disappeared,
 					# someone might have shot it with kill -9)
-					log_message('warning', "@sinfo[1], pid @sinfo[0] cleaning up stale X11 lock file: /tmp/.X$display-lock");
+					log_message('warning', "@sinfo[1], pid @sinfo[0]: cleaning up stale X11 lock file: /tmp/.X$display-lock");
 					unlink("/tmp/.X$display-lock");
-				}				log_message('debug', "@sinfo[1], pid @sinfo[0] does not exist, changing status from @sinfo[4] to F");
+				}
 				log_message('debug', "@sinfo[1]: unmounting all shares");
 				system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");
 			}
@@ -270,7 +273,7 @@ elsif ($pid == 0 )
 					if (session_is_suspended(@sinfo[1],@sinfo[11]))
 					{
 						system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "$x2go_lib_path/x2gochangestatus S @sinfo[1]");
-						log_message('debug', "@sinfo[1] is suspended, changing status from @sinfo[4] to S");
+						log_message('debug', "@sinfo[1]: is suspended, changing status from @sinfo[4] to S");
 						log_message('debug', "@sinfo[1]: unmounting all shares");
 						system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");
 						#remove port forwarding
@@ -286,7 +289,7 @@ elsif ($pid == 0 )
 							log_message('debug', "@sinfo[1]: unmounting all shares");
 							system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");
 							system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "x2gosuspend-session @sinfo[1]");
-							log_message('debug', "@sinfo[1] was found running and has now been suspended");
+							log_message('debug', "@sinfo[1]: was found running and has now been suspended");
 						}
 						elsif ($remembered_sessions_status_since_iterations{@sinfo[1]} == 2) {
 							# Issue a diagnostic warning in case suspension was already tried, but failed to
@@ -302,7 +305,7 @@ elsif ($pid == 0 )
 						log_message('debug', "@sinfo[1]: unmounting all shares");
 						system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");
 						system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "x2goterminate-session @sinfo[1]");
-						log_message('debug', "@sinfo[1] has been requested for termination via the session DB");
+						log_message('debug', "@sinfo[1]: termination has been requested via the session DB");
 						#remove port forwarding
 						system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "$x2go_lib_path/x2gormforward @sinfo[1]");
 					}
