@@ -206,6 +206,9 @@ x2goserver (4.0.1.20-0x2go1) UNRELEASED; urgency=low
     - x2goserver/sbin/x2gocleansessions: give suspended-but-running sessions a
       grace period of one iteration. Fixes: #888.
     - x2goserver/sbin/x2gocleansessions: fix ugly missing whitespace.
+    - x2goserver/sbin/x2gocleansessions: move up session status sync a bit,
+      don't update session state when session has been removed from the
+      database.
   * x2goserver.spec:
     - Add sudo and logcheck as BuildRequires and Requires. Don't own
       directories that are owned by sudo and logcheck. Logcheck is not

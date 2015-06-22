@@ -183,6 +183,15 @@ elsif ($pid == 0 )
 				next;
 			}
 
+			# Update current status once per session. Avoids race conditions.
+			my $current_status = system_capture_stdout_output ("$x2go_lib_path/x2gogetstatus", "@sinfo[1]");
+			if (length ($current_status)) {
+				@sinfo[4] = $current_status;
+			}
+			else {
+				log_message ('debug', "@sinfo[1]: removed from database, not updating status.");
+			}
+
 			# Record the status of either previously unseen or status-changing sessions and the current time.
 			if (!(defined ($remembered_sessions_status_since_time{@sinfo[1]})) || ($remembered_sessions_status{@sinfo[1]} !~ m/@sinfo[4]/)) {
 				$remembered_sessions_status{@sinfo[1]} = @sinfo[4];
@@ -196,9 +205,6 @@ elsif ($pid == 0 )
 			}
 
 			#print @sinfo[1], ': ', $remembered_sessions_status_since_time{@sinfo[1]},' (' , $remembered_sessions_status_since_iterations{@sinfo[1]} ,'iterations) ',$remembered_sessions_status{@sinfo[1]},"\n";
-
-			# Update current status once per session. Avoids race conditions.
-			@sinfo[4] = system_capture_stdout_output ("$x2go_lib_path/x2gogetstatus", "@sinfo[1]");
 
 			if (@sinfo[4] eq 'F')
 			{
