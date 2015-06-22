@@ -250,6 +250,7 @@ elsif ($pid == 0 )
 
 				log_message('debug', "@sinfo[1], pid @sinfo[0]: does not exist, changing status from @sinfo[4] to F");
 				system("su", "$user", "-s", "/bin/sh", "-c", "$x2go_lib_path/x2gochangestatus 'F' @sinfo[1]");
+
 				my $display = @sinfo[2];
 				if (-S "/tmp/.X11-unix/X$display") {
 					# remove the NX-X11 socket file (we don't know how the agent disappeared,
