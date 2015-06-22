@@ -217,7 +217,11 @@ elsif ($pid == 0 )
 					# send SIGKILL to dangling X-server processes
 					log_message('warning', "@sinfo[1]: found stale X-server process (@sinfo[0]), sending SIGKILL");
 					system("kill", "-9", "@sinfo[0]");
+
+					# Remove all references to this sessions. We will never see it again.
+					delete $remembered_sessions_status{@sinfo[1]};
 					delete $remembered_sessions_status_since_time{@sinfo[1]};
+					delete $remembered_sessions_status_since_iterations{@sinfo[1]};
 				}
 				my $display = @sinfo[2];
 				if (-S "/tmp/.X11-unix/X$display") {
