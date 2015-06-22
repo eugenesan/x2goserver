@@ -200,7 +200,7 @@ elsif ($pid == 0 )
 			# Update current status once per session. Avoids race conditions.
 			@sinfo[4] = system_capture_stdout_output ("$x2go_lib_path/x2gogetstatus", "@sinfo[1]");
 
-			if (@sinfo[4]eq 'F')
+			if (@sinfo[4] eq 'F')
 			{
 				log_message('debug', "@sinfo[1] is blocked");
 				# Kill the process if blocked for more than 20 seconds.
