@@ -180,7 +180,7 @@ elsif ($pid == 0 )
 
 			# Clean up invalid sessions (i.e., those for which no nxagent process is running anymore)
 			# from the session database, if the status didn't change for more than 10 seconds.
-			if ((!@sinfo[0]) && (defined ($remembered_sessions_status_since_time{@sinfo[1]})) && ((gmtime (time) - $remembered_sessions_status_since_time{@sinfo[1]}) >= 10))
+			if ((!@sinfo[0]) && (defined ($remembered_sessions_status_since_time{@sinfo[1]})) && ((time () - $remembered_sessions_status_since_time{@sinfo[1]}) >= 10))
 			{
 				dbsys_rmsessionsroot(@sinfo[1]);
 				next;
@@ -198,7 +198,7 @@ elsif ($pid == 0 )
 			# Record the status of either previously unseen or status-changing sessions and the current time.
 			if (!(defined ($remembered_sessions_status_since_time{@sinfo[1]})) || ($remembered_sessions_status{@sinfo[1]} !~ m/@sinfo[4]/)) {
 				$remembered_sessions_status{@sinfo[1]} = @sinfo[4];
-				$remembered_sessions_status_since_time{@sinfo[1]} = gmtime (time);
+				$remembered_sessions_status_since_time{@sinfo[1]} = time ();
 				$remembered_sessions_status_since_iterations{@sinfo[1]} = 0;
 			}
 			else {
@@ -219,7 +219,7 @@ elsif ($pid == 0 )
 				}
 
 				# Kill the process if blocked for more than 20 seconds.
-				if ((gmtime (time) - $remembered_sessions_status_since_time{@sinfo[1]}) >= 20)
+				if ((time () - $remembered_sessions_status_since_time{@sinfo[1]}) >= 20)
 				{
 					log_message ('debug', "@sinfo[1]: blocked for more than 20 seconds.");
 					# send SIGKILL to dangling X-server processes

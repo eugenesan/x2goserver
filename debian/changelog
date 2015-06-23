@@ -222,6 +222,11 @@ x2goserver (4.0.1.20-0x2go1) UNRELEASED; urgency=low
       array. Only delete elements once work on these has been finished.
     - x2goserver/sbin/x2gocleansessions: don't add failed/finished sessions to
       remembered list if that list already includes them.
+    - x2goserver/sbin/x2gocleansessions: don't use gmtime (time ()) but merely
+      time (). The former one returns a formatted date-time string, which
+      can't be checked by forming a difference. The latter one returns an UNIX
+      timestamp, which is what we really want... minus leap seconds. Let's
+      hope this doesn't bite back some time or later...
   * x2goserver.spec:
     - Add sudo and logcheck as BuildRequires and Requires. Don't own
       directories that are owned by sudo and logcheck. Logcheck is not
