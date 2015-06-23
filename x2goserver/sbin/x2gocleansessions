@@ -189,6 +189,7 @@ elsif ($pid == 0 )
 			# Update current status once per session. Avoids race conditions.
 			my $current_status = system_capture_stdout_output ("$x2go_lib_path/x2gogetstatus", "@sinfo[1]");
 			if (length ($current_status)) {
+				log_message ('debug', "@sinfo[1]: updating session status from '@sinfo[4]' to '$current_status'.");
 				@sinfo[4] = $current_status;
 			}
 			else {
