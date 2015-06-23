@@ -211,8 +211,12 @@ elsif ($pid == 0 )
 
 			if (@sinfo[4] eq 'F')
 			{
-				log_message ('debug', "@sinfo[1]: is blocked, adding to finished list.");
-				push (@remembered_finished_sessions, join ('|', @sinfo));
+				log_message ('debug', "@sinfo[1]: is blocked.");
+				# Only add to finished list if it isn't in there already.
+				if (!(grep { ((defined ($_)) && ($_ =~ m/\Q@sinfo[1]\E/)) } @remembered_finished_sessions)) {
+					log_message ('debug', "@sinfo[1]: adding to finished list.");
+					push (@remembered_finished_sessions, join ('|', @sinfo));
+				}
 
 				# Kill the process if blocked for more than 20 seconds.
 				if ((gmtime (time) - $remembered_sessions_status_since_time{@sinfo[1]}) >= 20)
