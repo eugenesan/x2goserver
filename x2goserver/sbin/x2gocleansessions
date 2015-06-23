@@ -84,7 +84,8 @@ sub log_message
 	syslog($loglevel, $msg);
 	if ($debug)
 	{
-		print "$loglevel ::: $msg\n";
+		my $logtime = localtime (time ());
+		print "$logtime ::: $loglevel ::: $msg\n";
 	}
 }
 
