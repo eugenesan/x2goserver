@@ -44,7 +44,7 @@ GetOptions( 'debug' => \$debug );
 openlog($0,'cons,pid','user');
 if ($debug)
 {
-	setlogmask( LOG_DEBUG );
+	setlogmask( LOG_UPTO (LOG_DEBUG) );
 }
 else
 {

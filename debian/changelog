@@ -150,6 +150,8 @@ x2goserver (4.1.0.0-0x2go1.1) UNRELEASED; urgency=low
   [ Mihai Moldovan ]
   * New upstream version (4.1.0.0):
     - x2goserver/sbin/x2gocleansessions: add timestamp to debug output.
+    - x2goserver/sbin/x2gocleansessions: also (correctly) log to syslog if
+      started with --debug parameter.
   * x2goserver.spec:
     - Only create session DB in x2goserver's post install script. Do use
       proper Requires(post) statements to make sure perl-X2Go-Server-DB and
