@@ -36,6 +36,7 @@ Depends:
  psmisc,
  net-tools,
  xfonts-base,
+ xkb-data,
 Recommends:
  sshfs,
  x11-apps,
