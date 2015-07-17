@@ -102,6 +102,8 @@ Requires:       perl(File::BaseDir)
 Requires:       perl(Config::Simple)
 Requires:       perl(Switch)
 
+Requires:       xkeyboard-config
+
 %if 0%{?suse_version}
 %if 0%{?suse_version} >= 1220
 Requires:       setxkbmap xmessage xwininfo
