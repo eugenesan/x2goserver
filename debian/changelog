@@ -257,6 +257,11 @@ x2goserver (4.0.1.20-0x2go1) UNRELEASED; urgency=low
     - x2goserver/sbin/x2godbadmin: revoke all PRIVILEGES before trying to
       delete a user on postgres. Fixes: #889.
 
+  [ Mike Gabriel ]
+  * debian/x2goserver.preinst:
+    + Use proper comment header explaining about preinst script argument
+      calls (not postinst).
+
  -- X2Go Release Manager <git-admin@x2go.org>  Tue, 24 Feb 2015 22:11:49 +0100
 
 x2goserver (4.0.1.19-0x2go2) UNRELEASED; urgency=low
