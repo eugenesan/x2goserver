@@ -234,6 +234,12 @@ x2goserver (4.0.1.20-0x2go1) UNRELEASED; urgency=low
       state change when updating the cached state result.
     - x2goserver/sbin/x2gocleansessions: only output status refreshing debug
       message if the old and new states actually differ. Prevents log spam.
+    - x2goserver/bin/x2gostartagent: changes to Robert Nowotny's SSH_PORT
+      patch. Fixes: #922. Use default outgoing interface to determine IP
+      address. Use the whole range of ${RANDOM}'s pool. Seed it for good
+      measure. Change the default method to randomization instead of IP-based
+      initialization. If IP-based initialization was requested but the default
+      outgoing IP address unavailable, fall back to randomization.
   * x2goserver.spec:
     - Add sudo and logcheck as BuildRequires and Requires. Don't own
       directories that are owned by sudo and logcheck. Logcheck is not
@@ -261,6 +267,11 @@ x2goserver (4.0.1.20-0x2go1) UNRELEASED; urgency=low
   * debian/x2goserver.preinst:
     + Use proper comment header explaining about preinst script argument
       calls (not postinst).
+
+  [ Robert Nowotny ]
+  * New upstream version (4.0.1.20):
+    - x2goserver/bin/x2gostartagent: original patch for SSH_PORT
+      randomization/IP-based initialization. Submitted as #922.
 
  -- X2Go Release Manager <git-admin@x2go.org>  Tue, 24 Feb 2015 22:11:49 +0100
 
