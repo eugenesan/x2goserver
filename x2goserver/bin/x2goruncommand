@@ -133,6 +133,12 @@ if [ ! -f ~/.config/monitors.xml ]; then
 	cp /etc/x2go/monitors.xml ~/.config/
 fi
 
+# Set path as for interactive sessions
+# upstart daemon can't be found found without it
+# and who knows what else might be broken otherwise
+eval `cat /etc/environment`
+export PATH
+
 if [ "$cmd" == "GNOME" ] || [ "$cmd" == "gnome-session" ]; then
 	cmd="/usr/bin/gnome-session"
 	if [ "$DISTRIB_ID" == "Ubuntu" ] && [ "$(echo "$DISTRIB_RELEASE >= 13.10" | bc)" == "1" ]; then
