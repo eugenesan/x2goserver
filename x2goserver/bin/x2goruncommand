@@ -99,33 +99,33 @@ fi
 # To make the GNOME variants start up properly on Ubuntu, we have to make the following differentiations
 
 # Ubuntu 10.10 and earlier (maverick):
-#		GNOME -> gnome-session
-#		(would start GNOME2)
+#	GNOME -> gnome-session
+#	(would start GNOME2)
 # Ubuntu 11.04 (natty):
-#		GNOME -> gnome-session --session=2d-gnome
-#		UNITY -> gnome-session --session=2d-ubuntu
-#		(GNOME3 based desktop shells)
+#	GNOME -> gnome-session --session=2d-gnome
+#	UNITY -> gnome-session --session=2d-ubuntu
+#	(GNOME3 based desktop shells)
 # Ubuntu 11.10 (oneiric) & 12.04 (precise):
-#		GNOME -> gnome-session --session=gnome-fallback
-#		UNITY -> gnome-session --session=ubuntu-2d
-#		(GNOME3 based desktop shells)
+#	GNOME -> gnome-session --session=gnome-fallback
+#	UNITY -> gnome-session --session=ubuntu-2d
+#	(GNOME3 based desktop shells)
 # Ubuntu 12.10 (quantal):
-#		GNOME -> gnome-session --session=gnome-fallback
-#		UNITY -> gnome-session --session=ubuntu
-#		(GNOME3 based desktop shells)
+#	GNOME -> gnome-session --session=gnome-fallback
+#	UNITY -> gnome-session --session=ubuntu
+#	(GNOME3 based desktop shells)
 # Ubuntu 13.10 (raring) and later:
-#		GNOME -> gnome-session --session=gnome-flashback
-#		UNITY -> gnome-session --session=ubuntu
-#		(GNOME3 based desktop shells)
-#		Additionally, $GTK_MODULES must include "unity-gtk-module".
-#		$GTK_MODULES does not need tha value for any other distro
-#		or any earlier release of Ubuntu.
+#	GNOME -> gnome-session --session=gnome-flashback
+#	UNITY -> gnome-session --session=ubuntu
+#	(GNOME3 based desktop shells)
+#	Additionally, $GTK_MODULES must include "unity-gtk-module"
+#	$GTK_MODULES does not need that value for any other distro
+#	or any earlier release of Ubuntu.
 #
-#		The logic for launching GNOME should be generic enough
-#		to work with every other distro.
+#	The logic for launching GNOME should be generic enough
+#	to work with every other distro.
 #
-#		Also, it appears that some Linux GNOME2 distros need DESKTOP_SESSION="gnome"
-#		while others do not.
+#	Also, it appears that some Linux GNOME2 distros need DESKTOP_SESSION="gnome"
+#	while others do not.
 
 if [ "$cmd" == "GNOME" ] || [ "$cmd" == "gnome-session" ]; then
 	cmd="/usr/bin/gnome-session"
