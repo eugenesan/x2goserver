@@ -2,6 +2,7 @@ x2goserver/bin/x2go*                    /usr/bin/
 x2goserver/sbin/x2go*                   /usr/sbin/
 x2goserver/lib/x2go*                    /usr/lib/x2go/
 x2goserver/etc/x2go_logout*             /etc/x2go/
+x2goserver/etc/monitors.xml             /etc/x2go/
 x2goserver/etc/sudoers.d/x2goserver     /etc/sudoers.d/
 x2goserver/etc/logcheck/ignore.d.server/x2goserver /etc/logcheck/ignore.d.server/
 x2goserver/VERSION.x2goserver           /usr/share/x2go/versions/
