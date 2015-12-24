@@ -75,6 +75,7 @@ install_config:
 	$(INSTALL_FILE) etc/sudoers.d/x2goserver $(DESTDIR)/etc/sudoers.d/
 	$(INSTALL_DIR) $(DESTDIR)/etc/logcheck/ignore.d.server || true
 	$(INSTALL_FILE) etc/logcheck/ignore.d.server/x2goserver $(DESTDIR)/etc/logcheck/ignore.d.server/
+	$(INSTALL_FILE) etc/monitors.xml $(DESTDIR)$(ETCDIR)/
 
 install_man:
 	$(INSTALL_DIR) $(DESTDIR)$(MANDIR)
