@@ -127,6 +127,12 @@ fi
 #	Also, it appears that some Linux GNOME2 distros need DESKTOP_SESSION="gnome"
 #	while others do not.
 
+# Workaround initial display configuration
+if [ ! -f ~/.config/monitors.xml ]; then
+	mkdir -p ~/.config
+	cp /etc/x2go/monitors.xml ~/.config/
+fi
+
 if [ "$cmd" == "GNOME" ] || [ "$cmd" == "gnome-session" ]; then
 	cmd="/usr/bin/gnome-session"
 	if [ "$DISTRIB_ID" == "Ubuntu" ] && [ "$(echo "$DISTRIB_RELEASE >= 13.10" | bc)" == "1" ]; then
