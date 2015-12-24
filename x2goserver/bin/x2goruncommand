@@ -143,6 +143,12 @@ fi
 #		Also note that the XDG_CURRENT_DESKTOP value comes from
 #		"DesktopNames" in the /usr/share/xsessions/ .desktop file
 
+# Workaround initial display configuration
+if [ ! -f ~/.config/monitors.xml ]; then
+	mkdir -p ~/.config
+	cp /etc/x2go/monitors.xml ~/.config/
+fi
+
 if [ "$cmd" == "GNOME" ] || [ "$cmd" == "gnome-session" ]; then
 	cmd="/usr/bin/gnome-session"
 	if [ "$DISTRIB_ID" == "Ubuntu" ] && [ "$(echo "$DISTRIB_RELEASE >= 15.04" | bc)" == "1" ]; then
