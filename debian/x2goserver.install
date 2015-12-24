@@ -1,6 +1,7 @@
 etc/logcheck/ignore.d.server/x2goserver
 etc/sudoers.d/x2goserver
 etc/x2go/x2go_logout*
+etc/x2go/monitors.xml
 usr/bin/x2gobasepath
 usr/bin/x2gocmdexitmessage
 usr/bin/x2gofeature
