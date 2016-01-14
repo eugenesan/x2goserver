@@ -60,7 +60,7 @@ switch ($cmd)
 	else                                     { $result = eval("X2Go::Server::DB::SQLite3::db_$cmd(\@ARGV)") }
 }
 
-if ( defined(@result_list) )
+if (@result_list)
 {
 	print_result_list(@result_list);
 }
