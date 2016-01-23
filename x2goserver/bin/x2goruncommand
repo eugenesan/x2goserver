@@ -200,7 +200,21 @@ elif [ "$cmd" == "TRINITY" ]; then
 	if [ -e /usr/bin/start-q4os-x2go ]; then
 		cmd="/usr/bin/start-q4os-x2go"
 	else
-		cmd="/usr/bin/starttrinity"
+		# Multiple trinity launchers exist in practice, this list
+		# is sorted from newest to oldest.
+
+		# Note: the /opt/trinity prefix might look weird, but this is
+		# actually the location Debian installs trinity to. The reason
+		# seems to be that otherwise trinity clashes with KDE3.
+		# It's entirely possible that this situation changes again
+		# once KDE3 has been completely removed.
+		if [ -x "/opt/trinity/bin/starttde" ]; then
+			cmd="/opt/trinity/bin/starttde"
+		elif [ -x "/opt/trinity/bin/starttrinity" ]; then
+			cmd="/opt/trinity/bin/starttrinity"
+		else
+			cmd="/usr/bin/starttrinity"
+		fi
 	fi
 elif [ "$cmd" == "OPENBOX" ]; then
 	cmd="/usr/bin/openbox-session"
