@@ -195,8 +195,8 @@ elif [ "$cmd" == "XFCE4" ] || [ "$cmd" == "XFCE" ]; then
 elif [ "$cmd" == "LXDE" ]; then
 	cmd="/usr/bin/startlxde"
 elif [ "$cmd" == "TRINITY" ]; then
-	# If we are on Q4OS, which needs to set env and run some tasks before
-        # launching trinity.
+	# If we are on Q4OS, we needs to set env and run some tasks before
+	# launching trinity.
 	if [ -e /usr/bin/start-q4os-x2go ]; then
 		cmd="/usr/bin/start-q4os-x2go"
 	else
