@@ -247,6 +247,10 @@ x2goserver (4.0.1.20-0x2go1) UNRELEASED; urgency=low
     - x2goserver/bin/x2gocleansessions: replace system_capture_stdout_output()
       with actual implementation. We don't have that function on the release
       branch.
+    - x2goserver-xsession/etc/Xsession: use /bin/bash explicitly on RedHat-,
+      Gentoo- and SuSE-based systems. Users might change /bin/sh to point to a
+      shell like mksh or dash, which do not support the -l or -c flags to
+      exec. C.f., BGO #575022 (Gentoo.)
   * x2goserver.spec:
     - Add sudo and logcheck as BuildRequires and Requires. Don't own
       directories that are owned by sudo and logcheck. Logcheck is not
