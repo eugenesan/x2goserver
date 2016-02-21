@@ -1,3 +1,21 @@
+x2goserver (4.1.0.0-0~1350~ubuntu16.04.1.01~eugenesan~xenial1) xenial; urgency=low
+
+  * debian/changelog: update with Ubuntu 15.10+ fixes
+  * debian/control: add libgles{1,2}-mesa to x2goserver's recommends to fix clutter/GL related apps
+  * x2goruncommand: add support for unity on ubuntu 15.10+ (might work in future)
+  * x2goruncommand: add support for gnome-flashback on ubuntu 15.10+
+  * x2goruncommand: set normal PATH
+  * x2goruncommand: fix initial monitor configuration
+  * x2goruncommand: fix formatting
+
+ -- Eugene San (eugenesan) <eugenesan@gmail.com>  Fri, 12 Aug 2016 08:02:00 -0500
+
+x2goserver (4.1.0.0-0~1350~ubuntu16.04.1) xenial; urgency=low
+
+  * Auto build.
+
+ -- X2Go <x2go-dev@x2go.org>  Thu, 11 Aug 2016 17:32:45 +0000
+
 x2goserver (4.1.0.0-0x2go1.2) UNRELEASED; urgency=low
 
   [ Mike Gabriel ]
