@@ -65,6 +65,7 @@ Recommends:
  x2goserver-xsession (<< ${source:Version}.1~),
  x2goserver-xsession (>= ${source:Version}),
  xinit,
+ libgles1-mesa | libgles2-mesa,
 Suggests:
  pulseaudio-utils,
  rdesktop,
