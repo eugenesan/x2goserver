@@ -251,6 +251,11 @@ x2goserver (4.0.1.20-0x2go1) UNRELEASED; urgency=low
       Gentoo- and SuSE-based systems. Users might change /bin/sh to point to a
       shell like mksh or dash, which do not support the -l or -c flags to
       exec. C.f., BGO #575022 (Gentoo.)
+    - x2goserver/bin/x2gomountdirs: remove blowfish Cipher spec hardcoded for
+      sshfs mounts. The speed improvement is probably mostly an illusion
+      (unless talking about high-bandwidth links) and more importantly recent
+      OpenSSH server versions seem to disable the Blowfish cipher by default,
+      leading to errors like "Connection reset by peer."
   * x2goserver.spec:
     - Add sudo and logcheck as BuildRequires and Requires. Don't own
       directories that are owned by sudo and logcheck. Logcheck is not
