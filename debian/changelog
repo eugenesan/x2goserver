@@ -297,6 +297,11 @@ x2goserver (4.0.1.20-0x2go1) UNRELEASED; urgency=low
     - x2goserver/bin/x2goruncommand: add the other trinity launcher scripts in
       order from newest to oldest. Fixes: #985.
 
+  [ Tor Perkins ]
+  * New upstream version (4.0.1.20):
+    - x2goserver/bin/x2goruncommand: capture x2goruncommand debug output for
+      x2gofeature X2GO_XSESSION.
+
  -- X2Go Release Manager <git-admin@x2go.org>  Tue, 24 Feb 2015 22:11:49 +0100
 
 x2goserver (4.0.1.19-0x2go2) UNRELEASED; urgency=low
