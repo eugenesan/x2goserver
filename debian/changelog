@@ -92,7 +92,7 @@ x2goserver (4.1.0.0-0x2go1.1) UNRELEASED; urgency=low
   * debian/x2goserver.init:
     + Rely on $PATH when invoking x2gocleansessions.
   * debian/x2goserver.service:
-    + Provide system system service file.
+    + Provide systemd service file.
   * Move code in pre/post+inst/rm scripts around (from x2goserver package
     to libx2go-server-db-perl and x2goserver-common).
   * debian/copyright:
