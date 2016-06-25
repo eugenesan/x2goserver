@@ -94,7 +94,7 @@ Requires:       pwgen
 Requires:       sshfs
 # For /etc/sudoers.d
 Requires:       sudo
-Requires:       x2goagent >= 3.5.0.25
+Requires:       x2goserver-x2goagent = %{version}-%{release}
 Requires(post): grep
 Requires:       perl(File::Which)
 Requires:       perl(File::BaseDir)
@@ -293,6 +293,28 @@ X2Go is a server based computing environment with
 
 This package contains the X2Go::Log Perl package.
 
+%package -n x2goagent
+Group:          Applications/System
+Summary:        X2Go Server's X2Go Agent
+Requires:       nxagent (>= 3.5.99.0)
+Obsoletes:      x2goagent
+
+%description -n x2goagent
+X2Go is a server based computing environment with
+    - session resuming
+    - low bandwidth support
+    - session brokerage support
+    - client side mass storage mounting support
+    - audio support
+    - authentication by smartcard and USB stick
+
+X2Go Agent functionality has been completely incorporated into
+nxagent's code base. If the nxagent binary is executed under the name
+of "x2goagent", the X2Go functionalities get activated.
+
+The x2goserver-x2goagent package is a wrapper that activates X2Go
+branding in nxagent. Please refer to the nxagent package's description
+for more information on NX.
 
 %package printing
 Summary:        X2Go Server (printing support)
@@ -747,7 +769,9 @@ fi
 %attr(0775,root,x2gouser) %dir %{_localstatedir}/lib/x2go/
 %dir %{_sysconfdir}/x2go/
 %dir %{_sysconfdir}/x2go/x2gosql
-%config(noreplace) %{_sysconfdir}/x2go/x2go*
+%config(noreplace) %{_sysconfdir}/x2go/x2goserver.conf
+%config(noreplace) %{_sysconfdir}/x2go/x2gosql*
+%config(noreplace) %{_sysconfdir}/x2go/x2go_logout*
 %{_mandir}/man5/x2goserver.conf.5.gz
 %dir %{_datadir}/x2go/versions
 %{_datadir}/x2go/versions/VERSION.x2goserver-common
@@ -774,6 +798,21 @@ fi
 %{_datadir}/x2go/versions/VERSION.x2goserver-fmbindings
 %{_datadir}/x2go/x2gofeature.d/x2goserver-fmbindings.features
 %{_mandir}/man8/x2gofm.8*
+
+
+%files x2goagent
+%defattr(-,root,root)
+%doc debian/copyright
+%doc debian/changelog
+%{_bindir}/x2goagent
+%{_datadir}/x2go/versions/VERSION.x2goserver-x2goagent
+%{_datadir}/x2go/rgb
+%{_datadir}/pixmaps/x2go.xpm
+%{_datadir}/x2go/x2gofeature.d/x2goserver-x2goagent.features
+%{_mandir}/man1/x2goagent.1*
+%config(noreplace) %{_sysconfdir}/x2go/x2goagent.keyboard
+%config(noreplace) %{_sysconfdir}/x2go/x2goagent.options
+%config(noreplace) %{_sysconfdir}/x2go/keystrokes.cfg
 
 
 %files printing

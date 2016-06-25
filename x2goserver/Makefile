@@ -69,7 +69,6 @@ install_scripts:
 install_config:
 	$(INSTALL_DIR) $(DESTDIR)$(ETCDIR)
 	$(INSTALL_DIR) $(DESTDIR)$(ETCDIR)/x2go_logout.d
-	$(INSTALL_FILE) etc/x2goagent.options $(DESTDIR)$(ETCDIR)/
 	$(INSTALL_FILE) etc/x2go_logout       $(DESTDIR)$(ETCDIR)/
 	$(INSTALL_FILE) etc/x2go_logout.d/*   $(DESTDIR)$(ETCDIR)/x2go_logout.d/
 	$(INSTALL_DIR) $(DESTDIR)/etc/sudoers.d || true
