@@ -6,6 +6,7 @@ Uploaders:
  Mike Gabriel <mike.gabriel@das-netzwerkteam.de>,
  Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>,
  Reinhard Tartler <siretart@tauware.de>,
+ Mihai Moldovan <ionic@ionic.de>,
 Build-Depends:
  dh-systemd | hello,
  debhelper (>= 7.0.50~),
