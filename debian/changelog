@@ -181,6 +181,7 @@ x2goserver (4.1.0.0-0x2go1.1) UNRELEASED; urgency=low
     - Re-add etc/rgb as a config file.
     - Correctly create and specify the x2goserver-x2goagent subpackage,
       instead of a standalone x2goagent package.
+    - Fix dependency upon versioned nxagent.
   * debian/control:
     - Maintainer change in package: X2Go Developers <x2go-dev@lists.x2go.org>.
   * debian/:

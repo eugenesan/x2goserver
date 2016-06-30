@@ -296,7 +296,7 @@ This package contains the X2Go::Log Perl package.
 %package x2goagent
 Group:          Applications/System
 Summary:        X2Go Server's X2Go Agent
-Requires:       nxagent (>= 3.5.99.0)
+Requires:       nxagent >= 3.5.99.0
 Obsoletes:      x2goagent
 
 %description x2goagent
