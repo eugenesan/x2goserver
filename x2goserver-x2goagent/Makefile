@@ -64,9 +64,11 @@ install_data:
 	$(INSTALL_FILE) share/x2go/rgb $(DESTDIR)$(SHAREDIR)/
 	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)/../pixmaps/
 	$(INSTALL_FILE) share/pixmaps/x2go.xpm $(DESTDIR)$(SHAREDIR)/../pixmaps/
+	$(INSTALL_SYMLINK) $(ETCDIR)/rgb $(DESTDIR)$(SHAREDIR)/
 
 install_config:
 	$(INSTALL_DIR) $(DESTDIR)$(ETCDIR)/
+	$(INSTALL_FILE) etc/rgb $(DESTDIR)$(ETCDIR)/
 	$(INSTALL_FILE) etc/x2goagent.options $(DESTDIR)$(ETCDIR)/
 	$(INSTALL_FILE) etc/x2goagent.keyboard $(DESTDIR)$(ETCDIR)/
 	$(INSTALL_FILE) etc/keystrokes.cfg $(DESTDIR)$(ETCDIR)/
