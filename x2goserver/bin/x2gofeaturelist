@@ -30,4 +30,3 @@ test -d "$X2GO_SHARE_PATH/x2gofeature.d" && {
         cat "$subscript" | egrep ".*\).*ok.*exit 0.*" | cut -d"\"" -f2 | cut -d"\"" -f1
     done
 }
-
