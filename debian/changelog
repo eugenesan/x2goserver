@@ -187,6 +187,7 @@ x2goserver (4.1.0.0-0x2go1.1) UNRELEASED; urgency=low
     - Let x2goserver depend upon x2goagent-virtual, add Provides: keyword to
       x2goserver-x2goagent (also need to be implemented within X2Go's nx-libs
       master branch.)
+    - Add script/symlink ${LIBDIR}/x2go/bin/x2goagent to installed file list.
   * debian/control:
     - Maintainer change in package: X2Go Developers <x2go-dev@lists.x2go.org>.
   * debian/:
