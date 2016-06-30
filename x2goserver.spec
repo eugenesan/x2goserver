@@ -94,7 +94,7 @@ Requires:       pwgen
 Requires:       sshfs
 # For /etc/sudoers.d
 Requires:       sudo
-Requires:       x2goserver-x2goagent = %{version}-%{release}
+Requires:       x2goagent-virtual
 Requires(post): grep
 Requires:       perl(File::Which)
 Requires:       perl(File::BaseDir)
@@ -297,7 +297,7 @@ This package contains the X2Go::Log Perl package.
 Group:          Applications/System
 Summary:        X2Go Server's X2Go Agent
 Requires:       nxagent >= 3.5.99.0
-Obsoletes:      x2goagent
+Provides:       x2goagent-virtual
 
 %description x2goagent
 X2Go is a server based computing environment with
