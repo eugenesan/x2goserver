@@ -769,8 +769,9 @@ fi
 %attr(0775,root,x2gouser) %dir %{_localstatedir}/lib/x2go/
 %dir %{_sysconfdir}/x2go/
 %dir %{_sysconfdir}/x2go/x2gosql
+%dir %{_sysconfdir}/x2go/x2gosql/passwords
 %config(noreplace) %{_sysconfdir}/x2go/x2goserver.conf
-%config(noreplace) %{_sysconfdir}/x2go/x2gosql*
+%config(noreplace) %{_sysconfdir}/x2go/x2gosql/sql
 %config(noreplace) %{_sysconfdir}/x2go/x2go_logout*
 %{_mandir}/man5/x2goserver.conf.5.gz
 %dir %{_datadir}/x2go/versions

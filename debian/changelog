@@ -188,6 +188,8 @@ x2goserver (4.1.0.0-0x2go1.1) UNRELEASED; urgency=low
       x2goserver-x2goagent (also need to be implemented within X2Go's nx-libs
       master branch.)
     - Add script/symlink ${LIBDIR}/x2go/bin/x2goagent to installed file list.
+    - Split up x2gosql installed file list part into actual directories and
+      files.
   * debian/control:
     - Maintainer change in package: X2Go Developers <x2go-dev@lists.x2go.org>.
   * debian/:
