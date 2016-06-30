@@ -493,7 +493,7 @@ make install DESTDIR=%{buildroot} PREFIX=%{_prefix}
 # We currently need to disable the broken symlinks check on OpenSuSE, as long
 # as we can't pull in nx-libs 3.5.99 or higher. Once we can add it as a BuildRequires,
 # this env var can and should be removed again.
-export NO_BRP_STALE_LINK_ERROR yes
+export NO_BRP_STALE_LINK_ERROR=yes
 
 # Make sure the .packlist file is removed from %%{perl_vendorarch}...
 rm -f %{buildroot}%{perl_vendorarch}/auto/x2goserver/.packlist
