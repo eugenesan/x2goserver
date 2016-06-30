@@ -809,6 +809,7 @@ fi
 %defattr(-,root,root)
 %doc debian/copyright
 %doc debian/changelog
+%dir %{_libdir}/x2go/bin
 %{_bindir}/x2goagent
 %{_libdir}/x2go/bin/x2goagent
 %{_datadir}/x2go/versions/VERSION.x2goserver-x2goagent

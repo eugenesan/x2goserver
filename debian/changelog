@@ -195,6 +195,8 @@ x2goserver (4.1.0.0-0x2go1.1) UNRELEASED; urgency=low
       once we've switched to nx-libs 3.5.99 or higher for good.)
     - Actually export NO_BRP_STALE_LINK_ERROR in a correct way/with the
       correct value. Never blindly trust the internets if something looks odd.
+    - Add %{_libdir}/x2go/bin as owned directory for x2goserver-x2goagent.
+      Also owned by the alternative package x2goagent in nx-libs.
   * debian/control:
     - Maintainer change in package: X2Go Developers <x2go-dev@lists.x2go.org>.
   * debian/:
