@@ -813,6 +813,7 @@ fi
 %config(noreplace) %{_sysconfdir}/x2go/x2goagent.keyboard
 %config(noreplace) %{_sysconfdir}/x2go/x2goagent.options
 %config(noreplace) %{_sysconfdir}/x2go/keystrokes.cfg
+%config(noreplace) %{_sysconfdir}/x2go/rgb
 
 
 %files printing

@@ -176,6 +176,7 @@ x2goserver (4.1.0.0-0x2go1.1) UNRELEASED; urgency=low
     - Change deprecated and removed PreReq to Requires(pre) header.
     - Move shadow/shadow-utils/pwdutils Requires to x2goserver-common sub
       package (where they are actually needed.)
+    - Re-add etc/rgb as a config file.
   * debian/control:
     - Maintainer change in package: X2Go Developers <x2go-dev@lists.x2go.org>.
   * debian/:
