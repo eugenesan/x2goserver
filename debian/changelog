@@ -190,6 +190,8 @@ x2goserver (4.1.0.0-0x2go1.1) UNRELEASED; urgency=low
     - Add script/symlink ${LIBDIR}/x2go/bin/x2goagent to installed file list.
     - Split up x2gosql installed file list part into actual directories and
       files.
+    - Disable stale symlinks check for now (and add comment to re-enable it
+      once we've switched to nx-libs 3.5.99 or higher for good.)
   * debian/control:
     - Maintainer change in package: X2Go Developers <x2go-dev@lists.x2go.org>.
   * debian/:
