@@ -682,6 +682,7 @@ fi
 %exclude %{_bindir}/x2goserver-run-extensions
 %exclude %{_bindir}/x2gofm
 %exclude %{_bindir}/x2goprint
+%exclude %{_bindir}/x2goagent
 %dir %{_libdir}/x2go
 %{_libdir}/x2go/x2gochangestatus
 %{_libdir}/x2go/x2gocreatesession

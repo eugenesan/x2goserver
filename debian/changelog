@@ -197,6 +197,8 @@ x2goserver (4.1.0.0-0x2go1.1) UNRELEASED; urgency=low
       correct value. Never blindly trust the internets if something looks odd.
     - Add %{_libdir}/x2go/bin as owned directory for x2goserver-x2goagent.
       Also owned by the alternative package x2goagent in nx-libs.
+    - Exclude %{_bindir}/x2goagent from being packaged into x2goserver
+      package.
   * debian/control:
     - Maintainer change in package: X2Go Developers <x2go-dev@lists.x2go.org>.
   * debian/:
