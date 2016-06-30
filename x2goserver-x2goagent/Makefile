@@ -61,7 +61,7 @@ install_scripts:
 
 install_data:
 	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)/
-	$(INSTALL_FILE) share/x2go/rgb $(DESTDIR)$(SHAREDIR)/
+	$(INSTALL_FILE) etc/rgb $(DESTDIR)$(SHAREDIR)/
 	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)/../pixmaps/
 	$(INSTALL_FILE) share/pixmaps/x2go.xpm $(DESTDIR)$(SHAREDIR)/../pixmaps/
 	$(INSTALL_SYMLINK) $(ETCDIR)/rgb $(DESTDIR)$(SHAREDIR)/
