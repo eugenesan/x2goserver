@@ -1,4 +1,4 @@
-x2goserver (4.1.0.0-0x2go1.2) UNRELEASED; urgency=low
+x2goserver (4.1.0.0-0x2go1.1) UNRELEASED; urgency=low
 
   [ Mike Gabriel ]
   * Bump development upstream version to 4.1.0.0.
