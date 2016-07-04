@@ -126,6 +126,7 @@ x2goserver (4.1.0.0-0x2go1.1) UNRELEASED; urgency=low
     + Hand over %{_libdir} as $LIBDIR to x2goserver's Makefiles. Required
       for x2goagent symlink to be properly installed into the same folder
       where the nxagent executable gets installed.
+    + Also hand over %{_libdir} as $LIBDIR when executing make install.
 
   [ Guangzhou Nianguan Electronics Technology Co.Ltd. ]
   * New upstream version (4.1.0.0):
