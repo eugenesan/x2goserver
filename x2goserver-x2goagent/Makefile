@@ -15,8 +15,8 @@ DESTDIR ?=
 PREFIX ?= /usr/local
 ETCDIR=/etc/x2go
 BINDIR=$(PREFIX)/bin
-LIBDIR ?= $(PREFIX)/lib
-NXLIBDIR=$(LIBDIR)/nx
+LIBDIR=$(PREFIX)/lib/x2go
+NXLIBDIR ?= $(LIBDIR)/../nx
 MANDIR=$(PREFIX)/share/man
 SHAREDIR=$(PREFIX)/share/x2go
 

@@ -73,6 +73,9 @@ x2goserver (4.1.0.0-0x2go1.1) UNRELEASED; urgency=low
       sets the env var $NXAPP and then calls the nxagent wrapper script. For this
       to work properly, the x2goagent symlinks has to be placed into directory
       where the nxagent executable is installed ($LIBDIR/nx/bin/, normally).
+    - Revisit packaging for latest change in x2goserver-x2goagent. Don't inject
+      $(LIBDIR) rather than injecting $(NXLIBDIR) via debian/rules and
+      x2goserver.spec.
   * debian/control:
     + Package X2Go::Log in separate package: libx2go-log-perl.
     + Package X2Go::Server::DB in separate package: libx2go-server-db-perl.

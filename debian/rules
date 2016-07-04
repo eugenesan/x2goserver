@@ -1,17 +1,17 @@
 #!/usr/bin/make -f
 
-export LIBDIR="/usr/lib/$(shell dpkg-architecture -qDEB_HOST_MULTIARCH)"
+export NXLIBDIR="/usr/lib/$(shell dpkg-architecture -qDEB_HOST_MULTIARCH)/nx"
 
 %:
-	PREFIX=/usr LIBDIR=$(LIBDIR) dh $@
+	PREFIX=/usr NXLIBDIR=$(NXLIBDIR) dh $@
 
 override_dh_auto_build:
-	PREFIX=/usr LIBDIR=$(LIBDIR) PERL_INSTALLDIRS=vendor dh_auto_build
+	PREFIX=/usr NXLIBDIR=$(NXLIBDIR) PERL_INSTALLDIRS=vendor dh_auto_build
 
 override_dh_auto_install:
 	if [ -f ChangeLog.gitlog ]; then cp ChangeLog.gitlog ChangeLog; fi
 	$(MAKE) -f Makefile build-arch
-	PREFIX=/usr LIBDIR=$(LIBDIR) dh_auto_install
+	PREFIX=/usr NXLIBDIR=$(NXLIBDIR) dh_auto_install
 
 override_dh_auto_clean:
 	rm -f ChangeLog
@@ -20,5 +20,5 @@ override_dh_auto_clean:
 	rm -f ChangeLog.gitlog
 	rm -f MYMETA.yml
 	rm -f Makefile.perl.old
-	PREFIX=/usr LIBDIR=$(LIBDIR) dh_auto_clean
+	PREFIX=/usr NXLIBDIR=$(NXLIBDIR) dh_auto_clean
 	rm -f Makefile.perl

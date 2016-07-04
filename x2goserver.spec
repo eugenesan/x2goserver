@@ -485,11 +485,11 @@ sed -i -e 's/-o root -g root//' */Makefile
 
 %build
 export PATH=%{_qt4_bindir}:$PATH
-make CFLAGS="%{optflags} -fPIC" %{?_smp_mflags} PERL_INSTALLDIRS=vendor PREFIX=%{_prefix} LIBDIR=%{_libdir}
+make CFLAGS="%{optflags} -fPIC" %{?_smp_mflags} PERL_INSTALLDIRS=vendor PREFIX=%{_prefix} NXLIBDIR=%{_prefix}%{_lib}/nx
 
 
 %install
-make install DESTDIR=%{buildroot} PREFIX=%{_prefix} LIBDIR=%{_libdir}
+make install DESTDIR=%{buildroot} PREFIX=%{_prefix} NXLIBDIR=%{_prefix}/%{_lib}/nx
 # We currently need to disable the broken symlinks check on OpenSuSE, as long
 # as we can't pull in nx-libs 3.5.99 or higher. Once we can add it as a BuildRequires,
 # this env var can and should be removed again.
