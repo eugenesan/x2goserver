@@ -131,6 +131,7 @@ x2goserver (4.1.0.0-0x2go1.1) UNRELEASED; urgency=low
       for x2goagent symlink to be properly installed into the same folder
       where the nxagent executable gets installed.
     + Also hand over %{_libdir} as $LIBDIR when executing make install.
+    + Add B-R: nxagent. Needed for %{_prefix}/%{_libdir}/nx/bin to be owned.
 
   [ Guangzhou Nianguan Electronics Technology Co.Ltd. ]
   * New upstream version (4.1.0.0):

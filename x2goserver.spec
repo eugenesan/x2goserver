@@ -60,6 +60,9 @@ BuildRequires:  sudo
 BuildRequires:  logcheck
 %endif
 
+# for /usr/%{_lib}/nx/bin to be owned by some package
+BuildRequires:  nxagent
+
 %if 0%{?suse_version}
 Requires:       openssh
 %else
