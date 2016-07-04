@@ -810,9 +810,9 @@ fi
 %defattr(-,root,root)
 %doc debian/copyright
 %doc debian/changelog
-%dir %{_libdir}/x2go/bin
 %{_bindir}/x2goagent
-%{_libdir}/x2go/bin/x2goagent
+# %{_libdir}/nx/bin/ is owned by nxagent package...
+%{_libdir}/nx/bin/x2goagent
 %{_datadir}/x2go/versions/VERSION.x2goserver-x2goagent
 %{_datadir}/x2go/rgb
 %{_datadir}/pixmaps/x2go.xpm

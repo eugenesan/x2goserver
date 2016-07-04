@@ -1,5 +1,5 @@
 usr/bin/x2goagent
-usr/lib/x2go/bin/x2goagent
+usr/lib/*/nx/bin/x2goagent
 usr/share/pixmaps/x2go.xpm
 usr/share/x2go/rgb
 usr/share/man/man1/x2goagent.1*

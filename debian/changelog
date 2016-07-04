@@ -69,6 +69,10 @@ x2goserver (4.1.0.0-0x2go1.1) UNRELEASED; urgency=low
     - Properly clean up shadow sessions for the session database.
     - Move x2goagent wrapper package around nxagent into X2Go Server.
       (Fixes: #1047).
+    - Update execution logic of the x2goagent wrapper script. The script now
+      sets the env var $NXAPP and then calls the nxagent wrapper script. For this
+      to work properly, the x2goagent symlinks has to be placed into directory
+      where the nxagent executable is installed ($LIBDIR/nx/bin/, normally).
   * debian/control:
     + Package X2Go::Log in separate package: libx2go-log-perl.
     + Package X2Go::Server::DB in separate package: libx2go-server-db-perl.

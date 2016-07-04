@@ -15,7 +15,8 @@ DESTDIR ?=
 PREFIX ?= /usr/local
 ETCDIR=/etc/x2go
 BINDIR=$(PREFIX)/bin
-LIBDIR=$(PREFIX)/lib/x2go
+LIBDIR ?= $(PREFIX)/lib
+NXLIBDIR=$(LIBDIR)/nx
 MANDIR=$(PREFIX)/share/man
 SHAREDIR=$(PREFIX)/share/x2go
 
@@ -56,8 +57,8 @@ install_scripts:
 	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)
 	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)/x2gofeature.d
 	$(INSTALL_PROGRAM) share/x2go/x2gofeature.d/*.features $(DESTDIR)$(SHAREDIR)/x2gofeature.d/
-	$(INSTALL_DIR) $(DESTDIR)$(LIBDIR)/bin/
-	$(INSTALL_SYMLINK) ../../nx/bin/nxagent $(DESTDIR)$(LIBDIR)/bin/x2goagent
+	$(INSTALL_DIR) $(DESTDIR)$(NXLIBDIR)/bin/
+	$(INSTALL_SYMLINK) nxagent $(DESTDIR)$(NXLIBDIR)/bin/x2goagent
 
 install_data:
 	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)/
@@ -88,7 +89,7 @@ uninstall: uninstall_scripts uninstall_config uninstall_data uninstall_man unins
 
 uninstall_scripts:
 	for file in $(BIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(BINDIR)/$$file; done
-	for file in x2goagent; do $(RM_FILE) $(DESTDIR)$(LIBDIR)/$$file; done
+	for file in x2goagent; do $(RM_FILE) $(DESTDIR)$(NXLIBDIR)/$$file; done
 	for file in $(FEATURE_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(SHAREDIR)/x2gofeature.d/$$file; done
 
 uninstall_data:
