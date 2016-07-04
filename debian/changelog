@@ -1,4 +1,4 @@
-x2goserver (4.1.0.0-0x2go1.1) UNRELEASED; urgency=low
+x2goserver (4.1.0.0-0x2go1.2) UNRELEASED; urgency=low
 
   [ Mike Gabriel ]
   * Bump development upstream version to 4.1.0.0.
@@ -123,6 +123,9 @@ x2goserver (4.1.0.0-0x2go1.1) UNRELEASED; urgency=low
     + Require Perl(Switch) (bin:package x2goserver).
     + Don't fail in %post during X2Go session DB creation.
     + Fix call of x2godbadmin --updatedb during package upgrade.
+    + Hand over %{_libdir} as $LIBDIR to x2goserver's Makefiles. Required
+      for x2goagent symlink to be properly installed into the same folder
+      where the nxagent executable gets installed.
 
   [ Guangzhou Nianguan Electronics Technology Co.Ltd. ]
   * New upstream version (4.1.0.0):
@@ -211,7 +214,7 @@ x2goserver (4.1.0.0-0x2go1.1) UNRELEASED; urgency=low
   * debian/x2goserver-x2goagent.install:
     - Re-add etc/rgb file.
 
- -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Fri, 09 May 2014 13:06:24 +0200
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Mon, 04 Jul 2016 12:00:24 +0200
 
 x2goserver (4.0.1.20-0x2go1) UNRELEASED; urgency=low
 
