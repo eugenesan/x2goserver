@@ -127,10 +127,11 @@ x2goserver (4.1.0.0-0x2go1.1) UNRELEASED; urgency=low
     + Require Perl(Switch) (bin:package x2goserver).
     + Don't fail in %post during X2Go session DB creation.
     + Fix call of x2godbadmin --updatedb during package upgrade.
-    + Hand over %{_libdir} as $LIBDIR to x2goserver's Makefiles. Required
-      for x2goagent symlink to be properly installed into the same folder
-      where the nxagent executable gets installed.
-    + Also hand over %{_libdir} as $LIBDIR when executing make install.
+    + Hand over %{_prefix}/%{_libdir}/nx as $NXLIBDIR to x2goserver's Makefiles.
+      Required for x2goagent symlink to be properly installed into the same
+      folder where the nxagent executable gets installed.
+    + Also hand over %{_prefix}/%{_libdir}/nx as $NXLIBDIR when executing make
+      install.
     + Add B-R: nxagent. Needed for %{_prefix}/%{_libdir}/nx/bin to be owned.
 
   [ Guangzhou Nianguan Electronics Technology Co.Ltd. ]
