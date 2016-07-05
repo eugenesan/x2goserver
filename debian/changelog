@@ -77,6 +77,8 @@ x2goserver (4.1.0.0-0x2go1.2) UNRELEASED; urgency=low
     - Revisit packaging for latest change in x2goserver-x2goagent. Don't inject
       $(LIBDIR) rather than injecting $(NXLIBDIR) via debian/rules and
       x2goserver.spec.
+    - x2goagent wrapper script: Use exec command to launch nxagent. Put "$@" in
+      quotes.
   * debian/control:
     + Package X2Go::Log in separate package: libx2go-log-perl.
     + Package X2Go::Server::DB in separate package: libx2go-server-db-perl.
