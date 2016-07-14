@@ -111,6 +111,9 @@ x2goserver (4.1.0.0-0x2go1.2) UNRELEASED; urgency=low
     + Provide DEP-5 compliant copyright file.
     + Add copyright.in auto-generated file (by licensecheck+CDBS) for later
       reference.
+  * debian/x2goserver-x2goagent:
+    + Make sure the .features file for x2goserver-x2goagent ends up in its
+      bin:pkg.
   * x2goserver.spec:
     + Bring debian/control and x2goclient.spec in sync.
     + Make sure x2godbadmin is evoked from package x2goserver.
