@@ -36,10 +36,63 @@ use X2Go::Server::DB qw( dbsys_rmsessionsroot );
 use X2Go::Utils qw( system_capture_stdout_output is_true );
 my $x2go_lib_path = system_capture_stdout_output("x2gopath", "libexec");
 use Getopt::Long;
+use Pod::Usage;
 
+Getopt::Long::Configure("gnu_getopt", "no_auto_abbrev");
 
-my $debug;
-GetOptions( 'debug' => \$debug );
+my $debug = 0;
+my $help = 0;
+my $man = 0;
+GetOptions('debug|d' => \$debug, 'help|?|h' => \$help, 'man' => \$man) or pod2usage(2);
+pod2usage(1) if $help;
+pod2usage(-verbose => 2, -exitval => 0) if $man;
+
+__END__
+=head1 NAME
+
+x2gocleansessions - X2Go Server Cleanup Daemon
+
+=head1 SYNOPSIS
+
+x2gocleansessions [options]
+
+  Options:
+    --help|-h|-?            brief help message
+    --man                   full documentation
+    --debug                 enable debugging and don't daemonize
+
+=head1 OPTIONS
+
+=over 8
+
+=item B<--help>|B<-?>|B<-h>
+
+Print a brief help message and exits.
+
+=item B<--man>
+
+Prints the manual page and exits.
+
+=item B<--debug>|B<-d>
+
+Override debugging setting in global config and keep application in foreground
+instead of daemonizing.
+
+=back
+
+=head1 DESCRIPTION
+
+B<x2gocleansessions> is run as a service on X2Go servers to handle the cleanup
+of stale sessions.
+
+B<x2gocleansessions> must be run (as a service) with root privileges.
+
+=head1 AUTHOR
+
+This manual has been written by Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
+for the X2Go project (http://www.x2go.org).
+
+=cut
 
 openlog($0,'cons,pid','user');
 if ($debug)

@@ -312,6 +312,9 @@ x2goserver (4.0.1.20-0x2go1) UNRELEASED; urgency=low
       OpenSSH server versions seem to disable the Blowfish cipher by default,
       leading to errors like "Connection reset by peer."
     - x2goserver/bin/x2goruncommand: whitespace only.
+    - x2goserver/sbin/x2gocleansessions: add Perl documentation and --help,
+      -h, -? and --man options. Fixes: #1065. Also print a usage message on
+      unknown options.
   * x2goserver.spec:
     - Add sudo and logcheck as BuildRequires and Requires. Don't own
       directories that are owned by sudo and logcheck. Logcheck is not
