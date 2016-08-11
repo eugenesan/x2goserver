@@ -159,6 +159,7 @@ x2goserver (4.1.0.0-0x2go1.2) UNRELEASED; urgency=low
   * New upstream version (4.1.0.0):
     - Fix x2godbadmin. Set right column name "tekidata_port" in create table.
       (Fixes: #557).
+    - Unset LD_LIBRARY_PATH for the case when x2gostartagent started from x2godesktopsharing.
 
   [ Mark Pederson-Cook ]
   * debian/po:

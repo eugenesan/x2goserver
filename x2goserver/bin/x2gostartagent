@@ -458,6 +458,8 @@ if [ -n "$X2GO_GEOMETRY" ] && [ "$X2GO_GEOMETRY" != "fullscreen" ]; then
 fi
 
 if  [ "$X2GO_STYPE" == "S" ]; then
+	# unset LD_LIBRARY_PATH for the case when x2gostartagent started from x2godesktopsharing
+	unset LD_LIBRARY_PATH
 	# set NX_TEMP to /tmp, make sure x2goagent starts when pam_tmpdir.so is in use
 	NX_TEMP=/tmp x2goagent $X2GO_NXAGENT_OPTIONS $NOLISTOPT $X2GODPIOPTION_ -$SESSION_TYPE -auth "$XAUTHORITY" -shadow $SHADOW_DESKTOP -shadowmode $SHADOW_MODE $agent_geometry -name "${SESSION_WINDOW_TITLE}"  "${NX_AGENT}" 2>"${SESSION_LOG}" &
 else
