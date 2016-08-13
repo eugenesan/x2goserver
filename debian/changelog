@@ -334,6 +334,8 @@ x2goserver (4.0.1.20-0x2go1) UNRELEASED; urgency=low
       sub package.
     - Add new dependency on bash.
     - Add new dependency on xkeyboard-config to x2goserver. Fixes: #903.
+    - Add new dependency on perl and the Cwd module to x2goserver-xsession.
+      Part of #923.
   * debian/control:
     - Add new dependency on bash.
     - Add new dependency on xkb-data to x2goserver.

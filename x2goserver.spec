@@ -421,6 +421,18 @@ Group:          Applications/Communications
 Group:          Productivity/Networking/Remote Desktop
 %endif
 
+%if 0%{?suse_version}
+%if 0%{?suse_version} < 1140
+Requires:       perl = %{perl_version}
+%else
+%{perl_requires}
+%endif
+%else
+Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+%endif
+
+Requires:       perl(Cwd)
+
 %description xsession
  X2Go is a server based computing environment with
     - session resuming
