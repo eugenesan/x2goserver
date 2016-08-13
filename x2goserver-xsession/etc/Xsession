@@ -77,6 +77,16 @@ USERXSESSIONRC=$HOME/.xsessionrc-x2go
 ALTUSERXSESSION=$HOME/.Xsession-x2go
 ERRFILE="${HOME}/.xsession-x2go-${cur_hostname}-errors"
 
+# Move the old error log file away.
+if [ -f "${ERRFILE}" ]; then
+	if [ -L "${ERRFILE}" ]; then
+		resolved_errfile="$(perl -e 'use Cwd qw (abs_path); print abs_path ("' "${ERRFILE}" '") . "\n";')"
+		mv "${resolved_errfile}" "${resolved_errfile}.old" || errormsg "Unable to move symlinked old log/error file '${resolved_errfile}'; aborting."
+	else
+		mv "${ERRFILE}" "${ERRFILE}.old" || errormsg "Unable to move old log/error file '${ERRFILE}'; aborting."
+	fi
+fi
+
 # attempt to create an error file; abort if we cannot
 if (umask 177 && touch "$ERRFILE") 2> /dev/null && [ -w "$ERRFILE" ] && [ ! -L "$ERRFILE" ]; then
 	chmod 600 "$ERRFILE"

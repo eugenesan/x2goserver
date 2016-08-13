@@ -321,6 +321,8 @@ x2goserver (4.0.1.20-0x2go1) UNRELEASED; urgency=low
       creating session log/error file and add uname call where necessary.
     - x2goserver-xsession/etc/Xsession: include hostname in
       xsession-x2go-errors file name. Part of #923.
+    - x2goserver-xsession/etc/Xsession: rotate old log/error file before
+      appending new data. Fixes: #923.
   * x2goserver.spec:
     - Add sudo and logcheck as BuildRequires and Requires. Don't own
       directories that are owned by sudo and logcheck. Logcheck is not
