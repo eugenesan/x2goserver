@@ -59,6 +59,11 @@ for file in "/etc/profile" "$HOME/.profile" "/etc/xprofile" "$HOME/.xprofile"; d
 	fi
 done
 
+cur_hostname="$(hostname)"
+if [ -z "${cur_name}" ] || [ "${cur_hostname}" = "(none)" ] || [ "${cur_hostname}" = "localhost" ]; then
+	errormsg "Hostname not set correctly; aborting."
+fi
+
 # initialize variables for use by all session scripts
 
 OPTIONFILE=/etc/x2go/Xsession.options
@@ -70,14 +75,14 @@ SYSSESSIONDIR=/etc/x2go/Xsession.d
 USERXSESSION=$HOME/.xsession-x2go
 USERXSESSIONRC=$HOME/.xsessionrc-x2go
 ALTUSERXSESSION=$HOME/.Xsession-x2go
-ERRFILE=$HOME/.xsession-x2go-errors
+ERRFILE="${HOME}/.xsession-x2go-${cur_hostname}-errors"
 
 # attempt to create an error file; abort if we cannot
 if (umask 177 && touch "$ERRFILE") 2> /dev/null && [ -w "$ERRFILE" ] && [ ! -L "$ERRFILE" ]; then
 	chmod 600 "$ERRFILE"
 elif ERRFILE=$(umask 077 && mktemp 2> /dev/null); then
-	if ! ln -sf "$ERRFILE" "${TMPDIR:=/tmp}/xsession-x2go-$USER"; then
-		message "warning: unable to symlink \"$TMPDIR/xsession-x2go-$USER\" to" \
+	if ! ln -sf "$ERRFILE" "${TMPDIR:=/tmp}/xsession-x2go-${cur_hostname}-$USER"; then
+		message "warning: unable to symlink \"$TMPDIR/xsession-x2go-${cur_hostname}-$USER\" to" \
 		        "\"$ERRFILE\"; look for session log/errors in" \
 		        "\"$TMPDIR/xsession-x2go-$USER\"."
 	fi
