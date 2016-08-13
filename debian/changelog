@@ -317,6 +317,8 @@ x2goserver (4.0.1.20-0x2go1) UNRELEASED; urgency=low
       -h, -? and --man options. Fixes: #1065. Also print a usage message on
       unknown options.
     - x2goserver/man/man8/x2gocleansessions.8: drop obsolete man page.
+    - x2goserver-xsession/etc/Xsession: fix uname calls when (potentially)
+      creating session log/error file and add uname call where necessary.
   * x2goserver.spec:
     - Add sudo and logcheck as BuildRequires and Requires. Don't own
       directories that are owned by sudo and logcheck. Logcheck is not
