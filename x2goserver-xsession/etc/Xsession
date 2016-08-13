@@ -60,7 +60,7 @@ for file in "/etc/profile" "$HOME/.profile" "/etc/xprofile" "$HOME/.xprofile"; d
 done
 
 cur_hostname="$(hostname)"
-if [ -z "${cur_name}" ] || [ "${cur_hostname}" = "(none)" ] || [ "${cur_hostname}" = "localhost" ]; then
+if [ -z "${cur_hostname}" ] || [ "${cur_hostname}" = "(none)" ] || [ "${cur_hostname}" = "localhost" ]; then
 	errormsg "Hostname not set correctly; aborting."
 fi
 
