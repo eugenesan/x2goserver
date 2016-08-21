@@ -362,7 +362,7 @@ x2gocleansessions [options]
   Options:
     --help|-h|-?            brief help message
     --man                   full documentation
-    --debug                 enable debugging and don't daemonize
+    --debug|-d              enable debugging and don't daemonize
 
 =head1 OPTIONS
 
