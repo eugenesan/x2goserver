@@ -325,6 +325,8 @@ x2goserver (4.0.1.20-0x2go1) UNRELEASED; urgency=low
       appending new data. Fixes: #923.
     - x2goserver-xsession/etc/Xsession: fix wrong variable usage.
       Fixes: #1073.
+    - x2goserver/sbin/x2gocleansessions: move in-file POD to end of file,
+      rather than "commenting" out all the remaining code. Fixes: #1068.
   * x2goserver.spec:
     - Add sudo and logcheck as BuildRequires and Requires. Don't own
       directories that are owned by sudo and logcheck. Logcheck is not
