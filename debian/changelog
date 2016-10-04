@@ -329,6 +329,8 @@ x2goserver (4.0.1.20-0x2go1) UNRELEASED; urgency=low
       Fixes: #1073.
     - x2goserver/sbin/x2gocleansessions: move in-file POD to end of file,
       rather than "commenting" out all the remaining code. Fixes: #1068.
+    - x2goserver/sbin/x2godbadmin: exit earlier when not finding the required
+      "x2gouser" user.
   * x2goserver.spec:
     - Add sudo and logcheck as BuildRequires and Requires. Don't own
       directories that are owned by sudo and logcheck. Logcheck is not

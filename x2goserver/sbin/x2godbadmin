@@ -66,14 +66,8 @@ my $Config = get_sqlconfig();
 if ($Config->param("backend") eq 'sqlite')
 {
 	my $user="x2gouser";
-	my ($name, $pass, $uid, $pgid, $quota, $comment, $gcos, $dir, $shell, $expire) = getpwnam($user);
+	my ($name, $pass, $uid, $pgid, $quota, $comment, $gcos, $dir, $shell, $expire) = getpwnam($user) or die ("Can not find user ($user)\n");
 	my $dbfile="$dir/x2go_sessions";
-
-	if (! $uid)
-	{
-		print "Can not find user ($user)\n";
-		exit(-1);
-	}
 
 	if ($listusers|| $adduser||$addgroup||$rmuser||$rmgroup)
 	{
