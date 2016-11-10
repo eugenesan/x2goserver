@@ -380,6 +380,12 @@ x2goserver (4.0.1.20-0x2go1) UNRELEASED; urgency=low
     - x2goserver/bin/x2goruncommand: capture x2goruncommand debug output for
       x2gofeature X2GO_XSESSION.
 
+  [ Orion Poplawski ]
+  * New upstream version (4.0.1.20):
+    - x2goserver/bin/x2golistdesktops: drop -u parameter to ss. Fixes: #799.
+      We would filter out UDP sockets later anyway and the combination -lxu is
+      known to be broken with some versions of iproute2.
+
  -- X2Go Release Manager <git-admin@x2go.org>  Tue, 24 Feb 2015 22:11:49 +0100
 
 x2goserver (4.0.1.19-0x2go2) UNRELEASED; urgency=low
