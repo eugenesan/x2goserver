@@ -231,7 +231,13 @@ x2goserver (4.1.0.0-0x2go1.2) UNRELEASED; urgency=low
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Mon, 04 Jul 2016 23:46:51 +0200
 
-x2goserver (4.0.1.20-0x2go1) UNRELEASED; urgency=low
+x2goserver (4.0.1.21-0x2go1) UNRELEASED; urgency=medium
+
+  * Continue development
+
+ -- X2Go Release Manager <git-admin@x2go.org>  Sun, 20 Nov 2016 12:54:13 +0100
+
+x2goserver (4.0.1.20-0x2go1) unstable; urgency=low
 
   [ Mike DePaulo ]
   * New upstream version (4.0.1.20):
@@ -386,7 +392,7 @@ x2goserver (4.0.1.20-0x2go1) UNRELEASED; urgency=low
       We would filter out UDP sockets later anyway and the combination -lxu is
       known to be broken with some versions of iproute2.
 
- -- X2Go Release Manager <git-admin@x2go.org>  Tue, 24 Feb 2015 22:11:49 +0100
+ -- X2Go Release Manager <git-admin@x2go.org>  Sun, 20 Nov 2016 12:39:36 +0100
 
 x2goserver (4.0.1.19-0x2go2) UNRELEASED; urgency=low
 
