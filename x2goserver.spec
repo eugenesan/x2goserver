@@ -31,6 +31,9 @@ BuildRequires: shared-mime-info
 %endif
 
 BuildRequires:  desktop-file-utils
+%if 0%{?fedora} || 0%{?rhel}
+BuildRequires:  perl-generators
+%endif
 BuildRequires:  perl(ExtUtils::MakeMaker)
 
 %if 0%{?fedora} || 0%{?rhel} >= 7

@@ -233,7 +233,11 @@ x2goserver (4.1.0.0-0x2go1.2) UNRELEASED; urgency=low
 
 x2goserver (4.0.1.21-0x2go1) UNRELEASED; urgency=medium
 
-  * Continue development
+  [ Mihai Moldovan ]
+  * New upstream version (4.0.1.21):
+  * x2goserver.spec:
+    - Add mandatory perl-generators Build-Requires as per
+      https://fedoraproject.org/wiki/Changes/Build_Root_Without_Perl
 
  -- X2Go Release Manager <git-admin@x2go.org>  Sun, 20 Nov 2016 12:54:13 +0100
 
