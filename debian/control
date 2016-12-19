@@ -175,10 +175,10 @@ Suggests:
  x2goserver
 Breaks:
  x2goserver (<< 4.0.1.20~),
- x2goagent (<< 3.6.0~),
+ x2goagent (<< 3.5.99.2~),
 Replaces:
  x2goserver (<< 4.0.1.20~),
- x2goagent (<< 3.6.0~),
+ x2goagent (<< 3.5.99.2~),
 Description: X2Go Server's X2Go Agent
  X2Go is a software suite that uses NX technology for remote desktop
  computing.
