@@ -511,7 +511,7 @@ make install DESTDIR=%{buildroot} PREFIX=%{_prefix} NXLIBDIR=%{_libdir}/nx
 export NO_BRP_STALE_LINK_ERROR=yes
 
 # Make sure the .packlist file is removed from %%{perl_vendorarch}...
-rm -f %{buildroot}%{perl_vendorarch}/auto/x2goserver/.packlist
+find %{buildroot}%{perl_vendorarch} -name .packlist | while read file; do rm -f "$file"; done
 
 # Remove placeholder files (in a way that works on EPEL-5, as well)
 find %{buildroot}%{_libdir}/x2go/extensions/ -type f -name ".placeholder" | while read file; do rm -f "$file"; done
