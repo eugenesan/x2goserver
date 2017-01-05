@@ -703,6 +703,7 @@ fi
 %{_libdir}/x2go/x2gocreatesession
 %{_libdir}/x2go/x2gocreateshadowsession
 %{_libdir}/x2go/x2gogetagent
+%{_libdir}/x2go/x2gogetagentstate
 %{_libdir}/x2go/x2gogetdisplays
 %{_libdir}/x2go/x2gogetports
 %{_libdir}/x2go/x2gogetstatus
@@ -715,13 +716,12 @@ fi
 %{_libdir}/x2go/x2gormforward
 %{_libdir}/x2go/x2gormport
 %{_libdir}/x2go/x2gosuspend-agent
-%{_libdir}/x2go/x2gogetagentstate
 %{_libdir}/x2go/x2gosyslog
 %{_sbindir}/x2go*
 %{_mandir}/man8/x2go*.8*
-%exclude %{_mandir}/man8/x2goserver-run-extensions.8*
 %exclude %{_mandir}/man8/x2gofm.8*
 %exclude %{_mandir}/man8/x2goprint.8*
+%exclude %{_mandir}/man8/x2goserver-run-extensions.8*
 %dir %{_datadir}/x2go/
 %dir %{_datadir}/x2go/x2gofeature.d/
 %{_datadir}/x2go/x2gofeature.d/x2goserver.features
