@@ -102,6 +102,7 @@ Requires:       sshfs
 Requires:       sudo
 Requires:       x2goagent-virtual
 Requires(post): grep
+Requires:       grep
 Requires:       perl(File::Which)
 Requires:       perl(File::BaseDir)
 
@@ -135,6 +136,7 @@ Requires(postun): systemd
 Requires:       perl-X2Go-Server = %{version}-%{release}
 Requires(post): perl-X2Go-Server-DB
 Requires(post): x2goserver-common
+Requires:       x2goserver-common
 Requires:       x2goserver-extensions
 Requires:       x2goserver-xsession
 #Recommends:       x2goserver-fmbindings
@@ -242,6 +244,7 @@ Requires:       x2goserver-common = %{version}-%{release}
 Requires:       perl-X2Go-Log = %{version}-%{release}
 Requires:       perl(Config::Simple)
 Requires(post): perl(DBD::SQLite)
+Requires:       perl(DBD::SQLite)
 Requires:       perl(DBD::Pg)
 %if 0%{?suse_version}
 Requires(pre):  permissions
