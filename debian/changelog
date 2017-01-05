@@ -271,6 +271,8 @@ x2goserver (4.0.1.21-0x2go1) UNRELEASED; urgency=medium
     - Requires(post) does not imply Requires, and missing ones on grep and the
       SQLite perl module.
     - Fedora >= 21 and (Open)SUSE >= 11 now allow Recommends.
+    - perl(:MODULE_COMPAT...) is only needed for perl modules. Drop from
+      x2goserver-printing and x2goserver-xsession.
 
  -- X2Go Release Manager <git-admin@x2go.org>  Sun, 20 Nov 2016 12:54:13 +0100
 

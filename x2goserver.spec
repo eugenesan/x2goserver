@@ -78,8 +78,6 @@ Requires:       perl = %{perl_version}
 %else
 %{perl_requires}
 %endif
-%else
-Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 %endif
 
 # For running any command, really.
@@ -167,8 +165,6 @@ Requires:       perl = %{perl_version}
 %else
 %{perl_requires}
 %endif
-%else
-Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 %endif
 
 # for useradd/groupadd
@@ -336,8 +332,6 @@ Requires:       perl = %{perl_version}
 %else
 %{perl_requires}
 %endif
-%else
-Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 %endif
 
 # for useradd/groupadd
@@ -435,8 +429,6 @@ Requires:       perl = %{perl_version}
 %else
 %{perl_requires}
 %endif
-%else
-Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 %endif
 
 Requires:       perl(Cwd)
