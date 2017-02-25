@@ -230,6 +230,8 @@ x2goserver (4.1.0.0-0x2go1.2) UNRELEASED; urgency=low
       the Makefile creates these directories correctly.
   * debian/x2goserver-x2goagent.install:
     - Re-add etc/rgb file.
+  * debian/po:
+    - Tiny fixup on author name.
 
   [ Martti Pitkänen ]
   * debian/po:
