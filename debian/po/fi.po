@@ -1,0 +1,79 @@
+#
+#    Translators, if you are not familiar with the PO format, gettext
+#    documentation is worth reading, especially sections dedicated to
+#    this format, e.g. by running:
+#         info -n '(gettext)PO Files'
+#         info -n '(gettext)Header Entry'
+#
+#    Some information specific to po-debconf are available at
+#            /usr/share/doc/po-debconf/README-trans
+#         or http://www.debian.org/intl/l10n/po-debconf/README-trans
+#
+#    Developers do not need to manually edit POT or PO files.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: X2Go\n"
+"Report-Msgid-Bugs-To: x2goserver@packages.debian.org\n"
+"POT-Creation-Date: 2012-09-20 23:46+0200\n"
+"PO-Revision-Date: 2017-02-24 13:43+0200\n"
+"Last-Translator: martti pitkanen <martti@aplcomp.fi>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-15\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.4\n"
+"Language: fi\n"
+
+#. Type: text
+#. Description
+#: ../templates:1001
+msgid "X2Go Server / PostgreSQL Upgrade"
+msgstr "X2Go Server / PostgreSQL Upgrade"
+
+#. Type: text
+#. Description
+#: ../templates:1001
+msgid ""
+"You have configured X2Go Server with PostgreSQL as session DB backend and "
+"you are upgrading x2goserver from a version minor to 3.1.0.0."
+msgstr ""
+"Olet määritellyt X2Go Serverille tietokantapalvelimeksi PostgreSQLn ja olet "
+"päivittämässä X2Go serveriä alemmasta versiosta kuin 3.1.0.0."
+
+#. Type: text
+#. Description
+#: ../templates:1001
+msgid ""
+"Please follow these PostgreSQL DB upgrade instructions before you continue "
+"using your X2Go Server: /usr/share/doc/x2goserver/README.upgrade-pgsql-"
+"database.gz"
+msgstr ""
+"Lue nämä ohjeet ennenkuin jatkat X2Go Serverin käyttöä: /usr/share/doc/"
+"x2goserver/README.upgrade-pgsql-database.gz"
+
+#. Type: text
+#. Description
+#: ../templates:2001
+msgid "X2Go Server Upgrade"
+msgstr "X2Go Serveri päivtys"
+
+#. Type: text
+#. Description
+#: ../templates:2001
+msgid ""
+"You are upgrading from an X2Go Server version (< 4.1.0.0). Between 4.1.0.0 "
+"and 4.0.0.x the package structure has undergone a major change."
+msgstr ""
+"Olet päivittämässä X2Go Serverin versiosta (< 4.1.0.0). Version välillä "
+"4.1.0.0 ja 4.0.0.x ovat muuttuneet erittäin paljon."
+
+#. Type: text
+#. Description
+#: ../templates:2001
+msgid ""
+"Note that most of the Perl code in X2Go Server has been moved into its own "
+"Perl API X2Go::Server."
+msgstr ""
+"Suurin osa X2Go Serverin Perl koodista on siirretty sen omaan hostiin Perl "
+"API X2Go::Server."
