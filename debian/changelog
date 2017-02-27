@@ -237,6 +237,10 @@ x2goserver (4.0.1.21-0x2go1) UNRELEASED; urgency=medium
 
   [ Mihai Moldovan ]
   * New upstream version (4.0.1.21):
+    - x2goserver/sbin/x2gocleansessions: don't overzealously try to remove old
+      nxagent sockets. If the nxagent process already vanished, simply forget
+      the remembered session. Otherwise we might delete sockets that have been
+      re-assigned to other sessions in the meantime.
   * x2goserver.spec:
     - Add mandatory perl-generators Build-Requires as per
       https://fedoraproject.org/wiki/Changes/Build_Root_Without_Perl

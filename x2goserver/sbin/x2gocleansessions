@@ -221,6 +221,20 @@ elsif ($pid == 0 )
 
 			if (@sinfo[4] eq 'F')
 			{
+				if (!check_pid (@sinfo[0], @sinfo[1], 100) {
+					# No clean up necessary, as the agent is dead.
+					# Removing sockets again would only lead to potentially
+					# overwriting the socket another session claimed in-between.
+					log_message ('debug', "@sinfo[1]: in failed state, but agent is gone, forgetting.");
+					@remembered_finished_sessions = grep (!/\Q@sinfo[1]\E/, @remembered_finished_sessions);
+					delete $remembered_sessions_status{@sinfo[1]};
+					delete $remembered_sessions_status_since_time{@sinfo[1]};
+					delete $remembered_sessions_status_since_iterations{@sinfo[1]};
+
+					next;
+				}
+
+				# Reaching this part means that nxagent is still executing.
 				log_message ('debug', "@sinfo[1]: is blocked.");
 				# Only add to finished list if it isn't in there already.
 				if (!(grep { ((defined ($_)) && ($_ =~ m/\Q@sinfo[1]\E/)) } @remembered_finished_sessions)) {
@@ -228,7 +242,7 @@ elsif ($pid == 0 )
 					push (@remembered_finished_sessions, join ('|', @sinfo));
 				}
 
-				# Kill the process if blocked for more than 20 seconds.
+				# Kill the process if blocked for more than 20 seconds and nxagent is still up.
 				if ((time () - $remembered_sessions_status_since_time{@sinfo[1]}) >= 20)
 				{
 					log_message ('debug', "@sinfo[1]: blocked for more than 20 seconds.");
