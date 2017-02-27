@@ -256,7 +256,8 @@ ss=$(PATH="$PATH:/usr/sbin:/sbin" type -P ss);
 
 while [ "$OUTPUT"  != "inserted" ]; do
 
-	USED_DISPLAYS=`$X2GO_LIB_PATH/x2gogetdisplays $HOSTNAME`
+	typeset -a used_displays
+	IFS='' read -ar used_displays < <("${X2GO_LIB_PATH}/x2gogetdisplays" "${HOSTNAME}")
 
 	#Get all used in system ports from X2Go database and ss output
 	USED_PORTS=$(
@@ -266,8 +267,34 @@ while [ "$OUTPUT"  != "inserted" ]; do
 	);
 
 	X2GO_PORT=$(($X2GO_PORT + 1))
-	X2GO_PORT=`echo "for(\\$i=$X2GO_PORT;\\$br ne \"true\";\\$i++){ if(\"$USED_DISPLAYS\" =~ m/\\|\\$i\\|/){\\$br=\"false\";}else{\\$br=\"true\";print \\$i;}}"|perl`
-	
+
+	typeset -i search_x2go_port="0"
+
+	# Find the next free port number.
+	for ((search_x2go_port = X2GO_PORT; i <= 59535; ++search_x2go_port)); do
+		typeset -i i="0"
+		typeset -i value_found="0"
+
+		for ((i = 0; i < ${#used_displays[@]}; ++i)); do
+			if [[ "${used_displays[i]}" =~ /|${search_x2go_port}|/ ]]; then
+				# We need to continue with the next port number,
+				# this one is taken.
+				value_found="1"
+				break
+			fi
+		done
+
+		# Searched the array and got nothing? Great, grab that port number!
+		[[ "${value_found}" -eq "0" ]] && break
+	done
+
+	if [[ "${search_x2go_port}" -gt "59535" ]]; then
+		$X2GO_LIB_PATH/x2gosyslog "$0" "err" "no free display number available, cannot start new session"
+		exit -1
+	fi
+
+	X2GO_PORT="${search_x2go_port}"
+
 	#Test if the session is already in use. nxagent uses 6000+DISPLAY to open a port. Therefore this must be tested, too.
 	NX_PORT=$(($X2GO_PORT + 6000))
 	if $ss -lxs 2>/dev/null | egrep "(@|)/tmp/.X11-unix/X${X2GO_PORT}(|-lock) " 1>/dev/null ||
