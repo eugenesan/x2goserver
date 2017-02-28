@@ -221,7 +221,7 @@ elsif ($pid == 0 )
 
 			if (@sinfo[4] eq 'F')
 			{
-				if (!check_pid (@sinfo[0], @sinfo[1], 100) {
+				if (!check_pid (@sinfo[0], @sinfo[1], 100)) {
 					# No clean up necessary, as the agent is dead.
 					# Removing sockets again would only lead to potentially
 					# overwriting the socket another session claimed in-between.

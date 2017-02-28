@@ -243,6 +243,8 @@ x2goserver (4.0.1.21-0x2go1) UNRELEASED; urgency=medium
       re-assigned to other sessions in the meantime.
     - x2goserver/bin/x2gostartagent: convert X2GO_PORT searching algorithm to
       pure bash and let script fail if no display port is available.
+    - x2goserver/sbin/x2gocleansessions: fix syntax error introduced in last
+      change to this file.
   * x2goserver.spec:
     - Add mandatory perl-generators Build-Requires as per
       https://fedoraproject.org/wiki/Changes/Build_Root_Without_Perl
