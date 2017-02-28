@@ -302,7 +302,7 @@ This package contains the X2Go::Log Perl package.
 %package x2goagent
 Group:          Applications/System
 Summary:        X2Go Server's X2Go Agent
-Requires:       nxagent >= 3.5.99.0
+Requires:       nxagent >= 3.5.99.3
 Provides:       x2goagent-virtual
 
 %description x2goagent

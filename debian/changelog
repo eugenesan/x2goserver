@@ -223,6 +223,7 @@ x2goserver (4.1.0.0-0x2go1.2) UNRELEASED; urgency=low
       Also owned by the alternative package x2goagent in nx-libs.
     - Exclude %{_bindir}/x2goagent from being packaged into x2goserver
       package.
+    - x2goserver-x2goagent needs nxagent 3.5.99.3 and higher.
   * debian/control:
     - Maintainer change in package: X2Go Developers <x2go-dev@lists.x2go.org>.
   * debian/:
