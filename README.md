@@ -37,19 +37,19 @@ interact.
 
  * x2goserver-xsession
 
-   This folder contains the project for fiddling arround with Xsession files of your own system and
+   This folder contains the project for fiddling around with Xsession files of your own system and
    the X2Go Server's Xsession files.
 
  * INSTALL
- 
+
    This file contains installation instructions for building and installing it from a tarball.
 
- * Makefile 
+ * Makefile
 
    This file is used by [http://www.gnu.org/software/make/manual/make.html](make) to build and install the code with the appropriate compiler.
 
  * Makefile.docupload
-   
+
    This file is used by [http://www.gnu.org/software/make/manual/make.html](make) to build and upload the x2goserver documentation.
 
  * UNINSTALL
