@@ -3,7 +3,7 @@
 export NXLIBDIR="/usr/lib/$(shell dpkg-architecture -qDEB_HOST_MULTIARCH)/nx"
 
 %:
-	PREFIX=/usr NXLIBDIR=$(NXLIBDIR) dh $@
+	PREFIX=/usr NXLIBDIR=$(NXLIBDIR) dh ${@} --with=systemd
 
 override_dh_auto_build:
 	PREFIX=/usr NXLIBDIR=$(NXLIBDIR) PERL_INSTALLDIRS=vendor dh_auto_build
