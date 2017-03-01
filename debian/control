@@ -1,6 +1,6 @@
 Source: x2goserver
 Section: x11
-Priority: optional 
+Priority: optional
 Maintainer: X2Go Developers <x2go-dev@lists.x2go.org>
 Uploaders:
  Mike Gabriel <mike.gabriel@das-netzwerkteam.de>,
@@ -271,7 +271,7 @@ Description: X2Go Server (Xsession runner)
  .
  Amongst others the parsing of Xsession scripts will
  enable desktop-profiles, ssh-agent startups, gpgagent
- startups and many more Xsession related features on 
+ startups and many more Xsession related features on
  X2Go session login automagically.
 
 Package: x2goserver-fmbindings
