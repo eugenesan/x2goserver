@@ -53,15 +53,39 @@ if  ! [ -f ${X2GO_CLIENT_KBD_FILE} ]; then
 	exit 0
 fi
 
+# Used to hold options to setxkbcomp.
+typeset -a setxkbcomp_opts
+
+# retrieve keyboard settings from keyboard file in X2Go session dir
 read_keyboard_file() {
+	# Cache file contents.
+	typeset -a file_content
+	typeset line=''
+	while IFS='' read -r line; do
+		file_content+=("${line}")
+	done < "${X2GO_CLIENT_KBD_FILE}"
 
-	# retrieve keyboard settings from keyboard file in X2Go session dir
-	XKB_RULES="$(cat ${X2GO_CLIENT_KBD_FILE}  | egrep "^rules.*" | head -n1 | cut -d "=" -f2 | cut -d" " -f1)"
-	XKB_MODEL="$(cat ${X2GO_CLIENT_KBD_FILE}  | egrep "^model.*" | head -n1 | cut -d "=" -f2 | cut -d" " -f1)"
-	XKB_LAYOUT="$(cat ${X2GO_CLIENT_KBD_FILE} | egrep "^layout.*" | head -n1 | cut -d "=" -f2 | cut -d" " -f1)"
-	XKB_VARIANT="$(cat ${X2GO_CLIENT_KBD_FILE} | egrep "^variant.*" | head -n1 | cut -d "=" -f2 | cut -d" " -f1)"
-	XKB_OPTIONS="$(cat ${X2GO_CLIENT_KBD_FILE} | egrep "^options.*" | head -n1 | cut -d "=" -f2 | cut -d" " -f1)"
+	# Append last line if not terminated by a newline.
+	[[ "${line}" ]] && file_content+=("${line}")
 
+	for line in "${file_content[@]}"; do
+		# Extract the keys, their values and add to setxkbcomp_opts.
+		typeset key=''
+		for key in "rules" "model" "layout" "variant" "options"; do
+			typeset regexp='^[[:space]]*'"${key}"'[[:space:]]*=[[:space:]]*"?(.*)"?[[:space:]]*'
+			if [[ "${line}" =~ ${regexp} ]]; then
+				typeset value="${BASH_REMATCH[0]}"
+
+				if [ -n "${value}" ]; then
+					# Handle a special substitution case for evdev-based rules.
+					# FIXME: find out why that substitution is needed in the first place!
+					[ "${key}" = 'rules' ] && value="${value//evdev/base}"
+
+					setxkbcomp_opts+=("-${key}" "${value}")
+				fi
+			fi
+		done
+	done
 }
 
 reset_keymap() {
@@ -69,19 +93,8 @@ reset_keymap() {
 }
 
 update_keymap() {
-
-	if [ "$XKB_RULES" = "evdev" ]; then
-		XKB_RULES="base"
-	fi
-	# prepare for setxkbmap call
-	[ -n "$XKB_RULES" ] && XKB_RULES="-rules $XKB_RULES"
-	[ -n "$XKB_MODEL" ] && XKB_MODEL="-model $XKB_MODEL"
-	[ -n "$XKB_LAYOUT" ] && XKB_LAYOUT="-layout $XKB_LAYOUT"
-	[ -n "$XKB_VARIANT" ] && XKB_VARIANT="-variant $XKB_VARIANT"
-	[ -n "$XKB_OPTIONS" ] && XKB_OPTIONS="-option $XKB_OPTIONS"
-
 	# update keyboard map
-	setxkbmap $XKB_RULES $XKB_MODEL $XKB_LAYOUT $XKB_VARIANT $XKB_OPTIONS
+	setxkbmap "${setxkbcomp_opts[@]}"
 }
 
 ### main ###
