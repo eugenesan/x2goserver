@@ -44,6 +44,9 @@ BuildRequires:  man
 
 %if 0%{?fedora} || 0%{?rhel} >= 7 || 0%{?suse_version} >= 1210
 BuildRequires:  systemd
+%if 0%{?suse_version} >= 1210
+BuildRequires:  systemd-rpm-macros
+%endif
 %endif
 
 # So XSESSIONDIR gets linked
@@ -121,13 +124,7 @@ Requires:       xorg-x11-xauth
 Requires:       which
 %endif
 
-%if 0%{?fedora} || 0%{?rhel} >= 7
-Requires(post): systemd
-Requires(preun): systemd
-Requires(postun): systemd
-%endif
-
-%if 0%{?suse_version} && 0%{?suse_version} >= 1210
+%if 0%{?fedora} || 0%{?rhel} >= 7 || 0%{?suse_version} >= 1210
 %{?systemd_requires}
 %endif
 
@@ -623,7 +620,7 @@ fi
 %systemd_preun x2goserver.service
 
 %postun
-%systemd_postun x2goserver.service
+%systemd_postun_with_restart x2goserver.service
 %else
 %service_del_preun x2goserver.service
 
