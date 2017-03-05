@@ -254,6 +254,14 @@ x2goserver (4.0.1.21-0x2go1) UNRELEASED; urgency=medium
   * x2goserver.spec:
     - Add mandatory perl-generators Build-Requires as per
       https://fedoraproject.org/wiki/Changes/Build_Root_Without_Perl
+    - Correct usage of mime and desktop database upgrade scriptlets and
+      dependencies. Fedora mandates to not depend upon shared-mime-info, even
+      not for the scriplets. Additionally, FC24 has deprecated usage of the
+      mime database update scriptlet and FC25 has deprecated usage of the
+      desktop database update scriptlet. (Open)SUSE mandates to pull in
+      shared-mime-info and desktop-file-utils as post/postun scriptlet
+      dependencies and provides special macros since 11.4. Older versions are
+      handled via the usual commands.
   * debian/po:
     - Tiny fixup on author name.
   * debian/control:

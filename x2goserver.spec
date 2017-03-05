@@ -454,13 +454,19 @@ Requires:       perl(Cwd)
 %package fmbindings
 Summary:        X2Go Server (file manager bindings)
 Requires:       %{name} = %{version}-%{release}
-%if 0%{?suse_version} || 0%{?suse_version} <= 1130
-Requires(pre): shared-mime-info
+%if 0%{?suse_version}
+%if 0%{?suse_version} <= 1130
+Requires(pre):    shared-mime-info
+%endif
+Requires(post):   shared-mime-info
+Requires(postun): shared-mime-info
+%endif
 %endif
 Requires:       xdg-utils
-Requires:       desktop-file-utils
+%if 0%{?suse_version} || 0%{fedora} < 25 || 0%{?rhel} < 8
 Requires(post):   desktop-file-utils
 Requires(postun): desktop-file-utils
+%endif
 %if 0%{?fedora} || 0%{?rhel}
 Group:          Applications/Communications
 %else
@@ -655,14 +661,36 @@ fi
 
 
 %post fmbindings
-/usr/bin/update-mime-database /usr/share/mime &1>/dev/null 2>/dev/null|| :
+%if 0%{?suse_version} >= 1140
+%mime_database_post
+%desktop_database_post
+%elif 0%{?suse_version} || 0%{fedora} < 24 || 0%{?rhel} < 8
+/usr/bin/update-mime-database %{_datadir}/mime &1>/dev/null 2>/dev/null || :
 /usr/bin/update-desktop-database &1>/dev/null 2>/dev/null || :
+%elif 0%{?fedora} < 25
+/usr/bin/update-desktop-database &1>/dev/null 2>/dev/null || :
+# FC 24 and higher have deprecated the mime database update scriptlet and handle changes transparently.
+# FC 25 and higher have deprecated the desktop database update scriptlet and handle changes transparently.
+%endif
 
 %postun fmbindings
 if [ $1 -eq 0 ] ; then
-        /usr/bin/update-mime-database /usr/share/mime &1>/dev/null 2>/dev/null || :
+%if 0%{?suse_version} >= 1140
+        %mime_database_postun
+        %desktop_database_postun
+%elif 0%{?suse_version} || 0%{fedora} < 24 || 0%{?rhel} < 8
+        /usr/bin/update-mime-database %{_datadir}/mime &1>/dev/null 2>/dev/null || :
         /usr/bin/update-desktop-database &1>/dev/null 2>/dev/null || :
+%elif 0%{?fedora} < 25
+        /usr/bin/update-desktop-database &1>/dev/null 2>/dev/null || :
+        # Check the post scriptlet for more information.
+%endif
 fi
+
+%posttrans
+%if 0%{?fedora} < 24 || 0%{?rhel} < 8
+/usr/bin/update-mime-database %{?fedora:-n} %{_datadir}/mime &> /dev/null || :
+%endif
 
 
 %pre printing
