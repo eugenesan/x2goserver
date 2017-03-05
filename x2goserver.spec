@@ -135,8 +135,8 @@ Requires:       x2goserver-common
 Requires:       x2goserver-extensions
 Requires:       x2goserver-xsession
 %if 0%{?fedora} >= 21 || 0%{?suse_version} >= 1110
-Recommends:     x2goserver-fmbindings
-Recommends:     x2goserver-printing
+Suggests:     x2goserver-fmbindings
+Suggests:     x2goserver-printing
 %endif
 
 %{?perl_default_filter}

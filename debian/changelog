@@ -264,6 +264,10 @@ x2goserver (4.0.1.21-0x2go1) UNRELEASED; urgency=medium
       handled via the usual commands.
     - Simplify systemd usage a bit and make sure that it's restarted on Fedora
       and RHEL-based distros. FIXME: Not enabled by default on FC/RHEL/*SuSE.
+    - Use Suggests instead of Recommends, as an even weaker dependency. We can
+      live just fine without printing or fmbindings and no functions of the
+      x2goserver package as well will be impacted. The DEB control file also
+      uses "Suggests" for this.
   * debian/po:
     - Tiny fixup on author name.
   * debian/control:
