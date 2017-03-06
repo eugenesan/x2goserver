@@ -269,6 +269,7 @@ x2goserver (4.0.1.21-0x2go1) UNRELEASED; urgency=medium
       x2goserver package as well will be impacted. The DEB control file also
       uses "Suggests" for this.
     - Fix RPM spec syntax error in shared-mime-info dependency section.
+    - Fix %{?fedora} macro usage.
   * debian/po:
     - Tiny fixup on author name.
   * debian/control:

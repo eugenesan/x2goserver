@@ -459,7 +459,7 @@ Requires(post):   shared-mime-info
 Requires(postun): shared-mime-info
 %endif
 Requires:       xdg-utils
-%if 0%{?suse_version} || 0%{fedora} < 25 || 0%{?rhel} < 8
+%if 0%{?suse_version} || 0%{?fedora} < 25 || 0%{?rhel} < 8
 Requires(post):   desktop-file-utils
 Requires(postun): desktop-file-utils
 %endif
@@ -660,7 +660,7 @@ fi
 %if 0%{?suse_version} >= 1140
 %mime_database_post
 %desktop_database_post
-%elif 0%{?suse_version} || 0%{fedora} < 24 || 0%{?rhel} < 8
+%elif 0%{?suse_version} || 0%{?fedora} < 24 || 0%{?rhel} < 8
 /usr/bin/update-mime-database %{_datadir}/mime &1>/dev/null 2>/dev/null || :
 /usr/bin/update-desktop-database &1>/dev/null 2>/dev/null || :
 %elif 0%{?fedora} < 25
@@ -674,7 +674,7 @@ if [ $1 -eq 0 ] ; then
 %if 0%{?suse_version} >= 1140
         %mime_database_postun
         %desktop_database_postun
-%elif 0%{?suse_version} || 0%{fedora} < 24 || 0%{?rhel} < 8
+%elif 0%{?suse_version} || 0%{?fedora} < 24 || 0%{?rhel} < 8
         /usr/bin/update-mime-database %{_datadir}/mime &1>/dev/null 2>/dev/null || :
         /usr/bin/update-desktop-database &1>/dev/null 2>/dev/null || :
 %elif 0%{?fedora} < 25
