@@ -683,7 +683,7 @@ if [ $1 -eq 0 ] ; then
 %endif
 fi
 
-%posttrans
+%posttrans fmbindings
 %if 0%{?fedora} < 24 || 0%{?rhel} < 8
 /usr/bin/update-mime-database %{?fedora:-n} %{_datadir}/mime &> /dev/null || :
 %endif
