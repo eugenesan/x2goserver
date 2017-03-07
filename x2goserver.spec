@@ -459,7 +459,7 @@ Requires(post):   shared-mime-info
 Requires(postun): shared-mime-info
 %endif
 Requires:       xdg-utils
-%if 0%{?suse_version} || 0%{?fedora} < 25 || 0%{?rhel} < 8
+%if 0%{?suse_version} || ( 0%{?fedora} && 0%{?fedora} < 25 ) || ( 0%{?rhel} && 0%{?rhel} < 8 )
 Requires(post):   desktop-file-utils
 Requires(postun): desktop-file-utils
 %endif

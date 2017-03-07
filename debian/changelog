@@ -282,6 +282,7 @@ x2goserver (4.0.1.21-0x2go1) UNRELEASED; urgency=medium
     - Fix typo in %if condition (0%?{?fedora} instead of 0%{?fedora}.)
     - Contrary to other information that says "brackets" and consistent with
       RPM's source code, grouping is done via "(" and ")" in conditions.
+    - More platform-specific condition fixup.
   * debian/po:
     - Tiny fixup on author name.
   * debian/control:
