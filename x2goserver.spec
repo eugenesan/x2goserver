@@ -668,7 +668,7 @@ mkdir -p "/var/cache/gio-2.0"
 # is always triggered - even on operating systems for which it should not be triggered.
 # For example, this branch would be taken on Fedora >= 24 if using a plain "0%{?rhel} < 8"
 # condition, since this ("0 < 8") would be true on a Fedora system.
-%elif 0%{?suse_version} || { 0%{?fedora} && 0%{?fedora} < 24 } || { 0%{?rhel} && 0%{?rhel} < 8 }
+%elif 0%{?suse_version} || ( 0%{?fedora} && 0%{?fedora} < 24 ) || ( 0%{?rhel} && 0%{?rhel} < 8 )
 /usr/bin/update-mime-database %{_datadir}/mime &1>/dev/null 2>/dev/null || :
 /usr/bin/update-desktop-database &1>/dev/null 2>/dev/null || :
 %elif 0{?fedora} && 0%{?fedora} < 25
@@ -686,7 +686,7 @@ if [ $1 -eq 0 ] ; then
 
         %mime_database_postun
         %desktop_database_postun
-%elif 0%{?suse_version} || { 0%{?fedora} && 0%{?fedora} < 24 } || { 0%{?rhel} && 0%{?rhel} < 8 }
+%elif 0%{?suse_version} || ( 0%{?fedora} && 0%{?fedora} < 24 ) || ( 0%{?rhel} && 0%{?rhel} < 8 )
         /usr/bin/update-mime-database %{_datadir}/mime &1>/dev/null 2>/dev/null || :
         /usr/bin/update-desktop-database &1>/dev/null 2>/dev/null || :
 %elif 0{?fedora} && 0%{?fedora} < 25
@@ -700,7 +700,7 @@ if [ $1 -eq 0 ] ; then
 fi
 
 %posttrans fmbindings
-%if { 0%{?fedora} && 0%{?fedora} < 24 } || { 0%{?rhel} && 0%{?rhel} < 8 }
+%if ( 0%{?fedora} && 0%{?fedora} < 24 ) || ( 0%{?rhel} && 0%{?rhel} < 8 )
 /usr/bin/update-mime-database %{?fedora:-n} %{_datadir}/mime &> /dev/null || :
 %endif
 
