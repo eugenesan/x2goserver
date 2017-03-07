@@ -283,6 +283,8 @@ x2goserver (4.0.1.21-0x2go1) UNRELEASED; urgency=medium
     - Contrary to other information that says "brackets" and consistent with
       RPM's source code, grouping is done via "(" and ")" in conditions.
     - More platform-specific condition fixup.
+    - Pull in shared-mime-info as a build requirement only on *SuSE and add
+      comment regarding why desktop-file-utils is always needed.
   * debian/po:
     - Tiny fixup on author name.
   * debian/control:

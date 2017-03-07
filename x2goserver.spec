@@ -26,11 +26,16 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 BuildRequires:  findutils
 
-%if 0%{?suse_version} || 0%{?suse_version} <= 1130
-BuildRequires: shared-mime-info
+# We need this package for SuSE-specific macros.
+# RHEL-based systems should be fine without them, but
+# further checking with rpmlint is required.
+%if 0%{?suse_version}
+BuildRequires:  shared-mime-info
 %endif
 
+# Always needed, on all platforms, for desktop-file-validate.
 BuildRequires:  desktop-file-utils
+
 %if 0%{?fedora} || 0%{?rhel}
 BuildRequires:  perl-generators
 %endif
