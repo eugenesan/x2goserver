@@ -675,6 +675,8 @@ mkdir -p "/var/cache/gio-2.0"
 /usr/bin/update-desktop-database &1>/dev/null 2>/dev/null || :
 # FC 24 and higher have deprecated the mime database update scriptlet and handle changes transparently.
 # FC 25 and higher have deprecated the desktop database update scriptlet and handle changes transparently.
+%else
+DELIBERATE_SYNTAX_ERROR_FOR_SUSE_TESTING
 %endif
 
 %postun fmbindings
@@ -693,6 +695,7 @@ if [ $1 -eq 0 ] ; then
 %else
         # Need to have at least one command, do nothing.
         :
+        DELIBERATE_SYNTAX_ERROR_FOR_SUSE_TESTING_2
 %endif
 fi
 
