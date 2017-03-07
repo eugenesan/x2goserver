@@ -468,7 +468,7 @@ Requires:       xdg-utils
 Requires(post):   desktop-file-utils
 Requires(postun): desktop-file-utils
 %if ( 0%{?fedora} && 0%{?fedora} < 24 ) || ( 0%{?rhel} && 0%{?rhel} < 8 )
-Requires(trans):  shared-mime-info
+Requires(posttrans):  shared-mime-info
 %endif
 %endif
 %if 0%{?fedora} || 0%{?rhel}
