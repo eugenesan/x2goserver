@@ -658,6 +658,9 @@ fi
 
 %post fmbindings
 %if 0%{?suse_version} >= 1140
+# Bug in SuSE's mime DB update script, work around it...
+mkdir -p "/var/cache/gio-2.0"
+
 %mime_database_post
 %desktop_database_post
 # We need the "weird" foo && foo < ... structure, because we only want to check the value
@@ -677,6 +680,8 @@ fi
 %postun fmbindings
 if [ $1 -eq 0 ] ; then
 %if 0%{?suse_version} >= 1140
+        mkdir -p "/var/cache/gio-2.0"
+
         %mime_database_postun
         %desktop_database_postun
 %elif 0%{?suse_version} || { 0%{?fedora} && 0%{?fedora} < 24 } || { 0%{?rhel} && 0%{?rhel} < 8 }
