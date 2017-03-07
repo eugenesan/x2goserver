@@ -660,10 +660,15 @@ fi
 %if 0%{?suse_version} >= 1140
 %mime_database_post
 %desktop_database_post
-%elif 0%{?suse_version} || 0%{?fedora} < 24 || 0%{?rhel} < 8
+# We need the "weird" foo && foo < ... structure, because we only want to check the value
+# *if* the macro is defined. Otherwise it will decay to 0 which means that the branch
+# is always triggered - even on operating systems for which it should not be triggered.
+# For example, this branch would be taken on Fedora >= 24 if using a plain "0%{?rhel} < 8"
+# condition, since this ("0 < 8") would be true on a Fedora system.
+%elif 0%{?suse_version} || { 0%{?fedora} && 0%{?fedora} < 24 } || { 0%{?rhel} && 0%{?rhel} < 8 }
 /usr/bin/update-mime-database %{_datadir}/mime &1>/dev/null 2>/dev/null || :
 /usr/bin/update-desktop-database &1>/dev/null 2>/dev/null || :
-%elif 0%{?fedora} < 25
+%elif 0{?fedora} && 0%{?fedora} < 25
 /usr/bin/update-desktop-database &1>/dev/null 2>/dev/null || :
 # FC 24 and higher have deprecated the mime database update scriptlet and handle changes transparently.
 # FC 25 and higher have deprecated the desktop database update scriptlet and handle changes transparently.
@@ -674,17 +679,17 @@ if [ $1 -eq 0 ] ; then
 %if 0%{?suse_version} >= 1140
         %mime_database_postun
         %desktop_database_postun
-%elif 0%{?suse_version} || 0%{?fedora} < 24 || 0%{?rhel} < 8
+%elif 0%{?suse_version} || { 0%{?fedora} && 0%{?fedora} < 24 } || { 0%{?rhel} && 0%{?rhel} < 8 }
         /usr/bin/update-mime-database %{_datadir}/mime &1>/dev/null 2>/dev/null || :
         /usr/bin/update-desktop-database &1>/dev/null 2>/dev/null || :
-%elif 0%{?fedora} < 25
+%elif 0{?fedora} && 0%{?fedora} < 25
         /usr/bin/update-desktop-database &1>/dev/null 2>/dev/null || :
         # Check the post scriptlet for more information.
 %endif
 fi
 
 %posttrans fmbindings
-%if 0%{?fedora} < 24 || 0%{?rhel} < 8
+%if { 0%?{?fedora} && 0%{?fedora} < 24 } || { 0%{?rhel} && 0%{?rhel} < 8 }
 /usr/bin/update-mime-database %{?fedora:-n} %{_datadir}/mime &> /dev/null || :
 %endif
 

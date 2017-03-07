@@ -272,6 +272,8 @@ x2goserver (4.0.1.21-0x2go1) UNRELEASED; urgency=medium
     - Fix %{?fedora} macro usage.
     - Add the correct package name to the %posttrans scriptlet, we only need
       it for x2goserver-fmbindings.
+    - Make sure that we don't go into branches just because a macro is not
+      defined on our platform.
   * debian/po:
     - Tiny fixup on author name.
   * debian/control:
