@@ -275,6 +275,8 @@ x2goserver (4.0.1.21-0x2go1) UNRELEASED; urgency=medium
     - Make sure that we don't go into branches just because a macro is not
       defined on our platform.
     - Work around a bug in SuSE's mime DB update script...
+    - Make sure that there's always at least one (nil) command in the if
+      command list.
   * debian/po:
     - Tiny fixup on author name.
   * debian/control:

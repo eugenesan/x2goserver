@@ -690,6 +690,9 @@ if [ $1 -eq 0 ] ; then
 %elif 0{?fedora} && 0%{?fedora} < 25
         /usr/bin/update-desktop-database &1>/dev/null 2>/dev/null || :
         # Check the post scriptlet for more information.
+%else
+        # Need to have at least one command, do nothing.
+        :
 %endif
 fi
 
