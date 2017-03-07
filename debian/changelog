@@ -279,6 +279,7 @@ x2goserver (4.0.1.21-0x2go1) UNRELEASED; urgency=medium
       command list.
     - Break older SLES builds on purpose to see what branch is *actually*
       taken. Will be reverted shortly.
+    - Fix typo in %if condition (0%?{?fedora} instead of 0%{?fedora}.)
   * debian/po:
     - Tiny fixup on author name.
   * debian/control:

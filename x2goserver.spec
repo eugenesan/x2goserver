@@ -700,7 +700,7 @@ if [ $1 -eq 0 ] ; then
 fi
 
 %posttrans fmbindings
-%if { 0%?{?fedora} && 0%{?fedora} < 24 } || { 0%{?rhel} && 0%{?rhel} < 8 }
+%if { 0%{?fedora} && 0%{?fedora} < 24 } || { 0%{?rhel} && 0%{?rhel} < 8 }
 /usr/bin/update-mime-database %{?fedora:-n} %{_datadir}/mime &> /dev/null || :
 %endif
 
