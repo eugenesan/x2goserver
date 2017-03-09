@@ -257,6 +257,10 @@ x2goserver (4.0.1.21-0x2go1) UNRELEASED; urgency=medium
       ${setxkbmap_opts}, that's what it really is.
     - x2goserver/bin/x2gosetkeyboard: setxkbmap expects a parameter called
       "-option", but nxagent uses the key "options". Make setxkbmap happy.
+    - x2goserver/bin/x2gosetkeyboard: $BASH_REMATCH is tricky, actually fetch
+      the first match. In the $BASH_REMATCH array, index 0 contains the *full*
+      match, while indices 1+ only contain the partial matches. We're only
+      interested in the first partial match.
   * x2goserver.spec:
     - Add mandatory perl-generators Build-Requires as per
       https://fedoraproject.org/wiki/Changes/Build_Root_Without_Perl
