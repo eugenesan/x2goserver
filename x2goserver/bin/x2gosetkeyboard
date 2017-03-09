@@ -72,7 +72,10 @@ read_keyboard_file() {
 		# Extract the keys, their values and add to setxkbmap_opts.
 		typeset key=''
 		for key in "rules" "model" "layout" "variant" "options"; do
-			typeset regexp='^[[:space:]]*'"${key}"'[[:space:]]*=[[:space:]]*"?(.*)"?[[:space:]]*'
+			# This does not support quotes characters within values. Shouldn't be necessary, anyway.
+			# Matching escaped quote characters is possible, but complicated and not worth the effort.
+			# Probably.
+			typeset regexp='^[[:space:]]*'"${key}"'[[:space:]]*=[[:space:]]*"?([^"]*)"?[[:space:]]*'
 			if [[ "${line}" =~ ${regexp} ]]; then
 				typeset value="${BASH_REMATCH[1]}"
 
