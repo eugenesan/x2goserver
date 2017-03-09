@@ -72,7 +72,7 @@ read_keyboard_file() {
 		# Extract the keys, their values and add to setxkbcomp_opts.
 		typeset key=''
 		for key in "rules" "model" "layout" "variant" "options"; do
-			typeset regexp='^[[:space]]*'"${key}"'[[:space:]]*=[[:space:]]*"?(.*)"?[[:space:]]*'
+			typeset regexp='^[[:space:]]*'"${key}"'[[:space:]]*=[[:space:]]*"?(.*)"?[[:space:]]*'
 			if [[ "${line}" =~ ${regexp} ]]; then
 				typeset value="${BASH_REMATCH[0]}"
 

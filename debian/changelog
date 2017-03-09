@@ -251,6 +251,8 @@ x2goserver (4.0.1.21-0x2go1) UNRELEASED; urgency=medium
       change to this file.
     - x2goserver/bin/x2gosetkeyboard: make compatible with changes in
       Arctica's nxagent. Also change to an all-bash algorithm. Fixes: #1151.
+    - x2goserver/bin/x2gosetkeyboard: fix a typo that caused the script to not
+      work properly - with or without Arctica's nx-libs.
   * x2goserver.spec:
     - Add mandatory perl-generators Build-Requires as per
       https://fedoraproject.org/wiki/Changes/Build_Root_Without_Perl
