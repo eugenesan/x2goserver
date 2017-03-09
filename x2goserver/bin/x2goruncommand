@@ -69,13 +69,15 @@ fi
 export SSH_AUTH_SOCK="$X2GOSSH_AUTH_SOCK"
 
 
-NX_XINERAMA_LIBS="$(x2gopath xinerama)"
-NX_LIBS="$(x2gopath nx-x11)"
-test -n "$LD_LIBRARY_PATH" && \
-	LD_LIBRARY_PATH="$NX_XINERAMA_LIBS:$NX_LIBS:$LD_LIBRARY_PATH" || \
-	LD_LIBRARY_PATH="$NX_XINERAMA_LIBS:$NX_LIBS"
-"$X2GO_LIB_PATH/x2gosyslog" "$0" "debug" "exporting LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
-export LD_LIBRARY_PATH
+if ! x2gofeature X2GOAGENT_RANDRXINERAMA 1>/dev/null; then
+	NX_XINERAMA_LIBS="$(x2gopath xinerama)"
+	NX_LIBS="$(x2gopath nx-x11)"
+	test -n "$LD_LIBRARY_PATH" && \
+		LD_LIBRARY_PATH="$NX_XINERAMA_LIBS:$NX_LIBS:$LD_LIBRARY_PATH" || \
+		LD_LIBRARY_PATH="$NX_XINERAMA_LIBS:$NX_LIBS"
+	"$X2GO_LIB_PATH/x2gosyslog" "$0" "debug" "exporting LD_LIBRARY_PATH=$LD_LIBRARY_PATH"
+	export LD_LIBRARY_PATH
+fi
 
 if [ "$sndsys" == "esd" ]; then
 	export ESPEAKER="localhost:$4"
