@@ -53,8 +53,8 @@ if  ! [ -f ${X2GO_CLIENT_KBD_FILE} ]; then
 	exit 0
 fi
 
-# Used to hold options to setxkbcomp.
-typeset -a setxkbcomp_opts
+# Used to hold options to setxkbmap.
+typeset -a setxkbmap_opts
 
 # retrieve keyboard settings from keyboard file in X2Go session dir
 read_keyboard_file() {
@@ -69,7 +69,7 @@ read_keyboard_file() {
 	[[ "${line}" ]] && file_content+=("${line}")
 
 	for line in "${file_content[@]}"; do
-		# Extract the keys, their values and add to setxkbcomp_opts.
+		# Extract the keys, their values and add to setxkbmap_opts.
 		typeset key=''
 		for key in "rules" "model" "layout" "variant" "options"; do
 			typeset regexp='^[[:space:]]*'"${key}"'[[:space:]]*=[[:space:]]*"?(.*)"?[[:space:]]*'
@@ -81,7 +81,7 @@ read_keyboard_file() {
 					# FIXME: find out why that substitution is needed in the first place!
 					[ "${key}" = 'rules' ] && value="${value//evdev/base}"
 
-					setxkbcomp_opts+=("-${key}" "${value}")
+					setxkbmap_opts+=("-${key}" "${value}")
 				fi
 			fi
 		done
@@ -94,7 +94,7 @@ reset_keymap() {
 
 update_keymap() {
 	# update keyboard map
-	setxkbmap "${setxkbcomp_opts[@]}"
+	setxkbmap "${setxkbmap_opts[@]}"
 }
 
 ### main ###
