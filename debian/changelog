@@ -255,6 +255,8 @@ x2goserver (4.0.1.21-0x2go1) UNRELEASED; urgency=medium
       work properly - with or without Arctica's nx-libs.
     - x2goserver/bin/x2gosetkeyboard: rename ${setxkbcomp_opts} to
       ${setxkbmap_opts}, that's what it really is.
+    - x2goserver/bin/x2gosetkeyboard: setxkbmap expects a parameter called
+      "-option", but nxagent uses the key "options". Make setxkbmap happy.
   * x2goserver.spec:
     - Add mandatory perl-generators Build-Requires as per
       https://fedoraproject.org/wiki/Changes/Build_Root_Without_Perl

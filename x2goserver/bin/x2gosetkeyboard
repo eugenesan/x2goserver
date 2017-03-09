@@ -81,7 +81,12 @@ read_keyboard_file() {
 					# FIXME: find out why that substitution is needed in the first place!
 					[ "${key}" = 'rules' ] && value="${value//evdev/base}"
 
-					setxkbmap_opts+=("-${key}" "${value}")
+					# Even though the keyboard file contains "options" as the key,
+					# setxkbmap expects a parameter called "-option".
+					typeset option="${key}"
+					[ "${option}" = 'options' ] && option='option'
+
+					setxkbmap_opts+=("-${option}" "${value}")
 				fi
 			fi
 		done
