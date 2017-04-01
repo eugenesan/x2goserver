@@ -115,13 +115,24 @@ fi
 #		GNOME -> gnome-session --session=gnome-fallback
 #		UNITY -> gnome-session --session=ubuntu
 #		(GNOME3 based desktop shells)
-# Ubuntu 13.10 (raring) and later:
+# Ubuntu 13.10 (raring):
 #		GNOME -> gnome-session --session=gnome-flashback
 #		UNITY -> gnome-session --session=ubuntu
 #		(GNOME3 based desktop shells)
 #		Additionally, $GTK_MODULES must include "unity-gtk-module".
-#		$GTK_MODULES does not need tha value for any other distro
+#		$GTK_MODULES does not need that value for any other distro
 #		or any earlier release of Ubuntu.
+#               Note that we are assuming that users are using a patched
+#               version of GNOME Flashback which disables the acceleration check
+#               altogether.
+# Ubuntu 14.04 (trusty) and later:
+#		GNOME -> gnome-session --session=gnome-flashback --disable-acceleration-check
+#		UNITY -> gnome-session --session=ubuntu
+#		(GNOME3 based desktop shells)
+#		Additionally, $GTK_MODULES must include "unity-gtk-module".
+#		Note that we are assuming that the user has gnome-session
+#		3.9.90-0ubuntu12.1 or later on 14.04, which added
+#		--disable-acceleration-check .
 #
 #		The logic for launching GNOME should be generic enough
 #		to work with every other distro.
@@ -131,7 +142,15 @@ fi
 
 if [ "$cmd" == "GNOME" ] || [ "$cmd" == "gnome-session" ]; then
 	cmd="/usr/bin/gnome-session"
-	if [ "$DISTRIB_ID" == "Ubuntu" ] && [ "$(echo "$DISTRIB_RELEASE >= 13.10" | bc)" == "1" ]; then
+	if [ "$DISTRIB_ID" == "Ubuntu" ] && [ "$(echo "$DISTRIB_RELEASE >= 14.04" | bc)" == "1" ]; then
+		export DESKTOP_SESSION="gnome-flashback"
+		if [ -z "$GTK_MODULES" ] ; then
+			export GTK_MODULES="unity-gtk-module"
+		else
+			export GTK_MODULES="$GTK_MODULES:unity-gtk-module"
+		fi
+		args=" --session=$DESKTOP_SESSION --disable-acceleration-check"
+	elif [ "$DISTRIB_ID" == "Ubuntu" ] && [ "$(echo "$DISTRIB_RELEASE == 13.10" | bc)" == "1" ]; then
 		export DESKTOP_SESSION="gnome-flashback"
 		if [ -z "$GTK_MODULES" ] ; then
 			export GTK_MODULES="unity-gtk-module"
@@ -139,9 +158,10 @@ if [ "$cmd" == "GNOME" ] || [ "$cmd" == "gnome-session" ]; then
 			export GTK_MODULES="$GTK_MODULES:unity-gtk-module"
 		fi
 		args=" --session=$DESKTOP_SESSION"
+	# GNOME Flashback 3.8 (Metacity)
 	elif [ -e /usr/share/gnome-session/sessions/gnome-flashback.session ]; then
 		export DESKTOP_SESSION="gnome-flashback"
-		args=" --session=$DESKTOP_SESSION"
+		args=" --session=$DESKTOP_SESSION --disable-acceleration-check"
 	elif [ -e /usr/share/gnome-session/sessions/gnome-fallback.session ]; then
 		export DESKTOP_SESSION="gnome-fallback"
 		args=" --session=$DESKTOP_SESSION"
