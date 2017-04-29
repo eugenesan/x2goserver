@@ -157,7 +157,12 @@ if [ "$cmd" == "GNOME" ] || [ "$cmd" == "gnome-session" ]; then
 		else
 			export GTK_MODULES="$GTK_MODULES:unity-gtk-module"
 		fi
+		# workaround to find /sbin/upstart-udev-bridge"
+		# FIXME: Ubuntu's default PATH is not set correctly on 16.04,
+		# and probably other releases.
+		export PATH="${PATH}:/sbin"
 		export XDG_SESSION_DESKTOP="$DESKTOP_SESSION"
+		# Yes, "Unity" is in the actual string. Observed on Ubuntu 16.04
 		export XDG_CURRENT_DESKTOP="GNOME-Flashback:Unity"
 		args=" --session=$DESKTOP_SESSION --disable-acceleration-check"
 	elif [ "$DISTRIB_ID" == "Ubuntu" ] && [ "$(echo "$DISTRIB_RELEASE = 14.04" | bc)" == "1" -o  "$(echo "$DISTRIB_RELEASE = 14.10" | bc)" == "1" ]; then
