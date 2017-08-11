@@ -484,6 +484,11 @@ if [ -n "$X2GO_GEOMETRY" ] && [ "$X2GO_GEOMETRY" != "fullscreen" ]; then
 	agent_geometry="-geometry ${X2GO_GEOMETRY}"
 fi
 
+# systemd is prone to kill remaining sessions on user logouts.
+# That sort of makes sense to clean up stray processes,
+# but gets in the way of our persistent session scheme.
+loginctl enable-linger >/dev/null 2>&1 || :
+
 if  [ "$X2GO_STYPE" == "S" ]; then
 	# unset LD_LIBRARY_PATH for the case when x2gostartagent started from x2godesktopsharing
 	unset LD_LIBRARY_PATH
