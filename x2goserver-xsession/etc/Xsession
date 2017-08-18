@@ -118,7 +118,7 @@ fi
 rm -f "$WRITE_TEST"
 
 
-if [ -f /etc/debian_version ]; then
+if [ -f /etc/debian_version ] || [ -f /etc/devuan_version ]; then
 
 	# sanity check; is our session script directory present?
 	if [ ! -d "$SYSSESSIONDIR" ]; then
@@ -233,6 +233,8 @@ elif [ -f /etc/redhat-release ] || [ -f /etc/gentoo-release ] || [ -f /etc/SUSE-
 	#fi
 
 	exec $CK_XINIT_SESSION $SSH_AGENT /bin/bash -c "exec -l \"$SHELL\" -c \"$STARTUP\""
+else
+	errormsg 'Unknown operating system, XSession startup not implemented!'
 fi
 
 exit 0
