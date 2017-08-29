@@ -68,7 +68,6 @@ if [ -S "$SSH_AUTH_SOCK" ]; then
 fi
 export SSH_AUTH_SOCK="$X2GOSSH_AUTH_SOCK"
 
-
 if ! x2gofeature X2GOAGENT_RANDRXINERAMA 1>/dev/null; then
 	NX_XINERAMA_LIBS="$(x2gopath xinerama)"
 	NX_LIBS="$(x2gopath nx-x11)"
@@ -245,6 +244,8 @@ elif [ "$cmd" == "XFCE4" ] || [ "$cmd" == "XFCE" ]; then
 	cmd="/usr/bin/xfce4-session"
 elif [ "$cmd" == "LXDE" ]; then
 	cmd="/usr/bin/startlxde"
+elif [ "$cmd" == "LXQt" ]; then
+	cmd="/usr/bin/startlxqt"
 elif [ "$cmd" == "TRINITY" ]; then
 	# If we are on Q4OS, we needs to set env and run some tasks before
 	# launching trinity.
