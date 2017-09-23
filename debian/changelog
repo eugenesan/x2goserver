@@ -97,6 +97,7 @@ x2goserver (4.1.0.0-0x2go1.2) UNRELEASED; urgency=low
     + Add D (bin:package libx2go-server-db-perl): libswitch-perl.
     + Fix B/R for x2goserver-x2goagent. We need to break/replace x2goagent
       (<< 3.5.99.2~).
+    + Nooo... we need to break/replace x2goagent (<< 2:3.5.99.2~).
   * debian/x2goserver.postinst, debian/libx2go-server-db-perl:
     + Handle X2Go session DB creation in x2goserver _and_
       perl-X2Go-Server-DB on postinst.
