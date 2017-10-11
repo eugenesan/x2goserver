@@ -65,7 +65,7 @@ for (my $i=0;$i<@outp;$i++)
 		print "@outp[$i]\n";
 	}
 	else
-	{ 
+	{
 		if (@sinfo[4]eq 'R')
 		{
 			my $shadow_user = @sinfo[1];
@@ -81,5 +81,5 @@ for (my $i=0;$i<@outp;$i++)
 	}
 }
 
-# closing syslog 
+# closing syslog
 closelog;
