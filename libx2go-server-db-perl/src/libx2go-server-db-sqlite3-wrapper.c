@@ -20,6 +20,8 @@
  *
  */
 
+#include <unistd.h>
+
 int main( int argc, char *argv[] ) {
 
 	char x2gosqlitewrapper[] = TRUSTED_BINARY;
