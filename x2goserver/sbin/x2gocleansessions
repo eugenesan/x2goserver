@@ -105,11 +105,11 @@ if (! $debug)
 	$pid = fork();
 }
 
-if ((!$debug) && (not defined $pid)) 
+if ((!$debug) && (not defined $pid))
 {
 	print "resources not avilable.\n";
 }
-elsif ($pid != 0) 
+elsif ($pid != 0)
 {
 	open (F,">/var/run/x2goserver.pid");
 	print F "$pid\n";
@@ -119,7 +119,7 @@ elsif ($pid != 0)
 elsif ($pid == 0 )
 {
 	# check if we are to use the superenicer script for throttling does the nice level
-        # of suspended sessions...
+	# of suspended sessions...
 	my $Config = get_config();
 
 	my $superenice_enable = is_true($Config->param("superenicer.enable"));
@@ -412,4 +412,3 @@ This manual has been written by Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
 for the X2Go project (http://www.x2go.org).
 
 =cut
-
