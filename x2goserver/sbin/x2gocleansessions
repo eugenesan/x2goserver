@@ -80,6 +80,7 @@ sub check_pid
 sub catch_term
 {
 	unlink("/var/run/x2goserver.pid");
+	closelog;
 	exit;
 }
 
@@ -113,6 +114,7 @@ elsif ($pid != 0)
 	open (F,">/var/run/x2goserver.pid");
 	print F "$pid\n";
 	close(F);
+	closelog;
 }
 elsif ($pid == 0 )
 {

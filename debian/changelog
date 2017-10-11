@@ -274,6 +274,7 @@ x2goserver (4.0.1.21-0x2go1) UNRELEASED; urgency=medium
       by bash if it's not already part of the environment. We might get
       "garbage" in this way (and one user actually did.)
     - x2goserver/bin/x2golistshadowsessions: whitespace only.
+    - x2goserver/sbin/x2gocleansessions: close syslog at program exit.
   * x2goserver.spec:
     - Add mandatory perl-generators Build-Requires as per
       https://fedoraproject.org/wiki/Changes/Build_Root_Without_Perl
