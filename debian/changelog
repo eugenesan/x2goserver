@@ -276,6 +276,10 @@ x2goserver (4.0.1.21-0x2go1) UNRELEASED; urgency=medium
     - x2goserver/bin/x2golistshadowsessions: whitespace only.
     - x2goserver/sbin/x2gocleansessions: close syslog at program exit.
     - x2goserver/sbin/x2gocleansessions: whitespace only.
+    - x2goserver/bin/x2golistshadowsessions: copy and use a few needed utility
+      functions from x2gocleansessions.
+    - x2goserver/bin/x2golistshadowsessions: mark unavailable functionality
+      with FIXME comments.
   * x2goserver.spec:
     - Add mandatory perl-generators Build-Requires as per
       https://fedoraproject.org/wiki/Changes/Build_Root_Without_Perl
@@ -346,6 +350,7 @@ x2goserver (4.0.1.21-0x2go1) UNRELEASED; urgency=medium
       Arctica's nx-libs and its new Xinerama feature. Fixes: #1153.
     - Make x2goruncommand aware of the LXQt desktop shell.
     - x2goserver/x2gosqlitewrapper.c: fix implicit declaration of execv().
+    - x2goserver/: backport x2golistshadowsessions.
 
  -- X2Go Release Manager <git-admin@x2go.org>  Sun, 20 Nov 2016 12:54:13 +0100
 
