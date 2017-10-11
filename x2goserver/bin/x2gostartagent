@@ -119,6 +119,31 @@ elif ! echo $HOME | iconv -f ASCII -t ASCII 1>/dev/null 2>/dev/null; then
 	exit -5
 fi
 
+# ${HOSTNAME} should be automatically set by bash via gethostname(2), IFF this
+# variable is not already set in the environment.
+#
+# This leads to two problems:
+#   - export HOSTNAME="malbox"; x2gostartagent will override the actual system
+#     host name and lead to authorization failures when connecting to
+#     x2goagent/nxagent later on.
+#   - even if the above is not the case, the value returned by gethostname(2)
+#     could either be a FQDN, the short name or anything in between. glibc
+#     seems to return the short name on Linux, since it calls uname(2), which
+#     typically does not include a domain, but *BSD seems to default to
+#     the FQDN. We explicitly need the short name.
+#
+# Workaround: use hostname -s, which luckily is portable enough to be available
+# on a wide variety of systems.
+typeset current_host_name=""
+current_host_name="$(hostname -s)"
+
+if [[ "${?}" -ne "0" ]]; then
+	typeset msg="Unable to retrieve machine's hostname. This is required. Aborting session startup."
+	echo "${msg}"
+	"${X2GO_LIB_PATH}/x2gosyslog" "${0}" "err" "${msg}"
+	exit 1
+fi
+
 X2GO_TELEKINESIS_ENABLED=`echo 'use X2Go::Config qw( get_config ); use X2Go::Utils qw( is_true ); my $Config = get_config(); print is_true($Config->param("telekinesis.enable"));' | perl`
 
 X2GO_ROOT="${HOME}/.x2go"
@@ -206,8 +231,8 @@ if [ "$X2GO_STYPE" == "S" ]; then
 		X2GO_PORT=`echo $OUTPUT | awk '{print $1}'`
 
 		$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "received shadow session information: cookie: $X2GO_COOKIE, port: $X2GO_PORT"
-		xauth -f "$XAUTHORITY" add "${HOSTNAME}/unix:${X2GO_PORT}" MIT-MAGIC-COOKIE-1 "${X2GO_COOKIE}"
-		xauth -f "$XAUTHORITY" add "${HOSTNAME}:${X2GO_PORT}" MIT-MAGIC-COOKIE-1 "${X2GO_COOKIE}"
+		xauth -f "$XAUTHORITY" add "${current_host_name}/unix:${X2GO_PORT}" MIT-MAGIC-COOKIE-1 "${X2GO_COOKIE}"
+		xauth -f "$XAUTHORITY" add "${current_host_name}:${X2GO_PORT}" MIT-MAGIC-COOKIE-1 "${X2GO_COOKIE}"
 
 		echo $X2GO_PORT
 		echo $X2GO_COOKIE
@@ -248,7 +273,7 @@ elif  [ "$X2GO_STYPE" == "S" ]; then
 fi
 
 if [ "$X2GO_CLIENT" == "" ]; then
-	X2GO_CLIENT="$HOSTNAME"
+	X2GO_CLIENT="${current_host_name}"
 fi
 
 # define the full path to the ss utility
@@ -257,11 +282,11 @@ ss=$(PATH="$PATH:/usr/sbin:/sbin" type -P ss);
 while [ "$OUTPUT"  != "inserted" ]; do
 
 	typeset -a used_displays
-	IFS='' read -ar used_displays < <("${X2GO_LIB_PATH}/x2gogetdisplays" "${HOSTNAME}")
+	IFS='' read -ar used_displays < <("${X2GO_LIB_PATH}/x2gogetdisplays" "${current_host_name}")
 
 	#Get all used in system ports from X2Go database and ss output
 	USED_PORTS=$(
-	    "$X2GO_LIB_PATH/x2gogetports" "$HOSTNAME";
+	    "$X2GO_LIB_PATH/x2gogetports" "${current_host_name}";
 	    "$ss" -nt -all |
 	    awk '{ n=split($0,lines,"\n"); for(i=1;i<=n;i++){split (lines[i],words," ");delim=split(words[4],ports,":"); if(delim>1)printf ("|%s|\n",ports[delim])} }';
 	);
@@ -315,10 +340,10 @@ while [ "$OUTPUT"  != "inserted" ]; do
 
 		if [ -n "$SHADREQ_USER" ]; then
 			$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "initializing new shadow session with ID $SESSION_NAME"
-			OUTPUT=`$X2GO_LIB_PATH/x2goinsertshadowsession "$X2GO_PORT" "$HOSTNAME" "$SESSION_NAME" "$SHADREQ_USER"`
+			OUTPUT=`$X2GO_LIB_PATH/x2goinsertshadowsession "$X2GO_PORT" "${current_host_name}" "$SESSION_NAME" "$SHADREQ_USER"`
 		else
 			$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "initializing new session with ID $SESSION_NAME"
-			OUTPUT=`$X2GO_LIB_PATH/x2goinsertsession "$X2GO_PORT" "$HOSTNAME" "$SESSION_NAME"`
+			OUTPUT=`$X2GO_LIB_PATH/x2goinsertsession "$X2GO_PORT" "${current_host_name}" "$SESSION_NAME"`
 		fi
 	fi 
 done
@@ -336,7 +361,7 @@ while [ "$GR_PORT" == "" ] || [ "$SOUND_PORT" == "" ] || [ "$FS_PORT" == "" ] ||
 
 		#Get all used in system ports from X2Go database and ss output
 		USED_PORTS=$(
-		    "$X2GO_LIB_PATH/x2gogetports" "$HOSTNAME";
+		    "$X2GO_LIB_PATH/x2gogetports" "${current_host_name}";
 		    "$ss" -nt -all |
 		    awk '{ n=split($0,lines,"\n"); for(i=1;i<=n;i++){split (lines[i],words," ");delim=split(words[4],ports,":"); if(delim>1)printf ("|%s|\n",ports[delim])} }';
 		);
@@ -347,7 +372,7 @@ while [ "$GR_PORT" == "" ] || [ "$SOUND_PORT" == "" ] || [ "$FS_PORT" == "" ] ||
 		#check if port in /etc/services
 		SERV=`grep $SSH_PORT /etc/services`
 		if [ "$SERV" == "" ]; then
-			OUTPUT=`$X2GO_LIB_PATH/x2goinsertport "$HOSTNAME" "$SESSION_NAME" "$SSH_PORT"`
+			OUTPUT=`$X2GO_LIB_PATH/x2goinsertport "${current_host_name}" "$SESSION_NAME" "$SSH_PORT"`
 		fi
 	done
 
@@ -424,13 +449,12 @@ grep PPid /proc/$PPID/status > ${SESSION_DIR}/sshd.pid
 
 X2GO_COOKIE=`mcookie`
 
-
 PATH="${PATH}:${X2GO_BIN}/"
 export PATH
 
 
-xauth -f "$XAUTHORITY" add "${HOSTNAME}/unix:${X2GO_PORT}" MIT-MAGIC-COOKIE-1 "${X2GO_COOKIE}"
-xauth -f "$XAUTHORITY" add "${HOSTNAME}:${X2GO_PORT}" MIT-MAGIC-COOKIE-1 "${X2GO_COOKIE}"
+xauth -f "$XAUTHORITY" add "${current_host_name}/unix:${X2GO_PORT}" MIT-MAGIC-COOKIE-1 "${X2GO_COOKIE}"
+xauth -f "$XAUTHORITY" add "${current_host_name}:${X2GO_PORT}" MIT-MAGIC-COOKIE-1 "${X2GO_COOKIE}"
 
 
 option_geometry=""
