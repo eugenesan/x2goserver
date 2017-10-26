@@ -288,6 +288,9 @@ x2goserver (4.0.1.21-0x2go1) UNRELEASED; urgency=medium
     - x2goserver-xsession/etc/Xsession: add support for OS RT via
       /etc/os-rt-release (file needs to be created by upstream first, bug
       pending.)
+    - x2goserver/{bin/x2golistshadowsessions,
+      lib/x2go{dbwrapper.pm,sqlitewrapper.pl}}: backport listshadowsessions*
+      DB functions and unmark them as FIXME entries.
   * x2goserver.spec:
     - Add mandatory perl-generators Build-Requires as per
       https://fedoraproject.org/wiki/Changes/Build_Root_Without_Perl
