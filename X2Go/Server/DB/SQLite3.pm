@@ -627,7 +627,7 @@ sub db_listshadowsessions
 	$sth->execute($server, $realuser);
 	if ($sth->err())
 	{
-		syslog('error', "listsessions (SQLite3 session db backend) failed with exitcode: $sth->err()");
+		syslog('error', "listshadowsessions (SQLite3 session db backend) failed with exitcode: $sth->err()");
 		die();
 	}
 	my @sessions = fetchrow_array_datasets($sth);
@@ -651,7 +651,7 @@ sub db_listshadowsessions_all
 	$sth->execute($realuser);
 	if ($sth->err())
 	{
-		syslog('error', "listsessions_all (SQLite3 session db backend) failed with exitcode: $sth->err()");
+		syslog('error', "listshadowsessions_all (SQLite3 session db backend) failed with exitcode: $sth->err()");
 		die();
 	}
 	my @sessions = fetchrow_array_datasets($sth);
