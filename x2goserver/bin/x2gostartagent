@@ -139,8 +139,10 @@ current_host_name="$(hostname -s)"
 
 if [[ "${?}" -ne "0" ]]; then
 	typeset msg="Unable to retrieve machine's hostname. This is required. Aborting session startup."
-	echo "${msg}"
 	"${X2GO_LIB_PATH}/x2gosyslog" "${0}" "err" "${msg}"
+
+	# Make x2goclient fail.
+	echo "${msg}" >&2
 	exit 1
 fi
 
