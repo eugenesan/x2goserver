@@ -420,7 +420,6 @@ x2gofeature X2GO_DESKTOPSHARING >/dev/null && x2goterminate-desktopsharing "$X2G
 
 kill -TERM  "$X2GO_AGENT_PID"
 "$X2GO_LIB_PATH/x2gochangestatus" 'F' "$X2GO_SESSION"  > /dev/null
-export HOSTNAME
 x2goumount-session "$X2GO_SESSION"
 
 # run logout scripts

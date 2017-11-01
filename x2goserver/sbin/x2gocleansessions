@@ -270,7 +270,7 @@ elsif ($pid == 0 )
 						unlink("/tmp/.X$display-lock");
 					}
 					log_message('debug', "@sinfo[1]: unmounting all shares");
-					system( "su", "@sinfo[11]", "-s", "/bin/sh", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");
+					system( "su", "@sinfo[11]", "-s", "/bin/sh", "-c", "x2goumount-session @sinfo[1]");
 					#remove port forwarding
 					system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "$x2go_lib_path/x2gormforward @sinfo[1]");
 				}
@@ -305,7 +305,7 @@ elsif ($pid == 0 )
 					unlink("/tmp/.X$display-lock");
 				}
 				log_message('debug', "@sinfo[1]: unmounting all shares");
-				system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");
+				system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "x2goumount-session @sinfo[1]");
 			}
 			else
 			{
@@ -316,7 +316,7 @@ elsif ($pid == 0 )
 						system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "$x2go_lib_path/x2gochangestatus S @sinfo[1]");
 						log_message('debug', "@sinfo[1]: is suspended, changing status from @sinfo[4] to S");
 						log_message('debug', "@sinfo[1]: unmounting all shares");
-						system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");
+						system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "x2goumount-session @sinfo[1]");
 						#remove port forwarding
 						system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "$x2go_lib_path/x2gormforward @sinfo[1]");
 					}
@@ -328,7 +328,7 @@ elsif ($pid == 0 )
 						# If it didn't change into suspended state by then, suspend it "forcefully".
 						if ($remembered_sessions_status_since_iterations{@sinfo[1]} == 1) {
 							log_message('debug', "@sinfo[1]: unmounting all shares");
-							system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");
+							system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "x2goumount-session @sinfo[1]");
 							system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "x2gosuspend-session @sinfo[1]");
 							log_message('debug', "@sinfo[1]: was found running and has now been suspended");
 						}
@@ -344,7 +344,7 @@ elsif ($pid == 0 )
 					if (!session_has_terminated(@sinfo[1],@sinfo[11]))
 					{
 						log_message('debug', "@sinfo[1]: unmounting all shares");
-						system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "export HOSTNAME && x2goumount-session @sinfo[1]");
+						system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "x2goumount-session @sinfo[1]");
 						system("su", "@sinfo[11]", "-s", "/bin/sh", "-c", "x2goterminate-session @sinfo[1]");
 						log_message('debug', "@sinfo[1]: termination has been requested via the session DB");
 						#remove port forwarding

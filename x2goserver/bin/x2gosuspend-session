@@ -53,7 +53,6 @@ x2gofeature X2GO_DESKTOPSHARING &>/dev/null && x2gosuspend-desktopsharing "$SESS
 # run x2goserver-extensions for pre-suspend
 x2gofeature X2GO_RUN_EXTENSIONS &>/dev/null && x2goserver-run-extensions "$SESSION_NAME" pre-suspend || true
 
-export HOSTNAME
 x2goumount-session "$SESSION_NAME"
 
 STATE=`$X2GO_LIB_PATH/x2gogetagentstate "$SESSION_NAME"`
