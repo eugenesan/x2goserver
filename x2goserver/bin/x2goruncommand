@@ -364,8 +364,16 @@ if [ "$EXEC" != "" ] && [ -x "$EXEC" ]; then
 
 	if x2gofeature X2GO_XSESSION &>/dev/null && [ "x$X2GO_SESS_TYPE" = "xD" ]; then
 		STARTUP="$cmd$args"
+
+		# Search for dbus-run-session and handle the non-existence (to some extent) gracefully.
+		typeset dbus_wrapper="$(type -P "dbus-run-session")"
+
 		"$X2GO_LIB_PATH/x2gosyslog" "$0" "notice" "launching session with Xsession-x2go mechanism, using STARTUP=\"$STARTUP\""
-		XSESSION_EXEC="$cmd" STARTUP="/usr/bin/env LD_LIBRARY_PATH=${LD_LIBRARY_PATH} ${STARTUP}" /etc/x2go/Xsession >> "$MESSAGE_FILE" 2>&1
+		typeset dbus_wrapper_msg="available as ${dbus_wrapper}"
+		[[ -z "${dbus_wrapper}" ]] && dbus_wrapper_msg="not available"
+		"${X2GO_LIB_PATH}/x2gosyslog" "${0}" "notice" "dbus wrapper ${dbus_wrapper_msg}"
+
+		XSESSION_EXEC="$cmd" STARTUP="/usr/bin/env LD_LIBRARY_PATH=${LD_LIBRARY_PATH} ${STARTUP}" ${dbus_wrapper} /etc/x2go/Xsession >> "$MESSAGE_FILE" 2>&1
 	else
 		"$X2GO_LIB_PATH/x2gosyslog" "$0" "debug" "executing command \"$cmd$args\"..."
 
