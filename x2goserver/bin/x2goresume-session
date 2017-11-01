@@ -235,6 +235,15 @@ while [ "$GR_PORT" == "" ] || [ "$SOUND_PORT" == "" ] || [ "$FS_PORT" == "" ] ||
 		SERV=`grep $SSH_PORT /etc/services`
 		if [ "$SERV" == "" ]; then
 			OUTPUT="$("${X2GO_LIB_PATH}/x2goinsertport" "${current_host_name}" "$SESSION_NAME" "$SSH_PORT")"
+
+			if [[ "${?}" -ne "0" ]]; then
+				typeset msg="Unable to insert new port into database; parameters: hostname (${current_host_name}), session name (${SESSION_NAME}) and port (${SSH_PORT})."
+				"${X2GO_LIB_PATH}/x2gosyslog" "${0}" "err" "${msg}"
+
+				# Make x2goclient fail.
+				echo "${msg}" >&2
+				exit 1
+			fi
 		fi
 	done
 	if [ "$GR_PORT" == "" ]; then
