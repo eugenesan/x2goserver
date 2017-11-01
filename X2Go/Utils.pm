@@ -121,21 +121,17 @@ sub sanitizer {
 			return $string;
 		} else {return 0;} 
 	} elsif ($type eq "pnixusername") {
-		$string =~ s/[^a-zA-Z0-9\_\-\.]//g;
-		if ($string =~ /^([a-zA-Z\_][a-zA-Z0-9\_\-\.]{0,47}[\$]?)$/) {
+		$string =~ s/[^a-zA-Z0-9\.\_\-\@]//g;
+		if ($string =~ /^([a-zA-Z0-9\.\_][a-zA-Z0-9\.\_\-\@]*)$/) {
 			$string = $1;
-			if ((length($1) > 0) and (length($1) < 48)){
-				return $string;
-			} else {return 0;}
+			return $string;
 		} else {return 0;}
 	} elsif ($type eq "x2gosid") {
-		$string =~ s/[^a-zA-Z0-9\_\-\$\.\@]//g;
-		if ($string =~ /^([a-zA-Z0-9\_\-\$\.\@]*)$/) {
+		$string =~ s/[^a-zA-Z0-9\.\_\-\@]//g;
+		if ($string =~ /^([a-zA-Z0-9\.\_\-\@]*)$/) {
 			$string = $1;
-			if ($string =~ /^([a-zA-Z\_][a-zA-Z0-9\_\-\.\@]{0,47}[\$]?)\-([\d]{2,4})\-([\d]{9,12})\_[a-zA-Z0-9\_\-\.]*\_dp[\d]{1,2}$/) {
-				if ((length($1) > 0) and (length($1) < 48)){
-					return $string;
-				} else {return 0;}
+			if ($string =~ /^([a-zA-Z0-9\.\_][a-zA-Z0-9\.\_\-\@]*)\-([\d]{2,4})\-([\d]{9,12})\_[a-zA-Z0-9\.\_\-]*\_dp[\d]{1,2}$/) {
+				return $string;
 			} else {return 0;}
 		} else {return 0;}
 	} elsif ($type eq "SOMETHINGELSE") {
