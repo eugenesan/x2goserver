@@ -338,6 +338,8 @@ x2goserver (4.0.1.21-0x2go1) UNRELEASED; urgency=medium
       of errors. Split these up into nested conditions.
     - There is no %trans scriptlet, we're using %posttrans, so the dependency
       should be specified as Requires(posttrans) as well.
+    - Pull in dbus-run-session if possible. Only available on Fedora, SLE12+
+      and OpenSuSE 13+.
   * debian/po:
     - Tiny fixup on author name.
   * debian/control:

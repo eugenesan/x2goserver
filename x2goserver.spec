@@ -419,6 +419,28 @@ Requires:       xinit
 %else
 Requires:       xorg-x11-xinit
 %endif
+
+# dbus-run-session is tricky, so using a separate section for it.
+# For *SuSE:
+#   It's only available on SLE 12+ and OpenSuSE 13+.
+#   With OpenSuSE Leap 42.3, it was migrated from dbus-1-x11 to dbus-1.
+# For CentOS:
+#   Not available at all.
+# For Fedora:
+#   Supported on all versions we care about as part of the dbus package.
+%if 0%{?suse_version}
+%if 0%{?suse_version} >= 1300
+%if 0%{?sle_version} >= 120300 && 0%{?is_opensuse}
+Requires:       dbus-1
+%else
+Requires:       dbus-1-x11
+%endif
+%endif
+%endif
+%if 0%{?fedora}
+Requires:       dbus
+%endif
+
 %if 0%{?fedora} || 0%{?rhel}
 Group:          Applications/Communications
 %else
