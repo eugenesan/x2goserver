@@ -45,6 +45,33 @@ X2GO_ROOT="${HOME}/.x2go"
 X2GO_RESIZE=0
 X2GO_FULLSCREEN=0
 
+# ${HOSTNAME} should be automatically set by bash via gethostname(2), IFF this
+# variable is not already set in the environment.
+#
+# This leads to two problems:
+#   - export HOSTNAME="malbox"; x2gostartagent will override the actual system
+#     host name and lead to authorization failures when connecting to
+#     x2goagent/nxagent later on.
+#   - even if the above is not the case, the value returned by gethostname(2)
+#     could either be a FQDN, the short name or anything in between. glibc
+#     seems to return the short name on Linux, since it calls uname(2), which
+#     typically does not include a domain, but *BSD seems to default to
+#     the FQDN. We explicitly need the short name.
+#
+# Workaround: use hostname -s, which luckily is portable enough to be available
+# on a wide variety of systems.
+typeset current_host_name=""
+current_host_name="$(hostname -s)"
+
+if [[ "${?}" -ne "0" ]]; then
+	typeset msg="Unable to retrieve machine's hostname. This is required. Aborting session startup."
+	"${X2GO_LIB_PATH}/x2gosyslog" "${0}" "err" "${msg}"
+
+	# Make x2goclient fail.
+	echo "${msg}" >&2
+	exit 1
+fi
+
 # refresh up ssh-agent-forwarding socket file symlink
 X2GOSSH_AUTH_SOCK="$X2GO_ROOT/C-$SESSION_NAME/ssh-agent.PID"
 if [ -L "$X2GOSSH_AUTH_SOCK" ]; then
@@ -157,17 +184,17 @@ USED_PORTS=$(
 #check if saved in DB ports free
 if grep -q "|${GR_PORT}|" <<<$SYSTEM_PORTS ; then
 	$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "port $GR_PORT is already in use"
-	$X2GO_LIB_PATH/x2gormport "$HOSTNAME" "$SESSION_NAME" "$GR_PORT"
+	"${X2GO_LIB_PATH}/x2gormport" "${current_host_name}" "${SESSION_NAME}" "${GR_PORT}"
 	GR_PORT=""
 fi
 if grep -q "|${SOUND_PORT}|" <<<$SYSTEM_PORTS ; then
 	$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "port $SOUND_PORT is already in use"
-	$X2GO_LIB_PATH/x2gormport "$HOSTNAME" "$SESSION_NAME" "$SOUND_PORT"
+	"${X2GO_LIB_PATH}/x2gormport" "${current_host_name}" "${SESSION_NAME}" "${SOUND_PORT}"
 	SOUND_PORT=""
 fi
 if grep -q "|${FS_PORT}|" <<<$SYSTEM_PORTS ; then
 	$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "port "$FS_PORT" is already in use"
-	$X2GO_LIB_PATH/x2gormport "$HOSTNAME" "$SESSION_NAME" "$FS_PORT"
+	"${X2GO_LIB_PATH}/x2gormport" "${current_host_name}" "${SESSION_NAME}" "${FS_PORT}"
 	FS_PORT=""
 fi
 
@@ -176,17 +203,17 @@ if [ "x$X2GO_TELEKINESIS_ENABLED" == "x1" ]; then
 	TEKIDATA_PORT=`echo "$SESSIONINFO" | awk -F, {'print $16'}`
 	if grep -q "|${TEKICTRL_PORT}|" <<<$SYSTEM_PORTS ; then
 		$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "port "$TEKICTRL_PORT" is already in use"
-		$X2GO_LIB_PATH/x2gormport "$HOSTNAME" "$SESSION_NAME" "$TEKICTRL_PORT"
+		"${X2GO_LIB_PATH}/x2gormport" "${current_host_name}" "${SESSION_NAME}" "${TEKICTRL_PORT}"
 		TEKICTRL_PORT=""
 	fi
 	if grep -q "|${TEKIDATA_PORT}|" <<<$SYSTEM_PORTS ; then
 		$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "port "$TEKIDATA_PORT" is already in use"
-		$X2GO_LIB_PATH/x2gormport "$HOSTNAME" "$SESSION_NAME" "$TEKIDATA_PORT"
+		"${X2GO_LIB_PATH}/x2gormport" "${current_host_name}" "${SESSION_NAME}" "${TEKIDATA_PORT}"
 		TEKIDATA_PORT=""
 	fi
 else
-	$X2GO_LIB_PATH/x2gormport "$HOSTNAME" "$SESSION_NAME" "$TEKICTRL_PORT"
-	$X2GO_LIB_PATH/x2gormport "$HOSTNAME" "$SESSION_NAME" "$TEKIDATA_PORT"
+	"${X2GO_LIB_PATH}/x2gormport" "${current_host_name}" "${SESSION_NAME}" "${TEKICTRL_PORT}"
+	"${X2GO_LIB_PATH}/x2gormport" "${current_host_name}" "${SESSION_NAME}" "${TEKIDATA_PORT}"
 	TEKICTRL_PORT="0"
 	TEKIDATA_PORT="0"
 fi
@@ -194,7 +221,7 @@ fi
 SSH_PORT=30000 #First ssh port 30001
 
 #Get all used in system ports from X2Go database and netstat output
-USED_PORTS=`$X2GO_LIB_PATH/x2gogetports "$HOSTNAME"; netstat -nt -all | awk '{ n=split($0,lines,"\n"); for(i=1;i<=n;i++){split (lines[i],words," ");delim=split(words[4],ports,":"); if(delim>1)printf ("|%s|\n",ports[delim])} }'`
+USED_PORTS="$("${X2GO_LIB_PATH}/x2gogetports" "${current_host_name}"; netstat -nt -all | awk '{ n=split($0,lines,"\n"); for(i=1;i<=n;i++){split (lines[i],words," ");delim=split(words[4],ports,":"); if(delim>1)printf ("|%s|\n",ports[delim])} }')"
 
 while [ "$GR_PORT" == "" ] || [ "$SOUND_PORT" == "" ] || [ "$FS_PORT" == "" ] || [ "$TEKICTRL_PORT" == "" ] || [ "$TEKIDATA_PORT" == "" ]; do
 	OUTPUT=""
@@ -207,7 +234,7 @@ while [ "$GR_PORT" == "" ] || [ "$SOUND_PORT" == "" ] || [ "$FS_PORT" == "" ] ||
 		#check if port in /etc/services
 		SERV=`grep $SSH_PORT /etc/services`
 		if [ "$SERV" == "" ]; then
-			OUTPUT=`$X2GO_LIB_PATH/x2goinsertport "$HOSTNAME" "$SESSION_NAME" "$SSH_PORT"`
+			OUTPUT="$("${X2GO_LIB_PATH}/x2goinsertport" "${current_host_name}" "$SESSION_NAME" "$SSH_PORT")"
 		fi
 	done
 	if [ "$GR_PORT" == "" ]; then
@@ -277,7 +304,7 @@ fi
 X2GO_CLIENT=`echo "$SSH_CLIENT" | awk '{print $1}'`
 if [ "$X2GO_CLIENT" == "" ]
 then
-	X2GO_CLIENT="$HOSTNAME"
+	X2GO_CLIENT="${current_host_name}"
 fi
 
 echo "$NEWOPTIONS" >"${SESSION_DIR}/options"
