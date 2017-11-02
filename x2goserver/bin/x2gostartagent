@@ -344,26 +344,30 @@ while [ "$OUTPUT"  != "inserted" ]; do
 			$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "initializing new shadow session with ID $SESSION_NAME"
 			OUTPUT=`$X2GO_LIB_PATH/x2goinsertshadowsession "$X2GO_PORT" "${current_host_name}" "$SESSION_NAME" "$SHADREQ_USER"`
 
-			if [[ "${?}" -ne "0" ]]; then
-				typeset msg="Unable to insert new session into database; parameters: port (${X2GO_PORT}), hostname (${current_host_name}), session name (${SESSION_NAME}) and user requesting desktop sharing permissions (${SHADREQ_USER})."
-				"${X2GO_LIB_PATH}/x2gosyslog" "${0}" "err" "${msg}"
-
-				# Make x2goclient fail.
-				echo "${msg}" >&2
-				exit 1
-			fi
+			# Catching errors here would be nice, but the current layout doesn't allow this.
+			# Keep this in mind as a FIXME.
+			#if [[ "${?}" -ne "0" ]]; then
+			#	typeset msg="Unable to insert new session into database; parameters: port (${X2GO_PORT}), hostname (${current_host_name}), session name (${SESSION_NAME}) and user requesting desktop sharing permissions (${SHADREQ_USER})."
+			#	"${X2GO_LIB_PATH}/x2gosyslog" "${0}" "err" "${msg}"
+			#
+			#	# Make x2goclient fail.
+			#	echo "${msg}" >&2
+			#	exit 1
+			#fi
 		else
 			$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "initializing new session with ID $SESSION_NAME"
 			OUTPUT=`$X2GO_LIB_PATH/x2goinsertsession "$X2GO_PORT" "${current_host_name}" "$SESSION_NAME"`
 
-			if [[ "${?}" -ne "0" ]]; then
-				typeset msg="Unable to insert new session into database; parameters: port (${X2GO_PORT}), hostname (${current_host_name}) and session name (${SESSION_NAME})."
-				"${X2GO_LIB_PATH}/x2gosyslog" "${0}" "err" "${msg}"
-
-				# Make x2goclient fail.
-				echo "${msg}" >&2
-				exit 1
-			fi
+			# Catching errors here would be nice, but the current layout doesn't allow this.
+			# Keep this in mind as a FIXME.
+			#if [[ "${?}" -ne "0" ]]; then
+			#	typeset msg="Unable to insert new session into database; parameters: port (${X2GO_PORT}), hostname (${current_host_name}) and session name (${SESSION_NAME})."
+			#	"${X2GO_LIB_PATH}/x2gosyslog" "${0}" "err" "${msg}"
+			#
+			#	# Make x2goclient fail.
+			#	echo "${msg}" >&2
+			#	exit 1
+			#fi
 		fi
 	fi
 done
@@ -394,14 +398,16 @@ while [ "$GR_PORT" == "" ] || [ "$SOUND_PORT" == "" ] || [ "$FS_PORT" == "" ] ||
 		if [ "$SERV" == "" ]; then
 			OUTPUT=`$X2GO_LIB_PATH/x2goinsertport "${current_host_name}" "$SESSION_NAME" "$SSH_PORT"`
 
-			if [[ "${?}" -ne "0" ]]; then
-				typeset msg="Unable to insert new port into database; parameters: hostname (${current_host_name}), session name (${SESSION_NAME}) and port (${SSH_PORT})."
-				"${X2GO_LIB_PATH}/x2gosyslog" "${0}" "err" "${msg}"
-
-				# Make x2goclient fail.
-				echo "${msg}" >&2
-				exit 1
-			fi
+			# Catching errors here would be nice, but the current layout doesn't allow this.
+			# Keep this in mind as a FIXME.
+			#if [[ "${?}" -ne "0" ]]; then
+			#	typeset msg="Unable to insert new port into database; parameters: hostname (${current_host_name}), session name (${SESSION_NAME}) and port (${SSH_PORT})."
+			#	"${X2GO_LIB_PATH}/x2gosyslog" "${0}" "err" "${msg}"
+			#
+			#	# Make x2goclient fail.
+			#	echo "${msg}" >&2
+			#	exit 1
+			#fi
 		fi
 	done
 
