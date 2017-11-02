@@ -309,6 +309,7 @@ x2goserver (4.0.1.21-0x2go1) UNRELEASED; urgency=medium
     - x2goserver/{bin/x2go{runcommand,suspend-session},
       sbin/x2gocleansessions}: remove hopefully redundant HOSTNAME export
       commands.
+    - x2goserver/etc/x2goagent.options: remove file, moved to x2goagent.
   * x2goserver.spec:
     - Add mandatory perl-generators Build-Requires as per
       https://fedoraproject.org/wiki/Changes/Build_Root_Without_Perl
@@ -351,12 +352,16 @@ x2goserver (4.0.1.21-0x2go1) UNRELEASED; urgency=medium
       should be specified as Requires(posttrans) as well.
     - Pull in dbus-run-session if possible. Only available on Fedora, SLE12+
       and OpenSuSE 13+.
+    - Pull in x2goagent >= 3.5.0.33 explicitly, first version that reflects
+      the x2goagent.options file move.
   * debian/po:
     - Tiny fixup on author name.
   * debian/control:
     - Whitespace fixes.
     - Add BD on dh-systemd. We'll need it for systemd integration.
     - Depend upon dbus for dbus-run-session.
+    - Pull in x2goagent >= 3.5.0.33 explicitly, first version that reflects
+      the x2goagent.options file move.
   * debian/rules:
     - Call the systemd addon to process and install the systemd service file.
     - Don't fail if we don't have the systemd addon. Systems that don't have
