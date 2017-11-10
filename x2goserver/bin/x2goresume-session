@@ -52,16 +52,12 @@ X2GO_FULLSCREEN=0
 #   - export HOSTNAME="malbox"; x2gostartagent will override the actual system
 #     host name and lead to authorization failures when connecting to
 #     x2goagent/nxagent later on.
-#   - even if the above is not the case, the value returned by gethostname(2)
-#     could either be a FQDN, the short name or anything in between. glibc
-#     seems to return the short name on Linux, since it calls uname(2), which
-#     typically does not include a domain, but *BSD seems to default to
-#     the FQDN. We explicitly need the short name.
+#   - even if the above is not the case, we want to be sure to get the actual
+#     system host name.
 #
-# Workaround: use hostname -s, which luckily is portable enough to be available
-# on a wide variety of systems.
+# Workaround: use hostname.
 typeset current_host_name=""
-current_host_name="$(hostname -s)"
+current_host_name="$(hostname)"
 
 if [[ "${?}" -ne "0" ]]; then
 	typeset msg="Unable to retrieve machine's hostname. This is required. Aborting session startup."
