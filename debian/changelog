@@ -254,6 +254,10 @@ x2goserver (4.0.1.23-0x2go1) UNRELEASED; urgency=medium
   * x2goserver.spec:
     - RPMify x2goserver-xsession description.
     - Remove qt4 stuff, we're not using the framework here.
+    - Split out logcheck files into an x2goserver-logcheck subpackage. Avoids
+      installing logcheck as a hard-dependency with X2Go Server for people who
+      do not want or expect that. Logcheck users can install
+      x2goserver-logcheck as a standalone package instead.
 
  -- X2Go Release Manager <git-admin@x2go.org>  Sat, 11 Nov 2017 13:01:29 +0100
 

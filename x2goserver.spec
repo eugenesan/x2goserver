@@ -106,9 +106,6 @@ Requires:       pwgen
 Requires:       sshfs
 # For /etc/sudoers.d
 Requires:       sudo
-%if 0%{?fedora} > 19 || 0%{?el5} || 0%{?el6} || 0%{?el7}
-Requires:       logcheck
-%endif
 Requires:       x2goagent-virtual
 Requires(post): grep
 Requires:       grep
@@ -524,6 +521,26 @@ corresponding desktop shell:
     - under MATE by x2gomatebindings
 
 
+%package logcheck
+Summary:        X2Go Server (logcheck configuration)
+Requires:       %{name} = %{version}-%{release}
+%if 0%{?fedora} > 19 || 0%{?el5} || 0%{?el6} || 0%{?el7}
+Requires:       logcheck
+%endif
+
+%description logcheck
+X2Go is a server based computing environment with
+    - session resuming
+    - low bandwidth support
+    - session brokerage support
+    - client side mass storage mounting support
+    - audio support
+    - authentication by smartcard and USB stick
+
+This package contains the logcheck configuration files that avoid
+false-positives when running X2Go sessions.
+
+
 %prep
 %setup -q
 
@@ -760,13 +777,6 @@ fi
 %doc x2goserver/doc/README.sudoers
 %doc x2goserver/etc/sudoers.d/x2goserver
 %endif
-# logcheck is not available on OpenSUSE, SLES/SLED, FC19 and RHEL.
-# Please re-check this periodically.
-%if 0%{?suse_version} || 0%{?fedora} < 20 || 0%{?rhel}
-%dir %{_sysconfdir}/logcheck
-%dir %{_sysconfdir}/logcheck/ignore.d.server
-%endif
-%config(noreplace) %{_sysconfdir}/logcheck/ignore.d.server/x2goserver
 %if 0%{?suse_version} >= 1210
 %config(noreplace) %{_sysconfdir}/sudoers.d/x2goserver
 %endif
@@ -939,6 +949,19 @@ fi
 %config(noreplace) %{_sysconfdir}/x2go/Xsession
 %{_datadir}/x2go/x2gofeature.d/x2goserver-xsession.features
 %{_datadir}/x2go/versions/VERSION.x2goserver-xsession
+
+
+%files logcheck
+%defattr(-,root,root)
+%doc debian/copyright
+%doc debian/changelog
+# logcheck is not available on OpenSUSE, SLES/SLED, FC19 and RHEL.
+# Please re-check this periodically.
+%if 0%{?suse_version} || 0%{?fedora} < 20 || 0%{?rhel}
+%dir %{_sysconfdir}/logcheck
+%dir %{_sysconfdir}/logcheck/ignore.d.server
+%endif
+%config(noreplace) %{_sysconfdir}/logcheck/ignore.d.server/x2goserver
 
 
 %changelog
