@@ -106,6 +106,9 @@ Requires:       pwgen
 Requires:       sshfs
 # For /etc/sudoers.d
 Requires:       sudo
+%if 0%{?fedora} > 19 || 0%{?el5} || 0%{?el6} || 0%{?el7}
+Requires:       logcheck
+%endif
 Requires:       x2goagent-virtual
 Requires(post): grep
 Requires:       grep
