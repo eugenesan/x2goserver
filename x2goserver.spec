@@ -528,6 +528,12 @@ Requires:       %{name} = %{version}-%{release}
 Requires:       logcheck
 %endif
 
+%if 0%{?fedora} || 0%{?rhel}
+Group:          Applications/Communications
+%else
+Group:          Productivity/Networking/Remote Desktop
+%endif
+
 %description logcheck
 X2Go is a server based computing environment with
     - session resuming
