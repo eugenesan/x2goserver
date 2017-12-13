@@ -253,6 +253,7 @@ x2goserver (4.0.1.23-0x2go1) UNRELEASED; urgency=medium
   * New upstream version (4.0.1.23):
   * x2goserver.spec:
     - RPMify x2goserver-xsession description.
+    - Remove qt4 stuff, we're not using the framework here.
 
  -- X2Go Release Manager <git-admin@x2go.org>  Sat, 11 Nov 2017 13:01:29 +0100
 

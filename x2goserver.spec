@@ -534,7 +534,6 @@ sed -i -e 's,/lib/,/%{_lib}/,' x2goserver/bin/x2gopath
 sed -i -e 's/-o root -g root//' */Makefile
 
 %build
-export PATH=%{_qt4_bindir}:$PATH
 make CFLAGS="%{optflags} -fPIC" %{?_smp_mflags} PERL_INSTALLDIRS=vendor PREFIX=%{_prefix} NXLIBDIR=%{_libdir}/nx
 
 
