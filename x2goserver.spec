@@ -461,21 +461,21 @@ Requires:       perl = %{perl_version}
 Requires:       perl(Cwd)
 
 %description xsession
- X2Go is a server based computing environment with
+X2Go is a server based computing environment with
     - session resuming
     - low bandwidth support
     - session brokerage support
     - client side mass storage mounting support
     - audio support
     - authentication by smartcard and USB stick
- .
- This X2Go Server add-on enables Xsession script handling
- when starting desktop sessions with X2Go.
- .
- Amongst others the parsing of Xsession scripts will
- enable desktop-profiles, ssh-agent startups, gpgagent
- startups and many more Xsession related features on
- X2Go session login automagically.
+
+This X2Go Server add-on enables Xsession script handling
+when starting desktop sessions with X2Go.
+
+Amongst others the parsing of Xsession scripts will
+enable desktop-profiles, ssh-agent startups, gpgagent
+startups and many more Xsession related features on
+X2Go session login automagically.
 
 
 %package fmbindings
