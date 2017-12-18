@@ -234,6 +234,7 @@ x2goserver (4.1.0.0-0x2go1.2) UNRELEASED; urgency=low
     - Actually add logcheck Requires.
     - Give the x2goagent-virtual package a specific version, derived from the
       x2goserver version.
+    - Let x2goserver-x2goagent conflict with the former x2goagent package.
   * debian/control:
     - Maintainer change in package: X2Go Developers <x2go-dev@lists.x2go.org>.
     - Depend upon newer x2goagent package that now provides the
