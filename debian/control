@@ -169,7 +169,7 @@ Description: Perl X2Go::Log package
 Package: x2goserver-x2goagent
 Architecture: all
 Depends:
- nxagent (>= 3.5.99.0~),
+ nxagent (>= 2:3.5.99.3~),
  ${misc:Depends},
 Suggests:
  x2goserver
