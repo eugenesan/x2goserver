@@ -106,7 +106,7 @@ Requires:       pwgen
 Requires:       sshfs
 # For /etc/sudoers.d
 Requires:       sudo
-Requires:       x2goagent-virtual
+Requires:       x2goserver-x2goagent = %{version}-%{release}
 Requires(post): grep
 Requires:       grep
 Requires:       perl(File::Which)
