@@ -306,7 +306,7 @@ This package contains the X2Go::Log Perl package.
 Group:          Applications/System
 Summary:        X2Go Server's X2Go Agent
 Requires:       nxagent >= 3.5.99.3
-Provides:       x2goagent-virtual
+Provides:       x2goagent-virtual = %{version}-%{release}
 
 %description x2goagent
 X2Go is a server based computing environment with
