@@ -1,3 +1,13 @@
+x2goserver (4.1.0.0-0x2go1.2.1) UNRELEASED; urgency=medium
+
+  * Update debian changelog
+  * Fix gnome-flashback session start on Ubuntu 16.04
+  * Improve the fix for incorrectly set PATH
+  * Add either libgles1-mesa or libgles2-mesa to x2goserver's recommends to fix clutter/GL related apps
+  * x2goruncommand: fix initial monitor configuration
+
+ -- Eugene San (eugenesan) <eugenesan@gmail.com>  Wed, 20 Dec 2017 18:34:54 -0700
+
 x2goserver (4.1.0.0-0x2go1.2) UNRELEASED; urgency=low
 
   [ Mike Gabriel ]
