@@ -170,6 +170,7 @@ if [ "$cmd" == "GNOME" ] || [ "$cmd" == "gnome-session" ]; then
 		export XDG_SESSION_DESKTOP="$DESKTOP_SESSION"
 		# Yes, "Unity" is in the actual string. Observed on Ubuntu 16.04
 		export XDG_CURRENT_DESKTOP="GNOME-Flashback:Unity"
+		export XSESSION_PARAM="/usr/lib/gnome-flashback/gnome-flashback-metacity"
 		args=" --session=$DESKTOP_SESSION --disable-acceleration-check"
 	elif [ "$DISTRIB_ID" == "Ubuntu" ] && [ "$(echo "$DISTRIB_RELEASE = 14.04" | bc)" == "1" -o  "$(echo "$DISTRIB_RELEASE = 14.10" | bc)" == "1" ]; then
 		export DESKTOP_SESSION="gnome-flashback"
@@ -380,7 +381,7 @@ if [ "$EXEC" != "" ] && [ -x "$EXEC" ]; then
 		[[ -z "${dbus_wrapper}" ]] && dbus_wrapper_msg="not available"
 		"${X2GO_LIB_PATH}/x2gosyslog" "${0}" "notice" "dbus wrapper ${dbus_wrapper_msg}"
 
-		XSESSION_EXEC="$cmd" STARTUP="/usr/bin/env LD_LIBRARY_PATH=${LD_LIBRARY_PATH} ${STARTUP}" ${dbus_wrapper} /etc/x2go/Xsession >> "$MESSAGE_FILE" 2>&1
+		XSESSION_EXEC="$cmd" STARTUP="/usr/bin/env LD_LIBRARY_PATH=${LD_LIBRARY_PATH} ${STARTUP}" ${dbus_wrapper} /etc/x2go/Xsession "${XSESSION_PARAM}" >> "$MESSAGE_FILE" 2>&1
 	else
 		"$X2GO_LIB_PATH/x2gosyslog" "$0" "debug" "executing command \"$cmd$args\"..."
 
