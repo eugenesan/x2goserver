@@ -168,6 +168,8 @@ if [ "$cmd" == "GNOME" ] || [ "$cmd" == "gnome-session" ]; then
 		# Yes, "Unity" is in the actual string. Observed on Ubuntu 16.04
 		export XDG_CURRENT_DESKTOP="GNOME-Flashback:Unity"
 		args=" --session=$DESKTOP_SESSION --disable-acceleration-check"
+		# Allow the session to run with upstart installed
+		export SESSIONTYPE=gnome-session
 	elif [ "$DISTRIB_ID" == "Ubuntu" ] && { [ "$(echo "$DISTRIB_RELEASE == 14.04" | bc)" == "1" ] || [ "$(echo "$DISTRIB_RELEASE == 14.10" | bc)" == "1" ]; }; then
 		export DESKTOP_SESSION="gnome-flashback"
 		if [ -z "$GTK_MODULES" ] ; then
