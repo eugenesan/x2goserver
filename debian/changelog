@@ -1,3 +1,13 @@
+x2goserver (4.1.0.4-0.1x2go1) unstable; urgency=medium
+
+  * Update debian changelog
+  * Fix gnome-flashback session start with upstart installed on Ubuntu 15.04+
+  * Improve the fix for incorrectly set PATH
+  * Add either libgles1-mesa or libgles2-mesa to x2goserver's recommends to fix clutter/GL related apps
+  * x2goruncommand: fix initial monitor configuration
+
+ -- Eugene San (eugenesan) <eugenesan@gmail.com>  Fri, 10 Aug 2018 11:26:11 -0700
+
 x2goserver (4.1.0.4-0x2go1) UNRELEASED; urgency=medium
 
   [ Mike Gabriel ]
