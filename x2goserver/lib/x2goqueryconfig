@@ -1,0 +1,45 @@
+#!/usr/bin/perl
+
+# Copyright (C) 2017-2018 X2Go Project - https://wiki.x2go.org
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the
+# Free Software Foundation, Inc.,
+# 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
+
+use strict;
+
+use X2Go::Config qw (get_config);
+
+my $section = shift or die "Missing section argument";
+my $key = shift or die "Missing key argument";
+
+if (!(length ($section))) {
+  die "Invalid (empty) section argument";
+}
+
+if (!(length ($key))) {
+  die "Invalid (empty) key argument";
+}
+
+my $Config = get_config ();
+
+my $val = $Config->param("$section.$key");
+
+if (defined ($val)) {
+  print "$val\n";
+  exit 0;
+}
+else {
+  exit 1;
+}
