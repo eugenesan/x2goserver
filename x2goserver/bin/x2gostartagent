@@ -68,20 +68,20 @@ X2GO_LIB_PATH="$(x2gopath libexec)";
 $X2GO_LIB_PATH/x2gosyslog "$0" "info" "$(basename $0) called with options: $@"
 
 
-# FIXME: this should be configurable option in x2goserver.conf.
-# If you use hosts on a /24 network, you should probably set "0" here,
-# as the addresses are unique.
-# Each hosts SSH_PORT will be set to 30.000 + (128 * last octet of IP address)
-# This results in no collisions on a /24 network with at least 128 ports
-# for each host available for different sessions.
-# If you select "1" here, the SSH_PORT will be set to 30000 + random(0..32767)
+# Refer to x2goserver.conf.
 typeset -i randomize_ssh_port="1"
+typeset randomize_ssh_port_config_value=''
+
+randomize_ssh_port_config_value="$(${X2GO_LIB_PATH}/x2goqueryconfig "x2goagent" "port_randomization")"
+
+# Failures or incorrect values are implicitly caught by the default value.
+[[ "${randomize_ssh_port_config_value}" = "host-based" ]] && randomize_ssh_port='0'
 
 if [ "${randomize_ssh_port}" = "1" ]; then
-	${X2GO_LIB_PATH}/x2gosyslog "$0" "debug" "SSH port randomization requested."
+	${X2GO_LIB_PATH}/x2gosyslog "$0" "debug" "Full SSH port randomization requested."
 	SSH_PORT="$(get_random_port)"
 else
-	${X2GO_LIB_PATH}/x2gosyslog "$0" "debug" "IP-based SSH port initialization requested."
+	${X2GO_LIB_PATH}/x2gosyslog "$0" "debug" "host-based SSH port initialization requested."
 	typeset ip_address="$(get_server_ip_address)"
 
 	if [ "$?" = "0" ]; then
