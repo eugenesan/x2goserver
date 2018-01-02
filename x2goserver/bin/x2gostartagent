@@ -547,6 +547,7 @@ fi
 # but gets in the way of our persistent session scheme.
 loginctl "enable-linger" &>"/dev/null" || :
 
+X2GO_AGENT_PID="0"
 if [ "${X2GO_STYPE}" == "S" ]; then
 	# unset LD_LIBRARY_PATH for the case when x2gostartagent started from x2godesktopsharing
 	unset LD_LIBRARY_PATH
@@ -562,7 +563,6 @@ fi
 ln -s "${SESSION_DIR}" "${X2GO_ROOT}/C-${SESSION_NAME}"
 
 X2GO_AGENT_PID="${!}"
-X2GO_AGENT_RETVAL="${?}"
 
 if [[ -n "${SHADREQ_USER}" ]]; then
 	"${X2GO_LIB_PATH}/x2gosyslog" "${0}" 'info' "creating new shadow session: ${SESSION_NAME} ${X2GO_COOKIE} ${X2GO_AGENT_PID} ${X2GO_CLIENT} ${GR_PORT} ${SOUND_PORT} ${FS_PORT} ${SHADREQ_USER}"
@@ -577,16 +577,22 @@ if [ "${X2GO_SET_KBD}" == "0" ] || [ "${X2GO_KBD_TYPE}" != "auto" ]; then
 	mkdir -p "${SESSION_DIR}/keyboard"
 fi
 
-if [ "${X2GO_AGENT_RETVAL}" -eq '0' ]; then
+if ps -p "${X2GO_AGENT_PID}" &>"/dev/null"; then
 	"${X2GO_LIB_PATH}/x2gosyslog" "${0}" "notice" "successfully started X2Go Agent session with ID ${SESSION_NAME}"
 
 	# run x2goserver-extensions for post-start
 	x2gofeature "X2GO_RUN_EXTENSIONS" &>"/dev/null" && x2goserver-run-extensions "${SESSION_NAME}" "post-start" || true
 else
-	"${X2GO_LIB_PATH}/x2gosyslog" "${0}" "err" "ERROR: failed to start X2Go Agent session with ID ${SESSION_NAME}"
+	typeset msg="Failed to start X2Go Agent session with ID ${SESSION_NAME}. X2Go Agent terminated unexpectedly. Aborting session startup."
+	"${X2GO_LIB_PATH}/x2gosyslog" "${0}" "err" "${msg}"
+
+	# Make x2goclient fail.
+	echo "${msg}" >&2
 
 	# run x2goserver-extensions for fail-start
 	x2gofeature "X2GO_RUN_EXTENSIONS" &>"/dev/null" && x2goserver-run-extensions "${SESSION_NAME}" "fail-start" || true
+
+	exit "13"
 fi
 
 echo "${X2GO_PORT}"

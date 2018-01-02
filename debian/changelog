@@ -280,6 +280,17 @@ x2goserver (4.0.1.23-0x2go1) UNRELEASED; urgency=medium
       variable usage.
     - x2goserver/bin/x2gostartagent: make shellcheck happy by referencing
       "${SAVED_DISPLAY}" once.
+    - x2goserver/bin/x2gostartagent: checking for the exit status of a
+      variable assignment isn't helping us in finding out if x2goagent is
+      still running. Even otherwise, the exit status would be useless since we
+      spawn x2goagent in the background. Better check if the PID still exists
+      and error out if it's gone. There certainly is potential for race
+      conditions (i.e., x2goagent started, then exited, then another process
+      took its place). On Linux, this situation is unlikely to happen, since
+      PIDs are only recycled once the maximum PID value is reached, meaning
+      that enough processes to overflow the PID + to get to the original PID
+      value need to be spawned in a very short amount of time. Unlikely, but
+      not impossible.
   * x2goserver.spec:
     - RPMify x2goserver-xsession description.
     - Remove qt4 stuff, we're not using the framework here.
