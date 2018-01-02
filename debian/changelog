@@ -276,6 +276,8 @@ x2goserver (4.0.1.23-0x2go1) UNRELEASED; urgency=medium
     - x2goserver/bin/x2gostartagent: update copyright notice.
     - x2goserver/bin/x2gostartagent: fix most shellcheck warnings, whitespace
       errors, use more quotes and curly braces.
+    - x2goserver/bin/x2gostartagent: drop obsolete X2GO_BIN environment
+      variable usage.
   * x2goserver.spec:
     - RPMify x2goserver-xsession description.
     - Remove qt4 stuff, we're not using the framework here.

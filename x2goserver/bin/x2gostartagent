@@ -481,9 +481,6 @@ grep "PPid" "/proc/${PPID}/status" >"${SESSION_DIR}/sshd.pid"
 
 X2GO_COOKIE="$(mcookie)"
 
-PATH="${PATH}:${X2GO_BIN}/"
-export PATH
-
 
 xauth -f "${XAUTHORITY}" "add" "${current_host_name}/unix:${X2GO_PORT}" "MIT-MAGIC-COOKIE-1" "${X2GO_COOKIE}"
 xauth -f "${XAUTHORITY}" "add" "${current_host_name}:${X2GO_PORT}" "MIT-MAGIC-COOKIE-1" "${X2GO_COOKIE}"
