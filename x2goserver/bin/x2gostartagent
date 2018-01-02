@@ -509,6 +509,10 @@ echo "${X2GO_HOST}:${X2GO_PORT}" >"${SESSION_DIR}/options"
 
 NX_AGENT=":${X2GO_PORT}"
 SAVED_DISPLAY="${DISPLAY}"
+
+# Make shellcheck happy.
+: "${SAVED_DISPLAY}"
+
 DISPLAY="nx/nx,options=${SESSION_DIR}/options:${X2GO_PORT}"
 export DISPLAY
 
