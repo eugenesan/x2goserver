@@ -526,7 +526,7 @@ fi
 NOLISTOPT=""
 if [ "${X2GOXDMCP}" == "" ] ;then
 	XDMCPOPT=""
-	if [ "x${X2GO_NXAGENT_OPTIONS}" != "x${X2GO_NXAGENT_OPTIONS/' -nolisten tcp'/''}" ]; then
+	if [ "x${X2GO_NXAGENT_OPTIONS}" != "x${X2GO_NXAGENT_OPTIONS/ -nolisten tcp/}" ]; then
 		NOLISTOPT="-nolisten tcp"
 	fi
 else

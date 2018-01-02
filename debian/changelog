@@ -293,6 +293,8 @@ x2goserver (4.0.1.23-0x2go1) UNRELEASED; urgency=medium
       not impossible.
     - x2goserver/bin/x2gostartagent: replace perl call with bash pattern
       substitution.
+    - x2goserver/bin/x2gostartagent: some shells do not handle quotes in
+      pattern substitutions gracefully. Remove them.
   * x2goserver.spec:
     - RPMify x2goserver-xsession description.
     - Remove qt4 stuff, we're not using the framework here.
