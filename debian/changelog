@@ -291,6 +291,8 @@ x2goserver (4.0.1.23-0x2go1) UNRELEASED; urgency=medium
       that enough processes to overflow the PID + to get to the original PID
       value need to be spawned in a very short amount of time. Unlikely, but
       not impossible.
+    - x2goserver/bin/x2gostartagent: replace perl call with bash pattern
+      substitution.
   * x2goserver.spec:
     - RPMify x2goserver-xsession description.
     - Remove qt4 stuff, we're not using the framework here.

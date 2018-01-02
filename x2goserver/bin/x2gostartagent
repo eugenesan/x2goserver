@@ -331,7 +331,7 @@ while [ "${OUTPUT}" != "inserted" ]; do
 		fi
 		if [ "${COLORDEPTH}" != "" ]; then
 			SESSION_NAME="${SESSION_NAME}_st${SESSION_TYPE}${X2GO_CMD}_dp${COLORDEPTH}"
-			SESSION_NAME="$(perl -pe "s/:/PP/g" <<< "${SESSION_NAME}")"
+			SESSION_NAME="${SESSION_NAME//:/PP}"
 		fi
 
 		# sanitize session name
