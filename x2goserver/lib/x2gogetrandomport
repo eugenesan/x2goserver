@@ -1,0 +1,120 @@
+#!/bin/bash
+
+# Copyright (C) 2017-2018 X2Go Project - https://wiki.x2go.org
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the
+# Free Software Foundation, Inc.,
+# 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
+
+typeset x2go_lib_path="$(x2gopath "libexec")"
+
+"${x2go_lib_path}/x2gosyslog" "${0}" "debug" "$(basename "${0}") called with options: ${*}"
+
+# rnowotny, <rnowotny@rotek.at>
+# Patch for SSH_PORT, to not use the same SSH port on each server, which is a
+# problem if you want to connect to different servers at the same time with
+# the windows client.
+# Original problem report: https://www.mail-archive.com/x2go-user@lists.berlios.de/msg00547.html
+# Currently implementation is based on the submitted patch, but differs heavily.
+
+# Gets the outward-facing server IPv4 address.
+# Does not take any parameters.
+# Outputs the default outgoing IPv4 address.
+# Returns 0 on success, otherwise non-0.
+get_server_ip_address() {
+	# The provided IP address should be outside of any local network.
+	# We are only interested in how the kernel would try to reach the
+	# non-local IP address specified here. It is not actually contacted
+	# in any way.
+	typeset ip_output="$(ip route get 8.8.8.8)"
+
+	# Remove newlines.
+	ip_output="${ip_output//$'\n'}"
+
+	# Fetch source address.
+	typeset src_address="$(grep -oe 'src[[:space:]]\{1,\}\(\([[:digit:]]\{1,3\}\.\)\{3\}[[:digit:]]\{1,3\}\)' <<< "${ip_output}" | sed -e 's/src[[:space:]]\{1,\}//')"
+
+	if [[ -n "${src_address}" ]]; then
+		printf '%s\n' "${src_address}"
+		return "0"
+	fi
+
+	return "1"
+}
+
+# Get some purely random port.
+# Does not take any parameters.
+# Outputs a random port value in range [30000, 62767].
+# Returns 0.
+get_pure_random_port() {
+	typeset -i unix_timestamp="$(date "+%s")"
+
+	# Seed ${RANDOM}. This should probably be changed some time before 2106.
+	# Or maybe not.
+	RANDOM="${unix_timestamp}"
+
+	typeset -i random_port="$((30000 + RANDOM))"
+	printf '%d\n' "${random_port}"
+
+	return "0"
+}
+
+# Gets a pseudo-random port based on the machine's
+# outgoing IP address.
+# Does not take any parameters.
+# Outputs a host-based pseudo-random port value.
+# Returns 0 on success, otherwise non-0.
+get_host_based_random_port() {
+	"${x2go_lib_path}/x2gosyslog" "${0}" "debug" "host-based SSH port initialization requested."
+	typeset ip_address=''
+	typeset -i ret_port='0'
+	typeset -i ret='1'
+
+	if ip_address="$(get_server_ip_address)"; then
+		typeset -i ip_address_last_octet="${ip_address##*.}"
+		ret_port="$((30000 + (ip_address_last_octet * 128)))"
+
+		printf '%d\n' "${ret_port}"
+	fi
+
+	return "${ret}"
+}
+
+
+# Refer to x2goserver.conf.
+typeset -i randomize_ssh_port="1"
+typeset randomize_ssh_port_config_value=''
+
+randomize_ssh_port_config_value="$("${x2go_lib_path}/x2goqueryconfig" "x2goagent" "port_randomization")"
+
+# Failures or incorrect values are implicitly caught by the default value.
+[[ "${randomize_ssh_port_config_value}" = "host-based" ]] && randomize_ssh_port='0'
+
+if [ "${randomize_ssh_port}" = "1" ]; then
+	"${x2go_lib_path}/x2gosyslog" "${0}" "debug" "Full SSH port randomization requested."
+	get_random_port
+else
+	"${x2go_lib_path}/x2gosyslog" "${0}" "debug" "host-based SSH port initialization requested."
+
+	if ! get_host_based_random_port; then
+		"${x2go_lib_path}/x2gosyslog" "${0}" "warning" "IP-based SSH port initialization requested, but failed to fetch primary address."
+		"${x2go_lib_path}/x2gosyslog" "${0}" "warning" "Falling back to randomization."
+		get_random_port
+	fi
+fi
+
+# No explicit return value, will use the last command's return value.
+# Make sure that the last command executed exits with the
+# return value you want to pass through!
+exit

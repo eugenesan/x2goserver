@@ -297,6 +297,9 @@ x2goserver (4.0.1.23-0x2go1) UNRELEASED; urgency=medium
       pattern substitutions gracefully. Remove them.
     - x2goserver/lib: new script x2gogetfreeport, consists of duplicated
       functionality in x2gostartagent.
+    - x2goserver/lib: new script x2gogetrandomport, contains the port
+      randomization (or pseudo-randomization) features that are part of
+      x2gostartagent, but need to be accessible by other scripts as well.
   * x2goserver.spec:
     - RPMify x2goserver-xsession description.
     - Remove qt4 stuff, we're not using the framework here.
