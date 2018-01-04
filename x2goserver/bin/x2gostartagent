@@ -178,7 +178,7 @@ if [ "${X2GO_STYPE}" == "S" ]; then
 		awk '{print $5}' <<< "${OUTPUT}"
 		awk '{print $6}' <<< "${OUTPUT}"
 		awk '{print $7}' <<< "${OUTPUT}"
-		exit "9"
+		exit "0"
 	fi
 else
 	X2GO_CLIPBOARD="$1"; shift
