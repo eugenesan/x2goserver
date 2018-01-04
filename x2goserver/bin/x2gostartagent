@@ -63,7 +63,7 @@ get_random_port() {
 	return "0"
 }
 
-X2GO_LIB_PATH="$(x2gopath libexec)";
+X2GO_LIB_PATH="$(x2gopath "libexec")"
 
 "${X2GO_LIB_PATH}/x2gosyslog" "${0}" "info" "$(basename "${0}") called with options: ${*}"
 
