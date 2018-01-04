@@ -214,7 +214,14 @@ else
 	TEKIDATA_PORT="0"
 fi
 
-SSH_PORT=30000 #First ssh port 30001
+if ! SSH_PORT="$("${X2GO_LIB_PATH}/x2gogetrandomport")"; then
+	typeset msg="Unable to get (pseudo-)randomized starting port value."
+	"${X2GO_LIB_PATH}/x2gosyslog" "${0}" "err" "${msg}"
+
+	# Make x2goclient fail.
+	echo "${msg}" >&2
+	exit "1"
+fi
 
 #Get all used in system ports from X2Go database and netstat output
 USED_PORTS="$("${X2GO_LIB_PATH}/x2gogetports" "${current_host_name}"; netstat -nt -all | awk '{ n=split($0,lines,"\n"); for(i=1;i<=n;i++){split (lines[i],words," ");delim=split(words[4],ports,":"); if(delim>1)printf ("|%s|\n",ports[delim])} }')"
