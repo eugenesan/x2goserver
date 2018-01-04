@@ -295,6 +295,8 @@ x2goserver (4.0.1.23-0x2go1) UNRELEASED; urgency=medium
       substitution.
     - x2goserver/bin/x2gostartagent: some shells do not handle quotes in
       pattern substitutions gracefully. Remove them.
+    - x2goserver/lib: new script x2gogetfreeport, consists of duplicated
+      functionality in x2gostartagent.
   * x2goserver.spec:
     - RPMify x2goserver-xsession description.
     - Remove qt4 stuff, we're not using the framework here.
