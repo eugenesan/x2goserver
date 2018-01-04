@@ -20,78 +20,17 @@
 # Copyright (C) 2007-2017 Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
 # Copyright (C) 2007-2017 Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
 
-# rnowotny, <rnowotny@rotek.at>
-# Patch for SSH_PORT, to not use the same SSH port on each server, which is a
-# problem if you want to connect to different servers at the same time with
-# the windows client.
-# Original problem report: https://www.mail-archive.com/x2go-user@lists.berlios.de/msg00547.html
-# Currently implementation is based on the submitted patch, but differs heavily.
-
-# Get server IP address.
-get_server_ip_address() {
-	# The provided IP address should be outside of any local network.
-	# We are only interested in how the kernel would try to reach the
-	# non-local IP address specified here. It is not actually contacted
-	# in any way.
-	typeset ip_output="$(ip route get 8.8.8.8)"
-
-	# Remove newlines.
-	ip_output="${ip_output//$'\n'}"
-
-	# Fetch source address.
-	typeset src_address="$(grep -oe 'src[[:space:]]\{1,\}\(\([[:digit:]]\{1,3\}\.\)\{3\}[[:digit:]]\{1,3\}\)' <<< "${ip_output}" | sed -e 's/src[[:space:]]\{1,\}//')"
-
-	if [ -n "${src_address}" ]; then
-		printf '%s' "${src_address}"
-		return "0"
-	fi
-
-	return "1"
-}
-
-# Get some random port.
-get_random_port() {
-	typeset -i unix_timestamp="$(date "+%s")"
-
-	# Seed ${RANDOM}. This should probably be changed some time before 2106.
-	# Or maybe not.
-	RANDOM="${unix_timestamp}"
-
-	typeset -i random_port="$((30000 + RANDOM))"
-	printf '%s' "${random_port}"
-
-	return "0"
-}
-
 X2GO_LIB_PATH="$(x2gopath "libexec")"
 
 "${X2GO_LIB_PATH}/x2gosyslog" "${0}" "info" "$(basename "${0}") called with options: ${*}"
 
+if ! SSH_PORT="$("${X2GO_LIB_PATH}/x2gogetrandomport")"; then
+	typeset msg="Unable to get (pseudo-)randomized starting port value."
+	"${X2GO_LIB_PATH}/x2gosyslog" "${0}" "err" "${msg}"
 
-# Refer to x2goserver.conf.
-typeset -i randomize_ssh_port="1"
-typeset randomize_ssh_port_config_value=''
-
-randomize_ssh_port_config_value="$("${X2GO_LIB_PATH}/x2goqueryconfig" "x2goagent" "port_randomization")"
-
-# Failures or incorrect values are implicitly caught by the default value.
-[[ "${randomize_ssh_port_config_value}" = "host-based" ]] && randomize_ssh_port='0'
-
-if [ "${randomize_ssh_port}" = "1" ]; then
-	"${X2GO_LIB_PATH}/x2gosyslog" "${0}" "debug" "Full SSH port randomization requested."
-	SSH_PORT="$(get_random_port)"
-else
-	"${X2GO_LIB_PATH}/x2gosyslog" "${0}" "debug" "host-based SSH port initialization requested."
-	typeset ip_address=''
-
-	if ip_address="$(get_server_ip_address)"; then
-		typeset -i ip_address_last_octet="${ip_address##*.}"
-		SSH_PORT="$((30000 + (ip_address_last_octet * 128)))"
-	else
-		"${X2GO_LIB_PATH}/x2gosyslog" "${0}" "warning" "IP-based SSH port initialization requested, but failed to fetch primary address."
-		"${X2GO_LIB_PATH}/x2gosyslog" "${0}" "warning" "Falling back to randomization."
-		SSH_PORT="$(get_random_port)"
-	fi
+	# Make x2goclient fail.
+	echo "${msg}" >&2
+	exit "1"
 fi
 
 X2GO_PORT="49" #First port for X2GO=50
@@ -101,22 +40,22 @@ if grep -E "^backend[ ]*=[ ]*postgres" "/etc/x2go/x2gosql/sql" 1>"/dev/null" 2>"
 	msg="The super-user \"root\" is not allowed to launch X2Go sessions."
 	echo "${msg}" >&2
 	"${X2GO_LIB_PATH}/x2gosyslog" "${0}" "err" "${msg}"
-	exit "1"
+	exit "2"
 elif [ -z "${USER}" ]; then
 	msg="The \$USER environment variable is not set. Aborting session startup."
 	echo "${msg}" >&2
 	"${X2GO_LIB_PATH}/x2gosyslog" "${0}" "err" "${msg}"
-	exit "2"
+	exit "3"
 elif [ -z "${HOME}" ]; then
 	msg="The \$HOME environment variable is not set. Aborting session startup."
 	echo "${msg}" >&2
 	"${X2GO_LIB_PATH}/x2gosyslog" "${0}" "err" "${msg}"
-	exit "3"
+	exit "4"
 elif ! iconv -f ASCII -t ASCII &>"/dev/null" <<< "${HOME}"; then
 	msg="Your home directory path contains non-ASCII characters. Aborting session startup."
 	echo "${msg}" >&2
 	"${X2GO_LIB_PATH}/x2gosyslog" "${0}" "err" "${msg}"
-	exit "4"
+	exit "5"
 fi
 
 # ${HOSTNAME} should be automatically set by bash via gethostname(2), IFF this
@@ -138,7 +77,7 @@ if current_host_name="$(hostname)"; then
 
 	# Make x2goclient fail.
 	echo "${msg}" >&2
-	exit "5"
+	exit "6"
 fi
 
 X2GO_TELEKINESIS_ENABLED=`echo 'use X2Go::Config qw( get_config ); use X2Go::Utils qw( is_true ); my $Config = get_config(); print is_true($Config->param("telekinesis.enable"));' | perl`
@@ -169,7 +108,7 @@ if [ -z "${X2GO_CLIENT}" ]; then
 	msg="The \$X2GO_CLIENT environment variable is not set. Possible reasons: \$SSH_CLIENT not set or \$SSH_CONNECTION not set. Or \$X2GO_CLIENT not set by ,,X2Go Desktop Sharing'' applet. Aborting session startup."
 	echo "${msg}" >&2
 	"${X2GO_LIB_PATH}/x2gosyslog" "${0}" "err" "${msg}"
-	exit "6"
+	exit "7"
 fi
 
 "${X2GO_LIB_PATH}/x2gosyslog" "${0}" "debug" "client announced itself as ,,${X2GO_CLIENT}''"
@@ -223,7 +162,7 @@ if [ "${X2GO_STYPE}" == "S" ]; then
 			fi
 			"${X2GO_LIB_PATH}/x2gosyslog" "${0}" "err" "ERROR: user ${SHADOW_USER} denied desktop sharing session"
 			"${X2GO_LIB_PATH}/x2gosyslog" "${0}" "err" "ERROR: reason: for desktop sharing denial ${DENIAL_REASON}"
-			exit "7"
+			exit "8"
 		fi
 		X2GO_COOKIE="$(awk '{print $2}' <<< "${OUTPUT}")"
 		X2GO_PORT="$(awk '{print $1}' <<< "${OUTPUT}")"
@@ -239,7 +178,7 @@ if [ "${X2GO_STYPE}" == "S" ]; then
 		awk '{print $5}' <<< "${OUTPUT}"
 		awk '{print $6}' <<< "${OUTPUT}"
 		awk '{print $7}' <<< "${OUTPUT}"
-		exit "8"
+		exit "9"
 	fi
 else
 	X2GO_CLIPBOARD="$1"; shift
@@ -251,7 +190,7 @@ LWORD="$(awk '{print $1}' <<< "${LIMIT}")"
 if [ "${LWORD}" == "LIMIT" ]; then
 	echo "${LIMIT}" >&2
 	"${X2GO_LIB_PATH}/x2gosyslog" "${0}" "err" "session limit has been reached for user ,,${USER}'', cannot start new session"
-	exit "9"
+	exit "10"
 fi
 
 export NX_CLIENT="${X2GO_LIB_PATH}/x2gosuspend-agent"
