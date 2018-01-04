@@ -310,6 +310,11 @@ x2goserver (4.0.1.23-0x2go1) UNRELEASED; urgency=medium
       quotes on the lib path line.
     - x2goserver/bin/x2goresume-session: properly randomize first port, just
       like in x2gostartagent.
+    - x2goserver/bin/x2go{startagent,resume-session}: use x2gogetfreeport
+      instead of duplicating the same code everywhere. Fixes: #1230. Also,
+      rely on it returning a valid value and try at most 10 times to fetch a
+      usable port value, then error out and make the session startup or
+      resumption fail.
   * x2goserver.spec:
     - RPMify x2goserver-xsession description.
     - Remove qt4 stuff, we're not using the framework here.

@@ -170,12 +170,6 @@ SERVER=`echo "$SESSIONINFO" | awk -F, {'print $4'}`
 
 "$X2GO_LIB_PATH/x2gosyslog" "$0" "debug" "old ports: $GR_PORT, $SOUND_PORT, $FS_PORT"
 
-#Get all used in system ports from ss output
-ss="$(PATH="$PATH:/usr/sbin:/sbin" type -P ss)";
-USED_PORTS=$(
-	"$ss" -nt -all |
-	awk '{ n=split($0,lines,"\n"); for(i=1;i<=n;i++){split (lines[i],words," ");delim=split(words[4],ports,":"); if(delim>1)printf ("|%s|\n",ports[delim])} }';
-);
 
 #check if saved in DB ports free
 if grep -q "|${GR_PORT}|" <<<$SYSTEM_PORTS ; then
@@ -223,44 +217,51 @@ if ! SSH_PORT="$("${X2GO_LIB_PATH}/x2gogetrandomport")"; then
 	exit "1"
 fi
 
-#Get all used in system ports from X2Go database and netstat output
-USED_PORTS="$("${X2GO_LIB_PATH}/x2gogetports" "${current_host_name}"; netstat -nt -all | awk '{ n=split($0,lines,"\n"); for(i=1;i<=n;i++){split (lines[i],words," ");delim=split(words[4],ports,":"); if(delim>1)printf ("|%s|\n",ports[delim])} }')"
+# define the full path to the ss utility
+typeset ss="$(PATH="${PATH}:/usr/sbin:/sbin" type -P 'ss')"
 
-while [ "$GR_PORT" == "" ] || [ "$SOUND_PORT" == "" ] || [ "$FS_PORT" == "" ] || [ "$TEKICTRL_PORT" == "" ] || [ "$TEKIDATA_PORT" == "" ]; do
-	OUTPUT=""
-	while [ "$OUTPUT"  != "inserted" ]; do
-		SSH_PORT=$(($SSH_PORT + 1))
+typeset -i retry='0'
+typeset -i max_retry='10'
+typeset -i free_port='0'
+typeset output=''
+while [ -z "${GR_PORT}" ] || [ -z "${SOUND_PORT}" ] || [ -z "${FS_PORT}" ] || [ -z "${TEKICTRL_PORT}" ] || [ -z "${TEKIDATA_PORT}" ]; do
+	output=''
+	for ((retry = 0; retry < max_retry; ++retry)); do
+		free_port='0'
+		if free_port="$("${X2GO_LIB_PATH}/x2gogetfreeport" "${ss}" 'lowlevel' "${SSH_PORT}")"; then
+			SSH_PORT="${free_port}"
 
-		#get free port
-		SSH_PORT=`echo "for(\\$i=$SSH_PORT;\\$br ne \"true\";\\$i++){ if(\"$USED_PORTS\" =~ m/\\|\\$i\\|/){\\$br=\"false\";}else{\\$br=\"true\";print \\$i;}}"|perl`
+			output="$("${X2GO_LIB_PATH}/x2goinsertport" "${current_host_name}" "${SESSION_NAME}" "${SSH_PORT}")"
 
-		#check if port in /etc/services
-		SERV=`grep $SSH_PORT /etc/services`
-		if [ "$SERV" == "" ]; then
-			OUTPUT="$("${X2GO_LIB_PATH}/x2goinsertport" "${current_host_name}" "$SESSION_NAME" "$SSH_PORT")"
-
-			# Catching errors here would be nice, but the current layout doesn't allow this.
-			# Keep this in mind as a FIXME.
-			#if [[ "${?}" -ne "0" ]]; then
-			#	typeset msg="Unable to insert new port into database; parameters: hostname (${current_host_name}), session name (${SESSION_NAME}) and port (${SSH_PORT})."
-			#	"${X2GO_LIB_PATH}/x2gosyslog" "${0}" "err" "${msg}"
-			#
-			#	# Make x2goclient fail.
-			#	echo "${msg}" >&2
-			#	exit 1
-			#fi
+			if [[ "${output}" = "inserted" ]]; then
+				break
+			else
+				"${X2GO_LIB_PATH}/x2gosyslog" "${0}" "warning" "unable to insert port into database. Retrying (run $((retry + 1)))."
+			fi
+		else
+			"${X2GO_LIB_PATH}/x2gosyslog" "${0}" "warning" "no free port available, cannot start new session. Retrying (run $((retry + 1)))."
 		fi
 	done
-	if [ "$GR_PORT" == "" ]; then
-		GR_PORT="$SSH_PORT"
-	elif [ "$SOUND_PORT" == "" ]; then
-		SOUND_PORT="$SSH_PORT"
-	elif [ "$FS_PORT" == "" ]; then
-		FS_PORT="$SSH_PORT"
-	elif [ "$TEKICTRL_PORT" == "" ]; then
-		TEKICTRL_PORT="$SSH_PORT"
-	elif [ "$TEKIDATA_PORT" == "" ]; then
-		TEKIDATA_PORT="$SSH_PORT"
+
+	if [[ "${output}" != "inserted" ]]; then
+		typeset msg="Unable to find free port or insert new session into database; parameters: hostname (${current_host_name}), session name (${SESSION_NAME}) and port (${SSH_PORT})."
+		"${X2GO_LIB_PATH}/x2gosyslog" "${0}" "err" "${msg}"
+
+		# Make x2goclient fail.
+		echo "${msg}" >&2
+		exit "12"
+	fi
+
+	if [ -z "${GR_PORT}" ]; then
+		GR_PORT="${SSH_PORT}"
+	elif [ -z "${SOUND_PORT}" ]; then
+		SOUND_PORT="${SSH_PORT}"
+	elif [ -z "${FS_PORT}" ]; then
+		FS_PORT="${SSH_PORT}"
+	elif [ -z "${TEKICTRL_PORT}" ]; then
+		TEKICTRL_PORT="${SSH_PORT}"
+	elif [ -z "${TEKIDATA_PORT}" ]; then
+		TEKIDATA_PORT="${SSH_PORT}"
 	fi
 done
 
