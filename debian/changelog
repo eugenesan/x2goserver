@@ -325,6 +325,8 @@ x2goserver (4.0.1.23-0x2go1) UNRELEASED; urgency=medium
       bash-style checks, more curly braces, terminate options for commands
       that use outside input (variables), fix copyright notice.
     - x2goserver/lib/x2gogetfreeport: use single quotes for literal strings.
+    - x2goserver/lib/x2gogetfreeport: use error code 1 for general failure,
+      shift parameter sanitization failure codes up.
   * x2goserver.spec:
     - RPMify x2goserver-xsession description.
     - Remove qt4 stuff, we're not using the framework here.
