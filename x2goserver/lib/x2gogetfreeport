@@ -28,25 +28,25 @@
 # Prints the first free port value on success, or the initial start
 # port number on failure.
 # Returns 0 on success or non-0 on failure.
-typeset ss="${1:-"ss"}"
-typeset type="${2:-"lowlevel"}"
-typeset start="${3:-"1"}"
-typeset end="${4:-"65535"}"
+typeset ss="${1:-'ss'}"
+typeset type="${2:-'lowlevel'}"
+typeset start="${3:-'1'}"
+typeset end="${4:-'65535'}"
 
 # Check parameter sanity.
 typeset empty_regex='^[[:space:]]*$'
 if [[ -z "${ss}" ]] || [[ "${ss}" =~ ${empty_regex} ]]; then
-	exit "1"
+	exit '1'
 fi
 typeset -i start_i="${start}"
 typeset -i end_i="${end}"
 if [[ -z "${start}" ]] || [[ "${start}" != "${start_i}" ]] || [[ "${start}" -ne "${start_i}" ]]; then
-	exit "2"
+	exit '2'
 fi
 if [[ -z "${end}" ]] || [[ "${end}" != "${end_i}" ]] || [[ "${end}" -ne "${end_i}" ]]; then
-	exit "3"
+	exit '3'
 fi
-[[ "${type}" != 'lowlevel' ]] && [[ "${type}" != 'display' ]] && exit "4"
+[[ "${type}" != 'lowlevel' ]] && [[ "${type}" != 'display' ]] && exit '4'
 
 
 # Skip unnecessary work.
@@ -66,7 +66,7 @@ if [[ "${type}" = 'display' ]]; then
 	# Then, normal word splitting kicks in and the -a flag tells
 	# read to put all words into elements of the provided array
 	# variable.
-	IFS="${IFS}|" read -r -d '' -a used_displays_work < <("${X2GO_LIB_PATH}/x2gogetdisplays" "${current_host_name}")
+	IFS="${IFS}|" read -r -d '' -a 'used_displays_work' < <("${X2GO_LIB_PATH}/x2gogetdisplays" "${current_host_name}")
 
 	# Filter out any empty or invalid values.
 	typeset -i item_i='0'
@@ -87,8 +87,8 @@ typeset -a used_ports
 typeset -a used_ports_work
 used_ports=()
 used_ports_work=()
-IFS="${IFS}|" read -r -d '' -a used_ports_work < <("${X2GO_LIB_PATH}/x2gogetports" "${current_host_name}";
-						   "${ss}" -nt -all | awk '
+IFS="${IFS}|" read -r -d '' -a 'used_ports_work' < <("${X2GO_LIB_PATH}/x2gogetports" "${current_host_name}";
+						     "${ss}" -nt -all | awk '
 							{
 								n = split ($0, lines, "\n");
 								for (i = 1; i <= n; ++i) {
@@ -116,27 +116,27 @@ typeset -i stop_port='65535'
 [[ "${type}" = 'display' ]] && stop_port="$((stop_port - 6000))"
 # Find the next free port number.
 for ((work_port = start; i <= stop_port; ++work_port)); do
-	typeset -i i="0"
-	typeset -i value_found="0"
+	typeset -i i='0'
+	typeset -i value_found='0'
 
 	if [[ "${type}" = 'display' ]]; then
 		for ((i = 0; i < ${#used_displays[@]}; ++i)); do
 			if [[ "${used_displays[i]}" = "${work_port}" ]]; then
 				# We need to continue with the next port number,
 				# this one is taken.
-				value_found="1"
+				value_found='1'
 				break
 			fi
 		done
 
 		# Check if such a socket is already in use system-wide.
-		if "${ss}" -lxs 2>"/dev/null" | grep -Eqs "(@|)/tmp/.X11-unix/X${work_port}(|-lock) " >"/dev/null"; then
+		if "${ss}" -lxs 2>'/dev/null' | grep -Eqs "(@|)/tmp/.X11-unix/X${work_port}(|-lock) " >'/dev/null'; then
 			continue
 		fi
 	fi
 
 	# Port number taken? Continue with the next one.
-	[[ "${value_found}" -ne "0" ]] && continue
+	[[ "${value_found}" -ne '0' ]] && continue
 
 	# Check raw port number. Either to make sure that the corresponding
 	# raw port for the DISPLAY port found is still free, or also in the
@@ -145,16 +145,16 @@ for ((work_port = start; i <= stop_port; ++work_port)); do
 	[[ "${type}" = 'display' ]] && map_port="$((map_port + 6000))"
 	for ((i = 0; i < ${#used_ports[@]}; ++i)); do
 		if [[ "${used_ports[i]}" = "${map_port}" ]]; then
-			value_found="1"
+			value_found='1'
 			break
 		fi
 	done
 
 	# Port number taken? Continue with the next one.
-	[[ "${value_found}" -ne "0" ]] && continue
+	[[ "${value_found}" -ne '0' ]] && continue
 
 	# If the port is a well-known one, don't block it.
-	grep -qs "${work_port}" "/etc/services" &>"/dev/null" && continue
+	grep -qs "${work_port}" '/etc/services' &>'/dev/null' && continue
 
 	# Searched the array and got nothing? Great, grab that port number!
 	ret_port="${work_port}"
