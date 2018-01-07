@@ -71,7 +71,7 @@ fi
 # Workaround: use hostname.
 typeset current_host_name=""
 
-if current_host_name="$(hostname)"; then
+if ! current_host_name="$(hostname)"; then
 	typeset msg="Unable to retrieve machine's hostname. This is required. Aborting session startup."
 	"${X2GO_LIB_PATH}/x2gosyslog" "${0}" "err" "${msg}"
 

@@ -315,6 +315,8 @@ x2goserver (4.0.1.23-0x2go1) UNRELEASED; urgency=medium
       rely on it returning a valid value and try at most 10 times to fetch a
       usable port value, then error out and make the session startup or
       resumption fail.
+    - x2goserver/bin/x2gostartagent: fix hostname detection. Only error out if
+      the hostname call actually failed, not the other way around.
   * x2goserver.spec:
     - RPMify x2goserver-xsession description.
     - Remove qt4 stuff, we're not using the framework here.
