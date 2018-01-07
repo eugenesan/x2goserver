@@ -321,6 +321,9 @@ x2goserver (4.0.1.23-0x2go1) UNRELEASED; urgency=medium
       bash-style tests, more quotes, curly braces, wrap literal strings in
       single quotes, avoid useless constructs, fix whitespace errors and
       probably more.
+    - x2goserver/bin/x2gostartagent: use single quotes for literal strings,
+      bash-style checks, more curly braces, terminate options for commands
+      that use outside input (variables), fix copyright notice.
   * x2goserver.spec:
     - RPMify x2goserver-xsession description.
     - Remove qt4 stuff, we're not using the framework here.
