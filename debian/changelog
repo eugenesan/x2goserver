@@ -334,6 +334,8 @@ x2goserver (4.0.1.23-0x2go1) UNRELEASED; urgency=medium
     - x2goserver/lib/x2gogetfreeport: use the check_*_port functions, require
       current host name as a parameter and adapt x2gogetfreeport usages
       accordingly.
+    - x2goserver/bin/x2goresume-session: actually check if the old port values
+      have been refurbished within the system and reassign them.
   * x2goserver.spec:
     - RPMify x2goserver-xsession description.
     - Remove qt4 stuff, we're not using the framework here.

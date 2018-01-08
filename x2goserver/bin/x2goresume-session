@@ -161,21 +161,27 @@ FS_PORT="$(awk -F ',' '{print $14}' <<< "${SESSIONINFO}")"
 
 "${X2GO_LIB_PATH}/x2gosyslog" "${0}" 'debug' "old ports: ${GR_PORT}, ${SOUND_PORT}, ${FS_PORT}"
 
-### FIXME ###
-### THIS NEVER WORKED CORRECTLY SINCE ${SYSTEM_PORTS} HAS BEEN REPLACED BY A ${USED_PORTS} COPY ###
+typeset X2GO_INTERNAL_SOURCE='1'
+# Make shellcheck happy.
+: "${X2GO_INTERNAL_SOURCE}"
+. "${X2GO_LIB_PATH}/x2gocheckport"
+unset X2GO_INTERNAL_SOURCE
+
+# define the full path to the ss utility
+typeset ss="$(PATH="${PATH}:/usr/sbin:/sbin" type -P 'ss')"
 
 #check if saved in DB ports free
-if grep -q "|${GR_PORT}|" <<< "${SYSTEM_PORTS}"; then
+if ! check_system_port "${ss}" "${GR_PORT}"; then
 	"${X2GO_LIB_PATH}/x2gosyslog" "${0}" 'debug' "port ${GR_PORT} is already in use"
 	"${X2GO_LIB_PATH}/x2gormport" "${current_host_name}" "${SESSION_NAME}" "${GR_PORT}"
 	GR_PORT=''
 fi
-if grep -q "|${SOUND_PORT}|" <<< "${SYSTEM_PORTS}"; then
+if ! check_system_port "${ss}" "${SOUND_PORT}"; then
 	"${X2GO_LIB_PATH}/x2gosyslog" "${0}" 'debug' "port ${SOUND_PORT} is already in use"
 	"${X2GO_LIB_PATH}/x2gormport" "${current_host_name}" "${SESSION_NAME}" "${SOUND_PORT}"
 	SOUND_PORT=''
 fi
-if grep -q "|${FS_PORT}|" <<< "${SYSTEM_PORTS}"; then
+if ! check_system_port "${ss}" "${FS_PORT}"; then
 	"${X2GO_LIB_PATH}/x2gosyslog" "${0}" 'debug' "port ${FS_PORT} is already in use"
 	"${X2GO_LIB_PATH}/x2gormport" "${current_host_name}" "${SESSION_NAME}" "${FS_PORT}"
 	FS_PORT=''
@@ -209,9 +215,6 @@ if ! SSH_PORT="$("${X2GO_LIB_PATH}/x2gogetrandomport")"; then
 	echo "${msg}" >&2
 	exit '5'
 fi
-
-# define the full path to the ss utility
-typeset ss="$(PATH="${PATH}:/usr/sbin:/sbin" type -P 'ss')"
 
 typeset -i retry='0'
 typeset -i max_retry='10'
