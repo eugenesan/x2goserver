@@ -40,10 +40,10 @@ if [[ -z "${ss}" ]] || [[ "${ss}" =~ ${empty_regex} ]]; then
 fi
 typeset -i start_i="${start}"
 typeset -i end_i="${end}"
-if [[ -z "${start}" ]] || [[ "${start}" != "${start_i}" ]] || [[ "${start}" -ne "${start_i}" ]]; then
+if [[ -z "${start}" ]] || [[ "${start}" != "${start_i}" ]] || [[ "${start}" -ne "${start_i}" ]] || [[ "${start_i}" -lt '0' ]] || [[ "${start_i}" -gt '65535' ]]; then
 	exit '3'
 fi
-if [[ -z "${end}" ]] || [[ "${end}" != "${end_i}" ]] || [[ "${end}" -ne "${end_i}" ]]; then
+if [[ -z "${end}" ]] || [[ "${end}" != "${end_i}" ]] || [[ "${end}" -ne "${end_i}" ]] || [[ "${end_i}" -lt "${start_i}" ]] || [[ "${end_i}" -gt '65535' ]]; then
 	exit '4'
 fi
 [[ "${type}" != 'lowlevel' ]] && [[ "${type}" != 'display' ]] && exit '5'
