@@ -327,6 +327,8 @@ x2goserver (4.0.1.23-0x2go1) UNRELEASED; urgency=medium
     - x2goserver/lib/x2gogetfreeport: use single quotes for literal strings.
     - x2goserver/lib/x2gogetfreeport: use error code 1 for general failure,
       shift parameter sanitization failure codes up.
+    - x2goserver/lib: new script x2gocheckport, containing common
+      functionality for port checking. Duplicated code will be deleted next.
   * x2goserver.spec:
     - RPMify x2goserver-xsession description.
     - Remove qt4 stuff, we're not using the framework here.

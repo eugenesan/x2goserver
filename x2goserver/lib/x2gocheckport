@@ -1,0 +1,280 @@
+#!/bin/bash
+
+# Copyright (C) 2017-2018 X2Go Project - https://wiki.x2go.org
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the
+# Free Software Foundation, Inc.,
+# 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
+
+[[ -z "${X2GO_INTERNAL_SOURCE}" ]] && exit '2'
+
+# Variables used for caching.
+# We do not want to fetch the whole list for every
+# single port check.
+typeset -a used_x2go_ports
+typeset -a used_system_ports
+typeset -a used_display_ports
+used_x2go_ports=()
+used_system_ports=()
+used_display_ports=()
+
+# Initializes used_x2go_ports array.
+# Internal use only.
+# Takes the current hostname as a parameter.
+# Returns 0 on success or non-0 on failure.
+initialize_x2go_ports() {
+	typeset current_host_name="${1}"
+
+	typeset empty_regex='^[[:space:]]*$'
+	if [[ -z "${current_host_name}" ]] || [[ "${current_host_name}" =~ ${empty_regex} ]] || [[ "${current_host_name}" = '(none)' ]] || [[ "${current_host_name}" = 'localhost' ]]; then
+		return '1'
+	fi
+
+	# Get all used ports from the X2Go database
+	# What this does is very unobvious, so here's how that works:
+	# The -d parameter with an empty string as its argument makes
+	# the read utility process a "line" until the first such delimiter
+	# is found. Since an empty string in C is terminated by a NULL
+	# character, the delimiter will be set to this NULL character.
+	# Hence, assuming that the input string does not contain any
+	# NULL characters, the whole input string will be treated as
+	# one big line.
+	# Then, normal word splitting kicks in and the -a flag tells
+	# read to put all words into elements of the provided array
+	# variable.
+	typeset -a used_x2go_ports_work
+	used_x2go_ports_work=()
+	IFS="${IFS}|" read -r -d '' -a 'used_x2go_ports_work' < <("${X2GO_LIB_PATH}/x2gogetports" "${current_host_name}")
+
+	# Filter out any empty or invalid values.
+	typeset -i item_i='0'
+	typeset item=''
+	for item in "${used_x2go_ports_work[@]}"; do
+		item_i="${item}"
+
+		[[ -n "${item}" ]] && [[ "${item}" -eq "${item_i}" ]] && [[ "${item}" = "${item_i}" ]] && used_x2go_ports+=( "${item}" )
+	done
+
+	return '0'
+}
+
+# Initializes used_system_ports array.
+# Internal use only.
+# Takes a command for ss as a parameter.
+# If an ss command is not given, a default of "ss" is assumed.
+# Returns 0 on success or non-0 on failure.
+initialize_system_ports() {
+	typeset ss="${1:-'ss'}"
+
+	typeset empty_regex='^[[:space:]]*$'
+	if [[ -z "${ss}" ]] || [[ "${ss}" =~ ${empty_regex} ]]; then
+		return '1'
+	fi
+
+	typeset -a used_system_ports_work
+	used_system_ports_work=()
+	IFS="${IFS}|" read -r -d '' -a 'used_system_ports_work' < <("${ss}" -nt -all | awk '
+									{
+										n = split ($0, lines, "\n");
+										for (i = 1; i <= n; ++i) {
+											split (lines[i], words, " ");
+											delim = split (words[4], ports, ":");
+											if (delim > 1) {
+												printf ("\n%d\n", ports[delim])
+											}
+										}
+									}')
+
+	# Filter out any empty or invalid values.
+	typeset -i item_i='0'
+	typeset item=''
+	for item in "${used_system_ports_work[@]}"; do
+		item_i="${item}"
+
+		[[ -n "${item}" ]] && [[ "${item}" -eq "${item_i}" ]] && [[ "${item}" = "${item_i}" ]] && used_system_ports+=( "${item}" )
+	done
+
+	return '0'
+}
+
+# Initializes used_display_ports array.
+# Internal use only.
+# Takes the current hostname as a parameter.
+# Returns 0 on success or non-0 on failure.
+initialize_display_ports() {
+	typeset current_host_name="${1}"
+
+	typeset empty_regex='^[[:space:]]*$'
+	if [[ -z "${current_host_name}" ]] || [[ "${current_host_name}" =~ ${empty_regex} ]] || [[ "${current_host_name}" = '(none)' ]] || [[ "${current_host_name}" = 'localhost' ]]; then
+		return '1'
+	fi
+
+	typeset -a used_display_ports_work
+	used_display_ports_work=()
+	IFS="${IFS}|" read -r -d '' -a 'used_display_ports_work' < <("${X2GO_LIB_PATH}/x2gogetdisplays" "${current_host_name}")
+
+	# Filter out any empty or invalid values.
+	typeset -i item_i='0'
+	typeset item=''
+	for item in "${used_display_ports_work[@]}"; do
+		item_i="${item}"
+
+		[[ -n "${item}" ]] && [[ "${item}" -eq "${item_i}" ]] && [[ "${item}" = "${item_i}" ]] && used_display_ports+=( "${item}" )
+	done
+
+	return '0'
+}
+
+# Checks if a port is registered as in use by X2Go.
+# Takes the current hostname and a port value as parameters.
+# Returns 0 if the port is free, or non-0 if it already
+# in use or on failure.
+check_x2go_port() {
+	typeset current_host_name="${1}"
+	typeset port="${2}"
+
+	typeset empty_regex='^[[:space:]]*$'
+	if [[ -z "${current_host_name}" ]] || [[ "${current_host_name}" =~ ${empty_regex} ]] || [[ "${current_host_name}" = '(none)' ]] || [[ "${current_host_name}" = 'localhost' ]]; then
+		return '2'
+	fi
+
+	typeset -i port_i="${port}"
+	if [[ -z "${port}" ]] || [[ "${port}" != "${port_i}" ]] || [[ "${port}" -ne "${port_i}" ]] || [[ "${port_i}" -lt '1' ]] || [[ "${port_i}" -gt '65535' ]]; then
+		return '3'
+	fi
+
+	typeset -i ret='0'
+
+	# If cache is empty, initialize it.
+	if [[ "${#used_x2go_ports[@]}" -eq '0' ]]; then
+		initialize_x2go_ports "${current_host_name}" || ret='4'
+	fi
+
+	if [[ "${ret}" -eq '0' ]]; then
+		typeset -i i='0'
+		for ((i = 0; i < ${#used_x2go_ports[@]}; ++i)); do
+			if [[ "${used_x2go_ports[i]}" = "${port}" ]]; then
+				ret='1'
+				break
+			fi
+		done
+	fi
+
+	return "${ret}"
+}
+
+# Checks if a port is registered as in use by the system.
+# Takes a command for ss and a port value as parameters.
+# If an ss command is not given, a default of "ss" is assumed.
+# Returns 0 if the port is free, or non-0 if it already
+# in use or on failure.
+check_system_port() {
+	typeset ss="${1:-'ss'}"
+	typeset port="${2}"
+
+	typeset empty_regex='^[[:space:]]*$'
+	if [[ -z "${ss}" ]] || [[ "${ss}" =~ ${empty_regex} ]]; then
+		return '2'
+	fi
+
+	typeset -i port_i="${port}"
+	if [[ -z "${port}" ]] || [[ "${port}" != "${port_i}" ]] || [[ "${port}" -ne "${port_i}" ]] || [[ "${port_i}" -lt '1' ]] || [[ "${port_i}" -gt '65535' ]]; then
+		return '3'
+	fi
+
+	typeset -i ret='0'
+
+	# If the port is a well-known one, don't block it.
+	grep -qs "[[:space:]]\+${port}/" '/etc/services' &>'/dev/null' && ret='1'
+
+	if [[ "${ret}" -eq '0' ]]; then
+		# If cache is empty, initialize it.
+		if [[ "${#used_system_ports[@]}" -eq '0' ]]; then
+			initialize_system_ports "${ss}" || ret='4'
+		fi
+	fi
+
+	if [[ "${ret}" -eq '0' ]]; then
+		typeset -i i='0'
+		for ((i = 0; i < ${#used_system_ports[@]}; ++i)); do
+			if [[ "${used_system_ports[i]}" = "${port}" ]]; then
+				ret='1'
+				break
+			fi
+		done
+	fi
+
+	return "${ret}"
+}
+
+# Checks if a port is registered as in use by the system.
+# Takes the current host name, a command for ss and a port value as parameters.
+# If an ss command is not given, a default of "ss" is assumed.
+# Returns 0 if the port is free, or non-0 if it already
+# in use or on failure.
+check_display_port() {
+	typeset current_host_name="${1}"
+	typeset ss="${2:-'ss'}"
+	typeset port="${3}"
+
+	typeset empty_regex='^[[:space:]]*$'
+	if [[ -z "${current_host_name}" ]] || [[ "${current_host_name}" =~ ${empty_regex} ]] || [[ "${current_host_name}" = '(none)' ]] || [[ "${current_host_name}" = 'localhost' ]]; then
+		return '2'
+	fi
+
+	if [[ -z "${ss}" ]] || [[ "${ss}" =~ ${empty_regex} ]]; then
+		return '3'
+	fi
+
+	typeset -i port_i="${port}"
+	if [[ -z "${port}" ]] || [[ "${port}" != "${port_i}" ]] || [[ "${port}" -ne "${port_i}" ]] || [[ "${port_i}" -lt '0' ]] || [[ "${port_i}" -gt '59535' ]]; then
+		return '4'
+	fi
+
+	typeset -i ret='0'
+
+	# If cache is empty, initialize it.
+	if [[ "${#used_display_ports[@]}" -eq '0' ]]; then
+		initialize_display_ports "${current_host_name}" || ret='5'
+	fi
+
+	if [[ "${ret}" -eq '0' ]]; then
+		typeset -i i='0'
+		for ((i = 0; i < ${#used_display_ports[@]}; ++i)); do
+			if [[ "${used_display_ports[i]}" = "${port}" ]]; then
+				ret='1'
+				break
+			fi
+		done
+	fi
+
+	if [[ "${ret}" -eq '0' ]]; then
+		# Looks free, check system sockets.
+		if "${ss}" -lxs 2>'/dev/null' | grep -Eqs "(@|)/tmp/.X11-unix/X${port}(|-lock) " >'/dev/null'; then
+			ret='1'
+		fi
+	fi
+
+	if [[ "${ret}" -eq '0' ]]; then
+		# Still looks free, check X2Go database.
+		check_x2go_port "${current_host_name}" "$((port + 6000))" || ret='1'
+	fi
+
+	if [[ "${ret}" -eq '0' ]]; then
+		# Still looks free, check system state.
+		check_system_port "${ss}" "$((port + 6000))" || ret='1'
+	fi
+
+	return "${ret}"
+}
