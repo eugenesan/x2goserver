@@ -18,8 +18,8 @@
 # 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
 
 # Get first free port.
-# Takes a command for ss, the port type, a start andan end port
-# as parameters.
+# Takes the current host name, a command for ss, the port type,
+# a start and an end port as parameters.
 # If an ss command is not given, a default of "ss" is assumed.
 # If the port type is not given, a default of "lowlevel" is assumed.
 # If the start port is not given, a default of 1 is assumed.
@@ -28,86 +28,39 @@
 # Prints the first free port value on success, or the initial start
 # port number on failure.
 # Returns 0 on success or non-0 on failure.
-typeset ss="${1:-'ss'}"
-typeset type="${2:-'lowlevel'}"
-typeset start="${3:-'1'}"
-typeset end="${4:-'65535'}"
+typeset current_host_name="${1}"
+typeset ss="${2:-'ss'}"
+typeset type="${3:-'lowlevel'}"
+typeset start="${4:-'1'}"
+typeset end="${5:-'65535'}"
 
 # Check parameter sanity.
 typeset empty_regex='^[[:space:]]*$'
-if [[ -z "${ss}" ]] || [[ "${ss}" =~ ${empty_regex} ]]; then
+if [[ -z "${current_host_name}" ]] || [[ "${current_host_name}" =~ ${empty_regex} ]] || [[ "${current_host_name}" = '(none)' ]] || [[ "${current_host_name}" = 'localhost' ]]; then
 	exit '2'
+fi
+
+if [[ -z "${ss}" ]] || [[ "${ss}" =~ ${empty_regex} ]]; then
+	exit '3'
 fi
 typeset -i start_i="${start}"
 typeset -i end_i="${end}"
 if [[ -z "${start}" ]] || [[ "${start}" != "${start_i}" ]] || [[ "${start}" -ne "${start_i}" ]] || [[ "${start_i}" -lt '0' ]] || [[ "${start_i}" -gt '65535' ]]; then
-	exit '3'
-fi
-if [[ -z "${end}" ]] || [[ "${end}" != "${end_i}" ]] || [[ "${end}" -ne "${end_i}" ]] || [[ "${end_i}" -lt "${start_i}" ]] || [[ "${end_i}" -gt '65535' ]]; then
 	exit '4'
 fi
-[[ "${type}" != 'lowlevel' ]] && [[ "${type}" != 'display' ]] && exit '5'
-
-
-# Skip unnecessary work.
-if [[ "${type}" = 'display' ]]; then
-	typeset -a used_displays
-	typeset -a used_displays_work
-	used_displays=()
-	used_displays_work=()
-	# What this does is very unobvious, so here's how that works:
-	# The -d parameter with an empty string as its argument makes
-	# the read utility process a "line" until the first such delimiter
-	# is found. Since an empty string in C is terminated by a NULL
-	# character, the delimiter will be set to this NULL character.
-	# Hence, assuming that the input string does not contain any
-	# NULL characters, the whole input string will be treated as
-	# one big line.
-	# Then, normal word splitting kicks in and the -a flag tells
-	# read to put all words into elements of the provided array
-	# variable.
-	IFS="${IFS}|" read -r -d '' -a 'used_displays_work' < <("${X2GO_LIB_PATH}/x2gogetdisplays" "${current_host_name}")
-
-	# Filter out any empty or invalid values.
-	typeset -i item_i='0'
-	typeset item=''
-	for item in "${used_displays_work[@]}"; do
-		item_i="${item}"
-
-		[[ -n "${item}" ]] && [[ "${item}" -eq "${item_i}" ]] && [[ "${item}" = "${item_i}" ]] && used_displays+=( "${item}" )
-	done
+if [[ -z "${end}" ]] || [[ "${end}" != "${end_i}" ]] || [[ "${end}" -ne "${end_i}" ]] || [[ "${end_i}" -lt "${start_i}" ]] || [[ "${end_i}" -gt '65535' ]]; then
+	exit '5'
 fi
+[[ "${type}" != 'lowlevel' ]] && [[ "${type}" != 'display' ]] && exit '6'
 
-# Same algorithm again for the system ports in use, but we cannot really
-# use a function to duplicate code less since arrays and functions don't
-# mix well in bash.
 
-# Get all used in system ports from X2Go database and ss output
-typeset -a used_ports
-typeset -a used_ports_work
-used_ports=()
-used_ports_work=()
-IFS="${IFS}|" read -r -d '' -a 'used_ports_work' < <("${X2GO_LIB_PATH}/x2gogetports" "${current_host_name}";
-						     "${ss}" -nt -all | awk '
-							{
-								n = split ($0, lines, "\n");
-								for (i = 1; i <= n; ++i) {
-									split (lines[i], words, " ");
-									delim = split (words[4], ports, ":");
-									if (delim > 1) {
-										printf ("\n%d\n", ports[delim])
-									}
-								}
-							}')
+typeset x2go_lib_path="$(x2gopath 'libexec')"
+typeset X2GO_INTERNAL_SOURCE='1'
+# Make shellcheck happy.
+: "${X2GO_INTERNAL_SOURCE}"
+. "${x2go_lib_path}/x2gocheckport"
+unset X2GO_INTERNAL_SOURCE
 
-# Filter out any empty or invalid values.
-item_i='0'
-item=''
-for item in "${used_ports_work[@]}"; do
-	item_i="${item}"
-
-	[[ -n "${item}" ]] && [[ "${item}" -eq "${item_i}" ]] && [[ "${item}" = "${item_i}" ]] && used_ports+=( "${item}" )
-done
 
 typeset -i ret_port="${start}"
 typeset -i ret='1'
@@ -120,43 +73,19 @@ for ((work_port = start; i <= stop_port; ++work_port)); do
 	typeset -i value_found='0'
 
 	if [[ "${type}" = 'display' ]]; then
-		for ((i = 0; i < ${#used_displays[@]}; ++i)); do
-			if [[ "${used_displays[i]}" = "${work_port}" ]]; then
-				# We need to continue with the next port number,
-				# this one is taken.
-				value_found='1'
-				break
-			fi
-		done
+		check_display_port "${current_host_name}" "${ss}" "${work_port}" || value_found='1'
+	else
+		check_x2go_port "${current_host_name}" "${work_port}" || value_found='1'
 
-		# Check if such a socket is already in use system-wide.
-		if "${ss}" -lxs 2>'/dev/null' | grep -Eqs "(@|)/tmp/.X11-unix/X${work_port}(|-lock) " >'/dev/null'; then
-			continue
+		if [[ "${value_found}" -eq '0' ]]; then
+			check_system_port "${ss}" "${work_port}" || value_found='1'
 		fi
 	fi
 
 	# Port number taken? Continue with the next one.
 	[[ "${value_found}" -ne '0' ]] && continue
 
-	# Check raw port number. Either to make sure that the corresponding
-	# raw port for the DISPLAY port found is still free, or also in the
-	# general case.
-	typeset -i map_port="${work_port}"
-	[[ "${type}" = 'display' ]] && map_port="$((map_port + 6000))"
-	for ((i = 0; i < ${#used_ports[@]}; ++i)); do
-		if [[ "${used_ports[i]}" = "${map_port}" ]]; then
-			value_found='1'
-			break
-		fi
-	done
-
-	# Port number taken? Continue with the next one.
-	[[ "${value_found}" -ne '0' ]] && continue
-
-	# If the port is a well-known one, don't block it.
-	grep -qs "${work_port}" '/etc/services' &>'/dev/null' && continue
-
-	# Searched the array and got nothing? Great, grab that port number!
+	# Searched and got nothing? Great, grab that port number!
 	ret_port="${work_port}"
 	ret='0'
 	break

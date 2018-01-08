@@ -221,7 +221,7 @@ while [[ -z "${GR_PORT}" ]] || [[ -z "${SOUND_PORT}" ]] || [[ -z "${FS_PORT}" ]]
 	output=''
 	for ((retry = 0; retry < max_retry; ++retry)); do
 		free_port='0'
-		if free_port="$("${X2GO_LIB_PATH}/x2gogetfreeport" "${ss}" 'lowlevel' "${SSH_PORT}")"; then
+		if free_port="$("${X2GO_LIB_PATH}/x2gogetfreeport" "${current_host_name}" "${ss}" 'lowlevel' "${SSH_PORT}")"; then
 			SSH_PORT="${free_port}"
 
 			output="$("${X2GO_LIB_PATH}/x2goinsertport" "${current_host_name}" "${SESSION_NAME}" "${SSH_PORT}")"

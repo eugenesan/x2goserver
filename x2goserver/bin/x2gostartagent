@@ -221,7 +221,7 @@ typeset -i max_retry='10'
 typeset -i output=''
 for ((retry = 0; retry < max_retry; ++retry)); do
 	typeset -i free_port="${X2GO_PORT}"
-	if free_port="$("${X2GO_LIB_PATH}/x2gogetfreeport" "${ss}" 'display' "${X2GO_PORT}")"; then
+	if free_port="$("${X2GO_LIB_PATH}/x2gogetfreeport" "${current_host_name}" "${ss}" 'display' "${X2GO_PORT}")"; then
 		X2GO_PORT="${free_port}"
 
 		if [ -n "${SHADREQ_USER}" ]; then
@@ -274,7 +274,7 @@ while [[ -z "${GR_PORT}" ]] || [[ -z "${SOUND_PORT}" ]] || [[ -z "${FS_PORT}" ]]
 	output=''
 	for ((retry = 0; retry < max_retry; ++retry)); do
 		free_port='0'
-		if free_port="$("${X2GO_LIB_PATH}/x2gogetfreeport" "${ss}" 'lowlevel' "${SSH_PORT}")"; then
+		if free_port="$("${X2GO_LIB_PATH}/x2gogetfreeport" "${current_host_name}" "${ss}" 'lowlevel' "${SSH_PORT}")"; then
 			SSH_PORT="${free_port}"
 
 			output="$("${X2GO_LIB_PATH}/x2goinsertport" "${current_host_name}" "${SESSION_NAME}" "${SSH_PORT}")"
