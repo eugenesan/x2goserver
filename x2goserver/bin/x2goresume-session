@@ -181,24 +181,24 @@ if ! check_system_port "${ss}" "${FS_PORT}"; then
 	FS_PORT=''
 fi
 
-if [ "x$X2GO_TELEKINESIS_ENABLED" == "x1" ]; then
-	TEKICTRL_PORT=`echo "$SESSIONINFO" | awk -F, {'print $15'}`
-	TEKIDATA_PORT=`echo "$SESSIONINFO" | awk -F, {'print $16'}`
-	if grep -q "|${TEKICTRL_PORT}|" <<<$SYSTEM_PORTS ; then
-		$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "port "$TEKICTRL_PORT" is already in use"
+if [[ "${X2GO_TELEKINESIS_ENABLED}" = '1' ]]; then
+	TEKICTRL_PORT="$(awk -F ',' '{print $15}' <<< "${SESSIONINFO}")"
+	TEKIDATA_PORT="$(awk -F ',' '{print $16}' <<< "${SESSIONINFO}")"
+	if ! check_system_port "${ss}" "${TEKICTRL_PORT}"; then
+		"${X2GO_LIB_PATH}/x2gosyslog" "${0}" 'debug' "port ${TEKICTRL_PORT} is already in use"
 		"${X2GO_LIB_PATH}/x2gormport" "${current_host_name}" "${SESSION_NAME}" "${TEKICTRL_PORT}"
-		TEKICTRL_PORT=""
+		TEKICTRL_PORT=''
 	fi
-	if grep -q "|${TEKIDATA_PORT}|" <<<$SYSTEM_PORTS ; then
-		$X2GO_LIB_PATH/x2gosyslog "$0" "debug" "port "$TEKIDATA_PORT" is already in use"
+	if ! check_system_port "${ss}" "${TEKIDATA_PORT}"; then
+		"${X2GO_LIB_PATH}/x2gosyslog" "${0}" 'debug' "port ${TEKIDATA_PORT} is already in use"
 		"${X2GO_LIB_PATH}/x2gormport" "${current_host_name}" "${SESSION_NAME}" "${TEKIDATA_PORT}"
-		TEKIDATA_PORT=""
+		TEKIDATA_PORT=''
 	fi
 else
 	"${X2GO_LIB_PATH}/x2gormport" "${current_host_name}" "${SESSION_NAME}" "${TEKICTRL_PORT}"
 	"${X2GO_LIB_PATH}/x2gormport" "${current_host_name}" "${SESSION_NAME}" "${TEKIDATA_PORT}"
-	TEKICTRL_PORT="0"
-	TEKIDATA_PORT="0"
+	TEKICTRL_PORT='0'
+	TEKIDATA_PORT='0'
 fi
 
 if ! SSH_PORT="$("${X2GO_LIB_PATH}/x2gogetrandomport")"; then
@@ -246,11 +246,11 @@ while [[ -z "${GR_PORT}" ]] || [[ -z "${SOUND_PORT}" ]] || [[ -z "${FS_PORT}" ]]
 		GR_PORT="${SSH_PORT}"
 	elif [[ -z "${SOUND_PORT}" ]]; then
 		SOUND_PORT="${SSH_PORT}"
-	elif [ -z "${FS_PORT}" ]; then
+	elif [[ -z "${FS_PORT}" ]]; then
 		FS_PORT="${SSH_PORT}"
-	elif [ -z "${TEKICTRL_PORT}" ]; then
+	elif [[ -z "${TEKICTRL_PORT}" ]]; then
 		TEKICTRL_PORT="${SSH_PORT}"
-	elif [ -z "${TEKIDATA_PORT}" ]; then
+	elif [[ -z "${TEKIDATA_PORT}" ]]; then
 		TEKIDATA_PORT="${SSH_PORT}"
 	fi
 done
@@ -352,7 +352,7 @@ fi
 echo "gr_port=${GR_PORT}"
 echo "sound_port=${SOUND_PORT}"
 echo "fs_port=${FS_PORT}"
-if [ "x$X2GO_TELEKINESIS_ENABLED" == "x1" ]; then
-	echo "tekictrl_port=$TEKICTRL_PORT"
-	echo "tekidata_port=$TEKIDATA_PORT"
+if [[ "${X2GO_TELEKINESIS_ENABLED}" = '1' ]]; then
+	echo "tekictrl_port=${TEKICTRL_PORT}"
+	echo "tekidata_port=${TEKIDATA_PORT}"
 fi
