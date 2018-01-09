@@ -190,7 +190,7 @@ LWORD="$(awk '{print $1}' <<< "${LIMIT}")"
 if [[ "${LWORD}" = 'LIMIT' ]]; then
 	echo "${LIMIT}" >&2
 	"${X2GO_LIB_PATH}/x2gosyslog" "${0}" 'err' "session limit has been reached for user "'"'"${USER}"'"'", cannot start new session"
-	exit '10'
+	exit '9'
 fi
 
 export NX_CLIENT="${X2GO_LIB_PATH}/x2gosuspend-agent"
@@ -261,7 +261,7 @@ if [[ "${output}" != 'inserted' ]]; then
 
 	# Make x2goclient fail.
 	echo "${msg}" >&2
-	exit '11'
+	exit '10'
 fi
 
 if [[ "${X2GO_TELEKINESIS_ENABLED}" = '0' ]] || [[ "${X2GO_STYPE}" = 'S' ]] || ! type -p 'telekinesis-server' 1>'/dev/null'; then
@@ -295,7 +295,7 @@ while [[ -z "${GR_PORT}" ]] || [[ -z "${SOUND_PORT}" ]] || [[ -z "${FS_PORT}" ]]
 
 		# Make x2goclient fail.
 		echo "${msg}" >&2
-		exit '12'
+		exit '11'
 	fi
 
 	if [[ -z "${GR_PORT}" ]]; then
@@ -482,7 +482,7 @@ else
 	# run x2goserver-extensions for fail-start
 	x2gofeature 'X2GO_RUN_EXTENSIONS' &>'/dev/null' && x2goserver-run-extensions "${SESSION_NAME}" 'fail-start' || true
 
-	exit '13'
+	exit '12'
 fi
 
 echo "${X2GO_PORT}"
