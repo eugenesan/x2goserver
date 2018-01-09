@@ -80,7 +80,7 @@ if ! current_host_name="$(hostname)"; then
 	exit '6'
 fi
 
-X2GO_TELEKINESIS_ENABLED=`echo 'use X2Go::Config qw( get_config ); use X2Go::Utils qw( is_true ); my $Config = get_config(); print is_true($Config->param("telekinesis.enable"));' | perl`
+X2GO_TELEKINESIS_ENABLED="$(perl -e 'use X2Go::Config qw( get_config ); use X2Go::Utils qw( is_true ); my $Config = get_config(); print is_true($Config->param("telekinesis.enable"));')"
 
 X2GO_ROOT="${HOME}/.x2go"
 export NX_ROOT="${X2GO_ROOT}"
@@ -181,7 +181,7 @@ if [[ "${X2GO_STYPE}" = 'S' ]]; then
 		exit '0'
 	fi
 else
-	X2GO_CLIPBOARD="$1"; shift
+	X2GO_CLIPBOARD="${1}"; shift
 fi
 
 LIMIT="$(x2gosessionlimit)"
@@ -224,7 +224,7 @@ for ((retry = 0; retry < max_retry; ++retry)); do
 	if free_port="$("${X2GO_LIB_PATH}/x2gogetfreeport" "${current_host_name}" "${ss}" 'display' "${X2GO_PORT}")"; then
 		X2GO_PORT="${free_port}"
 
-		if [ -n "${SHADREQ_USER}" ]; then
+		if [[ -n "${SHADREQ_USER}" ]]; then
 			SESSION_NAME="${SHADREQ_USER}-${X2GO_PORT}-$(date '+%s')"
 		else
 			SESSION_NAME="${USER}-${X2GO_PORT}-$(date '+%s')"
@@ -237,7 +237,7 @@ for ((retry = 0; retry < max_retry; ++retry)); do
 		# sanitize session name
 		SESSION_NAME="$(perl -pe 's/[^a-zA-Z0-9\.\_\-\@]//g' <<< "${SESSION_NAME}")"
 
-		if [ -n "${SHADREQ_USER}" ]; then
+		if [[ -n "${SHADREQ_USER}" ]]; then
 			"${X2GO_LIB_PATH}/x2gosyslog" "${0}" 'debug' "initializing new shadow session with ID ${SESSION_NAME}"
 			output="$("${X2GO_LIB_PATH}/x2goinsertshadowsession" "${X2GO_PORT}" "${current_host_name}" "${SESSION_NAME}" "${SHADREQ_USER}")"
 		else
@@ -264,10 +264,10 @@ if [[ "${output}" != 'inserted' ]]; then
 	exit '11'
 fi
 
-if [ "x$X2GO_TELEKINESIS_ENABLED" == "x0" ] || [ "x$X2GO_STYPE" = "xS" ] || ! type -p telekinesis-server 1>/dev/null; then
-	TEKICTRL_PORT="-1"
-	TEKIDATA_PORT="-1"
-	X2GO_TELEKINESIS_ENABLED="0"
+if [[ "${X2GO_TELEKINESIS_ENABLED}" = '0' ]] || [[ "${X2GO_STYPE}" = 'S' ]] || ! type -p 'telekinesis-server' 1>'/dev/null'; then
+	TEKICTRL_PORT='-1'
+	TEKIDATA_PORT='-1'
+	X2GO_TELEKINESIS_ENABLED='0'
 fi
 
 while [[ -z "${GR_PORT}" ]] || [[ -z "${SOUND_PORT}" ]] || [[ -z "${FS_PORT}" ]] || [[ -z "${TEKICTRL_PORT}" ]] || [[ -z "${TEKIDATA_PORT}" ]]; do
@@ -302,11 +302,11 @@ while [[ -z "${GR_PORT}" ]] || [[ -z "${SOUND_PORT}" ]] || [[ -z "${FS_PORT}" ]]
 		GR_PORT="${SSH_PORT}"
 	elif [[ -z "${SOUND_PORT}" ]]; then
 		SOUND_PORT="${SSH_PORT}"
-	elif [ -z "${FS_PORT}" ]; then
+	elif [[ -z "${FS_PORT}" ]]; then
 		FS_PORT="${SSH_PORT}"
-	elif [ -z "${TEKICTRL_PORT}" ]; then
+	elif [[ -z "${TEKICTRL_PORT}" ]]; then
 		TEKICTRL_PORT="${SSH_PORT}"
-	elif [ -z "${TEKIDATA_PORT}" ]; then
+	elif [[ -z "${TEKIDATA_PORT}" ]]; then
 		TEKIDATA_PORT="${SSH_PORT}"
 	fi
 done
@@ -341,8 +341,8 @@ if [[ ! -d "${X2GO_TMP_ROOT}" ]]; then
 fi
 
 SESSION_DIR="${X2GO_TMP_ROOT}/C-${SESSION_NAME}"
-if [ "x$X2GO_TELEKINESIS_ENABLED" != "x0" ] && [ "x$X2GO_STYPE" != "xS" ]; then
-	mkdir -p "${SESSION_DIR}/telekinesis/remote/"
+if [[ "${X2GO_TELEKINESIS_ENABLED}" != '0' ]] && [[ "${X2GO_STYPE}" != 'S' ]]; then
+	mkdir -p -- "${SESSION_DIR}/telekinesis/remote/"
 fi
 
 STATE_FILE="${SESSION_DIR}/state"
@@ -492,7 +492,7 @@ echo "${SESSION_NAME}"
 echo "${GR_PORT}"
 echo "${SOUND_PORT}"
 echo "${FS_PORT}"
-if [ "x${X2GO_TELEKINESIS_ENABLED}" == "x1" ]; then
+if [[ "${X2GO_TELEKINESIS_ENABLED}" = '1' ]]; then
 	echo "${TEKICTRL_PORT}"
 	echo "${TEKIDATA_PORT}"
 fi
