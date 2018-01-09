@@ -350,6 +350,8 @@ x2goserver (4.0.1.23-0x2go1) UNRELEASED; urgency=medium
       do not want or expect that. Logcheck users can install
       x2goserver-logcheck as a standalone package instead.
     - Add correct Group: to x2goserver-logcheck package.
+    - Install new files x2go{checkport,get{free,random}port,queryconfig} into
+      the lib dir.
 
  -- X2Go Release Manager <git-admin@x2go.org>  Sat, 11 Nov 2017 13:01:29 +0100
 

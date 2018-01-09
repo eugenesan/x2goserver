@@ -794,18 +794,22 @@ fi
 %exclude %{_bindir}/x2goagent
 %dir %{_libdir}/x2go
 %{_libdir}/x2go/x2gochangestatus
+%{_libdir}/x2go/x2gocheckport
 %{_libdir}/x2go/x2gocreatesession
 %{_libdir}/x2go/x2gocreateshadowsession
 %{_libdir}/x2go/x2gogetagent
 %{_libdir}/x2go/x2gogetagentstate
 %{_libdir}/x2go/x2gogetdisplays
+%{_libdir}/x2go/x2gogetfreeport
 %{_libdir}/x2go/x2gogetports
+%{_libdir}/x2go/x2gogetrandomport
 %{_libdir}/x2go/x2gogetstatus
 %{_libdir}/x2go/x2goinsertport
 %{_libdir}/x2go/x2goinsertsession
 %{_libdir}/x2go/x2goinsertshadowsession
 %{_libdir}/x2go/x2golistsessions_sql
 %{_libdir}/x2go/x2gologlevel
+%{_libdir}/x2go/x2goqueryconfig
 %{_libdir}/x2go/x2goresume
 %{_libdir}/x2go/x2gormforward
 %{_libdir}/x2go/x2gormport
