@@ -113,6 +113,21 @@ fi
 
 "${X2GO_LIB_PATH}/x2gosyslog" "${0}" 'debug' "client announced itself as "'"'"${X2GO_CLIENT}"'"'
 
+typeset -i x2go_randr_xinerama='1'
+
+# Extending optional parameters isn't trivially possible, but
+# we want this script to work with newer X2Go Client versions
+# that supply a Xinerama configuration value and with older
+# ones that do not.
+# Since we already have trailing optional arguments (for
+# the desktop sharing functionality), go ahead and scan
+# all arguments for the required value.
+typeset item=''
+for item in "${@}"; do
+	typeset tmp_regex='^randr_xinerama=(.*)$'
+	[[ "${item}" =~ ${tmp_regex} ]] && x2go_randr_xinerama="$("${X2GO_LIB_PATH}/x2goistrue" "${BASH_REMATCH[1]}")"
+done
+
 X2GO_GEOMETRY="${1}"; shift
 X2GO_LINK="${1}"; shift
 X2GO_PACK="${1}"; shift
@@ -432,6 +447,9 @@ if [[ -n "${X2GO_GEOMETRY}" ]] && [[ "${X2GO_GEOMETRY}" != 'fullscreen' ]]; then
 	agent_geometry="-geometry ${X2GO_GEOMETRY}"
 fi
 
+typeset randr_xinerama_option=''
+[[ "${x2go_randr_xinerama}" = '0' ]] && randr_xinerama_option='-rrxinerama'
+
 # systemd is prone to kill remaining sessions on user logouts.
 # That sort of makes sense to clean up stray processes,
 # but gets in the way of our persistent session scheme.
@@ -443,11 +461,11 @@ if [[ "${X2GO_STYPE}" = 'S' ]]; then
 	unset LD_LIBRARY_PATH
 	# set NX_TEMP to /tmp, make sure x2goagent starts when pam_tmpdir.so is in use
 	"${X2GO_LIB_PATH}/x2gosyslog" "${0}" 'debug' "started nxagent: NX_TEMP=/tmp x2goagent X2GO_NXAGENT_OPTIONS ('${X2GO_NXAGENT_OPTIONS}') NOLISTOPT ('${NOLISTOPT}') X2GODPIOPTION_ ('${X2GODPIOPTION_}') -SESSION_TYPE ('-${SESSION_TYPE}') -auth \"XAUTHORITY\" ('\"${XAUTHORITY}\"') -shadow SHADOW_DESKTOP ('${SHADOW_DESKTOP}') -shadowmode SHADOW_MODE ('${SHADOW_MODE}') agent_geometry ('${agent_geometry}') -name \"SESSION_WINDOW_TITLE\" ('\"${SESSION_WINDOW_TITLE}\"') \"NX_AGENT\" ('\"${NX_AGENT}\"') 2>\"SESSION_LOG\" ('\"${SESSION_LOG}\"') &"
-	NX_TEMP='/tmp' x2goagent ${X2GO_NXAGENT_OPTIONS} ${NOLISTOPT} ${X2GODPIOPTION_} -${SESSION_TYPE} -auth "${XAUTHORITY}" -shadow ${SHADOW_DESKTOP} -shadowmode ${SHADOW_MODE} ${agent_geometry} -name "${SESSION_WINDOW_TITLE}" "${NX_AGENT}" 2>"${SESSION_LOG}" &
+	NX_TEMP='/tmp' x2goagent ${X2GO_NXAGENT_OPTIONS} ${NOLISTOPT} ${X2GODPIOPTION_} ${randr_xinerama_option} -${SESSION_TYPE} -auth "${XAUTHORITY}" -shadow ${SHADOW_DESKTOP} -shadowmode ${SHADOW_MODE} ${agent_geometry} -name "${SESSION_WINDOW_TITLE}" "${NX_AGENT}" 2>"${SESSION_LOG}" &
 else
 	# set NX_TEMP to /tmp, make sure x2goagent starts when pam_tmpdir.so is in use
 	"${X2GO_LIB_PATH}/x2gosyslog" "${0}" 'debug' "started nxagent: NX_TEMP=/tmp x2goagent X2GO_NXAGENT_OPTIONS ('${X2GO_NXAGENT_OPTIONS}') NOLISTOPT ('${NOLISTOPT}') X2GODPIOPTION_ ('${X2GODPIOPTION_}') XDMCPPOPT ('${XDMCPOPT}') -SESSION_TYPE ('-${SESSION_TYPE}') NOEXITPARAM ('${NOEXITPARAM}') -auth \"XAUTHORITY\" ('\"${XAUTHORITY}\"') agent_geometry ('${agent_geometry}') -name \"SESSION_WINDOW_TITLE\" ('\"${SESSION_WINDOW_TITLE}\"') \"NX_AGENT\" ('\"${NX_AGENT}\"') 2>\"SESSION_LOG\" ('\"${SESSION_LOG}\"') &"
-	NX_TEMP='/tmp' x2goagent ${X2GO_NXAGENT_OPTIONS} ${NOLISTOPT} ${X2GODPIOPTION_} ${XDMCPOPT} -${SESSION_TYPE} ${NOEXITPARAM} -auth "${XAUTHORITY}" ${agent_geometry} -name "${SESSION_WINDOW_TITLE}" "${NX_AGENT}" 2>"${SESSION_LOG}" &
+	NX_TEMP='/tmp' x2goagent ${X2GO_NXAGENT_OPTIONS} ${NOLISTOPT} ${X2GODPIOPTION_} ${XDMCPOPT} ${randr_xinerama_option} -${SESSION_TYPE} ${NOEXITPARAM} -auth "${XAUTHORITY}" ${agent_geometry} -name "${SESSION_WINDOW_TITLE}" "${NX_AGENT}" 2>"${SESSION_LOG}" &
 fi
 
 ln -s -- "${SESSION_DIR}" "${X2GO_ROOT}/C-${SESSION_NAME}"

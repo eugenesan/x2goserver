@@ -205,6 +205,11 @@ x2goserver (4.1.0.0-0x2go1.2) UNRELEASED; urgency=low
       called x2goistrue.
     - x2goserver/bin/x2gostartagent: replace inline perl with calls to
       x2goistrue and x2goqueryconfig.
+    - x2goserver/bin/x2gostartagent: support disabling or enabling RANDR
+      Xinerama in x2goagent via any parameter in the form randr_xinerama=value
+      (with value interpreted by x2goistrue). Note that it is not possible to
+      change the RRXinerama preference after a session has been started
+      currently.
   * x2goserver.spec:
     - Only create session DB in x2goserver's post install script. Do use
       proper Requires(post) statements to make sure perl-X2Go-Server-DB and
