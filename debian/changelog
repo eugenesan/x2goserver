@@ -201,6 +201,8 @@ x2goserver (4.1.0.0-0x2go1.2) UNRELEASED; urgency=low
       quotes, curly braces et. al.
     - x2goserver/bin/x2goresume-session: fix most other shellcheck warnings,
       more quotes, curly braces et. al.
+    - x2goserver/lib: add new perl wrapper script for X2Go::Utils::is_true
+      called x2goistrue.
   * x2goserver.spec:
     - Only create session DB in x2goserver's post install script. Do use
       proper Requires(post) statements to make sure perl-X2Go-Server-DB and
