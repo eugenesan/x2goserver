@@ -145,6 +145,9 @@ if [[ "${X2GO_STYPE}" = 'S' ]]; then
 	SHADOW_USER="$(awk '{split($0,a,"XSHAD"); print a[2]}' <<< "${X2GO_CMD}")"
 	SHADOW_DESKTOP="$(awk '{split($0,a,"XSHAD"); print a[3]}' <<< "${X2GO_CMD}")"
 
+	# FIXME: no client application actually passes in an additional user name.
+	# This is most likely redundant and confuses things (esp. since it's an
+	# optional parameter) needlessly.
 	if [[ -z "${1}" ]]; then
 
 		# can this line be removed?
