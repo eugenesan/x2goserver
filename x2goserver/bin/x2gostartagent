@@ -115,18 +115,12 @@ fi
 
 typeset -i x2go_randr_xinerama='1'
 
-# Extending optional parameters isn't trivially possible, but
-# we want this script to work with newer X2Go Client versions
-# that supply a Xinerama configuration value and with older
-# ones that do not.
-# Since we already have trailing optional arguments (for
-# the desktop sharing functionality), go ahead and scan
-# all arguments for the required value.
-typeset item=''
-for item in "${@}"; do
-	typeset tmp_regex='^randr_xinerama=(.*)$'
-	[[ "${item}" =~ ${tmp_regex} ]] && x2go_randr_xinerama="$("${X2GO_LIB_PATH}/x2goistrue" "${BASH_REMATCH[1]}")"
-done
+# Extending optional parameters isn't trivially possible.
+# Since we want this script to work with newer X2Go Client
+# versions that supply a Xinerama configuration value and
+# also with older ones that do not, we pass it in as an
+# environment variable.
+[[ -n "${X2GO_RANDR_XINERAMA}" ]] && x2go_randr_xinerama="$("${X2GO_LIB_PATH}/x2goistrue" "${X2GO_RANDR_XINERAMA}")"
 
 X2GO_GEOMETRY="${1}"; shift
 X2GO_LINK="${1}"; shift
