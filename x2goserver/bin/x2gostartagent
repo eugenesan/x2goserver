@@ -80,7 +80,7 @@ if ! current_host_name="$(hostname)"; then
 	exit '6'
 fi
 
-X2GO_TELEKINESIS_ENABLED="$(perl -e 'use X2Go::Config qw( get_config ); use X2Go::Utils qw( is_true ); my $Config = get_config(); print is_true($Config->param("telekinesis.enable"));')"
+X2GO_TELEKINESIS_ENABLED="$("${X2GO_LIB_PATH}/x2goistrue" "$("${X2GO_LIB_PATH}/x2goqueryconfig" "telekinesis" "enable")")"
 
 X2GO_ROOT="${HOME}/.x2go"
 export NX_ROOT="${X2GO_ROOT}"
