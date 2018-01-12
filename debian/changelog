@@ -222,6 +222,8 @@ x2goserver (4.1.0.0-0x2go1.2) UNRELEASED; urgency=low
       variable rename from X2GO_RANDR_XINERAMA to X2GO_XINERAMA with
       essentially the same semantics. For x2goresume-session, a new parameter
       is added.
+    - x2goserver/bin/x2gostartagent: disable Xinerama support by default,
+      more compatible with the old behavior (and python-x2go/PyHoca).
   * x2goserver.spec:
     - Only create session DB in x2goserver's post install script. Do use
       proper Requires(post) statements to make sure perl-X2Go-Server-DB and

@@ -113,7 +113,7 @@ fi
 
 "${X2GO_LIB_PATH}/x2gosyslog" "${0}" 'debug' "client announced itself as "'"'"${X2GO_CLIENT}"'"'
 
-typeset -i x2go_randr_xinerama='1'
+typeset -i x2go_randr_xinerama='0'
 
 # Extending optional parameters isn't trivially possible.
 # Since we want this script to work with newer X2Go Client
