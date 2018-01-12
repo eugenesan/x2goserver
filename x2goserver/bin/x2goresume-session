@@ -123,12 +123,6 @@ done
 
 "${X2GO_LIB_PATH}/x2gormforward" "${SESSION_NAME}"
 
-
-NX_XINERAMA_CONF="${X2GO_ROOT}/C-${SESSION_NAME}/xinerama.conf"
-if [[ -e "${NX_XINERAMA_CONF}" ]]; then
-	rm -- "${NX_XINERAMA_CONF}"
-fi
-
 "${X2GO_LIB_PATH}/x2gosyslog" "${0}" 'info' "$(basename "${0}") called with options: ${*}"
 
 X2GO_TELEKINESIS_ENABLED="$(perl -e 'use X2Go::Config qw( get_config ); use X2Go::Utils qw( is_true ); my $Config= get_config(); print is_true($Config->param("telekinesis.enable"));')"
