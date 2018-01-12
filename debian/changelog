@@ -216,6 +216,12 @@ x2goserver (4.1.0.0-0x2go1.2) UNRELEASED; urgency=low
     - x2goserver/bin/x2gostartagent: add FIXME entry for the SHADREQ_USER
       optional parameter. No client actually uses it and it makes the whole
       parameter handling fragile.
+    - x2goserver/bin/x2go{startagent,resume-ression}: instead of disabling
+      RANDR Xinerama if no xinerama support has been requested, switch to
+      modifying the xinerama nx/nx option. For x2gostartagent, that means a
+      variable rename from X2GO_RANDR_XINERAMA to X2GO_XINERAMA with
+      essentially the same semantics. For x2goresume-session, a new parameter
+      is added.
   * x2goserver.spec:
     - Only create session DB in x2goserver's post install script. Do use
       proper Requires(post) statements to make sure perl-X2Go-Server-DB and

@@ -37,6 +37,7 @@ X2GO_PACK="${4}"
 X2GO_KBD_TYPE="${6}"
 X2GO_SET_KBD="${7}"
 X2GO_CLIPBOARD="${8}"
+typeset X2GO_XINERAMA="${9}"
 
 X2GO_AGENT_PID="$("${X2GO_LIB_PATH}/x2gogetagent" "${SESSION_NAME}")"
 
@@ -263,18 +264,21 @@ LSTR="$(awk -F ',' '{print $2}' <<< "${OPTIONS}")"
 PSTR="$(awk -F ',' '{print $3}' <<< "${OPTIONS}")"
 KTSTR="$(awk -F ',' '{print $12}' <<< "${OPTIONS}")"
 GSTR="$(awk -F ',' '{print $13}' <<< "${OPTIONS}")"
+typeset xinerama_orig=''
 test_GSTR="$(sed 's/geometry=.*//' <<< "${GSTR}")"
 if [[ -n "${test_GSTR}" ]]; then
 	GSTR='geometry='
-	RSTR="$(awk -F ',' '{print $13}' <<< "${OPTIONS}")"
-	FSTR="$(awk -F ',' '{print $14}' <<< "${OPTIONS}")"
-	LISTSTR="$(awk -F ',' '{print $16}' <<< "${OPTIONS}")"
-	CLIPBOARD="$(awk -F ',' '{print $17}' <<< "${OPTIONS}")"
-else
+	xinerama_orig="$(awk -F ',' '{print $13}' <<< "${OPTIONS}")"
 	RSTR="$(awk -F ',' '{print $14}' <<< "${OPTIONS}")"
 	FSTR="$(awk -F ',' '{print $15}' <<< "${OPTIONS}")"
 	LISTSTR="$(awk -F ',' '{print $17}' <<< "${OPTIONS}")"
 	CLIPBOARD="$(awk -F ',' '{print $18}' <<< "${OPTIONS}")"
+else
+	xinerama_orig="$(awk -F ',' '{print $14}' <<< "${OPTIONS}")"
+	RSTR="$(awk -F ',' '{print $15}' <<< "${OPTIONS}")"
+	FSTR="$(awk -F ',' '{print $16}' <<< "${OPTIONS}")"
+	LISTSTR="$(awk -F ',' '{print $18}' <<< "${OPTIONS}")"
+	CLIPBOARD="$(awk -F ',' '{print $19}' <<< "${OPTIONS}")"
 fi
 
 KTSTR="$(sed -e 's#/#\\/#' <<< "${KTSTR}")"
@@ -293,10 +297,13 @@ else
 	clipboard='clipboard=both'
 fi
 
+typeset xinerama_option="$("${X2GO_LIB_PATH}/x2goistrue" "${X2GO_XINERAMA}")"
+
 NEWOPTIONS="$(sed -e "s/${LSTR}/link=${X2GO_LINK}/" \
                   -e "s/${PSTR}/pack=${X2GO_PACK}/" \
                   -e "s/${KTSTR}/kbtype=${keyboard_type}/" \
                   -e "s/${GSTR}/geometry=${X2GO_GEOMETRY}/" \
+                  -e "s/${xinerama_orig}/xinerama=${xinerama_option}/" \
                   -e "s/${RSTR}/resize=${X2GO_RESIZE}/" \
                   -e "s/${LISTSTR}/listen=${GR_PORT}/" \
                   -e "s/${FSTR}/fullscreen=${X2GO_FULLSCREEN}/" \

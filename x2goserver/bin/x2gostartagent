@@ -120,7 +120,7 @@ typeset -i x2go_randr_xinerama='1'
 # versions that supply a Xinerama configuration value and
 # also with older ones that do not, we pass it in as an
 # environment variable.
-[[ -n "${X2GO_RANDR_XINERAMA}" ]] && x2go_randr_xinerama="$("${X2GO_LIB_PATH}/x2goistrue" "${X2GO_RANDR_XINERAMA}")"
+[[ -n "${X2GO_XINERAMA}" ]] && x2go_xinerama="$("${X2GO_LIB_PATH}/x2goistrue" "${X2GO_XINERAMA}")"
 
 X2GO_GEOMETRY="${1}"; shift
 X2GO_LINK="${1}"; shift
@@ -400,10 +400,13 @@ else
 	clipboard=",clipboard=both"
 fi
 
+typeset xinerama_option='1'
+[[ "${x2go_xinerama}" = '0' ]] && xinerama_option='0'
+
 if [[ "${X2GO_SET_KBD}" = '0' ]] || [[ "${X2GO_KBD_TYPE}" = 'auto' ]]; then
-	X2GO_HOST="nx/nx,link=${X2GO_LINK},pack=${X2GO_PACK},limit=0,root=${SESSION_DIR},cache=8M,images=32M,type=${X2GO_TYPE},id=${SESSION_NAME},cookie=${X2GO_COOKIE},errors=${SESSION_LOG},kbtype=null/null,${option_geometry}resize=${X2GO_RESIZE},fullscreen=${X2GO_FULLSCREEN},accept=${REMOTE},listen=${GR_PORT}${clipboard},client=linux,menu=0,state=${STATE_FILE}"
+	X2GO_HOST="nx/nx,link=${X2GO_LINK},pack=${X2GO_PACK},limit=0,root=${SESSION_DIR},cache=8M,images=32M,type=${X2GO_TYPE},id=${SESSION_NAME},cookie=${X2GO_COOKIE},errors=${SESSION_LOG},kbtype=null/null,${option_geometry}xinerama=${xinerama_option},resize=${X2GO_RESIZE},fullscreen=${X2GO_FULLSCREEN},accept=${REMOTE},listen=${GR_PORT}${clipboard},client=linux,menu=0,state=${STATE_FILE}"
 else
-	X2GO_HOST="nx/nx,link=${X2GO_LINK},pack=${X2GO_PACK},limit=0,root=${SESSION_DIR},cache=8M,images=32M,type=${X2GO_TYPE},id=${SESSION_NAME},cookie=${X2GO_COOKIE},errors=${SESSION_LOG},kbtype=${X2GO_KBD_TYPE},${option_geometry}resize=${X2GO_RESIZE},fullscreen=${X2GO_FULLSCREEN},accept=${REMOTE},listen=${GR_PORT}${clipboard},client=linux,menu=0,state=${STATE_FILE}"
+	X2GO_HOST="nx/nx,link=${X2GO_LINK},pack=${X2GO_PACK},limit=0,root=${SESSION_DIR},cache=8M,images=32M,type=${X2GO_TYPE},id=${SESSION_NAME},cookie=${X2GO_COOKIE},errors=${SESSION_LOG},kbtype=${X2GO_KBD_TYPE},${option_geometry}xinerama=${xinerama_option},resize=${X2GO_RESIZE},fullscreen=${X2GO_FULLSCREEN},accept=${REMOTE},listen=${GR_PORT}${clipboard},client=linux,menu=0,state=${STATE_FILE}"
 fi
 
 
@@ -444,9 +447,6 @@ if [[ -n "${X2GO_GEOMETRY}" ]] && [[ "${X2GO_GEOMETRY}" != 'fullscreen' ]]; then
 	agent_geometry="-geometry ${X2GO_GEOMETRY}"
 fi
 
-typeset randr_xinerama_option=''
-[[ "${x2go_randr_xinerama}" = '0' ]] && randr_xinerama_option='-rrxinerama'
-
 # systemd is prone to kill remaining sessions on user logouts.
 # That sort of makes sense to clean up stray processes,
 # but gets in the way of our persistent session scheme.
@@ -458,11 +458,11 @@ if [[ "${X2GO_STYPE}" = 'S' ]]; then
 	unset LD_LIBRARY_PATH
 	# set NX_TEMP to /tmp, make sure x2goagent starts when pam_tmpdir.so is in use
 	"${X2GO_LIB_PATH}/x2gosyslog" "${0}" 'debug' "started nxagent: NX_TEMP=/tmp x2goagent X2GO_NXAGENT_OPTIONS ('${X2GO_NXAGENT_OPTIONS}') NOLISTOPT ('${NOLISTOPT}') X2GODPIOPTION_ ('${X2GODPIOPTION_}') -SESSION_TYPE ('-${SESSION_TYPE}') -auth \"XAUTHORITY\" ('\"${XAUTHORITY}\"') -shadow SHADOW_DESKTOP ('${SHADOW_DESKTOP}') -shadowmode SHADOW_MODE ('${SHADOW_MODE}') agent_geometry ('${agent_geometry}') -name \"SESSION_WINDOW_TITLE\" ('\"${SESSION_WINDOW_TITLE}\"') \"NX_AGENT\" ('\"${NX_AGENT}\"') 2>\"SESSION_LOG\" ('\"${SESSION_LOG}\"') &"
-	NX_TEMP='/tmp' x2goagent ${X2GO_NXAGENT_OPTIONS} ${NOLISTOPT} ${X2GODPIOPTION_} ${randr_xinerama_option} -${SESSION_TYPE} -auth "${XAUTHORITY}" -shadow ${SHADOW_DESKTOP} -shadowmode ${SHADOW_MODE} ${agent_geometry} -name "${SESSION_WINDOW_TITLE}" "${NX_AGENT}" 2>"${SESSION_LOG}" &
+	NX_TEMP='/tmp' x2goagent ${X2GO_NXAGENT_OPTIONS} ${NOLISTOPT} ${X2GODPIOPTION_} -${SESSION_TYPE} -auth "${XAUTHORITY}" -shadow ${SHADOW_DESKTOP} -shadowmode ${SHADOW_MODE} ${agent_geometry} -name "${SESSION_WINDOW_TITLE}" "${NX_AGENT}" 2>"${SESSION_LOG}" &
 else
 	# set NX_TEMP to /tmp, make sure x2goagent starts when pam_tmpdir.so is in use
 	"${X2GO_LIB_PATH}/x2gosyslog" "${0}" 'debug' "started nxagent: NX_TEMP=/tmp x2goagent X2GO_NXAGENT_OPTIONS ('${X2GO_NXAGENT_OPTIONS}') NOLISTOPT ('${NOLISTOPT}') X2GODPIOPTION_ ('${X2GODPIOPTION_}') XDMCPPOPT ('${XDMCPOPT}') -SESSION_TYPE ('-${SESSION_TYPE}') NOEXITPARAM ('${NOEXITPARAM}') -auth \"XAUTHORITY\" ('\"${XAUTHORITY}\"') agent_geometry ('${agent_geometry}') -name \"SESSION_WINDOW_TITLE\" ('\"${SESSION_WINDOW_TITLE}\"') \"NX_AGENT\" ('\"${NX_AGENT}\"') 2>\"SESSION_LOG\" ('\"${SESSION_LOG}\"') &"
-	NX_TEMP='/tmp' x2goagent ${X2GO_NXAGENT_OPTIONS} ${NOLISTOPT} ${X2GODPIOPTION_} ${XDMCPOPT} ${randr_xinerama_option} -${SESSION_TYPE} ${NOEXITPARAM} -auth "${XAUTHORITY}" ${agent_geometry} -name "${SESSION_WINDOW_TITLE}" "${NX_AGENT}" 2>"${SESSION_LOG}" &
+	NX_TEMP='/tmp' x2goagent ${X2GO_NXAGENT_OPTIONS} ${NOLISTOPT} ${X2GODPIOPTION_} ${XDMCPOPT} -${SESSION_TYPE} ${NOEXITPARAM} -auth "${XAUTHORITY}" ${agent_geometry} -name "${SESSION_WINDOW_TITLE}" "${NX_AGENT}" 2>"${SESSION_LOG}" &
 fi
 
 ln -s -- "${SESSION_DIR}" "${X2GO_ROOT}/C-${SESSION_NAME}"
