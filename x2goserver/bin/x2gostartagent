@@ -230,7 +230,7 @@ ss="$(PATH="${PATH}:/usr/sbin:/sbin" type -P "ss")"
 
 typeset -i retry='0'
 typeset -i max_retry='10'
-typeset -i output=''
+typeset output=''
 for ((retry = 0; retry < max_retry; ++retry)); do
 	typeset -i free_port="${X2GO_PORT}"
 	if free_port="$("${X2GO_LIB_PATH}/x2gogetfreeport" "${current_host_name}" "${ss}" 'display' "${X2GO_PORT}")"; then
