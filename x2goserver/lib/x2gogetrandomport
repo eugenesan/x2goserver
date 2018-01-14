@@ -103,14 +103,14 @@ randomize_ssh_port_config_value="$("${x2go_lib_path}/x2goqueryconfig" "x2goagent
 
 if [ "${randomize_ssh_port}" = "1" ]; then
 	"${x2go_lib_path}/x2gosyslog" "${0}" "debug" "Full SSH port randomization requested."
-	get_random_port
+	get_pure_random_port
 else
 	"${x2go_lib_path}/x2gosyslog" "${0}" "debug" "host-based SSH port initialization requested."
 
 	if ! get_host_based_random_port; then
 		"${x2go_lib_path}/x2gosyslog" "${0}" "warning" "IP-based SSH port initialization requested, but failed to fetch primary address."
 		"${x2go_lib_path}/x2gosyslog" "${0}" "warning" "Falling back to randomization."
-		get_random_port
+		get_pure_random_port
 	fi
 fi
 
