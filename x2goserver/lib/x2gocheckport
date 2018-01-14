@@ -55,7 +55,7 @@ initialize_x2go_ports() {
 	# variable.
 	typeset -a used_x2go_ports_work
 	used_x2go_ports_work=()
-	IFS="${IFS}|" read -r -d '' -a 'used_x2go_ports_work' < <("${X2GO_LIB_PATH}/x2gogetports" "${current_host_name}")
+	IFS="${IFS}|" read -r -d '' -a 'used_x2go_ports_work' < <("${x2go_lib_path}/x2gogetports" "${current_host_name}")
 
 	# Filter out any empty or invalid values.
 	typeset -i item_i='0'
@@ -122,7 +122,7 @@ initialize_display_ports() {
 
 	typeset -a used_display_ports_work
 	used_display_ports_work=()
-	IFS="${IFS}|" read -r -d '' -a 'used_display_ports_work' < <("${X2GO_LIB_PATH}/x2gogetdisplays" "${current_host_name}")
+	IFS="${IFS}|" read -r -d '' -a 'used_display_ports_work' < <("${x2go_lib_path}/x2gogetdisplays" "${current_host_name}")
 
 	# Filter out any empty or invalid values.
 	typeset -i item_i='0'
