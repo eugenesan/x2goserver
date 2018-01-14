@@ -29,10 +29,10 @@
 # port number on failure.
 # Returns 0 on success or non-0 on failure.
 typeset current_host_name="${1}"
-typeset ss="${2:-'ss'}"
-typeset type="${3:-'lowlevel'}"
-typeset start="${4:-'1'}"
-typeset end="${5:-'65535'}"
+typeset ss="${2:-"ss"}"
+typeset type="${3:-"lowlevel"}"
+typeset start="${4:-"1"}"
+typeset end="${5:-"65535"}"
 
 # Check parameter sanity.
 typeset empty_regex='^[[:space:]]*$'

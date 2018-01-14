@@ -75,7 +75,7 @@ initialize_x2go_ports() {
 # If an ss command is not given, a default of "ss" is assumed.
 # Returns 0 on success or non-0 on failure.
 initialize_system_ports() {
-	typeset ss="${1:-'ss'}"
+	typeset ss="${1:-"ss"}"
 
 	typeset empty_regex='^[[:space:]]*$'
 	if [[ -z "${ss}" ]] || [[ "${ss}" =~ ${empty_regex} ]]; then
@@ -180,7 +180,7 @@ check_x2go_port() {
 # Returns 0 if the port is free, or non-0 if it already
 # in use or on failure.
 check_system_port() {
-	typeset ss="${1:-'ss'}"
+	typeset ss="${1:-"ss"}"
 	typeset port="${2}"
 
 	typeset empty_regex='^[[:space:]]*$'
@@ -225,7 +225,7 @@ check_system_port() {
 # in use or on failure.
 check_display_port() {
 	typeset current_host_name="${1}"
-	typeset ss="${2:-'ss'}"
+	typeset ss="${2:-"ss"}"
 	typeset port="${3}"
 
 	typeset empty_regex='^[[:space:]]*$'
