@@ -21,14 +21,12 @@ use strict;
 
 use X2Go::Utils qw (is_true);
 
-my $value = "";
+my $value = shift;
 
-if (@ARGV) {
-  $value = shift;
-else {
+if (!(defined ($value))) {
   print STDERR "No value passed in, assuming empty string.";
+  $value = "";
 }
-
 
 print is_true ($value) . "\n";
 
