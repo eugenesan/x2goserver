@@ -382,6 +382,8 @@ x2goserver (4.0.1.23-0x2go1) UNRELEASED; urgency=medium
       have been refurbished within the system and reassign them.
     - x2goserver/bin/x2goresume-ression: whitespace fix only.
     - x2goserver/bin/x2gostartagent: check and adapt exit codes.
+    - x2goserver/etc: add new tmpfiles.d/x2goserver.conf file, protecting
+      session directories from systemd's tmpfiles deletion.
   * x2goserver.spec:
     - RPMify x2goserver-xsession description.
     - Remove qt4 stuff, we're not using the framework here.
