@@ -624,6 +624,12 @@ EOF
 rm -f "%{buildroot}/etc/sudoers.d/x2goserver"
 %endif
 
+# Delete tmpfiles.d configuration file on systems
+# not using systemd.
+%if ( ! 0%{?fedora} ) && ( ( 0%{?rhel} && 0%{?rhel} < 7 ) || ( 0%{?suse_version} && 0%{?suse_version} < 1210 ) )
+rm -f "%{buildroot}/etc/tmpfiles.d/x2goserver.conf"
+%endif
+
 %pre common
 if ! getent group x2gouser 1>/dev/null; then
     groupadd -r x2gouser
@@ -892,6 +898,9 @@ fi
 %config(noreplace) %{_sysconfdir}/x2go/x2goserver.conf
 %config(noreplace) %{_sysconfdir}/x2go/x2gosql/sql
 %config(noreplace) %{_sysconfdir}/x2go/x2go_logout*
+%if 0%{?fedora} || 0%{?rhel} >= 7 || 0%{?suse_version} >= 1210
+%config(noreplace) %{_sysconfdir}/tmpfiles.d/x2goserver.conf
+%endif
 %{_mandir}/man5/x2goserver.conf.5.gz
 %dir %{_datadir}/x2go/versions
 %{_datadir}/x2go/versions/VERSION.x2goserver-common

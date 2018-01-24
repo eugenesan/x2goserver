@@ -398,6 +398,8 @@ x2goserver (4.0.1.23-0x2go1) UNRELEASED; urgency=medium
     - Install new files x2go{checkport,get{free,random}port,queryconfig} into
       the lib dir.
     - Fix logic when checking for "distro version lower than X".
+    - Add new conffile /etc/tmpfiles.d/x2goserver.conf on systems that actually
+      use/have systemd.
 
  -- X2Go Release Manager <git-admin@x2go.org>  Sat, 11 Nov 2017 13:01:29 +0100
 
