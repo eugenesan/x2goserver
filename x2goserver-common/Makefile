@@ -59,12 +59,12 @@ install: install_scripts install_config install_man install_version
 install_scripts:
 
 install_config:
-	$(INSTALL_DIR) $(DESTDIR)$(ETCDIR)
-	$(INSTALL_FILE) etc/x2goserver.conf     $(DESTDIR)$(ETCDIR)/
-	$(INSTALL_DIR) $(DESTDIR)$(ETCDIR)/x2gosql
-	$(INSTALL_DIR) $(DESTDIR)$(ETCDIR)/x2gosql/passwords
-	$(INSTALL_FILE) etc/x2gosql/sql         $(DESTDIR)$(ETCDIR)/x2gosql
-	$(INSTALL_DIR) $(DESTDIR)/etc/tmpfiles.d || true
+	$(INSTALL_DIR)  $(DESTDIR)$(ETCDIR)
+	$(INSTALL_FILE) etc/x2goserver.conf            $(DESTDIR)$(ETCDIR)/
+	$(INSTALL_DIR)  $(DESTDIR)$(ETCDIR)/x2gosql
+	$(INSTALL_DIR)  $(DESTDIR)$(ETCDIR)/x2gosql/passwords
+	$(INSTALL_FILE) etc/x2gosql/sql                $(DESTDIR)$(ETCDIR)/x2gosql
+	$(INSTALL_DIR)  $(DESTDIR)/etc/tmpfiles.d || true
 	$(INSTALL_FILE) etc/tmpfiles.d/x2goserver.conf $(DESTDIR)/etc/tmpfiles.d/
 
 install_man:
