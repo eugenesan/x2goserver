@@ -790,7 +790,7 @@ fi
 %doc x2goserver/doc/README.sudoers
 %doc x2goserver/etc/sudoers.d/x2goserver
 %endif
-%if 0%{?suse_version} >= 1210
+%if ( ! 0%{?suse_version} ) || 0%{?suse_version} >= 1210
 %config(noreplace) %{_sysconfdir}/sudoers.d/x2goserver
 %endif
 %{_bindir}/x2go*
