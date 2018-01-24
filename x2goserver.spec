@@ -620,7 +620,7 @@ EOF
 # We move the file to the doc dir, add a README.sudo
 # and also references this in our wiki on
 # https://wiki.x2go.org/doku.php/doc:installation:x2goserver#workaround_for_qt-based_applications_and_sudo_kdesu
-%if 0%{?suse_version} < 1210
+%if 0%{?suse_version} && 0%{?suse_version} < 1210
 rm -f "%{buildroot}/etc/sudoers.d/x2goserver"
 %endif
 
@@ -780,7 +780,7 @@ fi
 %doc debian/copyright
 %doc debian/changelog
 # Workaround for sudoers on OpenSUSE 11/SLE{S,D} 11.
-%if 0%{?suse_version} < 1210
+%if 0%{?suse_version} && 0%{?suse_version} < 1210
 %doc x2goserver/doc/README.sudoers
 %doc x2goserver/etc/sudoers.d/x2goserver
 %endif
@@ -969,7 +969,7 @@ fi
 %doc debian/changelog
 # logcheck is not available on OpenSUSE, SLES/SLED, FC19 and RHEL.
 # Please re-check this periodically.
-%if 0%{?suse_version} || 0%{?fedora} < 20 || 0%{?rhel}
+%if 0%{?suse_version} || ( 0%{?fedora} && 0%{?fedora} < 20 ) || 0%{?rhel}
 %dir %{_sysconfdir}/logcheck
 %dir %{_sysconfdir}/logcheck/ignore.d.server
 %endif
