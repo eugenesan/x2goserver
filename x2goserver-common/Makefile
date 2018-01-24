@@ -64,6 +64,8 @@ install_config:
 	$(INSTALL_DIR) $(DESTDIR)$(ETCDIR)/x2gosql
 	$(INSTALL_DIR) $(DESTDIR)$(ETCDIR)/x2gosql/passwords
 	$(INSTALL_FILE) etc/x2gosql/sql         $(DESTDIR)$(ETCDIR)/x2gosql
+	$(INSTALL_DIR) $(DESTDIR)/etc/tmpfiles.d || true
+	$(INSTALL_FILE) etc/tmpfiles.d/x2goserver.conf $(DESTDIR)/etc/tmpfiles.d/
 
 install_man:
 	$(INSTALL_DIR) $(DESTDIR)$(MANDIR)/man5
@@ -85,6 +87,8 @@ uninstall_config:
 	$(RM_DIR)  $(DESTDIR)$(ETCDIR)/x2gosql/passwords || true
 	$(RM_DIR)  $(DESTDIR)$(ETCDIR)/x2gosql || true
 	$(RM_DIR)  $(DESTDIR)$(ETCDIR) || true
+	$(RM_FILE) $(DESTDIR)/etc/tmpfiles.d/x2goserver.conf
+	$(RM_DIR)  $(DESTDIR)/etc/tmpfiles.d || true
 
 uninstall_man:
 	for file in $(BIN_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(MANDIR)/man5/$$file.5.gz; done
