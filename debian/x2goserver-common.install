@@ -1,2 +1,3 @@
 x2goserver-common/etc/x2go*                    /etc/x2go/
+x2goserver-common/etc/tmpfiles.d/x2go*         /etc/tmpfiles.d/
 x2goserver-common/VERSION.x2goserver-common    /usr/share/x2go/versions/
