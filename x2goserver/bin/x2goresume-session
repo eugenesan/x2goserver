@@ -259,16 +259,40 @@ PSTR="$(awk -F ',' '{print $3}' <<< "${OPTIONS}")"
 KTSTR="$(awk -F ',' '{print $12}' <<< "${OPTIONS}")"
 GSTR="$(awk -F ',' '{print $13}' <<< "${OPTIONS}")"
 typeset xinerama_orig=''
-test_GSTR="$(sed 's/geometry=.*//' <<< "${GSTR}")"
+test_GSTR="$(sed -e 's/geometry=.*//' <<< "${GSTR}")"
 if [[ -n "${test_GSTR}" ]]; then
 	GSTR='geometry='
 	xinerama_orig="$(awk -F ',' '{print $13}' <<< "${OPTIONS}")"
+else
+	xinerama_orig="$(awk -F ',' '{print $14}' <<< "${OPTIONS}")"
+fi
+
+# Sessions started with older X2Go Server versions do not feature
+# a xinerama option, so handle this gracefully.
+# Note that Xinerama support defaulted to on and was handled by the client,
+# so keep it like that.
+typeset test_xinerama="$(sed -e 's/xinerama=.*//' <<< "${xinerama_orig}")"
+if [[ -n "${test_xinerama}" ]]; then
+	# Will not actually be replaced by anything, so the value provided
+	# here does not matter.
+	xinerama_orig='xinerama=1'
+fi
+
+# Only one component missing => either geometry or xinerama at position 13,
+# everything else starts from position 14.
+if { [[ -n "${test_GSTR}" ]] && [[ -z "${test_xinerama}" ]]; } || { [[ -z "${test_GSTR}" ]] && [[ -n "${test_xinerama}" ]]; }; then
 	RSTR="$(awk -F ',' '{print $14}' <<< "${OPTIONS}")"
 	FSTR="$(awk -F ',' '{print $15}' <<< "${OPTIONS}")"
 	LISTSTR="$(awk -F ',' '{print $17}' <<< "${OPTIONS}")"
 	CLIPBOARD="$(awk -F ',' '{print $18}' <<< "${OPTIONS}")"
+# Neither geometry nor xinerama given, everything else starts at position 13.
+elif [[ -n "${test_GSTR}" ]]; then
+	RSTR="$(awk -F ',' '{print $13}' <<< "${OPTIONS}")"
+	FSTR="$(awk -F ',' '{print $14}' <<< "${OPTIONS}")"
+	LISTSTR="$(awk -F ',' '{print $16}' <<< "${OPTIONS}")"
+	CLIPBOARD="$(awk -F ',' '{print $17}' <<< "${OPTIONS}")"
+# Both geometry and xinerama given, everything else starts at position 15.
 else
-	xinerama_orig="$(awk -F ',' '{print $14}' <<< "${OPTIONS}")"
 	RSTR="$(awk -F ',' '{print $15}' <<< "${OPTIONS}")"
 	FSTR="$(awk -F ',' '{print $16}' <<< "${OPTIONS}")"
 	LISTSTR="$(awk -F ',' '{print $18}' <<< "${OPTIONS}")"
