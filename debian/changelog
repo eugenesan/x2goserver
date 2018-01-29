@@ -387,6 +387,8 @@ x2goserver (4.0.1.23-0x2go1) UNRELEASED; urgency=medium
       session directories from systemd's tmpfiles deletion.
     - x2goserver/Makefile: install and uninstall
       etc/tmpfiles.d/x2goserver.conf.
+    - x2goserver-xsession/etc/Xsession: change interpreter to bash. Some tests
+      do not work in other shells.
   * x2goserver.spec:
     - RPMify x2goserver-xsession description.
     - Remove qt4 stuff, we're not using the framework here.
