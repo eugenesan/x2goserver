@@ -639,6 +639,10 @@ if ! getent passwd x2gouser 1>/dev/null; then
             -c "x2go" x2gouser
 fi
 
+# Dummy file - will be created/removed in post* scriptlets.
+# We just need this here for the %ghost directory to work.
+touch "%{buildroot}/%{_sysconfdir}/x2go/applications"
+
 %post
 # Initialize the session database
 if [ ! -s %{_localstatedir}/lib/x2go/x2go_sessions ]; then
@@ -672,8 +676,10 @@ fi
 %endif
 
 %preun
-if [ -L %{_sysconfdir}/x2go/applications ]; then
-  rm -f %{_sysconfdir}/x2go/applications || :
+if [ "${1}" = "0" ]; then
+  if [ -L %{_sysconfdir}/x2go/applications ]; then
+    rm -f %{_sysconfdir}/x2go/applications || :
+  fi
 fi
 
 %if 0%{?fedora} || 0%{?rhel} >= 7 || 0%{?suse_version} >= 1210
@@ -895,9 +901,11 @@ fi
 %dir %{_sysconfdir}/x2go/
 %dir %{_sysconfdir}/x2go/x2gosql
 %dir %{_sysconfdir}/x2go/x2gosql/passwords
+%ghost %config(noreplace) %{_sysconfdir}/x2go/applications
+%config(noreplace) %{_sysconfdir}/x2go/x2go_logout
+%config(noreplace) %{_sysconfdir}/x2go/x2go_logout.d/
 %config(noreplace) %{_sysconfdir}/x2go/x2goserver.conf
 %config(noreplace) %{_sysconfdir}/x2go/x2gosql/sql
-%config(noreplace) %{_sysconfdir}/x2go/x2go_logout*
 %if 0%{?fedora} || 0%{?rhel} >= 7 || 0%{?suse_version} >= 1210
 %config(noreplace) %{_sysconfdir}/tmpfiles.d/x2goserver.conf
 %endif

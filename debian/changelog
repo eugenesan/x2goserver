@@ -404,6 +404,10 @@ x2goserver (4.0.1.23-0x2go1) UNRELEASED; urgency=medium
       use/have systemd.
     - Actually install /etc/sudoers.d/x2goserver conffile on non-SuSE systems.
       Got broken accidentally a while ago.
+    - Backport /etc/x2g/applications behavior from upstream Fedora spec file.
+      Own the file as part of a %ghost procedure and make sure that the
+      removal is only executed on real package erases (i.e., not also during
+      package upgrades).
   * debian/x2goserver.install:
     - Install new /etc/tmpfiles.d/x2goserver.conf conffile.
 
