@@ -630,6 +630,11 @@ rm -f "%{buildroot}/etc/sudoers.d/x2goserver"
 rm -f "%{buildroot}/etc/tmpfiles.d/x2goserver.conf"
 %endif
 
+# Dummy file - will be created/removed in post* scriptlets.
+# We just need this here for the %ghost directory to work.
+touch "%{buildroot}/%{_sysconfdir}/x2go/applications"
+
+
 %pre common
 if ! getent group x2gouser 1>/dev/null; then
     groupadd -r x2gouser
@@ -639,9 +644,6 @@ if ! getent passwd x2gouser 1>/dev/null; then
             -c "x2go" x2gouser
 fi
 
-# Dummy file - will be created/removed in post* scriptlets.
-# We just need this here for the %ghost directory to work.
-touch "%{buildroot}/%{_sysconfdir}/x2go/applications"
 
 %post
 # Initialize the session database
