@@ -282,6 +282,8 @@ x2goserver (4.1.0.0-0x2go1.2) UNRELEASED; urgency=low
     - Let x2goserver depend upon its own x2goserver-virtual package for now.
       The release after that can drop the virtual package again.
     - Add x2goistrue to %files section.
+    - Remove useless x2goagent-virtual Provides: and let x2goserver-x2goagent
+      obsolete older x2goagent packages.
   * debian/control:
     - Maintainer change in package: X2Go Developers <x2go-dev@lists.x2go.org>.
     - Depend upon newer x2goagent package that now provides the
