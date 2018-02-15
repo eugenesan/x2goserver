@@ -1,4 +1,4 @@
-x2goserver (4.1.0.0-0x2go1.2) UNRELEASED; urgency=low
+x2goserver (4.1.0.0-0x2go1.2) unstable; urgency=low
 
   [ Mike Gabriel ]
   * Bump development upstream version to 4.1.0.0.
@@ -304,7 +304,7 @@ x2goserver (4.1.0.0-0x2go1.2) UNRELEASED; urgency=low
   * debian/po:
     - fi.po: update Finnish DebConf templates translation.
 
- -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Mon, 04 Jul 2016 23:46:51 +0200
+ -- X2Go Release Manager <git-admin@x2go.org>  Thu, 15 Feb 2018 23:03:48 +0100
 
 x2goserver (4.0.1.23-0x2go1) UNRELEASED; urgency=medium
 
