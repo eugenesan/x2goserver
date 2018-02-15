@@ -241,6 +241,7 @@ x2goserver (4.1.0.0-0x2go1.2) UNRELEASED; urgency=low
       options string gracefully, skipping that part (and the other optional
       geometry string) correctly.
     - x2goserver-common/Makefile: whitespace (lineup) only.
+    - */man/*/*: update dates and version in manpages.
   * x2goserver.spec:
     - Only create session DB in x2goserver's post install script. Do use
       proper Requires(post) statements to make sure perl-X2Go-Server-DB and
