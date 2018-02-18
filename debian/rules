@@ -13,6 +13,9 @@ override_dh_auto_install:
 	$(MAKE) -f Makefile build-arch
 	PREFIX=/usr NXLIBDIR=$(NXLIBDIR) dh_auto_install
 
+override_dh_missing:
+	dh_missing --fail-missing
+
 override_dh_auto_clean:
 	rm -f ChangeLog
 	rm -Rfv x2goserver/.build_html
