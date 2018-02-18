@@ -23,6 +23,8 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
   * debian/copyright:
     + Update copyright.in reference template.
   * debian/*: Process with wrap-and-sort -a -s -t -k -b.
+  * debian/x2goserver-printing.postinst:
+    + Make sure /var/spool/x2goprint is always created.
 
   [ Mihai Moldovan ]
   * New upstream version (4.1.0.1):

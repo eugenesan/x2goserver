@@ -37,6 +37,9 @@ case "$1" in
 			        --disabled-password --disabled-login \
 			        --shell /bin/sh --group --home /var/spool/x2goprint x2goprint
 		else
+			# make sure the home dir exists...
+			mkdir -p /var/spool/x2goprint/
+
 			echo "User x2goprint already exists." >&2
 			# make sure all settings are appropriate
 			if [ "`id -gn x2goprint`" != "x2goprint" ]; then
@@ -46,9 +49,11 @@ case "$1" in
 				usermod --shell /bin/sh x2goprint
 			fi
 			if [ "`ls -1d ~x2goprint`" != "/var/spool/x2goprint" ]; then
-				test -d /var/spool/x2goprint && \
-					usermod --home /var/spool/x2goprint x2goprint || \
+				if [ -d "/var/spool/x2goprint" ]; then
+					usermod --home /var/spool/x2goprint x2goprint
+				else
 					usermod --move-home --home /var/spool/x2goprint x2goprint
+				fi
 			fi
 			# we leave user shell alone. we have never set this wrongly
 			# and we need to respect the administrator's choices
