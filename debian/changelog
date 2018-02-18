@@ -15,6 +15,7 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
       short form license. This prevents the licensecheck utility from being
       fooled.
     - X2Go: more license header hygene.
+    - libx2go-server-db-perl: more license header hygene.
   * debian/control:
     + Change D (x2goserver-xsession) on perl-modules to perl. The existence of
       the perl-modules package is an implementation detail of the Debian Perl
