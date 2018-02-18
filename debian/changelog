@@ -6,6 +6,10 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
       Debian's lintian tool.
     - x2goserver/man/man8/x2goresume-session.8: Fix grammar flaw reported by
       Debian's lintian tool.
+  * debian/control:
+    + Change D (x2goserver-xsession) on perl-modules to perl. The existence of
+      the perl-modules package is an implementation detail of the Debian Perl
+      packaging.
 
  -- X2Go Release Manager <git-admin@x2go.org>  Thu, 15 Feb 2018 23:14:28 +0100
 

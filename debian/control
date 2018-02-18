@@ -256,7 +256,7 @@ Depends:
  ${misc:Depends},
  x2goserver (>= ${source:Version}), x2goserver (<< ${source:Version}.1~),
  x11-common,
- perl-modules,
+ perl,
  dbus
 Description: X2Go Server (Xsession runner)
  X2Go is a server based computing environment with
