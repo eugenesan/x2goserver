@@ -135,7 +135,15 @@ Copyright: NONE
 License: UNKNOWN
  FIXME
 
-Files: x2goserver-extensions/share/x2gofeature.d/x2goserver-extensions.features
+Files: X2Go/Config.pm
+ X2Go/Log.pm
+ X2Go/Server/Agent.pm
+ X2Go/Server/Agent/NX.pm
+ X2Go/Server/DB.pm
+ X2Go/Server/DB/PostgreSQL.pm
+ X2Go/Server/DB/SQLite3.pm
+ libx2go-server-db-perl/lib/libx2go-server-db-sqlite3-wrapper.pl
+ x2goserver-extensions/share/x2gofeature.d/x2goserver-extensions.features
  x2goserver-fmbindings/share/x2go/x2gofeature.d/x2goserver-fmbindings.features
  x2goserver-printing/bin/x2goprint
  x2goserver-printing/share/x2gofeature.d/x2goserver-printing.features
@@ -191,22 +199,6 @@ Copyright: 2007-2015, Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
 License: GPL (v2 or later)
  FIXME
 
-Files: X2Go/Config.pm
- X2Go/Log.pm
- X2Go/Server.pm
- X2Go/Server/Agent.pm
- X2Go/Server/Agent/NX.pm
- X2Go/Server/DB.pm
- X2Go/Server/DB/PostgreSQL.pm
- X2Go/Server/DB/SQLite3.pm
- X2Go/SupeReNicer.pm
- X2Go/Utils.pm
- libx2go-server-db-perl/lib/libx2go-server-db-sqlite3-wrapper.pl
-Copyright: 2007-2015, X2Go Project - http:wiki.x2go.org
-  2013-2015, X2Go Project - http:wiki.x2go.org
-License: GPL (v2 or later)
- FIXME
-
 Files: debian/libx2go-server-db-perl.postrm
  debian/libx2go-server-db-perl.prerm
  debian/x2goserver-common.postrm
@@ -239,6 +231,17 @@ Copyright: 2010-2015, Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
 License: GPL (v2 or later)
  FIXME
 
+Files: X2Go/Server.pm
+ X2Go/Utils.pm
+Copyright: 2007-2015, Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
+  2007-2015, Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
+  2007-2015, X2Go Project - http:wiki.x2go.org
+  2010-2015, Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
+  2013-2015, Guangzhou Nianguan Electronics Technology Co.Ltd. <opensource@gznianguan.com>
+  2013-2015, Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
+License: GPL (v2 or later)
+ FIXME
+
 Files: x2goserver-extensions/bin/x2goserver-run-extensions
  x2goserver/bin/x2gosetkeyboard
 Copyright: 2007-2015, X2Go Project - http:wiki.x2go.org
@@ -252,6 +255,13 @@ Files: debian/po/templates.pot
  debian/po/tr.po
 Copyright: YEAR THE PACKAGE'S COPYRIGHT HOLDER
 License: UNKNOWN
+ FIXME
+
+Files: X2Go/SupeReNicer.pm
+Copyright: 2013-2015, Guangzhou Nianguan Electronics Technology Co.Ltd. <opensource@gznianguan.com>
+  2013-2015, Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
+  2013-2015, X2Go Project - http:wiki.x2go.org
+License: GPL (v2 or later)
  FIXME
 
 Files: x2goserver/bin/x2gopath
