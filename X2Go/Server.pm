@@ -1,6 +1,10 @@
 #!/usr/bin/perl
 
 # Copyright (C) 2007-2015 X2Go Project - http://wiki.x2go.org
+# Copyright (C) 2007-2015 Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
+# Copyright (C) 2007-2015 Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
+# Copyright (C) 2010-2015 Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
+# Copyright (C) 2013-2015 Guangzhou Nianguan Electronics Technology Co.Ltd. <opensource@gznianguan.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,11 +20,6 @@
 # along with this program; if not, write to the
 # Free Software Foundation, Inc.,
 # 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
-#
-# Copyright (C) 2007-2015 Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
-# Copyright (C) 2007-2015 Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
-# Copyright (C) 2010-2015 Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
-# Copyright (C) 2013-2015 Guangzhou Nianguan Electronics Technology Co.Ltd. <opensource@gznianguan.com>
 
 package X2Go::Server;
 

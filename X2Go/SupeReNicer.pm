@@ -1,6 +1,8 @@
 #!/usr/bin/perl
 
 # Copyright (C) 2013-2015 X2Go Project - http://wiki.x2go.org
+# Copyright (C) 2013-2015 Guangzhou Nianguan Electronics Technology Co.Ltd. <opensource@gznianguan.com>
+# Copyright (C) 2013-2015 Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,9 +18,6 @@
 # along with this program; if not, write to the
 # Free Software Foundation, Inc.,
 # 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
-#
-# Copyright (C) 2013-2015 Guangzhou Nianguan Electronics Technology Co.Ltd. <opensource@gznianguan.com>
-# Copyright (C) 2013-2015 Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
 
 package X2Go::SupeReNicer;
 
