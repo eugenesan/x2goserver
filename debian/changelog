@@ -9,6 +9,7 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
     - x2goserver-x2goagent/bin/x2goagent: Fix license version (GPL-2+ not 3+).
       This script however is obsolete and should be replaced by a symlink to
       $BINDIR/nxagent.
+    - Makefile.docupload: Switch license to GPL-2+.
   * debian/control:
     + Change D (x2goserver-xsession) on perl-modules to perl. The existence of
       the perl-modules package is an implementation detail of the Debian Perl
