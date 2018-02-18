@@ -17,6 +17,8 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
     + Change D (x2goserver-xsession) on perl-modules to perl. The existence of
       the perl-modules package is an implementation detail of the Debian Perl
       packaging.
+  * debian/copyright:
+    + Update copyright.in reference template.
 
  -- X2Go Release Manager <git-admin@x2go.org>  Thu, 15 Feb 2018 23:14:28 +0100
 
