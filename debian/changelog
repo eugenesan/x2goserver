@@ -27,6 +27,9 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
     + Make sure /var/spool/x2goprint is always created.
   * debian/rules:
     + Add dh-missing --fail-missing override.
+  * debian/*.{install,manpages}:
+    + Utilize install target rather than picking all files from the source
+      tree ourselves.
 
   [ Mihai Moldovan ]
   * New upstream version (4.1.0.1):

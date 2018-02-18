@@ -1,3 +1,5 @@
-x2goserver-fmbindings/VERSION.x2goserver-fmbindings  usr/share/x2go/versions/
-x2goserver-fmbindings/bin/*                          usr/bin/
-x2goserver-fmbindings/share/*                        usr/share/
+usr/bin/x2gofm
+usr/share/applications/
+usr/share/mime/
+usr/share/x2go/versions/VERSION.x2goserver-fmbindings
+usr/share/x2go/x2gofeature.d/x2goserver-fmbindings.features

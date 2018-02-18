@@ -1,8 +1,28 @@
-x2goserver/VERSION.x2goserver           /usr/share/x2go/versions/
-x2goserver/bin/x2go*                    /usr/bin/
-x2goserver/etc/logcheck/ignore.d.server/x2goserver /etc/logcheck/ignore.d.server/
-x2goserver/etc/sudoers.d/x2goserver     /etc/sudoers.d/
-x2goserver/etc/x2go_logout*             /etc/x2go/
-x2goserver/lib/x2go*                    /usr/lib/x2go/
-x2goserver/sbin/x2go*                   /usr/sbin/
-x2goserver/share/x2gofeature.d          /usr/share/x2go/
+etc/logcheck/ignore.d.server/x2goserver
+etc/sudoers.d/x2goserver
+etc/x2go/x2go_logout*
+usr/bin/x2gobasepath
+usr/bin/x2gocmdexitmessage
+usr/bin/x2gofeature
+usr/bin/x2gofeaturelist
+usr/bin/x2gogetapps
+usr/bin/x2gogetservers
+usr/bin/x2golistdesktops
+usr/bin/x2golistmounts
+usr/bin/x2golistsessions
+usr/bin/x2golistshadowsessions
+usr/bin/x2gomountdirs
+usr/bin/x2gopath
+usr/bin/x2goresume-session
+usr/bin/x2goruncommand
+usr/bin/x2gosessionlimit
+usr/bin/x2gosetkeyboard
+usr/bin/x2gostartagent
+usr/bin/x2gosuspend-session
+usr/bin/x2goterminate-session
+usr/bin/x2goumount-session
+usr/bin/x2goversion
+usr/lib/x2go/x2go*
+usr/sbin/x2go*
+usr/share/x2go/versions/VERSION.x2goserver
+usr/share/x2go/x2gofeature.d/x2goserver.features

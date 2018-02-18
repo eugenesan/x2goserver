@@ -1,4 +1,4 @@
-x2goserver-extensions/VERSION.x2goserver-extensions      /usr/share/x2go/versions/
-x2goserver-extensions/bin/x2go*      /usr/bin/
-x2goserver-extensions/lib/*                              /usr/lib/x2go/
-x2goserver-extensions/share/x2gofeature.d/*              /usr/share/x2go/x2gofeature.d/
+usr/bin/x2goserver-run-extensions
+usr/lib/x2go/extensions/
+usr/share/x2go/versions/VERSION.x2goserver-extensions
+usr/share/x2go/x2gofeature.d/x2goserver-extensions.features
