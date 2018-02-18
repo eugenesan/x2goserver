@@ -1,3 +1,3 @@
-x2goserver-printing/bin/x2go*      /usr/bin/
 x2goserver-printing/VERSION.x2goserver-printing      /usr/share/x2go/versions/
+x2goserver-printing/bin/x2go*      /usr/bin/
 x2goserver-printing/share/x2gofeature.d/*           /usr/share/x2go/x2gofeature.d/

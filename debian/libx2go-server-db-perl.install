@@ -1,5 +1,5 @@
-usr/share/perl5/X2Go/Server/DB*
-usr/share/man/man3/X2Go::Server::DB.*
-usr/share/man/man3/X2Go::Server::DB::*
 libx2go-server-db-perl/lib/libx2go-server-db-sqlite3-wrapper /usr/lib/x2go/
 libx2go-server-db-perl/lib/libx2go-server-db-sqlite3-wrapper.pl /usr/lib/x2go/
+usr/share/man/man3/X2Go::Server::DB.*
+usr/share/man/man3/X2Go::Server::DB::*
+usr/share/perl5/X2Go/Server/DB*
