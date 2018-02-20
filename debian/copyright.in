@@ -222,7 +222,6 @@ License: GPL (v2 or later)
  FIXME
 
 Files: Makefile.docupload
- x2goserver-x2goagent/bin/x2goagent
  x2goserver-x2goagent/share/x2go/x2gofeature.d/x2goserver-x2goagent.features
 Copyright: 2010-2015, Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
   2012-2016, Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
