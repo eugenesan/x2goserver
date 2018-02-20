@@ -83,6 +83,7 @@ Files: INSTALL
  x2goserver-printing/VERSION.x2goserver-printing
  x2goserver-printing/man/man8/x2goprint.8
  x2goserver-x2goagent/Makefile
+ x2goserver-x2goagent/bin/.keep
  x2goserver-x2goagent/etc/keystrokes.cfg
  x2goserver-x2goagent/etc/x2goagent.keyboard
  x2goserver-x2goagent/etc/x2goagent.options
