@@ -48,6 +48,8 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
       share/mime/packages/sshfs-x2go.xml as a plain file, not an executable.
     - x2goserver-x2goagent/share/x2go/x2gofeature.d/x2goserver-x2goagent*:
       make executable.
+    - x2goserver-x2goagent/Makefile: replace ${PREFIX}/bin/x2goagent wrapper
+      script with a symlink to the ... x2goagent symlink in the NXLIBDIR.
   * debian/{control,compat}:
     + Bump DH compat level to 9.
   * debian/:

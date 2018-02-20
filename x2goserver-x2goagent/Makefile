@@ -20,7 +20,7 @@ NXLIBDIR ?= $(LIBDIR)/../nx
 MANDIR=$(PREFIX)/share/man
 SHAREDIR=$(PREFIX)/share/x2go
 
-BIN_SCRIPTS=$(shell cd bin && echo *)
+BIN_SCRIPTS=x2goagent $(shell cd bin && echo *)
 FEATURE_SCRIPTS=$(shell cd share/x2go/x2gofeature.d && echo *.features)
 
 man_pages = `cd man && find * -type f`
@@ -53,7 +53,7 @@ install: install_scripts install_config install_data install_man install_version
 
 install_scripts:
 	$(INSTALL_DIR) $(DESTDIR)$(BINDIR)
-	$(INSTALL_PROGRAM) bin/x2goagent $(DESTDIR)$(BINDIR)/
+	$(INSTALL_SYMLINK) ../../$(NX_LIBDIR)/x2goagent $(DESTDIR)$(BINDIR)/x2goagent
 	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)
 	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)/x2gofeature.d
 	$(INSTALL_PROGRAM) share/x2go/x2gofeature.d/*.features $(DESTDIR)$(SHAREDIR)/x2gofeature.d/
