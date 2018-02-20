@@ -62,14 +62,11 @@ install_scripts:
 
 install_data:
 	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)/
-	$(INSTALL_FILE) etc/rgb $(DESTDIR)$(SHAREDIR)/
 	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)/../pixmaps/
 	$(INSTALL_FILE) share/pixmaps/x2go.xpm $(DESTDIR)$(SHAREDIR)/../pixmaps/
-	$(INSTALL_SYMLINK) $(ETCDIR)/rgb $(DESTDIR)$(SHAREDIR)/
 
 install_config:
 	$(INSTALL_DIR) $(DESTDIR)$(ETCDIR)/
-	$(INSTALL_FILE) etc/rgb $(DESTDIR)$(ETCDIR)/
 	$(INSTALL_FILE) etc/x2goagent.options $(DESTDIR)$(ETCDIR)/
 	$(INSTALL_FILE) etc/x2goagent.keyboard $(DESTDIR)$(ETCDIR)/
 	$(INSTALL_FILE) etc/keystrokes.cfg $(DESTDIR)$(ETCDIR)/
@@ -93,7 +90,7 @@ uninstall_scripts:
 	for file in $(FEATURE_SCRIPTS); do $(RM_FILE) $(DESTDIR)$(SHAREDIR)/x2gofeature.d/$$file; done
 
 uninstall_data:
-	cd share && for file in pixmaps/x2go.xpm x2go/rgb; do \
+	cd share && for file in pixmaps/x2go.xpm; do \
 	    $(RM_FILE) $(DESTDIR)$(SHAREDIR)/../$$file; \
 	    $(RM_DIR) $(shell dirname $(DESTDIR)$(SHAREDIR)/../$$file); \
 	done
