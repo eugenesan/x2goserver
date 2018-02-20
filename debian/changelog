@@ -83,6 +83,9 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
     + Enable hardening and automatic passing of *FLAGS.
   * debian/x2goserver-xsession.lintian-overrides:
     + Whitespace/EOL change only.
+  * debian/*.manpages:
+    + Prepend paths with debian/tmp/ in order to work around pre-compat-11
+      levels not falling back to looking into debian/tmp/ for files.
 
  -- X2Go Release Manager <git-admin@x2go.org>  Thu, 15 Feb 2018 23:14:28 +0100
 
