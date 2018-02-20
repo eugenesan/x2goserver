@@ -9,8 +9,9 @@ Uploaders:
  Mihai Moldovan <ionic@ionic.de>,
 Build-Depends:
  debhelper (>= 9~),
+ dpkg-dev (>= 1.16.1.1),
  dh-systemd | hello,
- man2html-base | man2html,
+ man2html-base,
 Standards-Version: 3.9.6
 Homepage: https://code.x2go.org/releases/source/x2goserver
 Vcs-Git: git://code.x2go.org/x2goserver.git
@@ -27,10 +28,12 @@ Depends:
  libtry-tiny-perl,
  libx2go-server-perl (<< ${source:Version}.1~),
  libx2go-server-perl (>= ${source:Version}),
+ lsb-base,
  lsof,
  net-tools,
  openssh-client,
  openssh-server,
+ perl,
  psmisc,
  pwgen,
  x2goserver-common (<< ${source:Version}.1~),
@@ -41,6 +44,7 @@ Depends:
  xfonts-base,
  xkb-data,
  ${misc:Depends},
+ ${shlibs:Depends},
 Recommends:
  fontconfig,
  sshfs,
@@ -73,17 +77,18 @@ Replaces:
  x2goserver-home,
  x2goserver-one,
  x2goserver-pyhoca,
-Description: X2Go server daemon scripts
+Description: X2Go server
  X2Go is a server based computing environment with
     - session resuming
     - low bandwidth support
     - session brokerage support
-    - client side mass storage mounting support
+    - client-side mass storage mounting support
+    - client-side printing support
     - audio support
     - authentication by smartcard and USB stick
  .
- This package contains the main daemon and tools for
- X2Go server-side session administrations.
+ This package contains the main daemon and tools for X2Go server-side
+ session administrations.
 
 Package: libx2go-log-perl
 Architecture: all
@@ -98,7 +103,8 @@ Description: Perl X2Go::Log package
     - session resuming
     - low bandwidth support
     - session brokerage support
-    - client side mass storage mounting support
+    - client-side mass storage mounting support
+    - client-side printing support
     - audio support
     - authentication by smartcard and USB stick
  .
@@ -127,7 +133,8 @@ Description: Perl X2Go::Server:DB package
     - session resuming
     - low bandwidth support
     - session brokerage support
-    - client side mass storage mounting support
+    - client-side mass storage mounting support
+    - client-side printing support
     - audio support
     - authentication by smartcard and USB stick
  .
@@ -152,7 +159,8 @@ Description: Perl X2Go::Server package
     - session resuming
     - low bandwidth support
     - session brokerage support
-    - client side mass storage mounting support
+    - client-side mass storage mounting support
+    - client-side printing support
     - audio support
     - authentication by smartcard and USB stick
  .
@@ -191,16 +199,14 @@ Description: X2Go Server (extension support)
     - session resuming
     - low bandwidth support
     - session brokerage support
-    - client side mass storage mounting support
+    - client-side mass storage mounting support
+    - client-side printing support
     - audio support
     - authentication by smartcard and USB stick
  .
- The X2Go Server extension namespace offers contributors
- to add script functionality to X2Go.
- .
- Make sure you have this package installed on your server
- if you want X2Go clients to be able to access your server
- without lack of features.
+ The X2Go server extension namespace offers contributors to add script
+ functionality to X2Go that is not needed/ignored by the legacy X2Go
+ client (x2goclient).
 
 Package: x2goserver-fmbindings
 Architecture: all
@@ -215,21 +221,22 @@ Description: X2Go Server (file manager bindings)
     - session resuming
     - low bandwidth support
     - session brokerage support
-    - client side mass storage mounting support
+    - client-side mass storage mounting support
+    - client-side printing support
     - audio support
     - authentication by smartcard and USB stick
  .
- This package contains generic MIME type information
- for X2Go's local folder sharing. It can be used with all
- freedesktop.org compliant desktop shells.
+ x2goserver-fmbindings contains generic MIME type information for X2Go's
+ local folder sharing. It can be used with all freedesktop.org compliant
+ desktop shells.
  .
- However, this package will be superseded by other, more specific
- destkop binding components, if installed and being used with the
- corresponding desktop shell:
+ However, this package will be superseded by other, more specific destkop
+ binding components, if installed and being used with the corresponding
+ desktop shell:
     - under LXDE by x2golxdebindings
     - under GNOMEv2 by x2gognomebindings
-    - under KDE4 by plasma-widget-x2go
     - under MATE by x2gomatebindings
+    - under KDE4/5 by plasma-widget-x2go
 
 Package: x2goserver-printing
 Architecture: all
@@ -249,25 +256,24 @@ Description: X2Go server (printing support)
     - session resuming
     - low bandwidth support
     - session brokerage support
-    - client side mass storage mounting support
+    - client-side mass storage mounting support
+    - client-side printing support
     - audio support
     - authentication by smartcard and USB stick
  .
- The X2Go Server printing package provides
- client-side printing support for X2Go.
+ The X2Go Server printing package provides client-side printing support
+ for X2Go.
  .
- This package has to be installed on X2Go Servers
- that shall be able to pass X2Go print jobs on
- to the X2Go client.
+ This package has to be installed on X2Go Servers that shall be able to
+ pass X2Go print jobs on to the X2Go client.
  .
- This package co-operates with the cups-x2go CUPS
- backend. If CUPS server and X2Go Server are hosted
- on different machines, then make sure you install
- this package on the X2Go Server/s (and the cups-x2go
- package on the CUPS server).
+ This package co-operates with the cups-x2go CUPS backend. If CUPS server
+ and X2Go Server are hosted on different machines, then make sure you
+ install this package on the X2Go Server/s (and the cups-x2go package on
+ the CUPS server).
 
 Package: x2goserver-x2goagent
-Architecture: all
+Architecture: any
 Pre-Depends:
  dpkg (>= 1.15.7.2),
 Depends:
@@ -277,24 +283,25 @@ Suggests:
  x2goserver,
 Breaks:
  x2goagent (<< 2:3.5.99.2~),
- x2goserver (<< 4.0.1.20~),
+ x2goserver (<< 4.0.1.99~),
 Replaces:
  x2goagent (<< 2:3.5.99.2~),
- x2goserver (<< 4.0.1.20~),
+ x2goserver (<< 4.0.1.99~),
 Description: X2Go Server's X2Go Agent
  X2Go is a software suite that uses NX technology for remote desktop
  computing.
  .
- NX technology implements a very efficient compression of the X11 protocol.
- This increases performance when using X applications over a network,
- especially a slow one.
+ NX technology implements a very efficient compression of the X11
+ protocol. This increases performance when using X applications over a
+ network, especially a slow one.
  .
- X2Go agent functionality has been completely incorporated into NX agent's
- code base. If the nxagent binary is executed under the name of `x2goagent',
- the X2Go functionalities get activated.
+ X2Go agent functionality has been completely incorporated into NX
+ agent's code base. If the nxagent binary is executed under the name of
+ `x2goagent', the X2Go functionalities get activated.
  .
- The x2goagent package is a wrapper that activates X2Go branding in nxagent.
- Please refer to the nxagent package's description for more information on NX.
+ This package is a wrapper that activates X2Go branding in nxagent.
+ Please refer to the nxagent package's description for more information
+ on NX.
 
 Package: x2goserver-xsession
 Architecture: all
@@ -310,14 +317,14 @@ Description: X2Go Server (Xsession runner)
     - session resuming
     - low bandwidth support
     - session brokerage support
-    - client side mass storage mounting support
+    - client-side mass storage mounting support
+    - client-side printing support
     - audio support
     - authentication by smartcard and USB stick
  .
- This X2Go Server add-on enables Xsession script handling
- when starting desktop sessions with X2Go.
+ This X2Go Server add-on enables Xsession script handling when starting
+ desktop sessions with X2Go.
  .
- Amongst others the parsing of Xsession scripts will
- enable desktop-profiles, ssh-agent startups, gpgagent
- startups and many more Xsession related features on
- X2Go session login automagically.
+ Amongst others the parsing of Xsession scripts will enable
+ desktop-profiles, ssh-agent startups, gpgagent startups and many more
+ Xsession related features on X2Go session login automagically.
