@@ -58,7 +58,7 @@ install_scripts:
 	$(INSTALL_DIR) $(DESTDIR)$(PREFIX)/share/applications
 	$(INSTALL_PROGRAM) share/applications/x2gofm.desktop $(DESTDIR)$(PREFIX)/share/applications/
 	$(INSTALL_DIR) $(DESTDIR)$(PREFIX)/share/mime/packages
-	$(INSTALL_PROGRAM) share/mime/packages/sshfs-x2go.xml $(DESTDIR)$(PREFIX)/share/mime/packages/
+	$(INSTALL_FILE) share/mime/packages/sshfs-x2go.xml $(DESTDIR)$(PREFIX)/share/mime/packages/
 
 install_config:
 

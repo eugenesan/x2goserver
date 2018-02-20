@@ -37,6 +37,8 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
     - x2goserver-x2goagent/Makefile: do not stage rgb file any longer.
       Obsoleted, is now hardcoded into nxagent directly.
     - x2goserver-x2goagent/etc: remove rgb file.
+    - x2goserver-fmbindings/Makefile: install
+      share/mime/packages/sshfs-x2go.xml as a plain file, not an executable.
   * debian/{control,compat}:
     + Bump DH compat level to 9.
   * debian/:
