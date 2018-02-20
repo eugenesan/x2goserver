@@ -45,6 +45,8 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
     + Do not install rgb file/symlink any longer.
   * x2goserver.spec:
     + Do not install rgb file/symlink any longer.
+  * debian/copyright.in:
+    + Remove reference to rgb file.
 
  -- X2Go Release Manager <git-admin@x2go.org>  Thu, 15 Feb 2018 23:14:28 +0100
 
