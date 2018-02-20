@@ -6,7 +6,7 @@
 set -e
 
 # Source debconf library.
-. /usr/share/debconf/confmodule
+. '/usr/share/debconf/confmodule'
 
 # summary of how this script can be called:
 #        * <postinst> `configure' <most-recently-configured-version>
@@ -20,41 +20,39 @@ set -e
 # for details, see http://www.debian.org/doc/debian-policy/ or
 # the debian-policy package
 
-
-case "$1" in
-	configure)
-
-		### cleaning ab setgid stuff of older versions of package x2goserver
+case "${1}" in
+	'configure')
+		### cleaning up setgid stuff of older versions of package x2goserver
 
 		# we may be upgrading from versions of x2goserver that had
 		# /usr/lib/x2go/x2gosqlitewrapper.pl set to setuid x2gouser. This script is
 		# not at that location anymore, we clear the dpkg-statoverride entry.
-		if dpkg-statoverride --list /usr/lib/x2go/x2gosqlitewrapper.pl >/dev/null; then
-			dpkg-statoverride --remove /usr/lib/x2go/x2gosqlitewrapper.pl
+		if dpkg-statoverride --list '/usr/lib/x2go/x2gosqlitewrapper.pl' >'/dev/null'; then
+			dpkg-statoverride --remove '/usr/lib/x2go/x2gosqlitewrapper.pl'
 		fi
 
 		# we may be upgrading from versions of x2goserver that had
 		# /usr/bin/x2gosqlitewrapper set to setuid or setgid x2gouser, the script itself is not
 		# at this location anymore, we just clear the dpkg-statoverride config entry.
-		if dpkg-statoverride --list /usr/bin/x2gosqlitewrapper >/dev/null; then
-			dpkg-statoverride --remove /usr/bin/x2gosqlitewrapper
+		if dpkg-statoverride --list '/usr/bin/x2gosqlitewrapper' >'/dev/null'; then
+			dpkg-statoverride --remove '/usr/bin/x2gosqlitewrapper'
 		fi
 
 		# we may be upgrading from versions of x2goserver that had
 		# /usr/lib/x2go/x2gosqlitewrapper set to setgid x2gouser, the script itself is not
 		# at this location anymore, we just clear the dpkg-statoverride config entry.
-		if dpkg-statoverride --list /usr/lib/x2go/x2gosqlitewrapper >/dev/null; then
-		    dpkg-statoverride --remove /usr/lib/x2go/x2gosqlitewrapper
+		if dpkg-statoverride --list '/usr/lib/x2go/x2gosqlitewrapper' >'/dev/null'; then
+		    dpkg-statoverride --remove '/usr/lib/x2go/x2gosqlitewrapper'
 		fi
 
 		# sudoers.d files have to be installed 0440:root:root
-		if ! dpkg-statoverride --list /etc/sudoers.d/x2goserver >/dev/null; then
-		    dpkg-statoverride --add --update root root 0440 /etc/sudoers.d/x2goserver
+		if ! dpkg-statoverride --list '/etc/sudoers.d/x2goserver' >'/dev/null'; then
+		    dpkg-statoverride --add --update 'root' 'root' '0440' '/etc/sudoers.d/x2goserver'
 		fi
 
 		# create /etc/x2go/applications symlink if not already there (as link or as dir)
-		if ! test -e /etc/x2go/applications; then
-			ln -s /usr/share/applications /etc/x2go/applications
+		if ! test -e '/etc/x2go/applications'; then
+			ln -s '/usr/share/applications' '/etc/x2go/applications'
 		fi
 
 		# Setup up SQLite3 database, do nothing if PostgeSQL is already configured
@@ -63,29 +61,26 @@ case "$1" in
 		# It will only succeed if both packages are installed. As we cannot influence the
 		# installation order, we handle the session DB creation in both packages. One of
 		# then should succeed.
-		if [ -f /etc/x2go/x2gosql/sql ] && egrep "^backend=sqlite.*" /etc/x2go/x2gosql/sql >/dev/null; then
-			if [ ! -f /var/lib/x2go/x2go_sessions ]; then
+		if [ -f '/etc/x2go/x2gosql/sql' ] && grep -Eq '^backend=sqlite.*' '/etc/x2go/x2gosql/sql' >'/dev/null'; then
+			if [ ! -f '/var/lib/x2go/x2go_sessions' ]; then
 				x2godbadmin --createdb
 			else
 				# make sure db permissions are set correctly
-				chown -R root:x2gouser /var/lib/x2go
+				chown -R 'root:x2gouser' '/var/lib/x2go'
 				# egid x2gouser needs write access to the db dir (for temporary db journal file)
-				chmod 0770 /var/lib/x2go
+				chmod '0770' '/var/lib/x2go'
 				# ... and to the db file itself, of course
-				chmod 0660 /var/lib/x2go/x2go_sessions
+				chmod '0660' '/var/lib/x2go/x2go_sessions'
 			fi
 		else
 			echo "X2Go is configured to use a non-SQLite DB backend, leaving the database alone."
 		fi
-
 		;;
-
-	abort-upgrade|abort-remove|abort-deconfigure)
+	'abort-upgrade'|'abort-remove'|'abort-deconfigure')
 		;;
-
 	*)
-		echo "postinst called with unknown argument \`$1'" >&2
-		exit 1
+		echo "postinst called with unknown argument \`${1}'" >&2
+		exit '1'
 		;;
 esac
 
@@ -94,4 +89,4 @@ esac
 
 #DEBHELPER#
 
-exit 0
+exit '0'

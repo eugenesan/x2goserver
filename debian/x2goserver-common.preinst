@@ -17,19 +17,18 @@ set -e
 # for details, see http://www.debian.org/doc/debian-policy/ or
 # the debian-policy package
 
-
-case "$1" in
-	install|upgrade)
-		if getent group x2gousers >/dev/null; then 
+case "${1}" in
+	'install'|'upgrade')
+		if getent 'group' 'x2gousers' >'/dev/null'; then
 			echo "The group ,,x2gousers'' is no longer used by X2Go and can be"
 			echo "removed as soon as no users are members of this group anymore."
 		fi
 		;;
-	abort-upgrade)
+	'abort-upgrade')
 		;;
 	*)
-		echo "preinst called with unknown argument \`$1'" >&2
-		exit 1
+		echo "preinst called with unknown argument \`${1}'" >&2
+		exit '1'
 		;;
 esac
 
@@ -38,6 +37,6 @@ esac
 
 #DEBHELPER#
 
-exit 0
+exit '0'
 
 

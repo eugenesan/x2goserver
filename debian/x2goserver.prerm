@@ -1,6 +1,8 @@
 #! /bin/sh
 # prerm script for x2goserver
-#
+
+set -e
+
 # see: dh_installdeb(1)
 # summary of how this script can be called:
 #        * <prerm> `remove'
@@ -8,26 +10,25 @@
 #        * <new-prerm> `failed-upgrade' <old-version>
 #        * <conflictor's-prerm> `remove' `in-favour' <package> <new-version>
 #        * <deconfigured's-prerm> `deconfigure' `in-favour'
-#        <package-being-installed> <version> `removing'
-#        <conflicting-package> <version>
+#          <package-being-installed> <version> `removing'
+#          <conflicting-package> <version>
 # for details, see http://www.debian.org/doc/debian-policy/ or
 # the debian-policy package
 
-set -e
-
-
-case "$1" in
-	remove)
+case "${1}" in
+	'remove')
 		# The package is being removed in its own right.
-		if test -L /etc/x2go/applications; then
-			rm -f /etc/x2go/applications
+		if test -L '/etc/x2go/applications'; then
+			rm -f '/etc/x2go/applications'
 		fi
 		;;
-	deconfigure|upgrade|failed-upgrade)
+	'deconfigure'|'upgrade'|'failed-upgrade')
 		:
 		;;
-	*) echo "$0: didn't understand being called with \`$1'" 1>&2
-		exit 1;;
+	*)
+		echo "${0}: didn't understand being called with \`${1}'" 1>&2
+		exit '1'
+		;;
 esac
 
 # dh_installdeb will replace this with shell code automatically
@@ -35,4 +36,4 @@ esac
 
 #DEBHELPER#
 
-exit 0
+exit '0'

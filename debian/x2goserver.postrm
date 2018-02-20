@@ -1,6 +1,8 @@
 #! /bin/sh
 # postrm script for x2goserver
-#
+
+set -e
+
 # see: dh_installdeb(1)
 # summary of how this script can be called:
 #        * <postrm> `remove'
@@ -10,27 +12,25 @@
 #        * <new-postrm> `abort-install'
 #        * <new-postrm> `abort-install' <old-version>
 #        * <new-postrm> `abort-upgrade' <old-version>
-#        * <disappearer's-postrm> `disappear' <r>overwrit>r> <new-version>
+#        * <disappearer's-postrm> `disappear' <overwriter>i
+#          <overwriter-version>
 # for details, see /usr/share/doc/packaging-manual/
 
-set -e
-
-
-case "$1" in
-	purge)
-		if dpkg-statoverride --list /etc/sudoers.d/x2goserver >/dev/null; then
-			dpkg-statoverride --remove /etc/sudoers.d/x2goserver
+case "${1}" in
+	'purge')
+		if dpkg-statoverride --list '/etc/sudoers.d/x2goserver' >'/dev/null'; then
+			dpkg-statoverride --remove '/etc/sudoers.d/x2goserver'
 		fi
 
-		rm -Rf /etc/x2go/applications
-		rm -Rf /etc/x2go/x2go_logout.d
-		rmdir --ignore-fail-on-non-empty /etc/x2go
+		rm -Rf '/etc/x2go/applications'
+		rm -Rf '/etc/x2go/x2go_logout.d'
+		rmdir --ignore-fail-on-non-empty '/etc/x2go'
 		;;
-	remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
+	'remove'|'upgrade'|'failed-upgrade'|'abort-install'|'abort-upgrade'|'disappear')
 		;;
 	*)
-		echo "postrm called with unknown argument \`$1'" >&2
-		exit 0
+		echo "postrm called with unknown argument \`${1}'" >&2
+		exit '0'
 		;;
 esac
 
@@ -39,4 +39,4 @@ esac
 
 #DEBHELPER#
 
-exit 0
+exit '0'

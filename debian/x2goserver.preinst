@@ -14,16 +14,16 @@ set -e
 # for details, see http://www.debian.org/doc/debian-policy/ or
 # the debian-policy package
 
-case "$1" in
-	install|upgrade)
+case "${1}" in
+	'install'|'upgrade')
 		# cleanup old x2goserver installations
-		rm -Rfv /var/db/x2go/
+		rm -Rfv '/var/db/x2go/'
 		;;
-	abort-upgrade)
+	'abort-upgrade')
 		;;
 	*)
-		echo "preinst called with unknown argument \`$1'" >&2
-		exit 1
+		echo "preinst called with unknown argument \`${1}'" >&2
+		exit '1'
 		;;
 esac
 
@@ -32,6 +32,4 @@ esac
 
 #DEBHELPER#
 
-exit 0
-
-
+exit '0'

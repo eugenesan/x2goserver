@@ -17,19 +17,16 @@ set -e
 # for details, see http://www.debian.org/doc/debian-policy/ or
 # the debian-policy package
 
-
-case "$1" in
-	configure)
+case "${1}" in
+	'configure')
 		update-desktop-database
-		update-mime-database /usr/share/mime
+		update-mime-database '/usr/share/mime'
 	;;
-
-	abort-upgrade|abort-remove|abort-deconfigure)
+	'abort-upgrade'|'abort-remove'|'abort-deconfigure')
 	;;
-
 	*)
-		echo "postinst called with unknown argument \`$1'" >&2
-		exit 1
+		echo "postinst called with unknown argument \`${1}'" >&2
+		exit '1'
 	;;
 esac
 
@@ -38,4 +35,4 @@ esac
 
 #DEBHELPER#
 
-exit 0
+exit '0'

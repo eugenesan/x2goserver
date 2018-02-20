@@ -71,6 +71,9 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
       available.
   * debian/x2goserver-x2goagent.{{pre,post}inst,postrm}:
     + Handle /etc/x2go/rgb conffile removal gracefully.
+  * debian/x2goserver*{pre,post}*:
+    + Rework scriptlets, use updated templates, add missing templates, more
+      and better quoting, fix other misc. errors within the scripts.
 
  -- X2Go Release Manager <git-admin@x2go.org>  Thu, 15 Feb 2018 23:14:28 +0100
 
