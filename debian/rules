@@ -2,6 +2,10 @@
 
 export NXLIBDIR="/usr/lib/$(shell dpkg-architecture -qDEB_HOST_MULTIARCH)/nx"
 
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+DPKG_EXPORT_BUILDFLAGS = 1
+include /usr/share/dpkg/buildflags.mk
+
 %:
 	PREFIX=/usr NXLIBDIR=$(NXLIBDIR) dh ${@} --with=systemd || PREFIX=/usr NXLIBDIR=$(NXLIBDIR) dh ${@}
 
