@@ -46,6 +46,9 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
     + Bump DH compat level to 9.
   * debian/:
     + Rename config to x2goserver.config.
+    + Remove obsolete x2goserver-{extensions,printing,xsession}.dirs files,
+      should be correctly handled via the main Makefile and staging by
+      *.install files.
   * debian/x2goserver-x2goagent.install:
     + Do not install rgb file/symlink any longer.
   * x2goserver.spec:
