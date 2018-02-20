@@ -563,10 +563,6 @@ make CFLAGS="%{optflags} -fPIC" %{?_smp_mflags} PERL_INSTALLDIRS=vendor PREFIX=%
 
 %install
 make install DESTDIR=%{buildroot} PREFIX=%{_prefix} NXLIBDIR=%{_libdir}/nx
-# We currently need to disable the broken symlinks check on OpenSuSE, as long
-# as we can't pull in nx-libs 3.5.99 or higher. Once we can add it as a BuildRequires,
-# this env var can and should be removed again.
-export NO_BRP_STALE_LINK_ERROR=yes
 
 # Make sure the .packlist file is removed from %%{perl_vendorarch}...
 find %{buildroot}%{perl_vendorarch} -name .packlist | while read file; do rm -f "$file"; done

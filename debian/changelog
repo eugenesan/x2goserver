@@ -61,6 +61,8 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
   * x2goserver.spec:
     + Do not install rgb file/symlink any longer.
     + Bump nxagent requirement to 3.5.99.5+.
+    + Remove stale symlinks check workaround now that we pull in nxagent >=
+      3.5.99.0 by default.
   * debian/copyright.in:
     + Remove reference to rgb file.
   * debian/x2goserver.dirs:
