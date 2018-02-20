@@ -46,6 +46,8 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
     - x2goserver-x2goagent/etc: remove rgb file.
     - x2goserver-fmbindings/Makefile: install
       share/mime/packages/sshfs-x2go.xml as a plain file, not an executable.
+    - x2goserver-x2goagent/share/x2go/x2gofeature.d/x2goserver-x2goagent*:
+      make executable.
   * debian/{control,compat}:
     + Bump DH compat level to 9.
   * debian/:
