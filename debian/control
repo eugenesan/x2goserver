@@ -269,7 +269,7 @@ Description: X2Go server (printing support)
 Package: x2goserver-x2goagent
 Architecture: all
 Depends:
- nxagent (>= 2:3.5.99.3~),
+ nxagent (>= 2:3.5.99.5~),
  ${misc:Depends},
 Suggests:
  x2goserver,
