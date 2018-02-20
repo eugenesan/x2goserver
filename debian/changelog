@@ -52,6 +52,7 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
       script with a symlink to the ... x2goagent symlink in the NXLIBDIR.
     - x2goserver-x2goagent/bin: remove x2goagent wrapper script. Unneeded and
       actually harmful nowadays.
+    - x2goserver-x2goagent/bin: add .keep file to keep this directory around.
   * debian/{control,compat}:
     + Bump DH compat level to 9.
   * debian/:
