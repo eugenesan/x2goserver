@@ -21,6 +21,7 @@ usr/bin/x2gostartagent
 usr/bin/x2gosuspend-session
 usr/bin/x2goterminate-session
 usr/bin/x2goumount-session
+usr/bin/x2goumount_session
 usr/bin/x2goversion
 usr/lib/x2go/x2go*
 usr/sbin/x2go*
