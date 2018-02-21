@@ -623,7 +623,7 @@ rm -f "%{buildroot}/etc/sudoers.d/x2goserver"
 # Delete tmpfiles.d configuration file on systems
 # not using systemd.
 %if ( ! 0%{?fedora} ) && ( ( 0%{?rhel} && 0%{?rhel} < 7 ) || ( 0%{?suse_version} && 0%{?suse_version} < 1210 ) )
-rm -f "%{buildroot}/etc/tmpfiles.d/x2goserver.conf"
+rm -f "%{buildroot}/%{_prefix}/lib/tmpfiles.d/x2goserver.conf"
 %endif
 
 # Dummy file - will be created/removed in post* scriptlets.
@@ -905,7 +905,7 @@ fi
 %config(noreplace) %{_sysconfdir}/x2go/x2goserver.conf
 %config(noreplace) %{_sysconfdir}/x2go/x2gosql/sql
 %if 0%{?fedora} || 0%{?rhel} >= 7 || 0%{?suse_version} >= 1210
-%config(noreplace) %{_sysconfdir}/tmpfiles.d/x2goserver.conf
+%{_prefix}/lib/tmpfiles.d/x2goserver.conf
 %endif
 %{_mandir}/man5/x2goserver.conf.5.gz
 %dir %{_datadir}/x2go/versions
