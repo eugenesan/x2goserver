@@ -56,6 +56,8 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
     - x2goserver-x2goagent/Makefile: it's $(NXLIBDIR), not $(NX_LIBDIR).
     - x2goserver-x2goagent/Makefile: add missing bin component in symlink
       target for ${PREFIX}/bin/x2goagent.
+    - x2goserver-common/Makefile: stage tmpfiles.d config file into
+      ${PREFIX}/lib/. File should not be modified by users.
   * debian/{control,compat}:
     + Bump DH compat level to 9.
   * debian/:
