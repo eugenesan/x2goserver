@@ -64,9 +64,9 @@ Files: INSTALL
  rpm/x2goserver.init
  x2goserver-common/Makefile
  x2goserver-common/VERSION.x2goserver-common
- x2goserver-common/etc/tmpfiles.d/x2goserver.conf
  x2goserver-common/etc/x2goserver.conf
  x2goserver-common/etc/x2gosql/sql
+ x2goserver-common/lib/tmpfiles.d/x2goserver.conf
  x2goserver-common/man/man5/x2goserver.conf.5
  x2goserver-extensions/Makefile
  x2goserver-extensions/README.md
