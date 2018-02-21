@@ -17,6 +17,9 @@ set -e
 # for details, see http://www.debian.org/doc/debian-policy/ or
 # the debian-policy package
 
+dpkg-maintscript-helper 'rm_conffile' \
+  '/etc/tmpfiles.d/x2goserver.conf' '4.1.0.0-999' 'x2goserver-common' -- "${@}"
+
 case "${1}" in
 	'install'|'upgrade')
 		if getent 'group' 'x2gousers' >'/dev/null'; then

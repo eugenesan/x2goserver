@@ -15,6 +15,9 @@
 
 set -e
 
+dpkg-maintscript-helper 'rm_conffile' \
+  '/etc/tmpfiles.d/x2goserver.conf' '4.1.0.0-999' 'x2goserver-common' -- "${@}"
+
 case "${1}" in
 	'purge')
 		getent 'passwd' 'x2gouser' >'/dev/null' && deluser 'x2gouser'
