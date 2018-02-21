@@ -58,6 +58,7 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
       target for ${PREFIX}/bin/x2goagent.
     - x2goserver-common/Makefile: stage tmpfiles.d config file into
       ${PREFIX}/lib/. File should not be modified by users.
+    - x2goserver-common/: move etc/tmpfiles.d to lib/tmpfiles.d.
   * debian/{control,compat}:
     + Bump DH compat level to 9.
   * debian/:
