@@ -53,7 +53,7 @@ install: install_scripts install_config install_data install_man install_version
 
 install_scripts:
 	$(INSTALL_DIR) $(DESTDIR)$(BINDIR)
-	$(INSTALL_SYMLINK) ../../$(NXLIBDIR)/x2goagent $(DESTDIR)$(BINDIR)/x2goagent
+	$(INSTALL_SYMLINK) ../../$(NXLIBDIR)/bin/x2goagent $(DESTDIR)$(BINDIR)/x2goagent
 	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)
 	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)/x2gofeature.d
 	$(INSTALL_PROGRAM) share/x2go/x2gofeature.d/*.features $(DESTDIR)$(SHAREDIR)/x2gofeature.d/

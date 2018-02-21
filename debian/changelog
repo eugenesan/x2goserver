@@ -54,6 +54,8 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
       actually harmful nowadays.
     - x2goserver-x2goagent/bin: add .keep file to keep this directory around.
     - x2goserver-x2goagent/Makefile: it's $(NXLIBDIR), not $(NX_LIBDIR).
+    - x2goserver-x2goagent/Makefile: add missing bin component in symlink
+      target for ${PREFIX}/bin/x2goagent.
   * debian/{control,compat}:
     + Bump DH compat level to 9.
   * debian/:
