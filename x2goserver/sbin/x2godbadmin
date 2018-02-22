@@ -77,11 +77,10 @@ if ($Config->param("backend") eq 'sqlite')
 	{
 		if ( ! -e $dbfile)
 		{
-
 			$createdb = 1;
-
-		} else {
-
+		}
+		else
+		{
 			# Update the session DB file
 			my $dbh=DBI->connect("dbi:SQLite:dbname=$dbfile","","",{AutoCommit => 1, PrintError => 0, PrintWarn => 1, RaiseError => 1 }) or die $_;
 			my $coltest;
@@ -92,11 +91,11 @@ if ($Config->param("backend") eq 'sqlite')
 				$dbh->prepare("
 				              select tekictrl_port from sessions
 				              ");
-			} catch {
+			}
+			catch
+			{
 				print "ADDING: tekictrl_port column to table sessions\n";
-				$sth=$dbh->prepare("
-				                   alter table sessions add column 'tekictrl_port' int
-				                   ");
+				$sth=$dbh->prepare("alter table sessions add column 'tekictrl_port' int");
 				$sth->execute();
 				$sth->finish();
 			};
@@ -104,14 +103,12 @@ if ($Config->param("backend") eq 'sqlite')
 			# Update missing column on sessions table: tekidata_port
 			try
 			{
-				$dbh->prepare("
-				              select tekidata_port from sessions
-				              ");
-			} catch {
+				$dbh->prepare("select tekidata_port from sessions");
+			}
+			catch
+			{
 				print "ADDING: tekidata_port column to table sessions\n";
-				$sth=$dbh->prepare("
-				                   alter table sessions add column 'tekidata_port' int
-				                   ");
+				$sth=$dbh->prepare("alter table sessions add column 'tekidata_port' int");
 				$sth->execute();
 				$sth->finish();
 			};
@@ -165,9 +162,7 @@ if ($Config->param("backend") eq 'sqlite')
 		$sth->execute() or die;
 		$sth->finish();
 
-		my $sth=$dbh->prepare("
-		                      create table messages(mess_id varchar(20) primary key, message text)
-		                      ");
+		my $sth=$dbh->prepare("create table messages(mess_id varchar(20) primary key, message text)");
 		$sth->execute() or die;
 		$sth->finish();
 
@@ -272,7 +267,8 @@ if ($updatedb)
 	my $dbh;
 	until (
 		$dbh = DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbadmin", "$dbadminpass",{AutoCommit => 1, RaiseError => 0, PrintError => 0})
-	) {
+	)
+	{
 		$createdb = 1;
 		last;
 	};
@@ -284,11 +280,11 @@ if ($updatedb)
 			my $sth_tekidata;
 			my $sth_update;
 			try {
-				$sth_tekictrl = $dbh->prepare("
-				                              select tekictrl_port from sessions
-				                              ");
+				$sth_tekictrl = $dbh->prepare("select tekictrl_port from sessions");
 				$sth_tekictrl->execute();
-			} catch {
+			}
+			catch
+			{
 				print "ADDING: tekictrl_port column to table sessions\n";
 				$sth_tekictrl = $dbh->prepare("
 				                              alter table sessions
@@ -299,11 +295,11 @@ if ($updatedb)
 				$update_views_n_rules = 1;
 			};
 			try {
-				$sth_tekidata = $dbh->prepare("
-				                              select tekidata_port from sessions
-				                              ");
+				$sth_tekidata = $dbh->prepare("select tekidata_port from sessions");
 				$sth_tekidata->execute();
-			} catch {
+			}
+			catch
+			{
 				print "ADDING: tekidata_port column to table sessions\n";
 				$sth_tekidata=$dbh->prepare("
 				                            alter table sessions
@@ -350,7 +346,9 @@ if ($updatedb)
 			undef $dbh;
 		}
 		exit(0);
-	} else {
+	}
+	else
+	{
 		print "No session DB found. Use --createdb instead of --updatedb.\n";
 	}
 }
@@ -457,7 +455,9 @@ sub add_user()
 	{
 		print "Cannot find user ($user)\n";
 		return;
-	} elsif ($name eq "root") {
+	}
+	elsif ($name eq "root")
+	{
 		print "The super-user \"root\" is not allowed to use X2Go\n";
 		return;
 	}
@@ -604,9 +604,7 @@ sub create_tables()
 	                   ");
 	$sth->execute() or die;
 
-	$sth=$dbh->prepare("
-	                   create table messages(mess_id varchar(20) primary key, message text)
-	                   ");
+	$sth=$dbh->prepare("create table messages(mess_id varchar(20) primary key, message text)");
 	$sth->execute() or die;
 
 	$sth=$dbh->prepare("
