@@ -60,6 +60,8 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
       ${PREFIX}/lib/. File should not be modified by users.
     - x2goserver-common/: move etc/tmpfiles.d to lib/tmpfiles.d.
     - x2goserver/sbin/x2godbadmin: whitespace only.
+    - x2goserver/sbin/x2godbadmin: use global variable instead of hardcoded
+      string (since the global variable is used latter on anyway).
   * debian/{control,compat}:
     + Bump DH compat level to 9.
   * debian/:

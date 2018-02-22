@@ -708,7 +708,7 @@ sub create_database
 {
 	my $dbh=DBI->connect("dbi:Pg:dbname=postgres;host=$host;port=$port;sslmode=$sslmode", "$dbadmin", "$dbadminpass",{AutoCommit => 1}) or die $_;
 	#drop db if exists
-	my $sth=$dbh->prepare("drop database if exists x2go_sessions");
+	my $sth=$dbh->prepare("drop database if exists $db");
 	$sth->execute();
 	#drop x2goadmin
 	$sth=$dbh->prepare("drop user if exists $x2goadmin");
