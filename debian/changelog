@@ -81,6 +81,9 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
       namespace.
     - x2goserver/sbin/x2godbadmin: remove potentially confusing whitespace.
     - x2goserver/sbin/x2godbadmin: fix up other try blocks; whitespace only.
+    - x2goserver/sbin/x2godbadmin: implement MySQL support, based on Walid
+      Moghrabis changes, but slightly amended. Caveat: INCOMPATIBLE DATABASE
+      SCHEMA!
   * debian/{control,compat}:
     + Bump DH compat level to 9.
   * debian/:

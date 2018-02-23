@@ -403,6 +403,111 @@ if ($Config->param("backend") eq 'postgres')
 	}
 }
 
+if ($Config->param("backend") eq 'mysql')
+{
+	my $host=$Config->param("mysql.host");
+	my $port=$Config->param("mysql.port");
+	my $unet=$Config->param("mysql.unet");
+	my $dbadmin=$Config->param("mysql.dbadmin");
+	my $x2goadmin="x2godbuser";
+	my $x2goadminpass=`pwgen 8 1`;
+	chomp ($x2goadminpass);
+	my $db="x2go_sessions";
+
+	if (!$host)
+	{
+		$host='localhost';
+	}
+	if (!$port)
+	{
+		$port='3306';
+	}
+	if (!$dbadmin)
+	{
+		$dbadmin='root';
+	}
+
+	open (FL,"< /etc/x2go/x2gosql/passwords/mysqladmin") or die "Can't read password file /etc/x2go/x2gosql/passwords/mysqladmin";
+	my $dbadminpass=<FL>;
+	close(FL);
+	chomp($dbadminpass);
+
+	if ($updatedb)
+	{
+		# check if the DB already exists, if not, create it...
+		my $dbh;
+		until (
+			$dbh = DBI->connect("dbi:mysql:database=$db;host=$host;port=$port", "$dbadmin", "$dbadminpass", {AutoCommit => 1, RaiseError => 0, PrintError => 0})
+		)
+		{
+			$createdb = 1;
+			last;
+		};
+		if (!$createdb) {
+			$dbh = DBI->connect("dbi:mysql:database=$db;host=$host;port=$port", "$dbadmin", "$dbadminpass", {AutoCommit => 1});
+			if ($dbh) {
+				# Intentionally left blank.
+				# MySQL support was only added in X2Go Server 4.1.0.1, while SQLite and PostgreSQL support
+				# have been around prior to 4.1.0.0, which is the first version that introduced new teki-related
+				# columns.
+			}
+			if ($dbh) {
+				undef $dbh;
+			}
+			exit(0);
+		}
+		else
+		{
+			print "No session DB found. Use --createdb instead of --updatedb.\n";
+		}
+	}
+
+	if ($createdb)
+	{
+		create_database($host, $port, $dbadmin, $dbadminpass, $db, $x2goadmin, $x2goadminpass, $unet);
+		create_tables($host, $port, $dbadmin, $dbadminpass, $db, $x2goadmin, $unet);
+		exit(0);
+	}
+
+	if ($listusers)
+	{
+		list_users($host, $port, $dbadmin, $dbadminpass);
+		exit(0);
+	}
+
+	if ($adduser)
+	{
+		add_user($host, $port, $dbadmin, $dbadminpass, $db, $adduser, $unet);
+	}
+
+	if ($addgroup)
+	{
+		my ($name, $passwd, $gid, $members) = getgrnam($addgroup);
+		my @grp_members=split(' ',$members);
+		foreach (@grp_members)
+		{
+			chomp($_);
+			add_user($host, $port, $dbadmin, $dbadminpass, $db, $_, $unet);
+		}
+	}
+
+	if ($rmuser)
+	{
+		rm_user($host, $port, $dbadmin, $dbadminpass, $db, $rmuser, $unet);
+	}
+
+	if ($rmgroup)
+	{
+		my ($name, $passwd, $gid, $members) = getgrnam($rmgroup);
+		my @grp_members=split(' ',$members);
+		foreach (@grp_members)
+		{
+			chomp($_);
+			rm_user($host, $port, $dbadmin, $dbadminpass, $db, $_, $unet);
+		}
+	}
+}
+
 sub create_tables()
 {
 	my $host = shift or die "No host parameter supplied";
@@ -413,12 +518,19 @@ sub create_tables()
 	my $x2goadmin = shift or die "No x2goadmin (user-level database username) parameter supplied";
 
 	my $sslmode = undef;
+	my $unet = undef;
 
 	if ($Config->param("backend") eq 'postgres')
 	{
 		$sslmode = shift or die "No sslmode parameter supplied";
 
 		pg_create_tables($host, $port, $dbadmin, $dbadminpass, $db, $x2goadmin, $sslmode);
+	}
+	elsif ($Config->param("backend") eq 'mysql')
+	{
+		$unet = shift or die "No unet parameter supplied";
+
+		mysql_create_tables($host, $port, $dbadmin, $dbadminpass, $db, $x2goadmin, $unet);
 	}
 	else
 	{
@@ -615,6 +727,87 @@ sub pg_create_tables()
 	undef $dbh;
 }
 
+sub mysql_create_tables()
+{
+	my $host = shift or die "No host parameter supplied";
+	my $port = shift or die "No port parameter supplied";
+	my $dbadmin = shift or die "No dbadmin parameter supplied";
+	my $dbadminpass = shift or die "No dbadminpass (database administrator password) parameter supplied";
+	my $db = shift or die "No db parameter supplied";
+	my $x2goadmin = shift or die "No x2goadmin (user-level database username) parameter supplied";
+	my $unet = shift or die "No unet parameter supplied";
+
+	my $dbh = DBI->connect("dbi:mysql:database=$db;host=$host;port=$port", "$dbadmin", "$dbadminpass", {AutoCommit => 1}) or die $_;
+
+	my $sth=$dbh->prepare("
+	                      CREATE TABLE `sessions` (
+	                      `session_id` varchar(2048) NOT NULL,
+	                      `display` int NOT NULL,
+	                      `uname` varchar(100) NOT NULL,
+	                      `server` varchar(512) NOT NULL,
+	                      `client` varchar(45) DEFAULT NULL,
+	                      `status` char(1) NOT NULL DEFAULT 'R',
+	                      `init_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	                      `last_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	                      `cookie` char(33) DEFAULT NULL,
+	                      `agent_pid` int DEFAULT NULL,
+	                      `gr_port` int DEFAULT NULL,
+	                      `sound_port` int DEFAULT NULL,
+	                      `fs_port` int DEFAULT NULL,
+	                      `tekictrl_port` int DEFAULT NULL,
+	                      `tekidata_port` int DEFAULT NULL,
+	                      PRIMARY KEY (`session_id`),
+	                      UNIQUE KEY `idx_sessions_display_server` (`display`,`server`))
+	                      ");
+	$sth->execute() or die;
+
+	$sth=$dbh->prepare("
+	                   CREATE TABLE `messages` (
+	                   `mess_id` varchar(20) NOT NULL,
+	                   `mesage` longtext,
+	                   PRIMARY KEY (`mess_id`))
+	                   ");
+	$sth->execute() or die;
+
+	$sth=$dbh->prepare("
+	                   CREATE TABLE `user_messages` (
+	                   `mess_id` varchar(20) NOT NULL,
+	                   `uname` varchar(100) NOT NULL,
+	                   PRIMARY KEY (`mess_id`))
+	                   ");
+	$sth->execute() or die;
+
+
+	$sth=$dbh->prepare("
+	                   CREATE TABLE `used_ports` (
+	                   `server` varchar(512) NOT NULL,
+	                   `session_id` varchar(2048) DEFAULT NULL,
+	                   `port` int NOT NULL,
+	                   PRIMARY KEY (`port`),
+	                   KEY `used_ports_session_id_fkey_idx` (`session_id`),
+	                   CONSTRAINT `used_ports_session_id_fkey` FOREIGN KEY (`session_id`) REFERENCES `sessions` (`session_id`) ON DELETE CASCADE ON UPDATE NO ACTION)
+	                   ");
+	$sth->execute() or die;
+
+	$sth=$dbh->prepare("
+	                   CREATE TABLE `mounts` (
+	                   `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+	                   `session_id` varchar(2048) DEFAULT NULL,
+	                   `path` varchar(2048) NOT NULL,
+	                   `client` varchar(45) NOT NULL,
+	                   PRIMARY KEY (`id`),
+	                   UNIQUE KEY `mounts_pkey` (`path`,`client`),
+	                   KEY `mounts_session_id_fkey_idx` (`session_id`),
+	                   CONSTRAINT `mounts_session_id_fkey` FOREIGN KEY (`session_id`) REFERENCES `sessions` (`session_id`) ON DELETE RESTRICT ON UPDATE NO ACTION)
+	                   ");
+	$sth->execute() or die;
+
+	$sth=$dbh->prepare("GRANT ALL PRIVILEGES ON `sessions`, `messages`, `user_messages`, `used_ports`, `mounts` TO `$x2goadmin`@`$unet`");
+	$sth->execute() or die;
+	$sth->finish();
+	undef $dbh;
+}
+
 sub create_database()
 {
 	my $host = shift or die "No host parameter supplied";
@@ -626,12 +819,19 @@ sub create_database()
 	my $x2goadminpass = shift or die "No x2goadminpass (user-level database pasword) parameter supplied";
 
 	my $sslmode = undef;
+	my $unet = undef;
 
 	if ($Config->param("backend") eq 'postgres')
 	{
 		$sslmode = shift or die "No sslmode parameter supplied";
 
 		pg_create_database($host, $port, $dbadmin, $dbadminpass, $db, $x2goadmin, $x2goadminpass, $sslmode);
+	}
+	elsif ($Config->param("backend") eq 'mysql')
+	{
+		$unet = shift or die "No unet parameter supplied";
+
+		mysql_create_database($host, $port, $dbadmin, $dbadminpass, $db, $x2goadmin, $x2goadminpass, $unet);
 	}
 	else
 	{
@@ -671,6 +871,38 @@ sub pg_create_database
 	undef $dbh;
 }
 
+sub mysql_create_database()
+{
+	my $host = shift or die "No host parameter supplied";
+	my $port = shift or die "No port parameter supplied";
+	my $dbadmin = shift or die "No dbadmin parameter supplied";
+	my $dbadminpass = shift or die "No dbadminpass (database administrator password) parameter supplied";
+	my $db = shift or die "No db parameter supplied";
+	my $x2goadmin = shift or die "No x2goadmin (user-level database username) parameter supplied";
+	my $x2goadminpass = shift or die "No x2goadminpass (user-level database pasword) parameter supplied";
+	my $unet = shift or die "No unet parameter supplied";
+
+	my $dbh=DBI->connect("dbi:mysql:database=mysql;host=$host;port=$port", "$dbadmin", "$dbadminpass", {AutoCommit => 1}) or die $_;
+	#drop db if exists
+	my $sth=$dbh->prepare("DROP DATABASE IF EXISTS `$db`");
+	$sth->execute();
+	#drop x2goadmin
+	$sth=$dbh->prepare("DROP USER IF EXISTS `$x2goadmin`@`$unet`");
+	$sth->execute();
+	#create db
+	$sth=$dbh->prepare("CREATE DATABASE IF NOT EXISTS `$db`");
+	$sth->execute() or die;
+	#create x2goadmin
+	$sth=$dbh->prepare("CREATE USER `$x2goadmin`@`$unet` IDENTIFIED BY '$x2goadminpass'");
+	$sth->execute() or die;
+	#save x2goadmin password
+	open (FL,"> /etc/x2go/x2gosql/passwords/x2gomysqladmin") or die "Can't write password file /etc/x2go/x2gosql/passwords/x2gomysqladmin";
+	print FL $x2goadminpass;
+	close(FL);
+	$sth->finish();
+	undef $dbh;
+}
+
 sub list_users()
 {
 	my $host = shift or die "No host parameter supplied";
@@ -685,6 +917,10 @@ sub list_users()
 		$sslmode = shift or die "No sslmode parameter supplied";
 
 		pg_list_users($host, $port, $dbadmin, $dbadminpass, $sslmode);
+	}
+	elsif ($Config->param("backend") eq 'mysql')
+	{
+		mysql_list_users($host, $port, $dbadmin, $dbadminpass, $db);
 	}
 	else
 	{
@@ -715,6 +951,28 @@ sub pg_list_users()
 	undef $dbh;
 }
 
+sub mysql_list_users()
+{
+	my $host = shift or die "No host parameter supplied";
+	my $port = shift or die "No port parameter supplied";
+	my $dbadmin = shift or die "No dbadmin parameter supplied";
+	my $dbadminpass = shift or die "No dbadminpass (database administrator password) parameter supplied";
+
+	my $dbh=DBI->connect("dbi:mysql:database=$db;host=$host;port=$port", "$dbadmin", "$dbadminpass", {AutoCommit => 1}) or die $_;
+	my $sth=$dbh->prepare("select user from mysql.user where user like 'x2gouser_%'");
+	$sth->execute()or die;
+	printf ("%-20s DB user\n","UNIX user");
+	print "---------------------------------------\n";
+	my @data;
+	while (@data = $sth->fetchrow_array)
+	{
+		@data[0]=~s/x2gouser_//;
+		printf ("%-20s x2gouser_@data[0]\n",@data[0]);
+	}
+	$sth->finish();
+	undef $dbh;
+}
+
 sub add_user()
 {
 	my $host = shift or die "No host parameter supplied";
@@ -725,12 +983,19 @@ sub add_user()
 	my $user_to_add = shift or die "No user-to-add parameter supplied";
 
 	my $sslmode = undef;
+	my $unet = undef;
 
 	if ($Config->param("backend") eq 'postgres')
 	{
 		$sslmode = shift or die "No sslmode parameter supplied";
 
 		pg_add_user($host, $port, $dbadmin, $dbadminpass, $db, $user_to_add, $sslmode);
+	}
+	elsif ($Config->param("backend") eq 'mysql')
+	{
+		$unet = shift or die "No unet parameter supplied";
+
+		mysql_add_user($host, $port, $dbadmin, $dbadminpass, $db, $user_to_add, $unet);
 	}
 	else
 	{
@@ -823,6 +1088,71 @@ sub pg_add_user()
 	chown($uid,$pgid,"$dir/.x2go/pgsqlpass");
 }
 
+sub mysql_add_user()
+{
+	my $host = shift or die "No host parameter supplied";
+	my $port = shift or die "No port parameter supplied";
+	my $dbadmin = shift or die "No dbadmin parameter supplied";
+	my $dbadminpass = shift or die "No dbadminpass (database administrator password) parameter supplied";
+	my $db = shift or die "No db parameter supplied";
+	my $user_to_add = shift or die "No user-to-add parameter supplied";
+	my $unet = shift or die "No unet parameter supplied";
+
+	my $dbh=DBI->connect("dbi:mysql:database=$db;host=$host;port=$port", "$dbadmin", "$dbadminpass", {AutoCommit => 1}) or die $_;
+	my ($name, $pass, $uid, $pgid, $quota, $comment, $gcos, $dir, $shell, $expire) = getpwnam($user_to_add);
+	if (! $name)
+	{
+		print "Cannot find user ($user_to_add)\n";
+		return;
+	}
+	elsif ($name eq "root")
+	{
+		print "The super-user \"root\" is not allowed to use X2Go\n";
+		return;
+	}
+	$pass=`pwgen -s -c -n 32 1`;
+	chomp($pass);
+
+	my $sth=$dbh->prepare("DROP USER IF EXISTS `x2gouser_$user_to_add`@`$unet`");
+	$sth->{Warn}=0;
+	$sth->{PrintError}=0;
+	$sth->execute();
+
+	print ("create DB user \"x2gouser_$user_to_add\"\n");
+	$sth=$dbh->prepare("CREATE USER `x2gouser_$user_to_add`@`$unet` IDENTIFIED BY '$pass'");
+	$sth->execute();
+
+	$sth=$dbh->prepare("GRANT SELECT, INSERT, UPDATE, DELETE ON * TO `x2gouser_$user_to_add`@`$unet`");
+	$sth->execute();
+
+	$sth->finish();
+
+	if (! -d "$dir/.x2go" )
+	{
+			if ( defined (&File::Path::make_path) )
+			{
+				File::Path::make_path("$dir/.x2go");
+			}
+			elsif ( defined (&File::Path::mkpath) )
+			{
+				File::Path::mkpath("$dir/.x2go");
+			}
+			else
+			{
+				die "Unable to create folders with File::Path";
+			}
+	}
+
+	#save user password
+	open (FL,"> $dir/.x2go/mysqlpass") or die "Can't open password file $dir/.x2go/mysqlpass";
+	print FL $pass;
+	close(FL);
+	chmod(0700,"$dir/.x2go");
+	chown($uid,$pgid,"$dir/.x2go");
+	chmod(0600,"$dir/.x2go/mysqlpass");
+	chown($uid,$pgid,"$dir/.x2go/mysqlpass");
+}
+
 sub rm_user()
 {
 	my $host = shift or die "No host parameter supplied";
@@ -833,12 +1163,19 @@ sub rm_user()
 	my $user_to_remove = shift or die "No user-to-remove parameter supplied";
 
 	my $sslmode = undef;
+	my $unet = undef;
 
 	if ($Config->param("backend") eq 'postgres')
 	{
 		$sslmode = shift or die "No sslmode parameter supplied";
 
 		pg_rm_user($host, $port, $dbadmin, $dbadminpass, $db, $user_to_remove, $sslmode);
+	}
+	elsif ($Config->param("backend") eq 'mysql')
+	{
+		$unet = shift or die "No unet parameter supplied";
+
+		mysql_rm_user($host, $port, $dbadmin, $dbadminpass, $db, $user_to_remove, $unet);
 	}
 	else
 	{
@@ -885,5 +1222,34 @@ sub pg_rm_user()
 	if ( -e "$dir/.x2go/sqlpass" )
 	{
 		unlink("$dir/.x2go/sqlpass");
+	}
+}
+
+sub mysql_rm_user()
+{
+	my $host = shift or die "No host parameter supplied";
+	my $port = shift or die "No port parameter supplied";
+	my $dbadmin = shift or die "No dbadmin parameter supplied";
+	my $dbadminpass = shift or die "No dbadminpass (database administrator password) parameter supplied";
+	my $db = shift or die "No db parameter supplied";
+	my $user_to_remove = shift or die "No user-to-remove parameter supplied";
+	my $unet = shift or die "No unet parameter supplied";
+
+	my $dbh=DBI->connect("dbi:mysql:database=$db;host=$host;port=$port", "$dbadmin", "$dbadminpass", {AutoCommit => 1}) or die $_;
+
+	print ("rm DB user \"x2gouser_$user_to_remove\"\n");
+
+	my $sth=$dbh->prepare("DROP USER IF EXISTS `x2gouser_$user_to_remove`@`$unet`");
+	$sth->execute();
+	$sth->finish();
+
+	my ($name, $pass, $uid, $pgid, $quota, $comment, $gcos, $dir, $shell, $expire) = getpwnam($user_to_remove);
+	if (! $uid)
+	{
+		return;
+	}
+	if ( -e "$dir/.x2go/mysqlpass" )
+	{
+		unlink("$dir/.x2go/mysqlpass");
 	}
 }
