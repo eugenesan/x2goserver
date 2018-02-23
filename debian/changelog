@@ -62,6 +62,9 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
     - x2goserver/sbin/x2godbadmin: whitespace only.
     - x2goserver/sbin/x2godbadmin: use global variable instead of hardcoded
       string (since the global variable is used latter on anyway).
+    - X2Go/Server/DB.pm: add high-level MySQL/MariaDB support. References the
+      X2Go::Server::DB::MySQL module (and functions/subroutines in there)
+      which currently does not yet exist.
   * debian/{control,compat}:
     + Bump DH compat level to 9.
   * debian/:

@@ -1,6 +1,8 @@
 # Copyright (C) 2007-2015 X2Go Project - http://wiki.x2go.org
 # Copyright (C) 2007-2015 Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
 # Copyright (C) 2007-2015 Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
+# Copyright (C) 2017-2018 Walid Moghrabi <w.moghrabi@servicemagic.eu>
+# Copyright (C) 2018      Mihai Moldovan <ionic@ionic.de>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -37,6 +39,7 @@ use Sys::Syslog qw( :standard :macros );
 use X2Go::Config qw( get_sqlconfig );
 use X2Go::Log qw( loglevel );
 use X2Go::Server::DB::PostgreSQL;
+use X2Go::Server::DB::MySQL;
 use X2Go::Utils qw( system_capture_merged_output system_capture_stdout_output );
 setlogmask( LOG_UPTO(loglevel()) );
 
@@ -55,7 +58,7 @@ my $dbpass;
 my $dbuser;
 my $sslmode;
 
-if ($backend ne 'postgres' && $backend ne 'sqlite')
+if ($backend ne 'postgres' && $backend ne 'mysql' && $backend ne 'sqlite')
 {
 	die "unknown backend $backend";
 }
@@ -75,6 +78,10 @@ sub dbsys_rmsessionsroot
 	{
 		X2Go::Server::DB::PostgreSQL::dbsys_rmsessionsroot($sid);
 	}
+	if ($backend eq 'mysql')
+	{
+		X2Go::Server::DB::MySQL::dbsys_rmsessionsroot($sid);
+	}
 	if($backend eq 'sqlite')
 	{
 		system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "rmsessionsroot", "$sid");
@@ -87,6 +94,10 @@ sub dbsys_deletemounts
 	if ($backend eq 'postgres')
 	{
 		X2Go::Server::DB::PostgreSQL::dbsys_deletemounts($sid);
+	}
+	if ($backend eq 'mysql')
+	{
+		X2Go::Server::DB::MySQL::dbsys_deletemounts($sid);
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -102,6 +113,10 @@ sub dbsys_listsessionsroot
 	{
 		return X2Go::Server::DB::PostgreSQL::dbsys_listsessionsroot($server);
 	}
+	if ($backend eq 'mysql')
+	{
+		return X2Go::Server::DB::MySQL::dbsys_listsessionsroot($server);
+	}
 	if($backend eq 'sqlite')
 	{
 		return split("\n",system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "listsessionsroot", "$server"));
@@ -113,6 +128,10 @@ sub dbsys_listsessionsroot_all
 	if ($backend eq 'postgres')
 	{
 		return X2Go::Server::DB::PostgreSQL::dbsys_listsessionsroot_all();
+	}
+	if ($backend eq 'mysql')
+	{
+		return X2Go::Server::DB::MySQL::dbsys_listsessionsroot_all();
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -127,6 +146,10 @@ sub dbsys_getmounts
 	if ($backend eq 'postgres')
 	{
 		@mounts = X2Go::Server::DB::PostgreSQL::dbsys_getmounts($sid);
+	}
+	if ($backend eq 'mysql')
+	{
+		@mounts = X2Go::Server::DB::MySQL::dbsys_getmounts($sid);
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -145,6 +168,10 @@ sub db_getmounts
 	{
 		@mounts = X2Go::Server::DB::PostgreSQL::db_getmounts($sid);
 	}
+	if ($backend eq 'mysql')
+	{
+		@mounts = X2Go::Server::DB::MySQL::db_getmounts($sid);
+	}
 	if ($backend eq 'sqlite')
 	{
 		@mounts = split("\n",system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "getmounts", "$sid"));
@@ -162,6 +189,10 @@ sub db_deletemount
 	{
 		X2Go::Server::DB::PostgreSQL::db_deletemount($sid, $path);
 	}
+	if ($backend eq 'mysql')
+	{
+		X2Go::Server::DB::MySQL::db_deletemount($sid, $path);
+	}
 	if ($backend eq 'sqlite')
 	{
 		system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "deletemount", "$sid", "$path");
@@ -178,6 +209,10 @@ sub db_insertmount
 	if ($backend eq 'postgres')
 	{
 		$res_ok = X2Go::Server::DB::PostgreSQL::db_insertmount($sid, $path, $client);
+	}
+	if ($backend eq 'mysql')
+	{
+		$res_ok = X2Go::Server::DB::MySQL::db_insertmount($sid, $path, $client);
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -199,6 +234,10 @@ sub db_insertsession
 	{
 		X2Go::Server::DB::PostgreSQL::db_insertsession($display, $server, $sid);
 	}
+	if ($backend eq 'mysql')
+	{
+		X2Go::Server::DB::MySQL::db_insertsession($display, $server, $sid);
+	}
 	if ($backend eq 'sqlite')
 	{
 		my $err=system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "insertsession", "$display", "$server", "$sid");
@@ -219,6 +258,10 @@ sub db_insertshadowsession
 	if ($backend eq 'postgres')
 	{
 		X2Go::Server::DB::PostgreSQL::db_insertshadowsession($display, $server, $sid, $shadreq_user);
+	}
+	if ($backend eq 'mysql')
+	{
+		X2Go::Server::DB::MySQL::db_insertshadowsession($display, $server, $sid, $shadreq_user);
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -246,6 +289,10 @@ sub db_createsession
 	{
 		X2Go::Server::DB::PostgreSQL::db_createsession($sid, $cookie, $pid, $client, $gr_port, $snd_port, $fs_port, $tekictrl_port, $tekidata_port);
 	}
+	if ($backend eq 'mysql')
+	{
+		X2Go::Server::DB::MySQL::db_createsession($sid, $cookie, $pid, $client, $gr_port, $snd_port, $fs_port, $tekictrl_port, $tekidata_port);
+	}
 	if ($backend eq 'sqlite')
 	{
 		my $err= system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "createsession", "$sid", "$cookie", "$pid", "$client", "$gr_port", "$snd_port", "$fs_port", "$tekictrl_port", "$tekidata_port");
@@ -272,6 +319,11 @@ sub db_createshadowsession
 		# for PostgreSQL we can use the normal db_createsession code...
 		X2Go::Server::DB::PostgreSQL::db_createsession($sid, $cookie, $pid, $client, $gr_port, $snd_port, $fs_port, -1, -1);
 	}
+	if ($backend eq 'mysql')
+	{
+		# for MySQL we can use the normal db_createsession code...
+		X2Go::Server::DB::MySQL::db_createsession($sid, $cookie, $pid, $client, $gr_port, $snd_port, $fs_port, -1, -1);
+	}
 	if ($backend eq 'sqlite')
 	{
 		my $err=system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "createshadowsession", "$sid", "$cookie", "$pid", "$client", "$gr_port", "$snd_port", "$fs_port", "$shadreq_user");
@@ -291,6 +343,10 @@ sub db_insertport
 	if ($backend eq 'postgres')
 	{
 		X2Go::Server::DB::PostgreSQL::db_insertport($server, $sid, $sshport);
+	}
+	if ($backend eq 'mysql')
+	{
+		X2Go::Server::DB::MySQL::db_insertport($server, $sid, $sshport);
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -312,6 +368,10 @@ sub db_rmport
 	{
 		X2Go::Server::DB::PostgreSQL::db_rmport($server, $sid, $sshport);
 	}
+	if ($backend eq 'mysql')
+	{
+		X2Go::Server::DB::MySQL::db_rmport($server, $sid, $sshport);
+	}
 	if ($backend eq 'sqlite')
 	{
 		system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "rmport", "$server", "$sid", "$sshport");
@@ -332,6 +392,10 @@ sub db_resume
 	{
 		X2Go::Server::DB::PostgreSQL::db_resume($client, $sid, $gr_port, $snd_port, $fs_port, $tekictrl_port, $tekidata_port);
 	}
+	if ($backend eq 'mysql')
+	{
+		X2Go::Server::DB::MySQL::db_resume($client, $sid, $gr_port, $snd_port, $fs_port, $tekictrl_port, $tekidata_port);
+	}
 	if ($backend eq 'sqlite')
 	{
 		system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "resume", "$client", "$sid", "$gr_port", "$snd_port", "$fs_port", "$tekictrl_port", "$tekidata_port");
@@ -347,6 +411,10 @@ sub db_changestatus
 	{
 		X2Go::Server::DB::PostgreSQL::db_changestatus($status, $sid);
 	}
+	if ($backend eq 'mysql')
+	{
+		X2Go::Server::DB::MySQL::db_changestatus($status, $sid);
+	}
 	if ($backend eq 'sqlite')
 	{
 		system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "changestatus", "$status", "$sid");
@@ -361,6 +429,10 @@ sub db_getstatus
 	if ($backend eq 'postgres')
 	{
 		$status = X2Go::Server::DB::PostgreSQL::db_getstatus($sid);
+	}
+	if ($backend eq 'mysql')
+	{
+		$status = X2Go::Server::DB::MySQL::db_getstatus($sid);
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -378,6 +450,10 @@ sub db_getdisplays
 	if ($backend eq 'postgres')
 	{
 		@displays = X2Go::Server::DB::PostgreSQL::db_getdisplays($server);
+	}
+	if ($backend eq 'mysql')
+	{
+		@displays = X2Go::Server::DB::MySQL::db_getdisplays($server);
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -397,6 +473,10 @@ sub db_getports
 	{
 		@ports = X2Go::Server::DB::PostgreSQL::db_getports($server);
 	}
+	if ($backend eq 'mysql')
+	{
+		@ports = X2Go::Server::DB::MySQL::db_getports($server);
+	}
 	if ($backend eq 'sqlite')
 	{
 		@ports = split("\n",system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "getports", "$server"));
@@ -412,6 +492,10 @@ sub db_getservers
 	if ($backend eq 'postgres')
 	{
 		@servers = X2Go::Server::DB::PostgreSQL::db_getservers();
+	}
+	if ($backend eq 'mysql')
+	{
+		@servers = X2Go::Server::DB::MySQL::db_getservers();
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -430,6 +514,10 @@ sub db_getagent
 	{
 		$agent = X2Go::Server::DB::PostgreSQL::db_getagent($sid);
 	}
+	if ($backend eq 'mysql')
+	{
+		$agent = X2Go::Server::DB::MySQL::db_getagent($sid);
+	}
 	if($backend eq 'sqlite')
 	{
 		$agent=system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "getagent", "$sid");
@@ -446,6 +534,10 @@ sub db_getdisplay
 	{
 		$display = X2Go::Server::DB::PostgreSQL::db_getdisplay($sid);
 	}
+	if ($backend eq 'mysql')
+	{
+		$display = X2Go::Server::DB::MySQL::db_getdisplay($sid);
+	}
 	if ($backend eq 'sqlite')
 	{
 		$display=system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "getdisplay", "$sid");
@@ -461,6 +553,10 @@ sub db_listsessions
 	{
 		return X2Go::Server::DB::PostgreSQL::db_listsessions($server);
 	}
+	if ($backend eq 'mysql')
+	{
+		return X2Go::Server::DB::MySQL::db_listsessions($server);
+	}
 	if ($backend eq 'sqlite')
 	{
 		return split("\n",system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "listsessions", "$server"));
@@ -472,6 +568,10 @@ sub db_listsessions_all
 	if($backend eq 'postgres')
 	{
 		return X2Go::Server::DB::PostgreSQL::db_listsessions_all();
+	}
+	if ($backend eq 'mysql')
+	{
+		return X2Go::Server::DB::MySQL::db_listsessions_all();
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -486,6 +586,10 @@ sub db_listshadowsessions
 	{
 		return X2Go::Server::DB::PostgreSQL::db_listshadowsessions($server);
 	}
+	if ($backend eq 'mysql')
+	{
+		return X2Go::Server::DB::MySQL::db_listshadowsessions($server);
+	}
 	if ($backend eq 'sqlite')
 	{
 		return split("\n",system_capture_merged_output("$x2go_lib_path/libx2go-server-db-sqlite3-wrapper", "listshadowsessions", "$server"));
@@ -497,6 +601,10 @@ sub db_listshadowsessions_all
 	if($backend eq 'postgres')
 	{
 		return X2Go::Server::DB::PostgreSQL::db_listshadowsessions_all();
+	}
+	if ($backend eq 'mysql')
+	{
+		return X2Go::Server::DB::MySQL::db_listshadowsessions_all();
 	}
 	if ($backend eq 'sqlite')
 	{
