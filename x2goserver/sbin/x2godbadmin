@@ -443,6 +443,10 @@ if ($Config->param("backend") eq 'postgres')
 		{
 			return;
 		}
+		if ( -e "$dir/.x2go/pgsqlpass" )
+		{
+			unlink("$dir/.x2go/pgsqlpass");
+		}
 		if ( -e "$dir/.x2go/sqlpass" )
 		{
 			unlink("$dir/.x2go/sqlpass");
@@ -517,13 +521,13 @@ if ($Config->param("backend") eq 'postgres')
 		}
 
 		#save user password
-		open (FL,"> $dir/.x2go/sqlpass") or die "Can't open password file $dir/.x2go/sqlpass";
+		open (FL,"> $dir/.x2go/pgsqlpass") or die "Can't open password file $dir/.x2go/pgsqlpass";
 		print FL $pass;
 		close(FL);
 		chmod(0700,"$dir/.x2go");
 		chown($uid,$pgid,"$dir/.x2go");
-		chmod(0600,"$dir/.x2go/sqlpass");
-		chown($uid,$pgid,"$dir/.x2go/sqlpass");
+		chmod(0600,"$dir/.x2go/pgsqlpass");
+		chown($uid,$pgid,"$dir/.x2go/pgsqlpass");
 	}
 
 	sub create_tables()
@@ -722,7 +726,7 @@ if ($Config->param("backend") eq 'postgres')
 		$sth=$dbh->prepare("create USER $x2goadmin WITH ENCRYPTED PASSWORD '$x2goadminpass'");
 		$sth->execute() or die;
 		#save x2goadmin password
-		open (FL,"> /etc/x2go/x2gosql/passwords/x2goadmin ") or die "Can't write password file /etc/x2go/x2gosql/passwords/x2goadmin";
+		open (FL,"> /etc/x2go/x2gosql/passwords/x2gopgadmin ") or die "Can't write password file /etc/x2go/x2gosql/passwords/x2gopgadmin";
 		print FL $x2goadminpass;
 		close(FL);
 		$sth->finish();

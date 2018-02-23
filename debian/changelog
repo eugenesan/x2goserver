@@ -67,6 +67,13 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
       which currently does not yet exist.
     - x2goserver/sbin/x2godbadmin: wrap PostgreSQL code in own block, should
       not have any functional impact.
+    - {X2Go/Server/DB/PostgreSQL.pm,x2goserver/sbin/x2godbadmin}: move
+      /etc/x2go/x2gosql/passwords/x2goadmin or ${HOME}/.x2go/sqlpass to
+      .../x2gopgadmin and .../pgsqlpass respectively. Move is done at
+      run-time, so no user interaction should be required. It requires one
+      database operation to be carried out first in order to trigger the move,
+      but x2godbadmin does not actually use that account information (only
+      generates it), so we should be in the clear.
   * debian/{control,compat}:
     + Bump DH compat level to 9.
   * debian/:

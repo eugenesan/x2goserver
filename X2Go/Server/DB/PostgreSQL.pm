@@ -33,6 +33,7 @@ use strict;
 use DBI;
 use POSIX;
 use Sys::Syslog qw( :standard :macros );
+use File::Copy;
 
 use X2Go::Log qw( loglevel );
 use X2Go::Config qw( get_config get_sqlconfig );
@@ -85,16 +86,44 @@ sub init_db
 			$port='5432';
 		}
 		my $passfile;
+		my $old_location;
 		if ($uname eq 'root')
 		{
 			$dbuser='x2godbuser';
-			$passfile="/etc/x2go/x2gosql/passwords/x2goadmin";
+			$old_location = "/etc/x2go/x2gosql/passwords/x2goadmin";
+			$passfile="/etc/x2go/x2gosql/passwords/x2gopgadmin";
 		}
 		else
 		{
 			$dbuser="x2gouser_$uname";
-			$passfile="$homedir/.x2go/sqlpass";
+			$old_location = "$homedir/.x2go/sqlpass";
+			$passfile="$homedir/.x2go/pgsqlpass";
 		}
+
+		my $move_file = 0;
+
+		if ((-e $old_location) && (-e $passfile))
+		{
+			if (-z $passfile)
+			{
+				$move_file = 1;
+			}
+			else
+			{
+				die "Detected existing files in both the legacy location '$old_location' and new location '$passfile'. New location file is non-empty, aborting.<br>";
+			}
+		}
+
+		if ((-e $old_location) && (! -e $passfile))
+		{
+			$move_file = 1;
+		}
+
+		if ($move_file)
+			# Password file needs move.
+			move($old_location, $passfile) or die "Unable to move PostgreSQL user password file from '$old_location' to '$passfile'<br>";
+		}
+
 		$sslmode=$SqlConfig->param("postgres.ssl");
 		if (!$sslmode)
 		{
