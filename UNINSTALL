@@ -11,14 +11,19 @@ TARBALL UNINSTALL OF x2goserver
  $ rm -vf /etc/x2go/x2gosql/passwords/pgadmin
 
 
-3.) Remove x2gouser and groups from the system
+3.) Remove MySQL passwords
+-------------------------------
+ $ rm -vf /etc/x2go/x2gosql/passwords/mysqladmin
+
+
+4.) Remove x2gouser and groups from the system
 ----------------------------------------------
 
  $ deluser x2gouser
  $ delgroup x2gouser
 
 
-4.) Run Makefile's uninstall
+5.) Run Makefile's uninstall
 ----------------------------
 
  $ cd /path/to/extracted/x2goserver/tarball

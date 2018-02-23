@@ -85,6 +85,8 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
       Moghrabis changes, but slightly amended. Caveat: INCOMPATIBLE DATABASE
       SCHEMA!
     - x2goserver/sbin/x2godbadmin: update copyright header.
+    - UNINSTALL: add reference to remove mysqladmin password file if
+      uninstalling the tarball manually.
   * debian/{control,compat}:
     + Bump DH compat level to 9.
   * debian/:
