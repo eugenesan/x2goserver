@@ -241,7 +241,7 @@ if ($Config->param("backend") eq 'postgres')
 	}
 	my $dbadmin=$Config->param("postgres.dbadmin");
 	my $x2goadmin="x2godbuser";
-	my $x2goadminpass=`pwgen 8 1`;
+	my $x2goadminpass=`pwgen -s -c -n 32 1`;
 	chomp ($x2goadminpass);
 	my $db="x2go_sessions";
 
@@ -467,7 +467,7 @@ if ($Config->param("backend") eq 'postgres')
 			print "The super-user \"root\" is not allowed to use X2Go\n";
 			return;
 		}
-		$pass=`pwgen 8 1`;
+		$pass=`pwgen -s -c -n 32 1`;
 		chomp($pass);
 
 		my $sth=$dbh->prepare("REVOKE ALL PRIVILEGES ON sessions, used_ports, mounts FROM \"x2gouser_$user\"");
