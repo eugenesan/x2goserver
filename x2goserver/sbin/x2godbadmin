@@ -357,21 +357,20 @@ if ($Config->param("backend") eq 'postgres')
 
 	if ($createdb)
 	{
-		create_database();
-		create_tables();
+		create_database($host, $port, $dbadmin, $dbadminpass, $db, $x2goadmin, $x2goadminpass, $sslmode);
+		create_tables($host, $port, $dbadmin, $dbadminpass, $db, $x2goadmin, $sslmode);
 		exit(0);
 	}
 
 	if ($listusers)
 	{
-		list_users();
+		list_users($host, $port, $dbadmin, $dbadminpass, $sslmode);
 		exit(0);
 	}
 
-	my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbadmin", "$dbadminpass",{AutoCommit => 1}) or die $_;
 	if ($adduser)
 	{
-		add_user($adduser);
+		add_user($host, $port, $dbadmin, $dbadminpass, $db, $adduser, $sslmode);
 	}
 
 	if ($addgroup)
@@ -381,13 +380,13 @@ if ($Config->param("backend") eq 'postgres')
 		foreach (@grp_members)
 		{
 			chomp($_);
-			add_user($_);
+			add_user($host, $port, $dbadmin, $dbadminpass, $db, $_, $sslmode);
 		}
 	}
 
 	if ($rmuser)
 	{
-		rm_user($rmuser);
+		rm_user($host, $port, $dbadmin, $dbadminpass, $db, $rmuser, $sslmode);
 	}
 
 	if ($rmgroup)
@@ -397,339 +396,492 @@ if ($Config->param("backend") eq 'postgres')
 		foreach (@grp_members)
 		{
 			chomp($_);
-			rm_user($_);
+			rm_user($host, $port, $dbadmin, $dbadminpass, $db, $_, $sslmode);
 		}
 	}
+}
+
+sub create_tables()
+{
+	my $host = shift or die "No host parameter supplied";
+	my $port = shift or die "No port parameter supplied";
+	my $dbadmin = shift or die "No dbadmin parameter supplied";
+	my $dbadminpass = shift or die "No dbadminpass (database administrator password) parameter supplied";
+	my $db = shift or die "No db parameter supplied";
+	my $x2goadmin = shift or die "No x2goadmin (user-level database username) parameter supplied";
+
+	my $sslmode = undef;
+
+	if ($Config->param("backend") eq 'postgres')
+	{
+		$sslmode = shift or die "No sslmode parameter supplied";
+
+		pg_create_tables($host, $port, $dbadmin, $dbadminpass, $db, $x2goadmin, $sslmode);
+	}
+	else
+	{
+		die "Invalid database backend";
+	}
+}
+
+sub pg_create_tables()
+{
+	my $host = shift or die "No host parameter supplied";
+	my $port = shift or die "No port parameter supplied";
+	my $dbadmin = shift or die "No dbadmin parameter supplied";
+	my $dbadminpass = shift or die "No dbadminpass (database administrator password) parameter supplied";
+	my $db = shift or die "No db parameter supplied";
+	my $x2goadmin = shift or die "No x2goadmin (user-level database username) parameter supplied";
+	my $sslmode = shift or die "No sslmode parameter supplied";
+
+	my $dbh = DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbadmin", "$dbadminpass", {AutoCommit => 1}) or die $_;
+
+	my $sth=$dbh->prepare("
+	                      create table sessions(
+	                      session_id text primary key,
+	                      display integer not null,
+	                      uname text not null,
+	                      server text not null,
+	                      client inet,
+	                      status char(1) not null default 'R',
+	                      init_time timestamp not null default now(),
+	                      last_time timestamp not null default now(),
+	                      cookie char(33),
+	                      agent_pid int,
+	                      gr_port int,
+	                      sound_port int,
+	                      fs_port int,
+	                      tekictrl_port int,
+	                      tekidata_port int,
+	                      creator_id text NOT NULL default current_user,
+	                      unique(display))
+	                      ");
+	$sth->execute() or die;
+
+	$sth=$dbh->prepare("
+	                   create VIEW sessions_view as
+	                   SELECT
+	                   agent_pid, session_id, display, server, status, init_time, cookie, client, gr_port,
+	                   sound_port, last_time, uname, fs_port, tekictrl_port, tekidata_port from sessions
+	                   where creator_id = current_user
+	                   ");
+	$sth->execute() or die;
+
+	$sth=$dbh->prepare("
+	                   create VIEW servers_view as
+	                   SELECT
+	                   server, display, status from sessions
+	                   ");
+	$sth->execute() or die;
+
+	$sth=$dbh->prepare("
+	                   create or replace RULE update_sess_priv AS ON UPDATE
+	                   TO sessions where (OLD.creator_id <> current_user or OLD.creator_id <> NEW.creator_id) and current_user <> '$x2goadmin'
+	                   DO INSTEAD NOTHING
+	                   ");
+	$sth->execute() or die;
+
+	$sth=$dbh->prepare("
+	                   create or replace RULE insert_sess_priv AS ON INSERT
+	                   TO sessions where NEW.creator_id <> current_user and current_user <> '$x2goadmin'
+	                   DO INSTEAD NOTHING
+	                   ");
+	$sth->execute() or die;
+
+	$sth=$dbh->prepare("
+	                   create or replace RULE delete_sess_priv AS ON DELETE
+	                   TO sessions where OLD.creator_id <> current_user and current_user <> '$x2goadmin'
+	                   DO INSTEAD NOTHING
+	                   ");
+	$sth->execute() or die;
+
+	$sth=$dbh->prepare("
+	                   create or replace RULE update_sess_view AS ON UPDATE
+	                   TO sessions_view DO INSTEAD
+	                   update sessions set
+	                   status=NEW.status,
+	                   last_time=NEW.last_time,
+	                   cookie=NEW.cookie,
+	                   agent_pid=NEW.agent_pid,
+	                   client=NEW.client,
+	                   gr_port=NEW.gr_port,
+	                   sound_port=NEW.sound_port,
+	                   fs_port=NEW.fs_port,
+	                   tekictrl_port=NEW.tekictrl_port,
+	                   tekidata_port=NEW.tekidata_port
+	                   where session_id=OLD.session_id and creator_id=current_user
+	                   ");
+	$sth->execute() or die;
+
+	$sth=$dbh->prepare("create table messages(mess_id varchar(20) primary key, message text)");
+	$sth->execute() or die;
+
+	$sth=$dbh->prepare("
+	                   create table user_messages(
+	                   mess_id text not null,
+	                   uname text not null)
+	                   ");
+	$sth->execute() or die;
+
+	$sth=$dbh->prepare("
+	                   create table used_ports(
+	                   server text not null,
+	                   session_id text references sessions on delete cascade,
+	                   creator_id text NOT NULL default current_user,
+	                   port integer primary key)
+	                   ");
+	$sth->execute() or die;
+
+	$sth=$dbh->prepare("
+	                   create VIEW ports_view as
+	                   SELECT
+	                   server, port from used_ports
+	                   ");
+	$sth->execute() or die;
+
+	$sth=$dbh->prepare("
+	                   create or replace RULE insert_port_priv AS ON INSERT
+	                   TO used_ports where NEW.creator_id <> current_user and current_user <> '$x2goadmin'
+	                   DO INSTEAD NOTHING
+	                   ");
+	$sth->execute() or die;
+
+	$sth=$dbh->prepare("
+	                   create or replace RULE update_port_priv AS ON UPDATE
+	                   TO used_ports where (NEW.creator_id <> current_user or OLD.creator_id <> current_user) and current_user <> '$x2goadmin'
+	                   DO INSTEAD NOTHING
+	                   ");
+	$sth->execute() or die;
+
+	$sth=$dbh->prepare("
+	                   create or replace RULE delete_port_priv AS ON DELETE
+	                   TO used_ports where OLD.creator_id <> current_user and current_user <> '$x2goadmin'
+	                   DO INSTEAD NOTHING
+	                   ");
+	$sth->execute() or die;
+
+	$sth=$dbh->prepare("
+	                   create table mounts(
+	                   session_id text references sessions on delete restrict,
+	                   path text not null,
+	                   client inet not null,
+	                   creator_id text NOT NULL default current_user,
+	                   primary key(path,client))
+	                   ");
+	$sth->execute() or die;
+
+	$sth=$dbh->prepare("
+	                   create VIEW mounts_view as
+	                   SELECT
+	                   client,path, session_id from mounts
+	                   where creator_id = current_user
+	                   ");
+	$sth->execute() or die;
+
+	$sth=$dbh->prepare("
+	                   create or replace RULE delete_mounts_view AS ON DELETE
+	                   TO mounts_view DO INSTEAD
+	                   delete from mounts
+	                   where session_id=OLD.session_id and creator_id=current_user and path=OLD.path
+	                   ");
+	$sth->execute() or die;
+
+	$sth=$dbh->prepare("
+	                   create or replace RULE insert_mount_priv AS ON INSERT
+	                   TO mounts where NEW.creator_id <> current_user and current_user <> '$x2goadmin'
+	                   DO INSTEAD NOTHING
+	                   ");
+	$sth->execute() or die;
+
+	$sth=$dbh->prepare("
+	                   create or replace RULE update_mount_priv AS ON UPDATE
+	                   TO mounts where (NEW.creator_id <> current_user or OLD.creator_id <> current_user) and current_user <> '$x2goadmin'
+	                   DO INSTEAD NOTHING
+	                   ");
+	$sth->execute() or die;
+
+	$sth=$dbh->prepare("
+	                   create or replace RULE delete_mount_priv AS ON DELETE
+	                   TO mounts where OLD.creator_id <> current_user and current_user <> '$x2goadmin'
+	                   DO INSTEAD NOTHING
+	                   ");
+	$sth->execute() or die;
+
+	$sth=$dbh->prepare("GRANT ALL PRIVILEGES ON sessions, messages, user_messages, used_ports, mounts TO $x2goadmin");
+	$sth->execute() or die;
+	$sth->finish();
 	undef $dbh;
+}
 
-	sub list_users()
+sub create_database()
+{
+	my $host = shift or die "No host parameter supplied";
+	my $port = shift or die "No port parameter supplied";
+	my $dbadmin = shift or die "No dbadmin parameter supplied";
+	my $dbadminpass = shift or die "No dbadminpass (database administrator password) parameter supplied";
+	my $db = shift or die "No db parameter supplied";
+	my $x2goadmin = shift or die "No x2goadmin (user-level database username) parameter supplied";
+	my $x2goadminpass = shift or die "No x2goadminpass (user-level database pasword) parameter supplied";
+
+	my $sslmode = undef;
+
+	if ($Config->param("backend") eq 'postgres')
 	{
-		my $dbh=DBI->connect("dbi:Pg:dbname=postgres;host=$host;port=$port;sslmode=$sslmode", "$dbadmin", "$dbadminpass",{AutoCommit => 1}) or die $_;
-		my $sth=$dbh->prepare("select rolname from pg_roles where rolname like 'x2gouser_%'");
-		$sth->execute()or die;
-		printf ("%-20s DB user\n","UNIX user");
-		print "---------------------------------------\n";
-		my @data;
-		while (@data = $sth->fetchrow_array)
-		{
-			@data[0]=~s/x2gouser_//;
-			printf ("%-20s x2gouser_@data[0]\n",@data[0]);
-		}
-		$sth->finish();
-		undef $dbh;
+		$sslmode = shift or die "No sslmode parameter supplied";
+
+		pg_create_database($host, $port, $dbadmin, $dbadminpass, $db, $x2goadmin, $x2goadminpass, $sslmode);
+	}
+	else
+	{
+		die "Invalid database backend";
+	}
+}
+
+sub pg_create_database
+{
+	my $host = shift or die "No host parameter supplied";
+	my $port = shift or die "No port parameter supplied";
+	my $dbadmin = shift or die "No dbadmin parameter supplied";
+	my $dbadminpass = shift or die "No dbadminpass (database administrator password) parameter supplied";
+	my $db = shift or die "No db parameter supplied";
+	my $x2goadmin = shift or die "No x2goadmin (user-level database username) parameter supplied";
+	my $x2goadminpass = shift or die "No x2goadminpass (user-level database pasword) parameter supplied";
+	my $sslmode = shift or die "No sslmode parameter supplied";
+
+	my $dbh=DBI->connect("dbi:Pg:dbname=postgres;host=$host;port=$port;sslmode=$sslmode", "$dbadmin", "$dbadminpass", {AutoCommit => 1}) or die $_;
+	#drop db if exists
+	my $sth=$dbh->prepare("drop database if exists $db");
+	$sth->execute();
+	#drop x2goadmin
+	$sth=$dbh->prepare("drop user if exists $x2goadmin");
+	$sth->execute();
+	#create db
+	$sth=$dbh->prepare("create database $db");
+	$sth->execute() or die;
+	#create x2goadmin
+	$sth=$dbh->prepare("create USER $x2goadmin WITH ENCRYPTED PASSWORD '$x2goadminpass'");
+	$sth->execute() or die;
+	#save x2goadmin password
+	open (FL,"> /etc/x2go/x2gosql/passwords/x2gopgadmin ") or die "Can't write password file /etc/x2go/x2gosql/passwords/x2gopgadmin";
+	print FL $x2goadminpass;
+	close(FL);
+	$sth->finish();
+	undef $dbh;
+}
+
+sub list_users()
+{
+	my $host = shift or die "No host parameter supplied";
+	my $port = shift or die "No port parameter supplied";
+	my $dbadmin = shift or die "No dbadmin parameter supplied";
+	my $dbadminpass = shift or die "No dbadminpass (database administrator password) parameter supplied";
+
+	my $sslmode = undef;
+
+	if ($Config->param("backend") eq 'postgres')
+	{
+		$sslmode = shift or die "No sslmode parameter supplied";
+
+		pg_list_users($host, $port, $dbadmin, $dbadminpass, $sslmode);
+	}
+	else
+	{
+		die "Invalid database backend";
+	}
+}
+
+sub pg_list_users()
+{
+	my $host = shift or die "No host parameter supplied";
+	my $port = shift or die "No port parameter supplied";
+	my $dbadmin = shift or die "No dbadmin parameter supplied";
+	my $dbadminpass = shift or die "No dbadminpass (database administrator password) parameter supplied";
+	my $sslmode = shift or die "No sslmode parameter supplied";
+
+	my $dbh=DBI->connect("dbi:Pg:dbname=postgres;host=$host;port=$port;sslmode=$sslmode", "$dbadmin", "$dbadminpass", {AutoCommit => 1}) or die $_;
+	my $sth=$dbh->prepare("select rolname from pg_roles where rolname like 'x2gouser_%'");
+	$sth->execute()or die;
+	printf ("%-20s DB user\n","UNIX user");
+	print "---------------------------------------\n";
+	my @data;
+	while (@data = $sth->fetchrow_array)
+	{
+		@data[0]=~s/x2gouser_//;
+		printf ("%-20s x2gouser_@data[0]\n",@data[0]);
+	}
+	$sth->finish();
+	undef $dbh;
+}
+
+sub add_user()
+{
+	my $host = shift or die "No host parameter supplied";
+	my $port = shift or die "No port parameter supplied";
+	my $dbadmin = shift or die "No dbadmin parameter supplied";
+	my $dbadminpass = shift or die "No dbadminpass (database administrator password) parameter supplied";
+	my $db = shift or die "No db parameter supplied";
+	my $user_to_add = shift or die "No user-to-add parameter supplied";
+
+	my $sslmode = undef;
+
+	if ($Config->param("backend") eq 'postgres')
+	{
+		$sslmode = shift or die "No sslmode parameter supplied";
+
+		pg_add_user($host, $port, $dbadmin, $dbadminpass, $db, $user_to_add, $sslmode);
+	}
+	else
+	{
+		die "Invalid database backend";
+	}
+}
+
+sub pg_add_user()
+{
+	my $host = shift or die "No host parameter supplied";
+	my $port = shift or die "No port parameter supplied";
+	my $dbadmin = shift or die "No dbadmin parameter supplied";
+	my $dbadminpass = shift or die "No dbadminpass (database administrator password) parameter supplied";
+	my $db = shift or die "No db parameter supplied";
+	my $user_to_add = shift or die "No user-to-add parameter supplied";
+	my $sslmode = shift or die "No sslmode parameter supplied";
+
+	my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbadmin", "$dbadminpass", {AutoCommit => 1}) or die $_;
+	my ($name, $pass, $uid, $pgid, $quota, $comment, $gcos, $dir, $shell, $expire) = getpwnam($user_to_add);
+	if (! $name)
+	{
+		print "Cannot find user ($user_to_add)\n";
+		return;
+	}
+	elsif ($name eq "root")
+	{
+		print "The super-user \"root\" is not allowed to use X2Go\n";
+		return;
+	}
+	$pass=`pwgen -s -c -n 32 1`;
+	chomp($pass);
+
+	my $sth=$dbh->prepare("REVOKE ALL PRIVILEGES ON sessions, used_ports, mounts FROM \"x2gouser_$user_to_add\"");
+	$sth->{Warn}=0;
+	$sth->{PrintError}=0;
+	$sth->execute();
+
+	my $sth=$dbh->prepare("REVOKE ALL PRIVILEGES ON sessions_view, mounts_view, servers_view, ports_view FROM \"x2gouser_$user_to_add\"");
+	$sth->{Warn}=0;
+	$sth->{PrintError}=0;
+	$sth->execute();
+
+	my $sth=$dbh->prepare("DROP OWNED BY \"x2gouser_$user_to_add\"");
+	$sth->{Warn}=0;
+	$sth->{PrintError}=0;
+	$sth->execute();
+
+	$sth=$dbh->prepare("drop USER if exists \"x2gouser_$user_to_add\"");
+	$sth->{Warn}=0;
+	$sth->{PrintError}=0;
+	$sth->execute();
+
+	print ("create DB user \"x2gouser_$user_to_add\"\n");
+	$sth=$dbh->prepare("create USER \"x2gouser_$user_to_add\" WITH ENCRYPTED PASSWORD '$pass'");
+	$sth->execute();
+
+	$sth=$dbh->prepare("GRANT INSERT, UPDATE, DELETE ON sessions, used_ports, mounts TO \"x2gouser_$user_to_add\"");
+	$sth->execute();
+
+	$sth=$dbh->prepare("GRANT SELECT ON used_ports TO \"x2gouser_$user_to_add\"");
+	$sth->execute();
+
+	$sth=$dbh->prepare("GRANT SELECT, UPDATE, DELETE ON sessions_view, mounts_view, servers_view, ports_view TO \"x2gouser_$user_to_add\"");
+	$sth->execute();
+	$sth->finish();
+
+	if (! -d "$dir/.x2go" )
+	{
+			if ( defined (&File::Path::make_path) )
+			{
+				File::Path::make_path("$dir/.x2go");
+			}
+			elsif ( defined (&File::Path::mkpath) )
+			{
+				File::Path::mkpath("$dir/.x2go");
+			}
+			else
+			{
+				die "Unable to create folders with File::Path";
+			}
 	}
 
-	sub rm_user()
+	#save user password
+	open (FL,"> $dir/.x2go/pgsqlpass") or die "Can't open password file $dir/.x2go/pgsqlpass";
+	print FL $pass;
+	close(FL);
+	chmod(0700,"$dir/.x2go");
+	chown($uid,$pgid,"$dir/.x2go");
+	chmod(0600,"$dir/.x2go/pgsqlpass");
+	chown($uid,$pgid,"$dir/.x2go/pgsqlpass");
+}
+
+sub rm_user()
+{
+	my $host = shift or die "No host parameter supplied";
+	my $port = shift or die "No port parameter supplied";
+	my $dbadmin = shift or die "No dbadmin parameter supplied";
+	my $dbadminpass = shift or die "No dbadminpass (database administrator password) parameter supplied";
+	my $db = shift or die "No db parameter supplied";
+	my $user_to_remove = shift or die "No user-to-remove parameter supplied";
+
+	my $sslmode = undef;
+
+	if ($Config->param("backend") eq 'postgres')
 	{
-		my $user=shift;
+		$sslmode = shift or die "No sslmode parameter supplied";
 
-		print ("rm DB user \"x2gouser_$user\"\n");
-
-		my $sth=$dbh->prepare("REVOKE ALL PRIVILEGES ON sessions, used_ports, mounts FROM \"x2gouser_$user\"");
-		$sth->execute();
-
-		my $sth=$dbh->prepare("REVOKE ALL PRIVILEGES ON sessions_view, mounts_view, servers_view, ports_view FROM \"x2gouser_$user\"");
-		$sth->execute();
-
-		my $sth=$dbh->prepare("DROP OWNED BY \"x2gouser_$user\"");
-		$sth->execute();
-
-		my $sth=$dbh->prepare("drop USER if exists \"x2gouser_$user\"");
-		$sth->execute();
-		$sth->finish();
-
-		my ($name, $pass, $uid, $pgid, $quota, $comment, $gcos, $dir, $shell, $expire) = getpwnam($user);
-		if (! $uid)
-		{
-			return;
-		}
-		if ( -e "$dir/.x2go/pgsqlpass" )
-		{
-			unlink("$dir/.x2go/pgsqlpass");
-		}
-		if ( -e "$dir/.x2go/sqlpass" )
-		{
-			unlink("$dir/.x2go/sqlpass");
-		}
+		pg_rm_user($host, $port, $dbadmin, $dbadminpass, $db, $user_to_remove, $sslmode);
 	}
-
-	sub add_user()
+	else
 	{
-		my $user=shift;
-		my ($name, $pass, $uid, $pgid, $quota, $comment, $gcos, $dir, $shell, $expire) = getpwnam($user);
-		if (! $name)
-		{
-			print "Cannot find user ($user)\n";
-			return;
-		}
-		elsif ($name eq "root")
-		{
-			print "The super-user \"root\" is not allowed to use X2Go\n";
-			return;
-		}
-		$pass=`pwgen -s -c -n 32 1`;
-		chomp($pass);
-
-		my $sth=$dbh->prepare("REVOKE ALL PRIVILEGES ON sessions, used_ports, mounts FROM \"x2gouser_$user\"");
-		$sth->{Warn}=0;
-		$sth->{PrintError}=0;
-		$sth->execute();
-
-		my $sth=$dbh->prepare("REVOKE ALL PRIVILEGES ON sessions_view, mounts_view, servers_view, ports_view FROM \"x2gouser_$user\"");
-		$sth->{Warn}=0;
-		$sth->{PrintError}=0;
-		$sth->execute();
-
-		my $sth=$dbh->prepare("DROP OWNED BY \"x2gouser_$user\"");
-		$sth->{Warn}=0;
-		$sth->{PrintError}=0;
-		$sth->execute();
-
-		$sth=$dbh->prepare("drop USER if exists \"x2gouser_$user\"");
-		$sth->{Warn}=0;
-		$sth->{PrintError}=0;
-		$sth->execute();
-
-		print ("create DB user \"x2gouser_$user\"\n");
-		$sth=$dbh->prepare("create USER \"x2gouser_$user\" WITH ENCRYPTED PASSWORD '$pass'");
-		$sth->execute();
-
-		$sth=$dbh->prepare("GRANT INSERT, UPDATE, DELETE ON sessions, used_ports, mounts TO \"x2gouser_$user\"");
-		$sth->execute();
-
-		$sth=$dbh->prepare("GRANT SELECT ON used_ports TO \"x2gouser_$user\"");
-		$sth->execute();
-
-		$sth=$dbh->prepare("GRANT SELECT, UPDATE, DELETE ON sessions_view, mounts_view, servers_view, ports_view TO \"x2gouser_$user\"");
-		$sth->execute();
-		$sth->finish();
-
-		if (! -d "$dir/.x2go" )
-		{
-				if ( defined (&File::Path::make_path) )
-				{
-					File::Path::make_path("$dir/.x2go");
-				}
-				elsif ( defined (&File::Path::mkpath) )
-				{
-					File::Path::mkpath("$dir/.x2go");
-				}
-				else
-				{
-					die "Unable to create folders with File::Path";
-				}
-		}
-
-		#save user password
-		open (FL,"> $dir/.x2go/pgsqlpass") or die "Can't open password file $dir/.x2go/pgsqlpass";
-		print FL $pass;
-		close(FL);
-		chmod(0700,"$dir/.x2go");
-		chown($uid,$pgid,"$dir/.x2go");
-		chmod(0600,"$dir/.x2go/pgsqlpass");
-		chown($uid,$pgid,"$dir/.x2go/pgsqlpass");
+		die "Invalid database backend";
 	}
+}
 
-	sub create_tables()
+sub pg_rm_user()
+{
+	my $host = shift or die "No host parameter supplied";
+	my $port = shift or die "No port parameter supplied";
+	my $dbadmin = shift or die "No dbadmin parameter supplied";
+	my $dbadminpass = shift or die "No dbadminpass (database administrator password) parameter supplied";
+	my $db = shift or die "No db parameter supplied";
+	my $user_to_remove = shift or die "No user-to-remove parameter supplied";
+	my $sslmode = shift or die "No sslmode parameter supplied";
+
+	my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbadmin", "$dbadminpass", {AutoCommit => 1}) or die $_;
+
+	print ("rm DB user \"x2gouser_$user_to_remove\"\n");
+
+	my $sth=$dbh->prepare("REVOKE ALL PRIVILEGES ON sessions, used_ports, mounts FROM \"x2gouser_$user_to_remove\"");
+	$sth->execute();
+
+	my $sth=$dbh->prepare("REVOKE ALL PRIVILEGES ON sessions_view, mounts_view, servers_view, ports_view FROM \"x2gouser_$user_to_remove\"");
+	$sth->execute();
+
+	my $sth=$dbh->prepare("DROP OWNED BY \"x2gouser_$user_to_remove\"");
+	$sth->execute();
+
+	my $sth=$dbh->prepare("drop USER if exists \"x2gouser_$user_to_remove\"");
+	$sth->execute();
+	$sth->finish();
+
+	my ($name, $pass, $uid, $pgid, $quota, $comment, $gcos, $dir, $shell, $expire) = getpwnam($user_to_remove);
+	if (! $uid)
 	{
-		$dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", "$dbadmin", "$dbadminpass",{AutoCommit => 1}) or die $_;
-		my $sth=$dbh->prepare("
-		                      create table sessions(
-		                      session_id text primary key,
-		                      display integer not null,
-		                      uname text not null,
-		                      server text not null,
-		                      client inet,
-		                      status char(1) not null default 'R',
-		                      init_time timestamp not null default now(),
-		                      last_time timestamp not null default now(),
-		                      cookie char(33),
-		                      agent_pid int,
-		                      gr_port int,
-		                      sound_port int,
-		                      fs_port int,
-		                      tekictrl_port int,
-		                      tekidata_port int,
-		                      creator_id text NOT NULL default current_user,
-		                      unique(display))
-		                      ");
-		$sth->execute() or die;
-
-		$sth=$dbh->prepare("
-		                   create VIEW sessions_view as
-		                   SELECT
-		                   agent_pid, session_id, display, server, status, init_time, cookie, client, gr_port,
-		                   sound_port, last_time, uname, fs_port, tekictrl_port, tekidata_port from sessions
-		                   where creator_id = current_user
-		                   ");
-		$sth->execute() or die;
-
-		$sth=$dbh->prepare("
-		                   create VIEW servers_view as
-		                   SELECT
-		                   server, display, status from sessions
-		                   ");
-		$sth->execute() or die;
-
-		$sth=$dbh->prepare("
-		                   create or replace RULE update_sess_priv AS ON UPDATE
-		                   TO sessions where (OLD.creator_id <> current_user or OLD.creator_id <> NEW.creator_id) and current_user <> '$x2goadmin'
-		                   DO INSTEAD NOTHING
-		                   ");
-		$sth->execute() or die;
-
-		$sth=$dbh->prepare("
-		                   create or replace RULE insert_sess_priv AS ON INSERT
-		                   TO sessions where NEW.creator_id <> current_user and current_user <> '$x2goadmin'
-		                   DO INSTEAD NOTHING
-		                   ");
-		$sth->execute() or die;
-
-		$sth=$dbh->prepare("
-		                   create or replace RULE delete_sess_priv AS ON DELETE
-		                   TO sessions where OLD.creator_id <> current_user and current_user <> '$x2goadmin'
-		                   DO INSTEAD NOTHING
-		                   ");
-		$sth->execute() or die;
-
-		$sth=$dbh->prepare("
-		                   create or replace RULE update_sess_view AS ON UPDATE
-		                   TO sessions_view DO INSTEAD
-		                   update sessions set
-		                   status=NEW.status,
-		                   last_time=NEW.last_time,
-		                   cookie=NEW.cookie,
-		                   agent_pid=NEW.agent_pid,
-		                   client=NEW.client,
-		                   gr_port=NEW.gr_port,
-		                   sound_port=NEW.sound_port,
-		                   fs_port=NEW.fs_port,
-		                   tekictrl_port=NEW.tekictrl_port,
-		                   tekidata_port=NEW.tekidata_port
-		                   where session_id=OLD.session_id and creator_id=current_user
-		                   ");
-		$sth->execute() or die;
-
-		$sth=$dbh->prepare("create table messages(mess_id varchar(20) primary key, message text)");
-		$sth->execute() or die;
-
-		$sth=$dbh->prepare("
-		                   create table user_messages(
-		                   mess_id text not null,
-		                   uname text not null)
-		                   ");
-		$sth->execute() or die;
-
-		$sth=$dbh->prepare("
-		                   create table used_ports(
-		                   server text not null,
-		                   session_id text references sessions on delete cascade,
-		                   creator_id text NOT NULL default current_user,
-		                   port integer primary key)
-		                   ");
-		$sth->execute() or die;
-
-		$sth=$dbh->prepare("
-		                   create VIEW ports_view as
-		                   SELECT
-		                   server, port from used_ports
-		                   ");
-		$sth->execute() or die;
-
-		$sth=$dbh->prepare("
-		                   create or replace RULE insert_port_priv AS ON INSERT
-		                   TO used_ports where NEW.creator_id <> current_user and current_user <> '$x2goadmin'
-		                   DO INSTEAD NOTHING
-		                   ");
-		$sth->execute() or die;
-
-		$sth=$dbh->prepare("
-		                   create or replace RULE update_port_priv AS ON UPDATE
-		                   TO used_ports where (NEW.creator_id <> current_user or OLD.creator_id <> current_user) and current_user <> '$x2goadmin'
-		                   DO INSTEAD NOTHING
-		                   ");
-		$sth->execute() or die;
-
-		$sth=$dbh->prepare("
-		                   create or replace RULE delete_port_priv AS ON DELETE
-		                   TO used_ports where OLD.creator_id <> current_user and current_user <> '$x2goadmin'
-		                   DO INSTEAD NOTHING
-		                   ");
-		$sth->execute() or die;
-
-		$sth=$dbh->prepare("
-		                   create table mounts(
-		                   session_id text references sessions on delete restrict,
-		                   path text not null,
-		                   client inet not null,
-		                   creator_id text NOT NULL default current_user,
-		                   primary key(path,client))
-		                   ");
-		$sth->execute() or die;
-
-		$sth=$dbh->prepare("
-		                   create VIEW mounts_view as
-		                   SELECT
-		                   client,path, session_id from mounts
-		                   where creator_id = current_user
-		                   ");
-		$sth->execute() or die;
-
-		$sth=$dbh->prepare("
-		                   create or replace RULE delete_mounts_view AS ON DELETE
-		                   TO mounts_view DO INSTEAD
-		                   delete from mounts
-		                   where session_id=OLD.session_id and creator_id=current_user and path=OLD.path
-		                   ");
-		$sth->execute() or die;
-
-		$sth=$dbh->prepare("
-		                   create or replace RULE insert_mount_priv AS ON INSERT
-		                   TO mounts where NEW.creator_id <> current_user and current_user <> '$x2goadmin'
-		                   DO INSTEAD NOTHING
-		                   ");
-		$sth->execute() or die;
-
-		$sth=$dbh->prepare("
-		                   create or replace RULE update_mount_priv AS ON UPDATE
-		                   TO mounts where (NEW.creator_id <> current_user or OLD.creator_id <> current_user) and current_user <> '$x2goadmin'
-		                   DO INSTEAD NOTHING
-		                   ");
-		$sth->execute() or die;
-
-		$sth=$dbh->prepare("
-		                   create or replace RULE delete_mount_priv AS ON DELETE
-		                   TO mounts where OLD.creator_id <> current_user and current_user <> '$x2goadmin'
-		                   DO INSTEAD NOTHING
-		                   ");
-		$sth->execute() or die;
-
-		$sth=$dbh->prepare("GRANT ALL PRIVILEGES ON sessions, messages, user_messages, used_ports, mounts TO $x2goadmin");
-		$sth->execute() or die;
-		$sth->finish();
-		undef $dbh;
+		return;
 	}
-
-	sub create_database
+	if ( -e "$dir/.x2go/pgsqlpass" )
 	{
-		my $dbh=DBI->connect("dbi:Pg:dbname=postgres;host=$host;port=$port;sslmode=$sslmode", "$dbadmin", "$dbadminpass",{AutoCommit => 1}) or die $_;
-		#drop db if exists
-		my $sth=$dbh->prepare("drop database if exists $db");
-		$sth->execute();
-		#drop x2goadmin
-		$sth=$dbh->prepare("drop user if exists $x2goadmin");
-		$sth->execute();
-		#create db
-		$sth=$dbh->prepare("create database $db");
-		$sth->execute() or die;
-		#create x2goadmin
-		$sth=$dbh->prepare("create USER $x2goadmin WITH ENCRYPTED PASSWORD '$x2goadminpass'");
-		$sth->execute() or die;
-		#save x2goadmin password
-		open (FL,"> /etc/x2go/x2gosql/passwords/x2gopgadmin ") or die "Can't write password file /etc/x2go/x2gosql/passwords/x2gopgadmin";
-		print FL $x2goadminpass;
-		close(FL);
-		$sth->finish();
-		undef $dbh;
+		unlink("$dir/.x2go/pgsqlpass");
+	}
+	if ( -e "$dir/.x2go/sqlpass" )
+	{
+		unlink("$dir/.x2go/sqlpass");
 	}
 }
