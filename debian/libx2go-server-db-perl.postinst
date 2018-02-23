@@ -24,6 +24,8 @@ case "$1" in
 		chmod 700 /etc/x2go/x2gosql/passwords
 		touch     /etc/x2go/x2gosql/passwords/pgadmin
 		chmod 600 /etc/x2go/x2gosql/passwords/pgadmin
+		touch     /etc/x2go/x2gosql/passwords/mysqladmin
+		chmod 600 /etc/x2go/x2gosql/passwords/mysqladmin
 
 		# the SQLite3 X2Go session db has to be accessed as uid x2gouser
 		if ! dpkg-statoverride --list /usr/lib/x2go/libx2go-server-db-sqlite3-wrapper >/dev/null; then

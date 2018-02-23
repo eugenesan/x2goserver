@@ -140,6 +140,8 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
   * debian/x2goserver-x2goagent.{{pre,post}inst,postrm}:
     + Handle /etc/tmpfiles.d/x2goserver.conf conffile (re-)move to
       /usr/lib/tmpfiles.d/ gracefully.
+  * debian/libx2go-server-db-perl.post{inst,rm}:
+    + Add support for mysqladmin password file.
 
  -- X2Go Release Manager <git-admin@x2go.org>  Thu, 15 Feb 2018 23:14:28 +0100
 
