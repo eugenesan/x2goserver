@@ -79,6 +79,7 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
     - x2goserver/sbin/x2godbadmin: split out subroutines into main namespace,
       call them generically with correct parameters from specialized
       namespace.
+    - x2goserver/sbin/x2godbadmin: remove potentially confusing whitespace.
   * debian/{control,compat}:
     + Bump DH compat level to 9.
   * debian/:

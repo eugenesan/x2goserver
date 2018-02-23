@@ -258,7 +258,7 @@ if ($Config->param("backend") eq 'postgres')
 		$dbadmin='postgres';
 	}
 
-	open (FL,"< /etc/x2go/x2gosql/passwords/pgadmin ") or die "Can't read password file /etc/x2go/x2gosql/passwords/pgadmin";
+	open (FL,"< /etc/x2go/x2gosql/passwords/pgadmin") or die "Can't read password file /etc/x2go/x2gosql/passwords/pgadmin";
 	my $dbadminpass=<FL>;
 	close(FL);
 	chomp($dbadminpass);
@@ -662,7 +662,7 @@ sub pg_create_database
 	$sth=$dbh->prepare("create USER $x2goadmin WITH ENCRYPTED PASSWORD '$x2goadminpass'");
 	$sth->execute() or die;
 	#save x2goadmin password
-	open (FL,"> /etc/x2go/x2gosql/passwords/x2gopgadmin ") or die "Can't write password file /etc/x2go/x2gosql/passwords/x2gopgadmin";
+	open (FL,"> /etc/x2go/x2gosql/passwords/x2gopgadmin") or die "Can't write password file /etc/x2go/x2gosql/passwords/x2gopgadmin";
 	print FL $x2goadminpass;
 	close(FL);
 	$sth->finish();
