@@ -246,6 +246,7 @@ Requires:       perl(Config::Simple)
 Requires(post): perl(DBD::SQLite)
 Requires:       perl(DBD::SQLite)
 Requires:       perl(DBD::Pg)
+Requires:       perl(DBD::mysql)
 %if 0%{?suse_version}
 Requires(pre):  permissions
 %if 0%{?suse_version} < 1140

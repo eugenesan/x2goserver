@@ -78,6 +78,7 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
     + Remove stale symlinks check workaround now that we pull in nxagent >=
       3.5.99.0 by default.
     + Move references from etc/tmpfiles.d to %{_prefix}/lib/tmpfiles.d.
+    + Depend upon perl(DBD::mysql) for MySQL/MariaDB support in perl DBD.
   * debian/copyright.in:
     + Remove reference to rgb file.
     + Remove reference to x2goagent wrapper script.
