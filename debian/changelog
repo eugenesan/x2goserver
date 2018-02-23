@@ -80,6 +80,7 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
       call them generically with correct parameters from specialized
       namespace.
     - x2goserver/sbin/x2godbadmin: remove potentially confusing whitespace.
+    - x2goserver/sbin/x2godbadmin: fix up other try blocks; whitespace only.
   * debian/{control,compat}:
     + Bump DH compat level to 9.
   * debian/:

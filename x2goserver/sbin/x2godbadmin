@@ -281,7 +281,8 @@ if ($Config->param("backend") eq 'postgres')
 				my $sth_tekictrl;
 				my $sth_tekidata;
 				my $sth_update;
-				try {
+				try
+				{
 					$sth_tekictrl = $dbh->prepare("select tekictrl_port from sessions");
 					$sth_tekictrl->execute();
 				}
@@ -296,7 +297,8 @@ if ($Config->param("backend") eq 'postgres')
 					$sth_tekictrl->finish();
 					$update_views_n_rules = 1;
 				};
-				try {
+				try
+				{
 					$sth_tekidata = $dbh->prepare("select tekidata_port from sessions");
 					$sth_tekidata->execute();
 				}
