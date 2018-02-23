@@ -120,6 +120,7 @@ sub init_db
 		}
 
 		if ($move_file)
+		{
 			# Password file needs move.
 			move($old_location, $passfile) or die "Unable to move PostgreSQL user password file from '$old_location' to '$passfile'<br>";
 		}
