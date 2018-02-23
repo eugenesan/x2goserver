@@ -922,7 +922,7 @@ sub list_users()
 	}
 	elsif ($Config->param("backend") eq 'mysql')
 	{
-		mysql_list_users($host, $port, $dbadmin, $dbadminpass, $db);
+		mysql_list_users($host, $port, $dbadmin, $dbadminpass);
 	}
 	else
 	{
@@ -960,7 +960,7 @@ sub mysql_list_users()
 	my $dbadmin = shift or die "No dbadmin parameter supplied";
 	my $dbadminpass = shift or die "No dbadminpass (database administrator password) parameter supplied";
 
-	my $dbh=DBI->connect("dbi:mysql:database=$db;host=$host;port=$port", "$dbadmin", "$dbadminpass", {AutoCommit => 1}) or die $_;
+	my $dbh=DBI->connect("dbi:mysql:host=$host;port=$port", "$dbadmin", "$dbadminpass", {AutoCommit => 1}) or die $_;
 	my $sth=$dbh->prepare("select user from mysql.user where user like 'x2gouser_%'");
 	$sth->execute()or die;
 	printf ("%-20s DB user\n","UNIX user");
