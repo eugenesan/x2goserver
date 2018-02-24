@@ -20,6 +20,8 @@ case "${1}" in
 	'purge')
 		getent 'passwd' 'x2goprint' >'/dev/null' && deluser 'x2goprint'
 		getent 'group' 'x2goprint' >'/dev/null' && delgroup 'x2goprint'
+
+		rm -Rf '/var/spool/x2goprint'
 		;;
 	'remove'|'upgrade'|'failed-upgrade'|'abort-install'|'abort-upgrade'|'disappear')
 		;;

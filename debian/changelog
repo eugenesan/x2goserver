@@ -42,6 +42,8 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
       but need a 'test -L'. Thanks to Andreas Beckmann for helping with this.
       (Closes: DBTS#904515).
       Backported from a Debian patch.
+  * debian/x2goserver-printing.postrm:
+    + Remove x2goprint's spool dir on purgal.
 
   [ Mihai Moldovan ]
   * New upstream version (4.1.0.1):
