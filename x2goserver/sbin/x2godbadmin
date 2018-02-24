@@ -510,7 +510,7 @@ if ($Config->param("backend") eq 'mysql')
 	}
 }
 
-sub create_tables()
+sub create_tables
 {
 	my $host = shift or die "No host parameter supplied";
 	my $port = shift or die "No port parameter supplied";
@@ -540,7 +540,7 @@ sub create_tables()
 	}
 }
 
-sub pg_create_tables()
+sub pg_create_tables
 {
 	my $host = shift or die "No host parameter supplied";
 	my $port = shift or die "No port parameter supplied";
@@ -729,7 +729,7 @@ sub pg_create_tables()
 	undef $dbh;
 }
 
-sub mysql_create_tables()
+sub mysql_create_tables
 {
 	my $host = shift or die "No host parameter supplied";
 	my $port = shift or die "No port parameter supplied";
@@ -810,7 +810,7 @@ sub mysql_create_tables()
 	undef $dbh;
 }
 
-sub create_database()
+sub create_database
 {
 	my $host = shift or die "No host parameter supplied";
 	my $port = shift or die "No port parameter supplied";
@@ -873,7 +873,7 @@ sub pg_create_database
 	undef $dbh;
 }
 
-sub mysql_create_database()
+sub mysql_create_database
 {
 	my $host = shift or die "No host parameter supplied";
 	my $port = shift or die "No port parameter supplied";
@@ -905,7 +905,7 @@ sub mysql_create_database()
 	undef $dbh;
 }
 
-sub list_users()
+sub list_users
 {
 	my $host = shift or die "No host parameter supplied";
 	my $port = shift or die "No port parameter supplied";
@@ -930,7 +930,7 @@ sub list_users()
 	}
 }
 
-sub pg_list_users()
+sub pg_list_users
 {
 	my $host = shift or die "No host parameter supplied";
 	my $port = shift or die "No port parameter supplied";
@@ -953,7 +953,7 @@ sub pg_list_users()
 	undef $dbh;
 }
 
-sub mysql_list_users()
+sub mysql_list_users
 {
 	my $host = shift or die "No host parameter supplied";
 	my $port = shift or die "No port parameter supplied";
@@ -975,7 +975,7 @@ sub mysql_list_users()
 	undef $dbh;
 }
 
-sub add_user()
+sub add_user
 {
 	my $host = shift or die "No host parameter supplied";
 	my $port = shift or die "No port parameter supplied";
@@ -1005,7 +1005,7 @@ sub add_user()
 	}
 }
 
-sub pg_add_user()
+sub pg_add_user
 {
 	my $host = shift or die "No host parameter supplied";
 	my $port = shift or die "No port parameter supplied";
@@ -1090,7 +1090,7 @@ sub pg_add_user()
 	chown($uid,$pgid,"$dir/.x2go/pgsqlpass");
 }
 
-sub mysql_add_user()
+sub mysql_add_user
 {
 	my $host = shift or die "No host parameter supplied";
 	my $port = shift or die "No port parameter supplied";
@@ -1155,7 +1155,7 @@ sub mysql_add_user()
 	chown($uid,$pgid,"$dir/.x2go/mysqlpass");
 }
 
-sub rm_user()
+sub rm_user
 {
 	my $host = shift or die "No host parameter supplied";
 	my $port = shift or die "No port parameter supplied";
@@ -1185,7 +1185,7 @@ sub rm_user()
 	}
 }
 
-sub pg_rm_user()
+sub pg_rm_user
 {
 	my $host = shift or die "No host parameter supplied";
 	my $port = shift or die "No port parameter supplied";
@@ -1227,7 +1227,7 @@ sub pg_rm_user()
 	}
 }
 
-sub mysql_rm_user()
+sub mysql_rm_user
 {
 	my $host = shift or die "No host parameter supplied";
 	my $port = shift or die "No port parameter supplied";
