@@ -92,6 +92,9 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
     - X2Go/Server/DB/PostgreSQL.pm: fix syntax error.
     - x2goserver/sbin/x2godbadmin: don't use prototypes when functions
       actually take arguments.
+    - X2Go/Server/DB: add new file MySQL.pm, implementing the MySQL session
+      storage backend. Based on original code by Walid Moghrabi, but modified.
+      Will fail to execute correctly, so do not use yet.
   * debian/{control,compat}:
     + Bump DH compat level to 9.
   * debian/:
