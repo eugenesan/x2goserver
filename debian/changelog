@@ -144,6 +144,7 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
     + Change http to https links.
     + Pull in other changes from Debian downstream.
     + Depend upon libdbd-mysql-perl for MySQL/MariaDB support in perl DBD.
+    + Deactivate libdbd-mysql-perl dependency for now, but keep as comment.
   * debian/x2goserver-x2goagent.{{pre,post}inst,postrm}:
     + Handle /etc/x2go/rgb conffile removal gracefully.
   * debian/x2goserver*{pre,post}*:

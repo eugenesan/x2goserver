@@ -117,7 +117,7 @@ Depends:
  libconfig-simple-perl,
  libdbd-pg-perl [!armhf],
  libdbd-sqlite3-perl,
- libdbd-mysql-perl,
+# libdbd-mysql-perl,
  libx2go-log-perl (<< ${source:Version}.1~),
  libx2go-log-perl (>= ${source:Version}),
  x2goserver-common (<< ${source:Version}.1~),
