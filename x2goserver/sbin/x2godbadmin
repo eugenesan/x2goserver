@@ -407,6 +407,8 @@ if ($Config->param("backend") eq 'postgres')
 
 if ($Config->param("backend") eq 'mysql')
 {
+	die "Backend currently not implemented!";
+
 	my $host=$Config->param("mysql.host");
 	my $port=$Config->param("mysql.port");
 	my $unet=$Config->param("mysql.unet");
