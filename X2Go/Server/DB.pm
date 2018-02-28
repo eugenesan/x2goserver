@@ -63,6 +63,11 @@ if ($backend ne 'postgres' && $backend ne 'mysql' && $backend ne 'sqlite')
 	die "unknown backend $backend";
 }
 
+if ($backend eq 'mysql')
+{
+	die "Backend currently not implemented!";
+}
+
 use base 'Exporter';
 
 our @EXPORT=('db_listsessions','db_listsessions_all', 'db_getservers', 'db_getagent', 'db_resume', 'db_changestatus', 'db_getstatus', 

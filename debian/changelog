@@ -103,6 +103,8 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
       top-level directory.
     - x2goserver/sbin/x2godbadmin: error out when encountering MySQL server
       config for now.
+    - X2Go/Server/DB.pm: error out when encountering MySQL server config for
+      now.
   * debian/{control,compat}:
     + Bump DH compat level to 9.
   * debian/:
