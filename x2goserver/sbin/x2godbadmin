@@ -779,7 +779,6 @@ sub mysql_create_tables
 	                   ");
 	$sth->execute() or die;
 
-
 	$sth=$dbh->prepare("
 	                   CREATE TABLE `used_ports` (
 	                   `server` varchar(512) NOT NULL,

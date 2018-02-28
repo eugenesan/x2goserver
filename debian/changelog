@@ -98,6 +98,7 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
     - X2Go/Server/DB/MySQL.pm: copy over some (modified) functions and use
       them for validating session IDs, check user names at some places and the
       like, which will come in handy at a later point.
+    - x2goserver/sbin/x2godbadmin: whitespace-only change.
   * debian/{control,compat}:
     + Bump DH compat level to 9.
   * debian/:
