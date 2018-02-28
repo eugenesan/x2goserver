@@ -108,6 +108,31 @@ sub init_db
 	return $dbh;
 }
 
+sub check_root
+{
+	die "$uname is not authorized to perform this operation" unless ($uname eq "root");
+}
+
+sub validate_session_id
+{
+	my $sid = shift or die "argument \"session_id\" missing";
+	return if $uname eq "root";
+
+	# session id looks like someuser-51-1304005895_stDgnome-session_dp24
+	# during DB insertsession it only looks like someuser-51-1304005895
+
+	# derive the session's user from the session name/id
+	my $user = "$sid";
+	my $uname_ = "$uname";
+
+	# handle ActiveDirectory Domain user accounts gracefully
+	$uname_ =~ s/\\//;
+
+	# perform the user check
+	$user =~ s/($uname_-[0-9]{2,}-[0-9]{10,}_st(D|R).*|.*-[0-9]{2,}-[0-9]{10,}_stS(0|1)XSHAD$uname_.*)/$uname_/;
+	die "$uname_ is not authorized to perform this operation" unless ($uname_ eq $user);
+}
+
 sub check_error
 {
 	my $sth = shift or die "Invalid or no statement handle parameter supplied";
@@ -174,6 +199,7 @@ sub fetchrow_array_single_single
 sub dbsys_rmsessionsroot
 {
 	my $dbh = init_db();
+	check_root();
 	my $sid = shift or die "argument \"session_id\" missing";
 	my $sth=$dbh->prepare("delete from sessions where session_id=?");
 	$sth->execute($sid);
@@ -187,6 +213,7 @@ sub dbsys_deletemounts
 {
 	my $dbh = init_db();
 	my $sid = shift or die "argument \"session_id\" missing";
+	validate_session_id($sid);
 	my $sth=$dbh->prepare("delete from mounts where session_id=?");
 	$sth->execute($sid);
 	check_error($sth);
@@ -198,8 +225,9 @@ sub dbsys_deletemounts
 sub dbsys_listsessionsroot
 {
 	my $dbh = init_db();
+	check_root();
 	my $server = shift or die "argument \"server\" missing";
-	my @strings;
+	my @sessions;
 	my $sth = undef;
 	if ($with_TeKi) {
 		$sth=$dbh->prepare("select
@@ -224,16 +252,17 @@ sub dbsys_listsessionsroot
 	}
 	$sth->execute($server);
 	check_error($sth);
-	@strings = fetchrow_array_datasets($sth);
+	@sessions = fetchrow_array_datasets($sth);
 	$sth->finish();
 	undef $dbh;
-	return @strings;
+	return @sessions;
 }
 
 sub dbsys_listsessionsroot_all
 {
 	my $dbh = init_db();
-	my @strings;
+	check_root();
+	my @sessions;
 	my $sth = undef;
 	if ($with_TeKi) {
 		$sth=$dbh->prepare("select
@@ -258,10 +287,10 @@ sub dbsys_listsessionsroot_all
 	}
 	$sth->execute();
 	check_error($sth);
-	@strings = fetchrow_array_datasets($sth);
+	@sessions = fetchrow_array_datasets($sth);
 	$sth->finish();
 	undef $dbh;
-	return @strings;
+	return @sessions;
 }
 
 sub dbsys_getmounts
@@ -269,6 +298,7 @@ sub dbsys_getmounts
 	my $dbh = init_db();
 	my $sid = shift or die "argument \"session_id\" missing";
 	$sid = sanitizer('x2gosid', $sid) or die "argument \"session_id\" malformed";
+	validate_session_id($sid);
 	my @mounts;
 	my $sth=$dbh->prepare("select client, path from mounts where session_id=?");
 	$sth->execute($sid);
@@ -284,9 +314,9 @@ sub db_getmounts
 	my $dbh = init_db();
 	my $sid = shift or die "argument \"session_id\" missing";
 	$sid = sanitizer('x2gosid', $sid) or die "argument \"session_id\" malformed";
+	validate_session_id($sid);
 	my @mounts;
-	die "mounts_view must be implemented first!";
-	my $sth=$dbh->prepare("select client, path from mounts_view where session_id=?");
+	my $sth=$dbh->prepare("select client, path from mounts where session_id=?");
 	$sth->execute($sid);
 	check_error($sth);
 	@mounts = fetchrow_array_datasets($sth);
@@ -300,9 +330,9 @@ sub db_deletemount
 	my $dbh = init_db();
 	my $sid = shift or die "argument \"session_id\" missing";
 	$sid = sanitizer('x2gosid', $sid) or die "argument \"session_id\" malformed";
+	validate_session_id($sid);
 	my $path = shift or die "argument \"path\" missing";
-	die "mounts_view must be implemented first!";
-	my $sth=$dbh->prepare("delete from mounts_view where session_id=? and path=?");
+	my $sth=$dbh->prepare("delete from mounts where session_id=? and path=?");
 	$sth->execute($sid, $path);
 	check_error($sth);
 	$sth->finish();
@@ -315,6 +345,7 @@ sub db_insertmount
 	my $dbh = init_db();
 	my $sid = shift or die "argument \"session_id\" missing";
 	$sid = sanitizer('x2gosid', $sid) or die "argument \"session_id\" malformed";
+	validate_session_id($sid);
 	my $path = shift or die "argument \"path\" missing";
 	my $client = shift or die "argument \"client\" missing";
 	my $sth=$dbh->prepare("insert into mounts (session_id, path, client) values (?, ?, ?)");
@@ -334,6 +365,7 @@ sub db_insertsession
 	my $server = shift or die "argument \"server\" missing";
 	my $sid = shift or die "argument \"session_id\" missing";
 	$sid = sanitizer('x2gosid', $sid) or die "argument \"session_id\" malformed";
+	validate_session_id($sid);
 	my $sth=$dbh->prepare("insert into sessions
 	                         (display, server, uname, session_id)
 	                       values
@@ -354,6 +386,8 @@ sub db_insertshadowsession
 	my $sid = shift or die "argument \"session_id\" missing";
 	$sid = sanitizer('x2gosid', $sid) or die "argument \"session_id\" malformed";
 	my $shadreq_user = shift or die "argument \"shadreq_user\" missing";
+	(my $fake_sid = $sid) =~ s/$shadreq_user-/$uname-/;
+	validate_session_id($fake_sid);
 	my $sth=$dbh->prepare("insert into sessions
 	                         (display, server, uname, session_id)
 	                       values
@@ -370,6 +404,7 @@ sub db_createsession
 	my $dbh = init_db();
 	my $sid = shift or die "argument \"session_id\" missing";
 	$sid = sanitizer('x2gosid', $sid) or die "argument \"session_id\" malformed";
+	validate_session_id($sid);
 	my $cookie = shift or die "argument \"cookie\" missing";
 	my $pid = shift or die "argument \"pid\" missing";
 	$pid = sanitizer('num', $pid) or die "argument \"pid\" malformed";
@@ -381,13 +416,12 @@ sub db_createsession
 	my $fs_port = shift or die "argument \"fs_port\" missing";
 	$fs_port = sanitizer('num', $fs_port) or die "argument \"fs_port\" malformed";
 	my $sth;
-	die "sessions_view must be implemented first!";
 	if ($with_TeKi) {
 		my $tekictrl_port = shift or die "argument \"tekictrl_port\" missing";
 		$tekictrl_port = sanitizer('pnnum', $tekictrl_port) or die "argument \"tekictrl_port\" malformed";
 		my $tekidata_port = shift or die"argument \"tekidata_port\" missing";
 		$tekidata_port = sanitizer('pnnum', $tekidata_port) or die "argument \"tekidata_port\" malformed";
-		$sth=$dbh->prepare("update sessions_view set
+		$sth=$dbh->prepare("update sessions set
 		                      status='R', last_time=NOW(),
 		                      cookie=?, agent_pid=?, client=?, gr_port=?,
 		                      sound_port=?, fs_port=?, tekictrl_port=?,
@@ -395,7 +429,7 @@ sub db_createsession
 		                    where session_id=?");
 		$sth->execute($cookie, $pid, $client, $gr_port, $snd_port, $fs_port, $tekictrl_port, $tekidata_port, $sid);
 	} else {
-		$sth=$dbh->prepare("update sessions_view set
+		$sth=$dbh->prepare("update sessions set
 		                      status='R', last_time=NOW(),
 		                      cookie=?, agent_pid=?, client=?, gr_port=?,
 		                      sound_port=?, fs_port=?
@@ -414,8 +448,9 @@ sub db_insertport
 	my $server = shift or die "argument \"server\" missing";
 	my $sid = shift or die "argument \"session_id\" missing";
 	$sid = sanitizer('x2gosid', $sid) or die "argument \"session_id\" malformed";
+	validate_session_id($sid);
 	my $sshport = shift or die "argument \"port\" missing";
-	my $sth=$dbh->prepare("insert into used_ports (server,session_id,port) values (?, ?, ?)");
+	my $sth=$dbh->prepare("insert into used_ports (server, session_id, port) values (?, ?, ?)");
 	$sth->execute($server, $sid, $sshport);
 	check_error($sth);
 	$sth->finish();
@@ -429,6 +464,7 @@ sub db_rmport
 	my $server = shift or die "argument \"server\" missing";
 	my $sid = shift or die "argument \"session_id\" missing";
 	$sid = sanitizer('x2gosid', $sid) or die "argument \"session_id\" malformed";
+	validate_session_id($sid);
 	my $sshport = shift or die "argument \"port\" missing";
 	my $sth=$dbh->prepare("delete from used_ports where server=? and session_id=? and port=?");
 	$sth->execute($server, $sid, $sshport);
@@ -444,6 +480,7 @@ sub db_resume
 	my $client = shift or die "argument \"client\" missing";
 	my $sid = shift or die "argument \"session_id\" missing";
 	$sid = sanitizer('x2gosid', $sid) or die "argument \"session_id\" malformed";
+	validate_session_id($sid);
 	my $gr_port = shift or die "argument \"gr_port\" missing";
 	$gr_port = sanitizer('num', $gr_port) or die "argument \"gr_port\" malformed";
 	my $snd_port = shift or die "argument \"snd_port\" missing";
@@ -451,20 +488,19 @@ sub db_resume
 	my $fs_port = shift or die "argument \"fs_port\" missing";
 	$fs_port = sanitizer('num', $fs_port) or die "argument \"fs_port\" malformed";
 	my $sth;
-	die "sessions_view must be implemented first!";
 	if ($with_TeKi) {
 		my $tekictrl_port = shift or die "argument \"tekictrl_port\" missing";
 		$tekictrl_port = sanitizer('pnnum', $tekictrl_port) or die "argument \"tekictrl_port\" malformed";
 		my $tekidata_port = shift or die "argument \"tekidata_port\" missing";
 		$tekidata_port = sanitizer('pnnum', $tekidata_port) or die "argument \"tekidata_port\" malformed";
-		$sth=$dbh->prepare("update sessions_view set
+		$sth=$dbh->prepare("update sessions set
 		                      last_time=NOW(), status='R', client=?, gr_port=?,
 		                      sound_port=?, fs_port=?, tekictrl_port=?,
 		                      tekidata_port=?
 		                    where session_id=?");
 		$sth->execute($client, $gr_port, $snd_port, $fs_port, $tekictrl_port, $tekidata_port, $sid);
 	} else {
-		$sth=$dbh->prepare("update sessions_view set
+		$sth=$dbh->prepare("update sessions set
 		                      last_time=NOW(), status='R', client=?, gr_port=?,
 		                      sound_port=?, fs_port=?
 		                    where session_id=?");
@@ -482,9 +518,17 @@ sub db_changestatus
 	my $status = shift or die "argument \"status\" missing";
 	my $sid = shift or die "argument \"session_id\" missing";
 	$sid = sanitizer('x2gosid', $sid) or die "argument \"session_id\" malformed";
-	die "sessions_view must be implemented first!";
-	my $sth=$dbh->prepare("update sessions_view set last_time=NOW(), status=? where session_id=?");
-	$sth->execute($status, $sid);
+	validate_session_id($sid);
+
+	# we need to be able to change the state of normal sessions (real user == effective user)
+	# _and_ desktop sharing session (real user != effective user). Thus, extracting the effective
+	# username from the session ID...
+	(my $effective_user = $sid) =~ s/\-[0-9]+\-[0-9]{10}_.*//;
+
+	my $sth=$dbh->prepare("update sessions set
+	                         last_time=NOW(), status=?
+	                       where session_id=? and uname=?");
+	$sth->execute($status, $sid, $effective_user);
 	check_error($sth);
 	$sth->finish();
 	undef $dbh;
@@ -496,9 +540,9 @@ sub db_getstatus
 	my $dbh = init_db();
 	my $sid = shift or die "argument \"session_id\" missing";
 	$sid = sanitizer('x2gosid', $sid) or die "argument \"session_id\" malformed";
+	validate_session_id($sid);
 	my $status = '';
-	die "sessions_view must be implemented first!";
-	my $sth=$dbh->prepare("select status from sessions_view where session_id=?");
+	my $sth=$dbh->prepare("select status from sessions where session_id=?");
 	$sth->execute($sid);
 	check_error($sth);
 	$status = fetchrow_array_single_single($sth);
@@ -512,8 +556,7 @@ sub db_getdisplays
 	my $dbh = init_db();
 	my $server = shift or die "argument \"server\" missing";
 	my @displays;
-	die "servers_view must be implemented first!";
-	my $sth=$dbh->prepare("select display from servers_view where server=?");
+	my $sth=$dbh->prepare("select display from sessions where server=?");
 	$sth->execute($server);
 	check_error($sth);
 	@displays = fetchrow_array_datasets_single_framed($sth);
@@ -527,8 +570,7 @@ sub db_getports
 	my $dbh = init_db();
 	my @ports;
 	my $server = shift or die "argument \"server\" missing";
-	die "ports_view must be implemented first!";
-	my $sth=$dbh->prepare("select port from ports_view where server=?");
+	my $sth=$dbh->prepare("select port from used_ports where server=?");
 	$sth->execute($server);
 	check_error($sth);
 	@ports = fetchrow_array_datasets_single_framed($sth);
@@ -541,8 +583,7 @@ sub db_getservers
 {
 	my $dbh = init_db();
 	my @servers;
-	die "servers_view must be implemented first!";
-	my $sth=$dbh->prepare("select server,count(*) from servers_view where status!='F' group by server");
+	my $sth=$dbh->prepare("select server,count(*) from sessions where status!='F' group by server");
 	$sth->execute();
 	check_error($sth);
 	@servers = fetchrow_array_datasets_double_spacelim($sth);
@@ -557,10 +598,10 @@ sub db_getagent
 	my $agent;
 	my $sid = shift or die "argument \"session_id\" missing";
 	$sid = sanitizer('x2gosid', $sid) or die "argument \"session_id\" malformed";
-	die "sessions_view must be implemented first!";
+	validate_session_id($sid);
 	my $sth=$dbh->prepare("select
 	                         agent_pid
-	                       from sessions_view
+	                       from sessions
 	                       where session_id=?");
 	$sth->execute($sid);
 	check_error($sth);
@@ -576,10 +617,10 @@ sub db_getdisplay
 	my $display;
 	my $sid = shift or die "argument \"session_id\" missing";
 	$sid = sanitizer('x2gosid', $sid) or die "argument \"session_id\" malformed";
-	die "sessions_view must be implemented first!";
+	validate_session_id($sid);
 	my $sth=$dbh->prepare("select
 	                         display
-	                       from sessions_view
+	                       from sessions
 	                       where session_id=?");
 	$sth->execute($sid);
 	check_error($sth);
@@ -595,7 +636,6 @@ sub db_listsessions
 	my $server = shift or die "argument \"server\" missing";
 	my @sessions;
 	my $sth;
-	die "sessions_view must be implemented first!";
 	if ($with_TeKi) {
 		$sth=$dbh->prepare("select
 		                      agent_pid, session_id, display, server, status,
@@ -604,7 +644,7 @@ sub db_listsessions
 		                      DATE_FORMAT(last_time, '%Y-%m-%dT%H:%i:%S'), uname,
 		                      MOD(UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(init_time), 86400),
 		                      fs_port, tekictrl_port, tekidata_port
-		                    from sessions_view
+		                    from sessions
 		                    where status!='F' and server=? and (session_id not like '%XSHAD%')
 		                    order by status desc");
 	} else {
@@ -615,7 +655,7 @@ sub db_listsessions
 		                      DATE_FORMAT(last_time, '%Y-%m-%dT%H:%i:%S'), uname,
 		                      MOD(UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(init_time), 86400),
 		                      fs_port
-		                    from sessions_view
+		                    from sessions
 		                    where status!='F' and server=? and (session_id not like '%XSHAD%')
 		                    order by status desc");
 	}
@@ -632,7 +672,6 @@ sub db_listsessions_all
 	my $dbh = init_db();
 	my @sessions;
 	my $sth;
-	die "sessions_view must be implemented first!";
 	if ($with_TeKi) {
 		$sth=$dbh->prepare("select
 		                      agent_pid, session_id, display, server, status,
@@ -641,7 +680,7 @@ sub db_listsessions_all
 		                      DATE_FORMAT(last_time, '%Y-%m-%dT%H:%i:%S'), uname,
 		                      MOD(UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(init_time), 86400),
 		                      fs_port, tekictrl_port, tekidata_port
-		                    from sessions_view
+		                    from sessions
 		                    where status!='F' and (session_id not like '%XSHAD%')
 		                    order by status desc");
 	} else {
@@ -652,7 +691,7 @@ sub db_listsessions_all
 		                      DATE_FORMAT(last_time, '%Y-%m-%dT%H:%i:%S'), uname,
 		                      MOD(UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(init_time), 86400),
 		                      fs_port
-		                    from sessions_view
+		                    from sessions
 		                    where status!='F' and (session_id not like '%XSHAD%')
 		                    order by status desc");
 	}
@@ -669,7 +708,6 @@ sub db_listshadowsessions
 	my $dbh = init_db();
 	my $server = shift or die "argument \"server\" missing";
 	my @sessions;
-	die "sessions_view must be implemented first!";
 	my $sth=$dbh->prepare("select
 	                         agent_pid, session_id, display, server, status,
 	                         DATE_FORMAT(init_time, '%Y-%m-%dT%H:%i:%S'), cookie, client,
@@ -677,7 +715,7 @@ sub db_listshadowsessions
 	                         DATE_FORMAT(last_time, '%Y-%m-%dT%H:%i:%S'), uname,
 	                         MOD(UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(init_time), 86400),
 	                         fs_port
-	                       from sessions_view
+	                       from sessions
 	                       where status!='F' and server=? and (session_id like '%XSHAD%')
 	                       order by status desc");
 	$sth->execute($server);
@@ -692,7 +730,6 @@ sub db_listshadowsessions_all
 {
 	my $dbh = init_db();
 	my @sessions;
-	die "sessions_view must be implemented first!";
 	my $sth=$dbh->prepare("select
 	                         agent_pid, session_id, display, server, status,
 	                         DATE_FORMAT(init_time, '%Y-%m-%dT%H:%i:%S'), cookie, client,
@@ -700,7 +737,7 @@ sub db_listshadowsessions_all
 	                         DATE_FORMAT(last_time, '%Y-%m-%dT%H:%i:%S'), uname,
 	                         MOD(UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(init_time), 86400),
 	                         fs_port
-	                       from sessions_view
+	                       from sessions
 	                       where status!='F' and (session_id is like '%XSHAD%')
 	                       order by status desc");
 	$sth->execute();

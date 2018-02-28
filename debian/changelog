@@ -95,6 +95,9 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
     - X2Go/Server/DB: add new file MySQL.pm, implementing the MySQL session
       storage backend. Based on original code by Walid Moghrabi, but modified.
       Will fail to execute correctly, so do not use yet.
+    - X2Go/Server/DB/MySQL.pm: copy over some (modified) functions and use
+      them for validating session IDs, check user names at some places and the
+      like, which will come in handy at a later point.
   * debian/{control,compat}:
     + Bump DH compat level to 9.
   * debian/:
