@@ -1,4 +1,4 @@
-#postgres or sqlite
+# postgres or sqlite or mysql
 backend=sqlite
 
 [postgres]
@@ -12,3 +12,15 @@ dbadmin=postgres
 #require: connect only with SSL
 #default - prefer
 ssl=prefer
+
+[mysql]
+host=localhost
+port=3306
+# database admin (must have permissions to create databases and users)
+dbadmin=root
+# hostmask for which connections will be allowed
+# % is a wild card, as usually in MySQL
+# wildcards and literal strings can be mixed, e.g.,
+# %.example.com allows connections from all
+# remote hosts that match *.example.com.
+unet=my.organization
