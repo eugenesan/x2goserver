@@ -108,6 +108,7 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
     - x2goserver-common/etc/x2gosql/sql: add example MySQL section and add to
       "supported" backends list.
     - x2goserver-common/etc/x2gosql/sql: reformat PostgreSQL comments.
+    - X2Go/Server/DB.pm: don't use X2Go::Server::DB::MySQL for now.
   * debian/{control,compat}:
     + Bump DH compat level to 9.
   * debian/:
