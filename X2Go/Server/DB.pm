@@ -85,7 +85,7 @@ sub dbsys_rmsessionsroot
 	}
 	if ($backend eq 'mysql')
 	{
-		X2Go::Server::DB::MySQL::dbsys_rmsessionsroot($sid);
+		#X2Go::Server::DB::MySQL::dbsys_rmsessionsroot($sid);
 	}
 	if($backend eq 'sqlite')
 	{
@@ -102,7 +102,7 @@ sub dbsys_deletemounts
 	}
 	if ($backend eq 'mysql')
 	{
-		X2Go::Server::DB::MySQL::dbsys_deletemounts($sid);
+		#X2Go::Server::DB::MySQL::dbsys_deletemounts($sid);
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -120,7 +120,7 @@ sub dbsys_listsessionsroot
 	}
 	if ($backend eq 'mysql')
 	{
-		return X2Go::Server::DB::MySQL::dbsys_listsessionsroot($server);
+		#return X2Go::Server::DB::MySQL::dbsys_listsessionsroot($server);
 	}
 	if($backend eq 'sqlite')
 	{
@@ -136,7 +136,7 @@ sub dbsys_listsessionsroot_all
 	}
 	if ($backend eq 'mysql')
 	{
-		return X2Go::Server::DB::MySQL::dbsys_listsessionsroot_all();
+		#return X2Go::Server::DB::MySQL::dbsys_listsessionsroot_all();
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -154,7 +154,7 @@ sub dbsys_getmounts
 	}
 	if ($backend eq 'mysql')
 	{
-		@mounts = X2Go::Server::DB::MySQL::dbsys_getmounts($sid);
+		#@mounts = X2Go::Server::DB::MySQL::dbsys_getmounts($sid);
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -175,7 +175,7 @@ sub db_getmounts
 	}
 	if ($backend eq 'mysql')
 	{
-		@mounts = X2Go::Server::DB::MySQL::db_getmounts($sid);
+		#@mounts = X2Go::Server::DB::MySQL::db_getmounts($sid);
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -196,7 +196,7 @@ sub db_deletemount
 	}
 	if ($backend eq 'mysql')
 	{
-		X2Go::Server::DB::MySQL::db_deletemount($sid, $path);
+		#X2Go::Server::DB::MySQL::db_deletemount($sid, $path);
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -217,7 +217,7 @@ sub db_insertmount
 	}
 	if ($backend eq 'mysql')
 	{
-		$res_ok = X2Go::Server::DB::MySQL::db_insertmount($sid, $path, $client);
+		#$res_ok = X2Go::Server::DB::MySQL::db_insertmount($sid, $path, $client);
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -241,7 +241,7 @@ sub db_insertsession
 	}
 	if ($backend eq 'mysql')
 	{
-		X2Go::Server::DB::MySQL::db_insertsession($display, $server, $sid);
+		#X2Go::Server::DB::MySQL::db_insertsession($display, $server, $sid);
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -266,7 +266,7 @@ sub db_insertshadowsession
 	}
 	if ($backend eq 'mysql')
 	{
-		X2Go::Server::DB::MySQL::db_insertshadowsession($display, $server, $sid, $shadreq_user);
+		#X2Go::Server::DB::MySQL::db_insertshadowsession($display, $server, $sid, $shadreq_user);
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -296,7 +296,7 @@ sub db_createsession
 	}
 	if ($backend eq 'mysql')
 	{
-		X2Go::Server::DB::MySQL::db_createsession($sid, $cookie, $pid, $client, $gr_port, $snd_port, $fs_port, $tekictrl_port, $tekidata_port);
+		#X2Go::Server::DB::MySQL::db_createsession($sid, $cookie, $pid, $client, $gr_port, $snd_port, $fs_port, $tekictrl_port, $tekidata_port);
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -327,7 +327,7 @@ sub db_createshadowsession
 	if ($backend eq 'mysql')
 	{
 		# for MySQL we can use the normal db_createsession code...
-		X2Go::Server::DB::MySQL::db_createsession($sid, $cookie, $pid, $client, $gr_port, $snd_port, $fs_port, -1, -1);
+		#X2Go::Server::DB::MySQL::db_createsession($sid, $cookie, $pid, $client, $gr_port, $snd_port, $fs_port, -1, -1);
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -351,7 +351,7 @@ sub db_insertport
 	}
 	if ($backend eq 'mysql')
 	{
-		X2Go::Server::DB::MySQL::db_insertport($server, $sid, $sshport);
+		#X2Go::Server::DB::MySQL::db_insertport($server, $sid, $sshport);
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -375,7 +375,7 @@ sub db_rmport
 	}
 	if ($backend eq 'mysql')
 	{
-		X2Go::Server::DB::MySQL::db_rmport($server, $sid, $sshport);
+		#X2Go::Server::DB::MySQL::db_rmport($server, $sid, $sshport);
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -399,7 +399,7 @@ sub db_resume
 	}
 	if ($backend eq 'mysql')
 	{
-		X2Go::Server::DB::MySQL::db_resume($client, $sid, $gr_port, $snd_port, $fs_port, $tekictrl_port, $tekidata_port);
+		#X2Go::Server::DB::MySQL::db_resume($client, $sid, $gr_port, $snd_port, $fs_port, $tekictrl_port, $tekidata_port);
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -418,7 +418,7 @@ sub db_changestatus
 	}
 	if ($backend eq 'mysql')
 	{
-		X2Go::Server::DB::MySQL::db_changestatus($status, $sid);
+		#X2Go::Server::DB::MySQL::db_changestatus($status, $sid);
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -437,7 +437,7 @@ sub db_getstatus
 	}
 	if ($backend eq 'mysql')
 	{
-		$status = X2Go::Server::DB::MySQL::db_getstatus($sid);
+		#$status = X2Go::Server::DB::MySQL::db_getstatus($sid);
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -458,7 +458,7 @@ sub db_getdisplays
 	}
 	if ($backend eq 'mysql')
 	{
-		@displays = X2Go::Server::DB::MySQL::db_getdisplays($server);
+		#@displays = X2Go::Server::DB::MySQL::db_getdisplays($server);
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -480,7 +480,7 @@ sub db_getports
 	}
 	if ($backend eq 'mysql')
 	{
-		@ports = X2Go::Server::DB::MySQL::db_getports($server);
+		#@ports = X2Go::Server::DB::MySQL::db_getports($server);
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -500,7 +500,7 @@ sub db_getservers
 	}
 	if ($backend eq 'mysql')
 	{
-		@servers = X2Go::Server::DB::MySQL::db_getservers();
+		#@servers = X2Go::Server::DB::MySQL::db_getservers();
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -521,7 +521,7 @@ sub db_getagent
 	}
 	if ($backend eq 'mysql')
 	{
-		$agent = X2Go::Server::DB::MySQL::db_getagent($sid);
+		#$agent = X2Go::Server::DB::MySQL::db_getagent($sid);
 	}
 	if($backend eq 'sqlite')
 	{
@@ -541,7 +541,7 @@ sub db_getdisplay
 	}
 	if ($backend eq 'mysql')
 	{
-		$display = X2Go::Server::DB::MySQL::db_getdisplay($sid);
+		#$display = X2Go::Server::DB::MySQL::db_getdisplay($sid);
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -560,7 +560,7 @@ sub db_listsessions
 	}
 	if ($backend eq 'mysql')
 	{
-		return X2Go::Server::DB::MySQL::db_listsessions($server);
+		#return X2Go::Server::DB::MySQL::db_listsessions($server);
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -576,7 +576,7 @@ sub db_listsessions_all
 	}
 	if ($backend eq 'mysql')
 	{
-		return X2Go::Server::DB::MySQL::db_listsessions_all();
+		#return X2Go::Server::DB::MySQL::db_listsessions_all();
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -593,7 +593,7 @@ sub db_listshadowsessions
 	}
 	if ($backend eq 'mysql')
 	{
-		return X2Go::Server::DB::MySQL::db_listshadowsessions($server);
+		#return X2Go::Server::DB::MySQL::db_listshadowsessions($server);
 	}
 	if ($backend eq 'sqlite')
 	{
@@ -609,7 +609,7 @@ sub db_listshadowsessions_all
 	}
 	if ($backend eq 'mysql')
 	{
-		return X2Go::Server::DB::MySQL::db_listshadowsessions_all();
+		#return X2Go::Server::DB::MySQL::db_listshadowsessions_all();
 	}
 	if ($backend eq 'sqlite')
 	{
