@@ -111,6 +111,9 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
     - X2Go/Server/DB.pm: don't use X2Go::Server::DB::MySQL for now.
     - X2Go/Server/DB.pm: comment out calls to X2Go::Server::DB::MySQL::*.
     - x2goserver-x2goagent/etc/x2goagent.options: typo fix in comment only.
+    - x2goserver-x2goagent/etc/x2goagent.options: disable BIG-REQUESTS; leads
+      to a lot of weird crashes and is currently not implemented correctly in
+      nxagent. Fixes: #1266.
   * debian/{control,compat}:
     + Bump DH compat level to 9.
   * debian/:

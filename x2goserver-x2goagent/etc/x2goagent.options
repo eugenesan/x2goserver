@@ -29,3 +29,7 @@ X2GO_NXAGENT_DEFAULT_OPTIONS+=" -nolisten tcp"
 # Possible values for the -clipboard option: both, server, client, none
 # If this option stays commented out, clients can choose the sessions' clipboard behaviour...
 #X2GO_NXAGENT_DEFAULT_OPTIONS+=" -clipboard both"
+
+# Disable BIG-REQUESTS, nx-libs does not implement this extension correctly.
+# Leads to all sorts of weird crashes if left enabled.
+X2GO_NXAGENT_DEFAULT_OPTIONS+=" -extension BIG-REQUESTS"
