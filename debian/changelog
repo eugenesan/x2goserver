@@ -110,6 +110,7 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
     - x2goserver-common/etc/x2gosql/sql: reformat PostgreSQL comments.
     - X2Go/Server/DB.pm: don't use X2Go::Server::DB::MySQL for now.
     - X2Go/Server/DB.pm: comment out calls to X2Go::Server::DB::MySQL::*.
+    - x2goserver-x2goagent/etc/x2goagent.options: typo fix in comment only.
   * debian/{control,compat}:
     + Bump DH compat level to 9.
   * debian/:

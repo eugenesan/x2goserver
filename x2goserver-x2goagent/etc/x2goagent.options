@@ -1,7 +1,7 @@
 #
 # This file can be used to specify default options that are passed to nxagent.
 #
-# These options can be overriden by the client!
+# These options can be overridden by the client!
 #
 # See the output of `nxagent -help` for the full list of options.
 #
