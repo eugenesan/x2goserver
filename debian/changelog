@@ -114,6 +114,8 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
     - x2goserver-x2goagent/etc/x2goagent.options: disable BIG-REQUESTS; leads
       to a lot of weird crashes and is currently not implemented correctly in
       nxagent. Fixes: #1266.
+    - x2goserver/bin/x2gostartagent: fix calculation syntax errors, drop
+      useless subshells, don't use -o operator in plain test calls.
   * debian/{control,compat}:
     + Bump DH compat level to 9.
   * debian/:

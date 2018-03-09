@@ -160,7 +160,7 @@ if [ "$cmd" == "GNOME" ] || [ "$cmd" == "gnome-session" ]; then
 		# Yes, "Unity" is in the actual string. Observed on Ubuntu 16.04
 		export XDG_CURRENT_DESKTOP="GNOME-Flashback:Unity"
 		args=" --session=$DESKTOP_SESSION --disable-acceleration-check"
-	elif [ "$DISTRIB_ID" == "Ubuntu" ] && [ "$(echo "$DISTRIB_RELEASE = 14.04" | bc)" == "1" -o  "$(echo "$DISTRIB_RELEASE = 14.10" | bc)" == "1" ]; then
+	elif [ "$DISTRIB_ID" == "Ubuntu" ] && { [ "$(echo "$DISTRIB_RELEASE == 14.04" | bc)" == "1" ] || [ "$(echo "$DISTRIB_RELEASE == 14.10" | bc)" == "1" ]; }; then
 		export DESKTOP_SESSION="gnome-flashback"
 		if [ -z "$GTK_MODULES" ] ; then
 			export GTK_MODULES="unity-gtk-module"
@@ -198,12 +198,12 @@ if [ "$cmd" == "GNOME" ] || [ "$cmd" == "gnome-session" ]; then
 		export DESKTOP_SESSION="gnome"
 	fi
 
-elif ([ "$cmd" == "UNITY" ] || [ "$cmd" == "unity" ]); then
+elif [ "$cmd" == "UNITY" ] || [ "$cmd" == "unity" ]; then
 	cmd="/usr/bin/gnome-session"
 	if [ "$DISTRIB_ID" == "Ubuntu" ] && [ "$(echo "$DISTRIB_RELEASE >= 12.10" | bc)" == "1" ]; then
 		export DESKTOP_SESSION="ubuntu"
 		args=" --session=$DESKTOP_SESSION"
-	elif [ "$DISTRIB_ID" == "Ubuntu" ] && [ "$(echo "$DISTRIB_RELEASE == 11.10" | bc)" == "1" -o "$(echo "$DISTRIB_RELEASE == 12.04" | bc)" == "1" ]; then
+	elif [ "$DISTRIB_ID" == "Ubuntu" ] && { [ "$(echo "$DISTRIB_RELEASE == 11.10" | bc)" == "1" ] || [ "$(echo "$DISTRIB_RELEASE == 12.04" | bc)" == "1" ]; }; then
 		export DESKTOP_SESSION="ubuntu-2d"
 		args=" --session=$DESKTOP_SESSION"
 	elif [ "$DISTRIB_ID" == "Ubuntu" ] && [ "$(echo "$DISTRIB_RELEASE == 11.04" | bc)" == "1" ]; then
@@ -212,7 +212,7 @@ elif ([ "$cmd" == "UNITY" ] || [ "$cmd" == "unity" ]); then
 	fi
 	# on earlier Ubuntu versions or with non-Ubuntu Distros the ,,UNITY'' command in X2Go will launch the GNOME2 desktop shell
 
-elif ([ "$cmd" == "CINNAMON" ] || [ "$cmd" == "cinnamon" ]); then
+elif [ "$cmd" == "CINNAMON" ] || [ "$cmd" == "cinnamon" ]; then
 	# Cinnamon 2.0 and newer
 	# The cmd is a script that calls the "cinnamon-session" binary.
 	if [ -e /usr/bin/cinnamon-session-cinnamon2d ]; then
