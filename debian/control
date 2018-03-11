@@ -308,7 +308,7 @@ Package: x2goserver-xsession
 Architecture: all
 Depends:
  dbus,
- perl,
+ perl:any,
  x11-common,
  x2goserver (<< ${source:Version}.1~),
  x2goserver (>= ${source:Version}),
