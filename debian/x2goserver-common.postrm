@@ -24,7 +24,7 @@ case "${1}" in
 		getent 'group' 'x2gouser' >'/dev/null' && delgroup 'x2gouser'
 		getent 'group' 'x2gousers' >'/dev/null' && delgroup 'x2gousers'
 
-		rmdir --ignore-fail-on-non-empty '/etc/x2go'
+		[ -d '/etc/x2go' ] && rmdir --ignore-fail-on-non-empty '/etc/x2go'
 		;;
 	'remove'|'upgrade'|'failed-upgrade'|'abort-install'|'abort-upgrade'|'disappear')
 		;;

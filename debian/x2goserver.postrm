@@ -24,7 +24,7 @@ case "${1}" in
 
 		rm -Rf '/etc/x2go/applications'
 		rm -Rf '/etc/x2go/x2go_logout.d'
-		rmdir --ignore-fail-on-non-empty '/etc/x2go'
+		[ -d '/etc/x2go' ] && rmdir --ignore-fail-on-non-empty '/etc/x2go'
 		;;
 	'remove'|'upgrade'|'failed-upgrade'|'abort-install'|'abort-upgrade'|'disappear')
 		;;
