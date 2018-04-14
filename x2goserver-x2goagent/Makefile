@@ -63,7 +63,7 @@ install_scripts:
 install_data:
 	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)/
 	$(INSTALL_DIR) $(DESTDIR)$(SHAREDIR)/../pixmaps/
-	$(INSTALL_FILE) share/pixmaps/x2go.xpm $(DESTDIR)$(SHAREDIR)/../pixmaps/
+	$(INSTALL_FILE) share/pixmaps/x2goagent.xpm $(DESTDIR)$(SHAREDIR)/../pixmaps/
 
 install_config:
 	$(INSTALL_DIR) $(DESTDIR)$(ETCDIR)/

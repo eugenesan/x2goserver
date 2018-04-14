@@ -944,7 +944,7 @@ fi
 # %{_libdir}/nx/bin/ is owned by nxagent package...
 %{_libdir}/nx/bin/x2goagent
 %{_datadir}/x2go/versions/VERSION.x2goserver-x2goagent
-%{_datadir}/pixmaps/x2go.xpm
+%{_datadir}/pixmaps/x2goagent.xpm
 %{_datadir}/x2go/x2gofeature.d/x2goserver-x2goagent.features
 %{_mandir}/man1/x2goagent.1*
 %config(noreplace) %{_sysconfdir}/x2go/x2goagent.keyboard
