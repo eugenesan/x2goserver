@@ -23,6 +23,7 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
       the perl-modules package is an implementation detail of the Debian Perl
       packaging.
     + Multiarch hinter script recommends annotating perl dependency with :any.
+    + Bump Standards-Version: to 4.1.4. No changes needed.
   * debian/copyright:
     + Update copyright.in reference template.
   * debian/*: Process with wrap-and-sort -a -s -t -k -b.

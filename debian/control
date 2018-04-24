@@ -12,7 +12,7 @@ Build-Depends:
  dpkg-dev (>= 1.16.1.1),
  dh-systemd | hello,
  man2html-base,
-Standards-Version: 3.9.6
+Standards-Version: 4.1.4
 Homepage: https://code.x2go.org/releases/source/x2goserver
 Vcs-Git: git://code.x2go.org/x2goserver.git
 Vcs-Browser: https://code.x2go.org/gitweb?p=x2goserver.git;a=summary
