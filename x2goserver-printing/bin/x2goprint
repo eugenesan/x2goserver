@@ -119,14 +119,38 @@ if ( $mounts=~m/$spooldir/)
 	system("su", "$user", "-c", "mv $spooltmp/$pdfFile $spooldir");
 	syslog('debug', "x2goprint moved file $pdfFile to X2Go client's spool dir");
 
-	open (RFILE,">$spooltmp/$pdfFile.ready");
+	# Different fuse versions seem to handle cross-boundary moves differently.
+	# Older fuse versions seem to move files atomically (which is what we expect), i.e.,
+	# the file turns up on the remote file system fully populated.
+	# Newer fuse versions first create the file and then populate it, leading to a race
+	# condition with X2Go Client:
+	#   - X2Go Client sees the .ready file
+	#   - immediately tries to read its content
+	#   - deletes the file
+	#
+	# To further understand what is happening, consider that an mv operation is only
+	# (somewhat) guaranteed to be atomic for moves within a file system. In this case,
+	# mv uses the rename(2) system call, which, according to POSIX/SUS shall be atomic
+	# in certain cases (though it seems to only hold when the target file already
+	# exists). Then again, the C standard itself, which POSIX is also referencing,
+	# does not make any guarantees when it comes to atomicity, rather it says that the
+	# behavior is "implementation-defined" when the target file already exists. When
+	# crossing boundaries, all bets are off. Such an operation might be atomic, but
+	# might also be implemented as the equivalent of cp && rm.
+	#
+	# We'll handle this by generating a temporary file on the local server file system
+	# (suffixed .notready), copying that to the fuse mount and then issuing a fs-local
+	# mv/rename operation that we really, really, really hope will be atomic.
+	open (RFILE,">$spooltmp/$pdfFile.notready");
 	print RFILE "$pdfFile\n$title";
 	close (RFILE);
 
-	chown $uid, $gid, "$spooltmp/$pdfFile.ready";
-	system ("su", "$user", "-c", "mv $spooltmp/$pdfFile.ready $spooldir");
-	syslog('debug', "x2goprint moved file $pdfFile.ready to X2Go client's spool dir, X2Go client should start the print dialog very soon");
+	chown $uid, $gid, "$spooltmp/$pdfFile.notready";
+	system ("su", "$user", "-c", "mv $spooltmp/$pdfFile.notready $spooldir");
 
+	system ("su", "$user", "-c", "mv $spooldir/$pdfFile.notready $spooldir/$pdfFile.ready");
+
+	syslog('debug', "x2goprint moved file $pdfFile.ready to X2Go client's spool dir, X2Go client should start the print dialog very soon");
 } else {
 
 	# if the client-side spool dir is not mounted via SSHFS, we will simply drop the
