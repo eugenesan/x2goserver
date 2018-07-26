@@ -16,17 +16,18 @@
 set -e
 
 
-case "$1" in
-	remove)
-		if dpkg-statoverride --list /usr/lib/x2go/libx2go-server-db-sqlite3-wrapper >/dev/null; then
-			dpkg-statoverride --remove /usr/lib/x2go/libx2go-server-db-sqlite3-wrapper
+case "${1}" in
+	'remove')
+		if dpkg-statoverride --list '/usr/lib/x2go/libx2go-server-db-sqlite3-wrapper' >'/dev/null'; then
+			dpkg-statoverride --remove '/usr/lib/x2go/libx2go-server-db-sqlite3-wrapper'
 		fi
 		;;
-	deconfigure|upgrade|failed-upgrade)
+	'deconfigure'|'upgrade'|'failed-upgrade')
 		:
 		;;
-	*) echo "$0: didn't understand being called with \`$1'" 1>&2
-		exit 1;;
+	*) echo "${0}: didn't understand being called with '${1}'" 1>&2
+		exit '1'
+		;;
 esac
 
 # dh_installdeb will replace this with shell code automatically
@@ -34,4 +35,4 @@ esac
 
 #DEBHELPER#
 
-exit 0
+exit '0'

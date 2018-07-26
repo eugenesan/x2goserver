@@ -184,6 +184,9 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
   * debian/{libx2go-server-db-perl,x2goserver{,-common}}.postrm:
     + Do not try to run rmdir on /etc/x2go if it doesn't exist. Makes the
       scriptlet (and thus the purge operation) fail...
+  * debian/*.{pre,post}*:
+    + Rework scriptlets, use updated templates, add missing templates, more
+      and better quoting, fix other misc. errors within the scripts.
 
  -- X2Go Release Manager <git-admin@x2go.org>  Thu, 15 Feb 2018 23:14:28 +0100
 
