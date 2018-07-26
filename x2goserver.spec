@@ -658,8 +658,12 @@ fi
 
 # create /etc/x2go/applications symlink if not already there
 # as a regular file, as a symlink, as a special file or as a directory
-if ! [ -e %{_sysconfdir}/x2go/applications ]; then
-  ln -s %{_datadir}/applications %{_sysconfdir}/x2go/applications
+# N.B.: dangling symlinks will lead to test -e FAILING, because the symlink is dereferenced.
+# This means that without the explicit symlink check (which doesn't dereference the last
+# element), the ln call would be executed and fail, since the file/symlink already exists,
+# leading to this scriptlet failing and hence leading to the installation failing.
+if ! [ -e "%{_sysconfdir}/x2go/applications" ] && ! [ -L "%{_sysconfdir}/x2go/applications" ]; then
+  ln -s "%{_datadir}/applications" "%{_sysconfdir}/x2go/applications"
 fi
 
 %if 0%{?fedora} || 0%{?rhel} >= 7 || 0%{?suse_version} >= 1210
