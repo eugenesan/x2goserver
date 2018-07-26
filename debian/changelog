@@ -122,6 +122,7 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
       newer FUSE versions, create .ready file as .notready, move/copy to
       target file system and only then rename it in a hopefully atomic
       fashion.
+    - *.{8,5}: pre-release date update.
   * debian/{control,compat}:
     + Bump DH compat level to 9.
   * debian/:
