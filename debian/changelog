@@ -204,6 +204,7 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
       and better quoting, fix other misc. errors within the scripts.
   * debian/libx2go-server-db-perl.postrm:
     + Remove empty directory on purge if possible.
+    + Only remove files that the package actually created.
   * debian/x2goserver-common.postrm:
     + Only remove files that the package actually owns
       (/etc/x2go/x2gosql/sql).
