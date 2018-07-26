@@ -36,6 +36,12 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
     + Drop inert file (due to wrong file suffix): debian/x2goserver.link.
     + Drop x2goserver-xsession.links. Symlinking provided by main Makefile's
       install target.
+  * debian/x2goserver.postinst:
+    + When testing for existence of /etc/x2go/applications, also consider it
+      being a dangling symlink (dangling symlinks are not caught by 'test -e',
+      but need a 'test -L'. Thanks to Andreas Beckmann for helping with this.
+      (Closes: DBTS#904515).
+      Backported from a Debian patch.
 
   [ Mihai Moldovan ]
   * New upstream version (4.1.0.1):

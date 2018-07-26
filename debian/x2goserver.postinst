@@ -51,7 +51,12 @@ case "${1}" in
 		fi
 
 		# create /etc/x2go/applications symlink if not already there (as link or as dir)
-		if ! test -e '/etc/x2go/applications'; then
+		# N.B.: dangling symlinks will lead to test -e FAILING, because the symlink is dereferenced.
+		# This means that without the explicit symlink check (which doesn't dereference the last
+		# element), the ln call would be executed and fail, since the file/symlink already exists,
+		# leading to this scriptlet failing and hence leading to the installation failing.
+		#   v file doesn't exist (dereferenced!)      v is not a symlink
+		if ! test -e '/etc/x2go/applications' && ! test -L '/etc/x2go/applications'; then
 			ln -s '/usr/share/applications' '/etc/x2go/applications'
 		fi
 
