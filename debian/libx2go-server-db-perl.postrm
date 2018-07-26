@@ -23,6 +23,7 @@ case "${1}" in
 		rm -vf '/var/lib/x2go/x2go_sessions'
 		rm -vf '/etc/x2go/x2gosql/passwords/pgadmin'
 		rm -vf '/etc/x2go/x2gosql/passwords/mysqladmin'
+		rmdir -v --ignore-fail-on-non-empty '/etc/x2go/x2gosql/passwords/mysqladmin'
 
 		rm -Rf '/etc/x2go/sql'
 		[ -d '/etc/x2go' ] && rmdir --ignore-fail-on-non-empty '/etc/x2go'
