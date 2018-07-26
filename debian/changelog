@@ -139,6 +139,7 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
     + Remove obsolete x2goserver-fmbindings.dirs file.
     + Rename x2goserver.dirs to x2goserver-common.dirs, moving /var/lib/x2go
       to the -common package.
+    + New file x2goserver-printing.dirs: own /var/spool/x2goprint.
   * debian/x2goserver-x2goagent.install:
     + Do not install rgb file/symlink any longer.
   * x2goserver.spec:
