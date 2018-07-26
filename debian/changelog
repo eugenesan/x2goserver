@@ -137,6 +137,8 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
       should be correctly handled via the main Makefile and staging by
       *.install files.
     + Remove obsolete x2goserver-fmbindings.dirs file.
+    + Rename x2goserver.dirs to x2goserver-common.dirs, moving /var/lib/x2go
+      to the -common package.
   * debian/x2goserver-x2goagent.install:
     + Do not install rgb file/symlink any longer.
   * x2goserver.spec:
