@@ -157,6 +157,7 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
     + Depend upon perl(DBD::mysql) for MySQL/MariaDB support in perl DBD.
     + Comment out perl(DBD::mysql) dependency for now.
     + Backport dangling symlink check for /etc/x2go/applications.
+    + Pull in GCC as a build dependency.
   * debian/copyright.in:
     + Remove reference to rgb file.
     + Remove reference to x2goagent wrapper script.

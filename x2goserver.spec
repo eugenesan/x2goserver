@@ -24,6 +24,10 @@ BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %endif
 
+# Fedora 29+ doesn't install gcc and g++ automatically any longer,
+# but this dependency should be useful for all distros really.
+BuildRequires:  gcc
+
 BuildRequires:  findutils
 
 # We need this package for SuSE-specific macros.
