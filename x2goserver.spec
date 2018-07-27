@@ -75,7 +75,7 @@ BuildRequires:  sudo
 BuildRequires:  logcheck
 %endif
 
-# for /usr/%{_lib}/nx/bin to be owned by some package
+# for %%{_libdir}/nx/bin to be owned by some package
 BuildRequires:  nxagent
 
 %if 0%{?suse_version}
@@ -949,7 +949,7 @@ fi
 %doc debian/copyright
 %doc debian/changelog
 %{_bindir}/x2goagent
-# %{_libdir}/nx/bin/ is owned by nxagent package...
+# %%{_libdir}/nx/bin/ is owned by nxagent package...
 %{_libdir}/nx/bin/x2goagent
 %{_datadir}/x2go/versions/VERSION.x2goserver-x2goagent
 %{_datadir}/pixmaps/x2goagent.xpm

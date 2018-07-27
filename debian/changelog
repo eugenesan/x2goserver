@@ -158,6 +158,7 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
     + Comment out perl(DBD::mysql) dependency for now.
     + Backport dangling symlink check for /etc/x2go/applications.
     + Pull in GCC as a build dependency.
+    + Mask out variables in comments to avoid build-time warning messages.
   * debian/copyright.in:
     + Remove reference to rgb file.
     + Remove reference to x2goagent wrapper script.
