@@ -27,6 +27,18 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 # Fedora 29+ doesn't install gcc and g++ automatically any longer,
 # but this dependency should be useful for all distros really.
 BuildRequires:  gcc
+%if 0%{?fedora} > 28
+# The annobin plugin is enabled by default and redhat-rpm-config depends
+# on it... if the gcc package is installed.
+# Since Fedora 29+ removed gcc as a common package pulled in when
+# generating the build chroot, redhat-rpm-config is not pulling annobin
+# in.
+# If we later install the gcc package, the rich/boolean dependency within
+# redhat-rpm-config doesn't seem to be re-evaluated, so we're left with a
+# mess.
+# Explicitly depend upon annobin, at least for now.
+BuildRequires:  annobin
+%endif
 
 BuildRequires:  findutils
 

@@ -159,6 +159,9 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
     + Backport dangling symlink check for /etc/x2go/applications.
     + Pull in GCC as a build dependency.
     + Mask out variables in comments to avoid build-time warning messages.
+    + Work around build failure on Fedora Rawhide/29+ by pulling annobin in
+      explicitly. Shouldn't be necessary, but the current architecture around
+      redhat-rpm-config requires that.
   * debian/copyright.in:
     + Remove reference to rgb file.
     + Remove reference to x2goagent wrapper script.
