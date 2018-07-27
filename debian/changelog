@@ -1,3 +1,9 @@
+x2goserver (4.1.0.2-0x2go1) UNRELEASED; urgency=medium
+
+  * Continue development
+
+ -- X2Go Release Manager <git-admin@x2go.org>  Fri, 27 Jul 2018 07:06:39 +0200
+
 x2goserver (4.1.0.1-0x2go1) unstable; urgency=medium
 
   [ Mike Gabriel ]

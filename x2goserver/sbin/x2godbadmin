@@ -451,7 +451,7 @@ if ($Config->param("backend") eq 'mysql')
 			$dbh = DBI->connect("dbi:mysql:database=$db;host=$host;port=$port", "$dbadmin", "$dbadminpass", {AutoCommit => 1});
 			if ($dbh) {
 				# Intentionally left blank.
-				# MySQL support was only added in X2Go Server 4.1.0.1, while SQLite and PostgreSQL support
+				# MySQL support was only added in X2Go Server 4.1.0.x, while SQLite and PostgreSQL support
 				# have been around prior to 4.1.0.0, which is the first version that introduced new teki-related
 				# columns.
 			}
