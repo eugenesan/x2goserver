@@ -1,4 +1,4 @@
-x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
+x2goserver (4.1.0.1-0x2go1) unstable; urgency=medium
 
   [ Mike Gabriel ]
   * New upstream release (4.1.0.1):
@@ -216,7 +216,7 @@ x2goserver (4.1.0.1-0x2go1) UNRELEASED; urgency=medium
     + Only remove files that the package actually owns
       (/etc/x2go/x2gosql/sql).
 
- -- X2Go Release Manager <git-admin@x2go.org>  Thu, 15 Feb 2018 23:14:28 +0100
+ -- X2Go Release Manager <git-admin@x2go.org>  Fri, 27 Jul 2018 06:46:00 +0200
 
 x2goserver (4.1.0.0-0x2go1.2) unstable; urgency=low
 
