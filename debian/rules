@@ -1,5 +1,33 @@
 #!/usr/bin/make -f
 
+RELEASE_VER = 0
+RELEASE_VER_MAJOR = 0
+RELEASE_VER_MINOR = 0
+SUBSTVARS_LEGACY = -Vdist:Depends="perl"
+SUBSTVARS_MULTI_ARCH_HINT = -Vdist:Depends="perl:any"
+SUBSTVARS = $(SUBSTVARS_LEGACY)
+USE_GTK = 2.0
+
+ifeq ($(shell { dpkg-vendor --is Debian && echo yes; } || { dpkg-vendor --is Raspbian && echo yes; }),yes)
+        RELEASE_VER = $(shell /usr/bin/lsb_release -r | /bin/sed -e 's/[         ]*//g' | /usr/bin/cut -d ':' -f '2' | /usr/bin/cut -d '.' -f '1')
+# Let's fake testing's and unstable's "release version"...
+ifeq ($(RELEASE_VER),testing)
+        RELEASE_VER = 999
+endif
+ifeq ($(RELEASE_VER),unstable)
+        RELEASE_VER = 9999
+endif
+ifeq ($(shell /bin/bash -c '(( $(RELEASE_VER) >= 8 )) && echo yes'),yes)
+        SUBSTVARS = $(SUBSTVARS_MULTI_ARCH_HINT)
+endif
+else ifeq ($(shell dpkg-vendor --is Ubuntu && echo yes),yes)
+        RELEASE_VER_MAJOR = $(shell /usr/bin/lsb_release -r | /bin/sed -e 's/[   ]*//g' | /usr/bin/cut -d ':' -f '2' | /usr/bin/cut -d '.' -f '1')
+        RELEASE_VER_MINOR = $(shell /usr/bin/lsb_release -r | /bin/sed -e 's/[   ]*//g' | /usr/bin/cut -d ':' -f '2' | /usr/bin/cut -d '.' -f '2')
+ifeq ($(shell /bin/bash -c '(( $(RELEASE_VER_MAJOR) >= 16 )) && echo yes'),yes)
+        SUBSTVARS = $(SUBSTVARS_MULTI_ARCH_HINT)
+endif
+endif
+
 export NXLIBDIR="/usr/lib/$(shell dpkg-architecture -qDEB_HOST_MULTIARCH)/nx"
 
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all
@@ -29,3 +57,6 @@ override_dh_auto_clean:
 	rm -f Makefile.perl.old
 	PREFIX=/usr NXLIBDIR=$(NXLIBDIR) dh_auto_clean
 	rm -f Makefile.perl
+
+override_dh_gencontrol:
+	dh_gencontrol -- $(SUBSTVARS)
