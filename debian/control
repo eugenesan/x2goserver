@@ -308,10 +308,10 @@ Package: x2goserver-xsession
 Architecture: all
 Depends:
  dbus,
- perl:any,
  x11-common,
  x2goserver (<< ${source:Version}.1~),
  x2goserver (>= ${source:Version}),
+ ${dist:Depends},
  ${misc:Depends},
 Description: X2Go Server (Xsession runner)
  X2Go is a server based computing environment with
