@@ -4,6 +4,8 @@ x2goserver (4.1.0.2-0x2go1) UNRELEASED; urgency=medium
   * New upstream version (4.1.0.2):
     - Makefile.PL: update version number.
     - x2goserver-xsession/Makefile: consolidate a few entries.
+    - x2goserver-xsession/Makefile: also remove Xresource*, Xsession*, xinit*
+      and Xclient* config files.
   * debian/rules:
     + Add support for perl/perl:any substitution variable based upon detected
       OS version.

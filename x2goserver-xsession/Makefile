@@ -74,6 +74,11 @@ uninstall_scripts:
 
 uninstall_config:
 	for file in $(ETC_FILES); do $(RM_FILE) $(DESTDIR)$(ETCDIR)/$$file; done
+	$(RM_FILE) $(DESTDIR)$(ETCDIR)/Xresources
+	$(RM_FILE) $(DESTDIR)$(ETCDIR)/Xsession.options
+	$(RM_FILE) $(DESTDIR)$(ETCDIR)/Xsession.d
+	$(RM_FILE) $(DESTDIR)$(ETCDIR)/xinitrc.d
+	$(RM_FILE) $(DESTDIR)$(ETCDIR)/Xclients.d
 
 uninstall_man:
 
