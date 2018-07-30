@@ -11,6 +11,9 @@ x2goserver (4.1.0.2-0x2go1) UNRELEASED; urgency=medium
       OS version.
   * debian/control:
     + Use dist-substitution variable instead of hardcoding perl:any.
+    + Add build dependency on x11-common for /etc/X11/Xsession* to be
+      available in the build environment and the symlinks to be created
+      correctly.
 
  -- X2Go Release Manager <git-admin@x2go.org>  Fri, 27 Jul 2018 07:06:39 +0200
 

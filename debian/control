@@ -12,6 +12,8 @@ Build-Depends:
  dpkg-dev (>= 1.16.1.1),
  dh-systemd | hello,
  man2html-base,
+# Needed for /etc/X11/Xsession.d
+ x11-common,
 Standards-Version: 4.1.4
 Homepage: https://code.x2go.org/releases/source/x2goserver
 Vcs-Git: git://code.x2go.org/x2goserver.git
