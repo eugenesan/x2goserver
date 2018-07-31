@@ -308,6 +308,8 @@ Description: X2Go Server's X2Go Agent
 
 Package: x2goserver-xsession
 Architecture: all
+Pre-Depends:
+ dpkg (>= 1.14.17),
 Depends:
  dbus,
  x11-common,
