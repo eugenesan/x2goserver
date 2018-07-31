@@ -16,6 +16,14 @@ x2goserver (4.1.0.2-0x2go1) UNRELEASED; urgency=medium
       correctly.
     + Add Pre-Depends on specific minimum dpkg version to x2goserver-xsession,
       needed for ${DPKG_RUNNING_VERSION} support.
+  * debian/:
+    + Add x2goserver-xsession.{preinst,post{inst,rm}} scriptlets to handle
+      Xsession.d breakage cleanup correctly. Note that we can rely on
+      dpkg-maintscript-helper's dir_to_symlink support only if the version is
+      high enough, which is not the case on older Debian and Ubuntu platforms.
+      While on Debian, that's only Wheezy and lower and we don't care about
+      these versions anyway, Ubuntu Trusty/14.04 is sadly still supported and
+      needs to be provided a proper workaround for now.
 
  -- X2Go Release Manager <git-admin@x2go.org>  Fri, 27 Jul 2018 07:06:39 +0200
 
