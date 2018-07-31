@@ -58,7 +58,7 @@ case "${1}" in
 			SYMLINK_TARGET='/etc/X11/Xsession.d'
 			[ -d "${PATHNAME}.dpkg-backup" ] &&
 			[ ! -h "${PATHNAME}" ] && [ -d "${PATHNAME}" ] &&
-			[ -f "${PATHNAME}/.dpkg-staging-dir" ]; then
+			[ -f "${PATHNAME}/.dpkg-staging-dir" ] &&
 				finish_dir_to_symlink "${PATHNAME}" "${SYMLINK_TARGET}"
 		fi
 		;;

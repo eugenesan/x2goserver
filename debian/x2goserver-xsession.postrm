@@ -60,6 +60,7 @@ case "${1}" in
 			dpkg --compare-versions -- "${2}" le-nl '4.1.0.2-0~' &&
 				abort_dir_to_symlink "${PATHNAME}"
 		fi
+		;;
 	'remove'|'upgrade'|'failed-upgrade'|'disappear')
 		;;
 	*)

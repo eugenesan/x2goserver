@@ -24,6 +24,8 @@ x2goserver (4.1.0.2-0x2go1) UNRELEASED; urgency=medium
       While on Debian, that's only Wheezy and lower and we don't care about
       these versions anyway, Ubuntu Trusty/14.04 is sadly still supported and
       needs to be provided a proper workaround for now.
+  * debian/x2goserver-xsession.post{inst,rm}:
+    + Fix syntax errors.
 
  -- X2Go Release Manager <git-admin@x2go.org>  Fri, 27 Jul 2018 07:06:39 +0200
 
