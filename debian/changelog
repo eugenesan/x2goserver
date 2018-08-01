@@ -1,4 +1,4 @@
-x2goserver (4.1.0.2-0x2go1) UNRELEASED; urgency=medium
+x2goserver (4.1.0.2-0x2go1) unstable; urgency=medium
 
   [ Mihai Moldovan ]
   * New upstream version (4.1.0.2):
@@ -28,7 +28,7 @@ x2goserver (4.1.0.2-0x2go1) UNRELEASED; urgency=medium
   * debian/x2goserver-xsession.post{inst,rm}:
     + Fix syntax errors.
 
- -- X2Go Release Manager <git-admin@x2go.org>  Fri, 27 Jul 2018 07:06:39 +0200
+ -- X2Go Release Manager <git-admin@x2go.org>  Wed, 01 Aug 2018 01:55:58 +0200
 
 x2goserver (4.1.0.1-0x2go1) unstable; urgency=medium
 
