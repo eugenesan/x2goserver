@@ -1,8 +1,24 @@
 x2goserver (4.1.0.3-0x2go1) UNRELEASED; urgency=medium
 
-  * Continue development
+  [ Mike Gabriel ]
+  * New upstream version (4.1.0.3)
+    - x2goserver.service: Add Documentation= key.
+    - x2goserver/lib/x2gocheckport: chmod a+x.
+  * debian/x2goserver*.dirs:
+    + Let dirs have a trailing slash in their path (for the human eye merely).
+  * debian/copyright:
+    + Regenerate auto-generated copyright.in file.
+    + Adopt from recent Debian packaging.
+  * debian/control:
+    + Move xfonts-base from D to R. Thanks lintian.
+  * debian/*.postinst:
+    + Avoid recursive chmod/chown. Recursive chown/chmod is susceptible to
+      hardlink attacks on mainline, non-Debian kernels.
+  * debian/po:
+    + Add French translation. Thanks to Jean-Pierre Giraud from the Debian
+      project. (Closes DBTS:#905931).
 
- -- X2Go Release Manager <git-admin@x2go.org>  Wed, 01 Aug 2018 04:30:54 +0200
+ -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 14 Aug 2018 16:41:40 +0200
 
 x2goserver (4.1.0.2-0x2go1) unstable; urgency=medium
 
