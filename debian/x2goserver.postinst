@@ -71,7 +71,8 @@ case "${1}" in
 				x2godbadmin --createdb
 			else
 				# make sure db permissions are set correctly
-				chown -R 'root:x2gouser' '/var/lib/x2go'
+				chown 'x2gouser:x2gouser' '/var/lib/x2go'
+				chown 'root:x2gouser' '/var/lib/x2go/x2go_sessions'
 				# egid x2gouser needs write access to the db dir (for temporary db journal file)
 				chmod '0770' '/var/lib/x2go'
 				# ... and to the db file itself, of course
