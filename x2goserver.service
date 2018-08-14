@@ -1,5 +1,6 @@
 [Unit]
 Description=X2Go Server Daemon
+Documentation=man:x2goserver.conf(5)
 
 [Service]
 Type=forking
