@@ -43,7 +43,6 @@ Depends:
  x2goserver-x2goagent (<< ${source:Version}.1~),
  x2goserver-x2goagent (>= ${source:Version}),
  xauth,
- xfonts-base,
  xkb-data,
  ${misc:Depends},
  ${shlibs:Depends},
@@ -64,6 +63,7 @@ Recommends:
  x2goserver-printing (>= ${source:Version}),
  x2goserver-xsession (<< ${source:Version}.1~),
  x2goserver-xsession (>= ${source:Version}),
+ xfonts-base,
  xinit,
 Suggests:
  pulseaudio-utils,
