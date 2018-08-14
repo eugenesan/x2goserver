@@ -1,7 +1,7 @@
-Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: X2Go Server
 Upstream-Contact: X2Go Developers <x2go-dev@lists.x2go.org>
-Source: http://code.x2go.org/releases/
+Source: https://code.x2go.org/releases/
 
 Files: X2Go/Config.pm
  X2Go/Log.pm
@@ -9,6 +9,7 @@ Files: X2Go/Config.pm
  X2Go/Server/Agent/NX.pm
  X2Go/Server/DB.pm
  X2Go/Server/DB/PostgreSQL.pm
+ X2Go_in_progress_do_not_use/Server/DB/MySQL.pm
  X2Go/Server/DB/SQLite3.pm
  libx2go-server-db-perl/lib/libx2go-server-db-sqlite3-wrapper.pl
  x2goserver-extensions/share/x2gofeature.d/x2goserver-extensions.features
@@ -75,7 +76,7 @@ Copyright: 2017-2018, X2Go Project - https:wiki.x2go.org
 License: GPL-2+
 
 Files: Makefile.docupload
- x2goserver-x2goagent/bin/x2goagent
+ x2goserver-x2goagent/bin/.keep
  x2goserver-x2goagent/share/x2go/x2gofeature.d/x2goserver-x2goagent.features
 Copyright: 2010-2015, Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
   2012-2016, Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
@@ -152,7 +153,7 @@ Files: ChangeLog
  rpm/x2goserver.init
  x2goserver-common/Makefile
  x2goserver-common/VERSION.x2goserver-common
- x2goserver-common/etc/tmpfiles.d/x2goserver.conf
+ x2goserver-common/lib/tmpfiles.d/x2goserver.conf
  x2goserver-common/etc/x2goserver.conf
  x2goserver-common/etc/x2gosql/sql
  x2goserver-common/man/man5/x2goserver.conf.5
@@ -187,11 +188,10 @@ Files: ChangeLog
  x2goserver-printing/man/man8/x2goprint.8
  x2goserver-x2goagent/Makefile
  x2goserver-x2goagent/etc/keystrokes.cfg
- x2goserver-x2goagent/etc/rgb
  x2goserver-x2goagent/etc/x2goagent.keyboard
  x2goserver-x2goagent/etc/x2goagent.options
  x2goserver-x2goagent/man/man1/x2goagent.1
- x2goserver-x2goagent/share/pixmaps/x2go.xpm
+ x2goserver-x2goagent/share/pixmaps/x2goagent.xpm
  x2goserver-xsession/Makefile
  x2goserver-xsession/README.md
  x2goserver-xsession/VERSION.x2goserver-xsession
