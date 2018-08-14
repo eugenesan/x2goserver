@@ -5,74 +5,240 @@ Source: http://code.x2go.org/releases/
 
 Files: X2Go/Config.pm
  X2Go/Log.pm
- X2Go/Server.pm
  X2Go/Server/Agent.pm
  X2Go/Server/Agent/NX.pm
  X2Go/Server/DB.pm
  X2Go/Server/DB/PostgreSQL.pm
  X2Go/Server/DB/SQLite3.pm
- blib/lib/X2Go/Config.pm
- blib/lib/X2Go/Log.pm
- blib/lib/X2Go/Server.pm
- blib/lib/X2Go/Server/Agent.pm
- blib/lib/X2Go/Server/Agent/NX.pm
- blib/lib/X2Go/Server/DB.pm
- blib/lib/X2Go/Server/DB/PostgreSQL.pm
- blib/lib/X2Go/Server/DB/SQLite3.pm
- debian/libx2go-log-perl/usr/share/perl5/X2Go/Log.pm
- debian/libx2go-server-db-perl/usr/lib/x2go/libx2go-server-db-sqlite3-wrapper.pl
- debian/libx2go-server-db-perl/usr/share/perl5/X2Go/Server/DB.pm
- debian/libx2go-server-db-perl/usr/share/perl5/X2Go/Server/DB/PostgreSQL.pm
- debian/libx2go-server-db-perl/usr/share/perl5/X2Go/Server/DB/SQLite3.pm
- debian/libx2go-server-perl/usr/share/perl5/X2Go/Config.pm
- debian/libx2go-server-perl/usr/share/perl5/X2Go/Server.pm
- debian/libx2go-server-perl/usr/share/perl5/X2Go/Server/Agent.pm
- debian/libx2go-server-perl/usr/share/perl5/X2Go/Server/Agent/NX.pm
- debian/tmp/usr/lib/x2go/libx2go-server-db-sqlite3-wrapper.pl
- debian/tmp/usr/share/perl5/X2Go/Config.pm
- debian/tmp/usr/share/perl5/X2Go/Log.pm
- debian/tmp/usr/share/perl5/X2Go/Server.pm
- debian/tmp/usr/share/perl5/X2Go/Server/Agent.pm
- debian/tmp/usr/share/perl5/X2Go/Server/Agent/NX.pm
- debian/tmp/usr/share/perl5/X2Go/Server/DB.pm
- debian/tmp/usr/share/perl5/X2Go/Server/DB/PostgreSQL.pm
- debian/tmp/usr/share/perl5/X2Go/Server/DB/SQLite3.pm
  libx2go-server-db-perl/lib/libx2go-server-db-sqlite3-wrapper.pl
+ x2goserver-extensions/share/x2gofeature.d/x2goserver-extensions.features
+ x2goserver-fmbindings/share/x2go/x2gofeature.d/x2goserver-fmbindings.features
+ x2goserver-printing/bin/x2goprint
+ x2goserver-printing/share/x2gofeature.d/x2goserver-printing.features
+ x2goserver-xsession/share/x2gofeature.d/x2goserver-xsession.features
+ x2goserver/bin/x2gocmdexitmessage
+ x2goserver/bin/x2gofeature
+ x2goserver/bin/x2gogetapps
+ x2goserver/bin/x2gogetservers
+ x2goserver/bin/x2golistdesktops
+ x2goserver/bin/x2golistmounts
+ x2goserver/bin/x2golistsessions
+ x2goserver/bin/x2golistshadowsessions
+ x2goserver/bin/x2gomountdirs
+ x2goserver/bin/x2goresume-session
+ x2goserver/bin/x2goruncommand
+ x2goserver/bin/x2gosessionlimit
+ x2goserver/bin/x2gostartagent
+ x2goserver/bin/x2gosuspend-session
+ x2goserver/bin/x2goterminate-session
+ x2goserver/bin/x2goumount-session
+ x2goserver/bin/x2goversion
+ x2goserver/lib/x2gochangestatus
+ x2goserver/lib/x2gocreatesession
+ x2goserver/lib/x2gocreateshadowsession
+ x2goserver/lib/x2gogetagent
+ x2goserver/lib/x2gogetagentstate
+ x2goserver/lib/x2gogetdisplays
+ x2goserver/lib/x2gogetports
+ x2goserver/lib/x2gogetstatus
+ x2goserver/lib/x2goinsertport
+ x2goserver/lib/x2goinsertsession
+ x2goserver/lib/x2goinsertshadowsession
+ x2goserver/lib/x2golistsessions_sql
+ x2goserver/lib/x2gologlevel
+ x2goserver/lib/x2goresume
+ x2goserver/lib/x2gormforward
+ x2goserver/lib/x2gormport
+ x2goserver/lib/x2gosuspend-agent
+ x2goserver/lib/x2gosyslog
+ x2goserver/sbin/x2gocleansessions
+ x2goserver/sbin/x2godbadmin
+ x2goserver/sbin/x2golistsessions_root
+ x2goserver/sbin/x2goshowblocks
+ x2goserver/share/x2gofeature.d/x2goserver.features
 Copyright: 2007-2015, Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
   2007-2015, Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
-  2007-2015, X2Go Project - http://wiki.x2go.org
+  2007-2015, X2Go Project - http:wiki.x2go.org
+  2007-2017, Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
+  2007-2017, Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
+  2007-2018, X2Go Project - http:wiki.x2go.org
+  2011-2015, Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
+  2011-2015, Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
 License: GPL-2+
 
-Files: X2Go/Utils.pm
- blib/lib/X2Go/Utils.pm
- debian/libx2go-server-perl/usr/share/perl5/X2Go/Utils.pm
- debian/tmp/usr/share/perl5/X2Go/Utils.pm
+Files: x2goserver/lib/x2gocheckport
+ x2goserver/lib/x2gogetfreeport
+ x2goserver/lib/x2gogetrandomport
+ x2goserver/lib/x2goistrue
+ x2goserver/lib/x2goqueryconfig
+Copyright: 2017-2018, X2Go Project - https:wiki.x2go.org
+License: GPL-2+
+
+Files: Makefile.docupload
+ x2goserver-x2goagent/bin/x2goagent
+ x2goserver-x2goagent/share/x2go/x2gofeature.d/x2goserver-x2goagent.features
+Copyright: 2010-2015, Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
+  2012-2016, Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
+  2015, Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
+License: GPL-2+
+Comment:
+ File header of x2goserver-x2goagent/bin/x2goagent says GPL-3+, but...
+ https://code.x2go.org/gitweb?p=x2goserver.git;a=commit;h=b9345b76f456fe970cd0e544b46fa8b658092831
+ .
+ File header of Makefile.docupload says GPL-3+, but...
+ https://code.x2go.org/gitweb?p=x2goserver.git;a=commit;h=7e4503444438623d9a221968fcb841c4bf795c59
+
+Files: x2goserver-x2goagent/share/x2go/x2gofeature.d/x2goserver-x2goagent.features
+Copyright: 2015, Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
+License: GPL-2+
+
+Files: X2Go/Server.pm
+ X2Go/Utils.pm
 Copyright: 2007-2015, Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
   2007-2015, Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
-  2007-2015, X2Go Project - http://wiki.x2go.org
+  2007-2015, X2Go Project - http:wiki.x2go.org
+  2010-2015, Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
   2013-2015, Guangzhou Nianguan Electronics Technology Co.Ltd. <opensource@gznianguan.com>
   2013-2015, Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
 License: GPL-2+
 
+Files: x2goserver-extensions/bin/x2goserver-run-extensions
+ x2goserver/bin/x2gosetkeyboard
+Copyright: 2007-2015, X2Go Project - http:wiki.x2go.org
+  2011-2015, Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
+  2011-2015, Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
+  2011-2015, Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
+License: GPL-2+
+
 Files: X2Go/SupeReNicer.pm
- blib/lib/X2Go/SupeReNicer.pm
- debian/libx2go-server-perl/usr/share/perl5/X2Go/SupeReNicer.pm
- debian/tmp/usr/share/perl5/X2Go/SupeReNicer.pm
 Copyright: 2013-2015, Guangzhou Nianguan Electronics Technology Co.Ltd. <opensource@gznianguan.com>
   2013-2015, Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
   2013-2015, X2Go Project - http://wiki.x2go.org
 License: GPL-2+
 
-Files: debian/tmp/etc/x2go/x2go_logout.d/010_userscripts.sh
- debian/x2goserver/etc/x2go/x2go_logout.d/010_userscripts.sh
- x2goserver/etc/x2go_logout.d/010_userscripts.sh
-Copyright: *No copyright*
+Files: x2goserver/bin/x2gopath
+Copyright: 2007-2015, X2Go Project - http:wiki.x2go.org
+  2012-2015, Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
+  2012-2015, Jan Engelhard <jengelh@inai.de>
+  2012-2015, Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
+  2012-2015, Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
 License: GPL-2+
 
 Files: libx2go-server-db-perl/src/libx2go-server-db-sqlite3-wrapper.c
 Copyright: 2011-2015, Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
   2011-2015, Moritz 'Morty' Strübe <morty@gmx.net>
 License: GPL-2+
+
+Files: x2goserver/bin/x2gofeaturelist
+Copyright: 2007-2015 X2Go Project - http://wiki.x2go.org
+  2011-2015, Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
+License: GPL-2+
+
+Files: x2goserver-fmbindings/bin/x2gofm
+Copyright: 2007-2015, X2Go Project - http://wiki.x2go.org
+  2012-2015, Milan Knížek <knizek.confy@gmail.com>
+  2012-2015, Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
+License: GPL-2+
+
+Files: ChangeLog
+ INSTALL
+ Makefile
+ Makefile.PL
+ README.i18n
+ README.md
+ UNINSTALL
+ libx2go-server-db-perl/Makefile
+ rpm/x2goserver-rpmlintrc
+ rpm/x2goserver.init
+ x2goserver-common/Makefile
+ x2goserver-common/VERSION.x2goserver-common
+ x2goserver-common/etc/tmpfiles.d/x2goserver.conf
+ x2goserver-common/etc/x2goserver.conf
+ x2goserver-common/etc/x2gosql/sql
+ x2goserver-common/man/man5/x2goserver.conf.5
+ x2goserver-extensions/Makefile
+ x2goserver-extensions/README.md
+ x2goserver-extensions/VERSION.x2goserver-extensions
+ x2goserver-extensions/lib/extensions/fail-resume.d/.placeholder
+ x2goserver-extensions/lib/extensions/fail-runcommand.d/.placeholder
+ x2goserver-extensions/lib/extensions/fail-start.d/.placeholder
+ x2goserver-extensions/lib/extensions/fail-suspend.d/.placeholder
+ x2goserver-extensions/lib/extensions/fail-terminate.d/.placeholder
+ x2goserver-extensions/lib/extensions/post-resume.d/.placeholder
+ x2goserver-extensions/lib/extensions/post-runcommand.d/.placeholder
+ x2goserver-extensions/lib/extensions/post-start.d/.placeholder
+ x2goserver-extensions/lib/extensions/post-suspend.d/.placeholder
+ x2goserver-extensions/lib/extensions/post-terminate.d/.placeholder
+ x2goserver-extensions/lib/extensions/pre-resume.d/.placeholder
+ x2goserver-extensions/lib/extensions/pre-runcommand.d/.placeholder
+ x2goserver-extensions/lib/extensions/pre-start.d/.placeholder
+ x2goserver-extensions/lib/extensions/pre-suspend.d/.placeholder
+ x2goserver-extensions/lib/extensions/pre-terminate.d/.placeholder
+ x2goserver-extensions/man/man8/x2goserver-run-extensions.8
+ x2goserver-fmbindings/Makefile
+ x2goserver-fmbindings/README.md
+ x2goserver-fmbindings/VERSION.x2goserver-fmbindings
+ x2goserver-fmbindings/man/man8/x2gofm.8
+ x2goserver-fmbindings/share/applications/x2gofm.desktop
+ x2goserver-fmbindings/share/mime/packages/sshfs-x2go.xml
+ x2goserver-printing/Makefile
+ x2goserver-printing/README.md
+ x2goserver-printing/VERSION.x2goserver-printing
+ x2goserver-printing/man/man8/x2goprint.8
+ x2goserver-x2goagent/Makefile
+ x2goserver-x2goagent/etc/keystrokes.cfg
+ x2goserver-x2goagent/etc/rgb
+ x2goserver-x2goagent/etc/x2goagent.keyboard
+ x2goserver-x2goagent/etc/x2goagent.options
+ x2goserver-x2goagent/man/man1/x2goagent.1
+ x2goserver-x2goagent/share/pixmaps/x2go.xpm
+ x2goserver-xsession/Makefile
+ x2goserver-xsession/README.md
+ x2goserver-xsession/VERSION.x2goserver-xsession
+ x2goserver-xsession/doc/README.Xsession-X2Go
+ x2goserver-xsession/etc/Xsession
+ x2goserver.service
+ x2goserver/README.md
+ x2goserver/Makefile
+ x2goserver/VERSION.x2goserver
+ x2goserver/bin/x2gobasepath
+ x2goserver/doc/README.sudoers
+ x2goserver/doc/README.upgrade-pgsql-database
+ x2goserver/etc/logcheck/ignore.d.server/x2goserver
+ x2goserver/etc/sudoers.d/x2goserver
+ x2goserver/etc/x2go_logout
+ x2goserver/etc/x2go_logout.d/010_userscripts.sh
+ x2goserver/man/man5/x2goserver.conf.5
+ x2goserver/man/man8/x2gobasepath.8
+ x2goserver/man/man8/x2gocmdexitmessage.8
+ x2goserver/man/man8/x2godbadmin.8
+ x2goserver/man/man8/x2gofeature.8
+ x2goserver/man/man8/x2gofeaturelist.8
+ x2goserver/man/man8/x2gogetapps.8
+ x2goserver/man/man8/x2gogetservers.8
+ x2goserver/man/man8/x2golistdesktops.8
+ x2goserver/man/man8/x2golistmounts.8
+ x2goserver/man/man8/x2golistsessions.8
+ x2goserver/man/man8/x2golistshadowsessions.8
+ x2goserver/man/man8/x2golistsessions_root.8
+ x2goserver/man/man8/x2golistshadowsessions.8
+ x2goserver/man/man8/x2gomountdirs.8
+ x2goserver/man/man8/x2gopath.8
+ x2goserver/man/man8/x2goresume-session.8
+ x2goserver/man/man8/x2goruncommand.8
+ x2goserver/man/man8/x2gosessionlimit.8
+ x2goserver/man/man8/x2gosetkeyboard.8
+ x2goserver/man/man8/x2goshowblocks.8
+ x2goserver/man/man8/x2gostartagent.8
+ x2goserver/man/man8/x2gosuspend-session.8
+ x2goserver/man/man8/x2goterminate-session.8
+ x2goserver/man/man8/x2goumount-session.8
+ x2goserver/man/man8/x2goversion.8
+Copyright: *No copyright*
+License: GPL-2+
+Comment:
+ From upstream commits, most of the listed files are copyrighted by Mike
+ Gabriel <mike.gabriel@das-netzwerkteam.de> between 2011 and 2014.
 
 Files: debian/*
 Copyright:
