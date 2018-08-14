@@ -60,7 +60,7 @@ case "${1}" in
 		fi
 
 		# make sure x2goprint spool dir permissions are set correctly
-		chown -R 'x2goprint:x2goprint' '/var/spool/x2goprint'
+		chown 'x2goprint:x2goprint' '/var/spool/x2goprint'
 
 		# egid x2goprint needs write access to the spool dir
 		chmod '0700' '/var/spool/x2goprint'
