@@ -402,14 +402,17 @@ fi
 typeset xinerama_option='1'
 [[ "${x2go_xinerama}" = '0' ]] && xinerama_option='0'
 
+typeset kbtype_option="${X2GO_KBD_TYPE}"
 if [[ "${X2GO_SET_KBD}" = '0' ]] || [[ "${X2GO_KBD_TYPE}" = 'auto' ]]; then
-	X2GO_HOST="nx/nx,link=${X2GO_LINK},pack=${X2GO_PACK},limit=0,root=${SESSION_DIR},cache=8M,images=32M,type=${X2GO_TYPE},id=${SESSION_NAME},cookie=${X2GO_COOKIE},errors=${SESSION_LOG},kbtype=null/null,${option_geometry}xinerama=${xinerama_option},resize=${X2GO_RESIZE},fullscreen=${X2GO_FULLSCREEN},accept=${REMOTE},listen=${GR_PORT}${clipboard},client=linux,menu=0,state=${STATE_FILE}"
-else
-	X2GO_HOST="nx/nx,link=${X2GO_LINK},pack=${X2GO_PACK},limit=0,root=${SESSION_DIR},cache=8M,images=32M,type=${X2GO_TYPE},id=${SESSION_NAME},cookie=${X2GO_COOKIE},errors=${SESSION_LOG},kbtype=${X2GO_KBD_TYPE},${option_geometry}xinerama=${xinerama_option},resize=${X2GO_RESIZE},fullscreen=${X2GO_FULLSCREEN},accept=${REMOTE},listen=${GR_PORT}${clipboard},client=linux,menu=0,state=${STATE_FILE}"
+	kbtype_option="null/null"
 fi
 
+# Ensure X2GO_NXOPTIONS ends with a , if needed
+if [[ -n "${X2GO_NXOPTIONS}" ]]; then
+	X2GO_NXOPTIONS="${X2GO_NXOPTIONS%,},"
+fi
 
-echo "${X2GO_HOST}:${X2GO_PORT}" >"${SESSION_DIR}/options"
+echo "nx/nx,link=${X2GO_LINK},pack=${X2GO_PACK},limit=0,root=${SESSION_DIR},cache=8M,images=32M,type=${X2GO_TYPE},id=${SESSION_NAME},cookie=${X2GO_COOKIE},errors=${SESSION_LOG},kbtype=${kbtype_option},${option_geometry}xinerama=${xinerama_option},resize=${X2GO_RESIZE},fullscreen=${X2GO_FULLSCREEN},accept=${REMOTE},listen=${GR_PORT}${clipboard},client=linux,menu=0,${X2GO_NXOPTIONS}state=${STATE_FILE}:${X2GO_PORT}" >"${SESSION_DIR}/options"
 
 NX_AGENT=":${X2GO_PORT}"
 SAVED_DISPLAY="${DISPLAY}"

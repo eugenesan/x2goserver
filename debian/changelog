@@ -86,6 +86,11 @@ x2goserver (4.1.0.3-0x2go1) UNRELEASED; urgency=medium
     + Replace historical "egrep" with "grep -E".
     + More curly braces, quotes etc.
 
+  [ Orion Poplawski ]
+  * New upstream version (4.1.0.3):
+    - Allow setting nxagent nx/nx options on the server via x2goagent.options.
+      (Fixes: #1322).
+
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 14 Aug 2018 16:41:40 +0200
 
 x2goserver (4.1.0.2-0x2go1) unstable; urgency=medium
