@@ -161,6 +161,7 @@ Files: ChangeLog
  libx2go-server-db-perl/Makefile
  rpm/x2goserver-rpmlintrc
  rpm/x2goserver.init
+ x2goserver.spec
  x2goserver-common/Makefile
  x2goserver-common/VERSION.x2goserver-common
  x2goserver-common/lib/tmpfiles.d/x2goserver.conf
