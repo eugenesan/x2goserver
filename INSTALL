@@ -21,11 +21,11 @@ already:
 
 2.) BUILD + INSTALL x2goserver FILES
 -----------------------------
-Extract tarball and run 
+Extract tarball and run
 
  $ make && sudo make install
 
-in base folder of the extracted tarball. 
+in base folder of the extracted tarball.
 
 
 3.) SGID GROUP
@@ -33,7 +33,7 @@ in base folder of the extracted tarball.
 Configure ownership, permissions and setgid group bits of
 libx2go-server-db-sqlite3-wrapper and x2goprint:
 
-  NOTE: The described actions have already been performed by the Makefile 
+  NOTE: The described actions have already been performed by the Makefile
   run, leaving this here for documentation only.
 
  $ chown root:x2gouser /usr/lib/x2go/libx2go-server-db-sqlite3-wrapper
@@ -47,7 +47,7 @@ libx2go-server-db-sqlite3-wrapper and x2goprint:
 4.) INIT SCRIPT
 ---------------
 Create a simple init script that starts $PREFIX/sbin/x2gocleansessions on system start
-(runlevel 2-3-4-5). 
+(runlevel 2-3-4-5).
 
 Alternatively, you can add a single line to /etc/rc.local:
 
@@ -67,7 +67,7 @@ have to be members of your server system's ,,fuse'' group
 Also users that shall be able to send print jobs to client-side printers have to be
 members of the server-side ,,fuse'' group (see above).
 
-As X2Go printing setups can be rather versatile, details on X2Go printing are explained in 
+As X2Go printing setups can be rather versatile, details on X2Go printing are explained in
 the project's wiki:
 http://www.x2go.org/doku.php/wiki:components:printing
 http://www.x2go.org/doku.php/wiki:advanced:multi-node:x2goserver-printing

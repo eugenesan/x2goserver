@@ -40,5 +40,5 @@ $tekictrl_port=shift or $tekictrl_port=-1;
 $tekidata_port=shift or $tekidata_port=-1;
 db_resume($client, $sid, $gr_port, $snd_port, $fs_port, $tekictrl_port, $tekidata_port);
 
-# closing syslog 
+# closing syslog
 closelog;

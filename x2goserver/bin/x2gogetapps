@@ -100,7 +100,7 @@ sub geticon
 	{
 		my $buf;
 		push(@ret, "<icon>");
-		while (read(I, $buf, 60*57)) 
+		while (read(I, $buf, 60*57))
 		{
 			push(@ret, encode_base64($buf));
 		}
@@ -215,7 +215,7 @@ foreach(@dirs)
 	for my $dirname (grep {-d "$basedir/$_" && ! /^\.{2}$/} readdir($basedh)) {
 		if( opendir(DIR, "$basedir/$dirname"))
 		{
-			while (defined($file = readdir(DIR))) 
+			while (defined($file = readdir(DIR)))
 			{
 				if($file =~ m/.desktop/)
 				{
@@ -228,5 +228,5 @@ foreach(@dirs)
 		}
 	}
 }
-# closing syslog 
+# closing syslog
 closelog;

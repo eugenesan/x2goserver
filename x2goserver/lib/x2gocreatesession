@@ -41,5 +41,5 @@ my $tekidata_port=shift or die;
 
 db_createsession($sid, $cookie, $pid, $client, $gr_port, $snd_port, $fs_port, $tekictrl_port, $tekidata_port);
 
-# closing syslog 
+# closing syslog
 closelog;

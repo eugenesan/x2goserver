@@ -40,7 +40,7 @@ X2GO_LIB_PATH="$(x2gopath libexec)";
 
 $X2GO_LIB_PATH/x2gosyslog "$0" "info" "$(basename $0) called with options: $@"
 
-X2GO_AGENT_PID=`$X2GO_LIB_PATH/x2gogetagent "$SESSION_NAME"` 
+X2GO_AGENT_PID=`$X2GO_LIB_PATH/x2gogetagent "$SESSION_NAME"`
 X2GO_AGENT_PID=`echo "$X2GO_AGENT_PID"| awk {'print $1'}`
 
 # workaround for knotify, keep silent in case no knotify is running

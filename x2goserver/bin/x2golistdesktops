@@ -112,6 +112,6 @@ for(my $i=0;$i<@displays;$i++) {
 		print "@displays[$i]\n";
 	}
 }
-# closing syslog 
+# closing syslog
 closelog;
 

@@ -34,5 +34,5 @@ my $sid=shift or die;
 
 db_changestatus($status, $sid);
 
-# closing syslog 
+# closing syslog
 closelog;

@@ -33,5 +33,5 @@ my $session_id=shift || $ENV{'X2GO_SESSION'} or die "no valid session name that 
 my $mounts = join("\n", db_getmounts($session_id));
 print "$mounts\n";
 
-# closing syslog 
+# closing syslog
 closelog;

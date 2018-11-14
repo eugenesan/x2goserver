@@ -244,5 +244,5 @@ rmdir ("$spooldir");
 rmdir ("$mimeboxdir/C-$session");
 rmdir ("$mimeboxdir");
 
-# closing syslog 
+# closing syslog
 closelog;

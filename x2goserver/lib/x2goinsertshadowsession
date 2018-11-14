@@ -37,5 +37,5 @@ my $shadreq_user=shift or die;
 db_insertshadowsession($display, $server, $sid, $shadreq_user);
 print "inserted";
 
-# closing syslog 
+# closing syslog
 closelog;

@@ -35,5 +35,5 @@ my $port=shift or die;
 
 db_rmport($server,$sid,$port);
 
-# closing syslog 
+# closing syslog
 closelog;

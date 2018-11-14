@@ -93,5 +93,5 @@ for (my $i=0;$i<@outp;$i++)
 	}
 }
 
-# closing syslog 
+# closing syslog
 closelog;

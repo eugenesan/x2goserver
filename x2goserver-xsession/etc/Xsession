@@ -216,7 +216,7 @@ elif [ -f /etc/redhat-release ] || [ -f /etc/gentoo-release ] || [ -f /etc/SUSE-
 
 	# At the time of integrating X2Go Xsession support for RHEL6 / Fedora
 	# the Xsession stuff in Fedora/RHEL6 seems to be a little mess.
-	# The proposed strategy is to have Xclients.$WM.sh files in 
+	# The proposed strategy is to have Xclients.$WM.sh files in
 	# /etc/X11/xinit/Xclients.d. Currently, only wmx uses this mechanism.
 	# As it is a described but rather unused ,,standard'' we will not support it
 	# in X2Go for now, but leave it here as a reminder...

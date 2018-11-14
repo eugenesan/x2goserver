@@ -21,7 +21,7 @@ THANKS!!! for the time you give to the X2Go project.
 And, if you are new to the team and language files for the language you want to feel
 responsible for do not yet exist, please subscribe to this mailing list first:
 
-  http://lists.x2go.org/listinfo/x2go-i18n 
+  http://lists.x2go.org/listinfo/x2go-i18n
 
 Once you are subscribed, send an email to
 
@@ -53,7 +53,7 @@ you do this by typing the following commands:
 
 1. cd x2goserver/debian/po
 
-2. sudo cp templates.pot da.po 
+2. sudo cp templates.pot da.po
    (or whatever langauge you are going to work on)
 
 Now the file is ready for translating it into the language you are going to work on.
@@ -78,7 +78,7 @@ NOTE: Make sure you translate all boldly marked items: non-translated as well as
 
 Sending in the Translation File
 -------------------------------
-When done, please send the complete translation file 
+When done, please send the complete translation file
 
   <current_dir>/x2goserver/debian/po/<lang>.po
 
@@ -92,7 +92,7 @@ You will get informed on x2go-i18n if a translation update is necessary. So chec
 your mails there regularly.
 
 For updating a translation, either keep the X2Go Server source project folder and
-read more on Git by your self. 
+read more on Git by your self.
 
 Alternatively, just remove the folder (once you have sent in the translation file)
 and start with this documentation all over again.

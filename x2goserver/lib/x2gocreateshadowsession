@@ -40,5 +40,5 @@ my $shadreq_user=shift or die;
 
 db_createshadowsession($sid, $cookie, $pid, $client, $gr_port, $snd_port, $fs_port, $shadreq_user);
 
-# closing syslog 
+# closing syslog
 closelog;

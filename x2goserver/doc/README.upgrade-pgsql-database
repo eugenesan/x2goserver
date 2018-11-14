@@ -17,7 +17,7 @@ Upgrading to x2goserver 3.1.0.0
 
 From: x2goserver (<= 3.0.99.10)
 To: x2goserver (>= 3.1.0.0)
-Description: The user (access) permissions on table ,,used_ports'' have been changed. 
+Description: The user (access) permissions on table ,,used_ports'' have been changed.
  X2Go users in the PostgreSQL database need access to this new column.
  .
  Alternative 1: recreate all X2Go db users
@@ -30,7 +30,7 @@ Description: The user (access) permissions on table ,,used_ports'' have been cha
    Run this SQL command for each x2gouser_<user> in the X2Go PostgreSQL database
  .
      $ su - postgres
-     $ psql 
+     $ psql
      psql (<YOUR-PSQL-VERSION)
      Type "help" for help.
  .

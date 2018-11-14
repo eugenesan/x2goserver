@@ -360,4 +360,3 @@ Description: Share X11 desktops with other users via X2Go
  .
  This package contains all the integration and configuration logics
  of a system-wide manageable desktop sharing setup.
-

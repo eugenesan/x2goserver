@@ -5,7 +5,7 @@ This folder contains all scripts and helpers for the ssh mounted Shared Folders 
 
    contains the script to open a shared folder with x2go
 
- * man 
+ * man
 
    man page documentation
 

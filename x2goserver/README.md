@@ -1,6 +1,6 @@
 # x2goserver core component
 
-## x2goserver/bin 
+## x2goserver/bin
 This folder contains all the scripts to be used by the server in order to provide functionality to all the clients. The scripts itself are used for various different functions listed below:
 
  * x2gobasepath - _todo_

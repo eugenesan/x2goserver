@@ -35,7 +35,7 @@ use strict;
 use DBI;
 use POSIX;
 
-#### NOTE: the default X2Go server setups runs the code in this package 
+#### NOTE: the default X2Go server setups runs the code in this package
 ####       via a setgid <group> wrapper (where <group> is group ,,x2gouser'').
 ####       It is intended that the code in this package cannot do system() calls.
 
@@ -597,7 +597,7 @@ sub db_listsessions_all
 	                       strftime('%s','now','localtime') - strftime('%s',init_time),fs_port,
 	                       tekictrl_port,tekidata_port from  sessions
 	                       where status !='F' and uname=? and  (  session_id not like '%XSHAD%')  order by status desc");
-	
+
 	$sth->execute($realuser);
 	if ($sth->err())
 	{
@@ -644,9 +644,9 @@ sub db_listshadowsessions_all
 	                       cookie,client,gr_port,sound_port,
 	                       strftime('%Y-%m-%dT%H:%M:%S',last_time),
 	                       uname,
-	                       strftime('%s','now','localtime') - strftime('%s',init_time),fs_port from  sessions 
+	                       strftime('%s','now','localtime') - strftime('%s',init_time),fs_port from  sessions
 	                       where status !='F' and uname=? and  (  session_id like '%XSHAD%')  order by status desc");
-	
+
 	$sth->execute($realuser);
 	if ($sth->err())
 	{

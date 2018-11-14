@@ -1,7 +1,7 @@
 # x2goserver-printing
 This folder contains the x2go printing service feature.
 
- * bin 
+ * bin
 
    contains the script that lets you run the print job remotely at your client side.
 
@@ -9,7 +9,7 @@ This folder contains the x2go printing service feature.
 
    man page documentations
 
- * share 
+ * share
 
    contains the feature definition itself.
 

@@ -171,7 +171,7 @@ sub superenice {
 	} else {
 
 		###########################################################################################
-		# Oh no.... No "/proc"?  Lets do this on a per user basis instead then...  
+		# Oh no.... No "/proc"?  Lets do this on a per user basis instead then...
 		# If a user have more than one session, both need to be suspended before we renice....
 		# Resuming any of that users sessions would return them all to normal priority.
 
@@ -195,7 +195,7 @@ sub superenice {
 		foreach my $nUser (keys %niceUsers) {
 			$nUser = sanitizer("pnixusername",$nUser);
 
-			# We're only working with "portable" unix usernames..  
+			# We're only working with "portable" unix usernames..
 			if ($nUser) {
 
 				# So if the sanitizer return something we'll do this....
@@ -226,7 +226,7 @@ sub superenice {
 				}
 			}
 		}
-		# Oh no.... No "/proc"?  Lets do this on a per user basis instead then...  
+		# Oh no.... No "/proc"?  Lets do this on a per user basis instead then...
 		###########################################################################################
 	}
 }

@@ -141,7 +141,7 @@ sub dbsys_rmsessionsroot
 {
 	init_db();
 	my $sid=shift or die "argument \"session_id\" missed";
-	my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", 
+	my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode",
 	                     "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 	my $sth=$dbh->prepare("delete from sessions  where session_id='$sid'");
 	$sth->execute() or die;
@@ -169,7 +169,7 @@ sub dbsys_listsessionsroot
 	init_db();
 	my $server=shift or die "argument \"server\" missed";
 	my @strings;
-	my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode", 
+	my $dbh=DBI->connect("dbi:Pg:dbname=$db;host=$host;port=$port;sslmode=$sslmode",
 	                     "$dbuser", "$dbpass",{AutoCommit => 1}) or die $_;
 	my $sth;
 	if ($with_TeKi) {
@@ -188,7 +188,7 @@ sub dbsys_listsessionsroot
 	$sth->execute()or die;
 	my @data;
 	my $i=0;
-	while (@data = $sth->fetchrow_array) 
+	while (@data = $sth->fetchrow_array)
 	{
 		@strings[$i++]=join('|',@data);
 	}
@@ -219,7 +219,7 @@ sub dbsys_listsessionsroot_all
 	$sth->execute()or die;
 	my @data;
 	my $i=0;
-	while (@data = $sth->fetchrow_array) 
+	while (@data = $sth->fetchrow_array)
 	{
 		@strings[$i++]=join('|',@data);
 	}
@@ -239,7 +239,7 @@ sub dbsys_getmounts
 	$sth->execute()or die;
 	my @data;
 	my $i=0;
-	while (@data = $sth->fetchrow_array) 
+	while (@data = $sth->fetchrow_array)
 	{
 		@mounts[$i++]=join("|",@data);
 	}
@@ -259,7 +259,7 @@ sub db_getmounts
 	$sth->execute()or die;
 	my @data;
 	my $i=0;
-	while (@data = $sth->fetchrow_array) 
+	while (@data = $sth->fetchrow_array)
 	{
 		@mounts[$i++]=join("|",@data);
 	}
@@ -460,7 +460,7 @@ sub db_getstatus
 	my $sth=$dbh->prepare("select status from sessions_view where session_id = '$sid'");
 	$sth->execute($sid) or die;
 	my @data;
-	if (@data = $sth->fetchrow_array) 
+	if (@data = $sth->fetchrow_array)
 	{
 		$status=@data[0];
 	}
@@ -480,7 +480,7 @@ sub db_getdisplays
 	$sth->execute()or die;
 	my @data;
 	my $i=0;
-	while (@data = $sth->fetchrow_array) 
+	while (@data = $sth->fetchrow_array)
 	{
 		@displays[$i++]='|'.@data[0].'|';
 	}
@@ -500,7 +500,7 @@ sub db_getports
 	$sth->execute()or die;
 	my @data;
 	my $i=0;
-	while (@data = $sth->fetchrow_array) 
+	while (@data = $sth->fetchrow_array)
 	{
 		@ports[$i++]='|'.@data[0].'|';
 	}
@@ -518,7 +518,7 @@ sub db_getservers
 	$sth->execute()or die;
 	my @data;
 	my $i=0;
-	while (@data = $sth->fetchrow_array) 
+	while (@data = $sth->fetchrow_array)
 	{
 		@servers[$i++]=@data[0]." ".@data[1];
 	}
@@ -539,7 +539,7 @@ sub db_getagent
 	$sth->execute()or die;
 	my @data;
 	my $i=0;
-	if (@data = $sth->fetchrow_array) 
+	if (@data = $sth->fetchrow_array)
 	{
 		$agent=@data[0];
 	}
@@ -560,7 +560,7 @@ sub db_getdisplay
 	$sth->execute() or die;
 	my @data;
 	my $i=0;
-	if (@data = $sth->fetchrow_array) 
+	if (@data = $sth->fetchrow_array)
 	{
 		$display=@data[0];
 	}
@@ -594,7 +594,7 @@ sub db_listsessions
 	$sth->execute() or die;
 	my @data;
 	my $i=0;
-	while (@data = $sth->fetchrow_array) 
+	while (@data = $sth->fetchrow_array)
 	{
 		@sessions[$i++]=join('|',@data);
 	}
@@ -627,7 +627,7 @@ sub db_listsessions_all
 	$sth->execute()or die;
 	my @data;
 	my $i=0;
-	while (@data = $sth->fetchrow_array) 
+	while (@data = $sth->fetchrow_array)
 	{
 		@sessions[$i++]=join('|',@data);
 	}
@@ -651,7 +651,7 @@ sub db_listshadowsessions
 	$sth->execute() or die;
 	my @data;
 	my $i=0;
-	while (@data = $sth->fetchrow_array) 
+	while (@data = $sth->fetchrow_array)
 	{
 		@sessions[$i++]=join('|',@data);
 	}
@@ -674,7 +674,7 @@ sub db_listshadowsessions_all
 	$sth->execute()or die;
 	my @data;
 	my $i=0;
-	while (@data = $sth->fetchrow_array) 
+	while (@data = $sth->fetchrow_array)
 	{
 		@sessions[$i++]=join('|',@data);
 	}
