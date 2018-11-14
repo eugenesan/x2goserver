@@ -168,6 +168,7 @@ X2Go is a server based computing environment with
     - low bandwidth support
     - session brokerage support
     - client side mass storage mounting support
+    - client side printing support
     - audio support
     - authentication by smartcard and USB stick
 
@@ -214,6 +215,7 @@ X2Go is a server based computing environment with
     - low bandwidth support
     - session brokerage support
     - client side mass storage mounting support
+    - client side printing support
     - audio support
     - authentication by smartcard and USB stick
 
@@ -248,6 +250,7 @@ X2Go is a server based computing environment with
     - low bandwidth support
     - session brokerage support
     - client side mass storage mounting support
+    - client side printing support
     - audio support
     - authentication by smartcard and USB stick
 
@@ -285,6 +288,7 @@ X2Go is a server based computing environment with
     - low bandwidth support
     - session brokerage support
     - client side mass storage mounting support
+    - client side printing support
     - audio support
     - authentication by smartcard and USB stick
 
@@ -314,6 +318,7 @@ X2Go is a server based computing environment with
     - low bandwidth support
     - session brokerage support
     - client side mass storage mounting support
+    - client side printing support
     - audio support
     - authentication by smartcard and USB stick
 
@@ -332,6 +337,7 @@ X2Go is a server based computing environment with
     - low bandwidth support
     - session brokerage support
     - client side mass storage mounting support
+    - client side printing support
     - audio support
     - authentication by smartcard and USB stick
 
@@ -383,6 +389,7 @@ X2Go is a server based computing environment with
     - low bandwidth support
     - session brokerage support
     - client side mass storage mounting support
+    - client side printing support
     - audio support
     - authentication by smartcard and USB stick
 
@@ -441,6 +448,7 @@ X2Go is a server based computing environment with
     - low bandwidth support
     - session brokerage support
     - client side mass storage mounting support
+    - client side printing support
     - audio support
     - authentication by smartcard and USB stick
 
@@ -509,6 +517,7 @@ X2Go is a server based computing environment with
     - low bandwidth support
     - session brokerage support
     - client side mass storage mounting support
+    - client side printing support
     - audio support
     - authentication by smartcard and USB stick
 
@@ -551,6 +560,7 @@ X2Go is a server based computing environment with
     - low bandwidth support
     - session brokerage support
     - client side mass storage mounting support
+    - client side printing support
     - audio support
     - authentication by smartcard and USB stick
 
@@ -586,6 +596,7 @@ X2Go is a server based computing environment with
     - low bandwidth support
     - session brokerage support
     - client side mass storage mounting support
+    - client side printing support
     - audio support
     - authentication by smartcard and USB stick
 
