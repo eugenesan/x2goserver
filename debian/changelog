@@ -33,6 +33,7 @@ x2goserver (4.1.0.3-0x2go1) UNRELEASED; urgency=medium
       project. (Closes DBTS:#905931).
   * lintian:
     + Drop unused debian/x2goserver-printing.lintian-overrides.
+  * debian/*: White-space cleanup.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 14 Aug 2018 16:41:40 +0200
 
@@ -1909,7 +1910,7 @@ x2goserver (3.1.1.2-0~x2go1) unstable; urgency=low
   * New upstream version (3.1.1.2):
     - Place session.log into /tmp directory, make x2gocleansessions and
       x2golistsessions_root work even if home directories are mounted
-      via NFSv4+Krb5 and not accessible by root. 
+      via NFSv4+Krb5 and not accessible by root.
     - Use -fPIE gcc (position independed executable) for building
       x2gosqlitewrapper.c (as suggested by Jan Engelhardt).
     - Clean up session.log tmp directory if empty.
@@ -1963,7 +1964,7 @@ x2goserver (3.1.1.0-0~x2go1) unstable; urgency=low
 
   [ Mike Gabriel ]
   * New upstream version (3.1.1.0):
-    - Syslog warnings have to be named ,,warning'' not ,,warn''. 
+    - Syslog warnings have to be named ,,warning'' not ,,warn''.
     - Add usage output to x2goserver-run-extensions.
     - Fix syslog output of x2goserver-run-exentions.
     - Fix x2goserver extension calls in x2goruncommand.
@@ -2197,7 +2198,7 @@ x2goserver (3.0.99.6-0~x2go1) unstable; urgency=low
       ToDo: folder type CDROM and removable media.
     - Let db_insertmount create a proper return value (success vs. failed).
     - If resuming or suspending of a session fails, mark the session as
-      finished (because the session's x2goagent is very probably dead). 
+      finished (because the session's x2goagent is very probably dead).
       Do not write an error to stderr if x2goterminate-session fails (i.e. if
       x2goagent is dead).
     - Identified x2goumount script (x2goserver-compat) as a necessary
@@ -2263,7 +2264,7 @@ x2goserver (3.0.99.5-0~x2go2) unstable; urgency=low
 
   * splitting up x2goserver package into x2goserver and x2goserver-extensions
     (x2goserver provides full functionality to legacy x2goclient,
-    x2goserver-extensions is a container/namespace for add-on tools/scripts 
+    x2goserver-extensions is a container/namespace for add-on tools/scripts
     needed for other client implementations like Python X2Go.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 31 May 2011 10:57:15 +0200
@@ -2387,7 +2388,7 @@ x2goserver (3.0.0-1) unstable; urgency=low
 
 x2goserver (2.0.1-19) unstable; urgency=low
 
-  * fixed installinit script break if x2goserver not running 
+  * fixed installinit script break if x2goserver not running
 
  -- Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>  Fri, 30 Jan 2009 08:38:03 +0100
 
@@ -2441,7 +2442,7 @@ x2goserver (2.0.1-12) unstable; urgency=low
 
 x2goserver (2.0.1-11) unstable; urgency=low
 
-  * now x2gomountdirs can mount dirs on client hosts with ssh ports other then 22 
+  * now x2gomountdirs can mount dirs on client hosts with ssh ports other then 22
 
  -- Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>  Fri, 21 Sep 2007 12:12:34 +0200
 
