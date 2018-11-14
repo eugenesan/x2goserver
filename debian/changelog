@@ -6,6 +6,9 @@ x2goserver (4.1.0.3-0x2go1) UNRELEASED; urgency=medium
     - x2goserver/lib/x2gocheckport: chmod a+x.
     - New bin:pkg: x2goserver-desktopsharing. Move all desktop sharing
       integration logic from x2godesktopsharing to x2goserver src:pkg.
+    - Don't rely on "ln -sf" to remove a symlink before recreating it. If the
+      target is non-writable, this may fail (observed on a Debian stretch
+      system). Thus, removing the symlink file first and then recreating it.
   * debian/x2goserver*.dirs:
     + Let dirs have a trailing slash in their path (for the human eye merely).
   * debian/copyright:
