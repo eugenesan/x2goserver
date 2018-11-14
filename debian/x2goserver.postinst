@@ -20,6 +20,9 @@ set -e
 # for details, see http://www.debian.org/doc/debian-policy/ or
 # the debian-policy package
 
+# Source debconf library.
+. /usr/share/debconf/confmodule
+
 case "${1}" in
 	'configure')
 		### cleaning up setgid stuff of older versions of package x2goserver

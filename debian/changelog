@@ -21,6 +21,8 @@ x2goserver (4.1.0.3-0x2go1) UNRELEASED; urgency=medium
   * debian/*.postinst:
     + Avoid recursive chmod/chown. Recursive chown/chmod is susceptible to
       hardlink attacks on mainline, non-Debian kernels.
+  * debian/x2goserver.postinst:
+    + Load debconf module, even if not used (Debian Policy demand).
   * debian/*.templates:
     + Move x2goserver and x2goserver-desktopsharing templates into separate
       files.
