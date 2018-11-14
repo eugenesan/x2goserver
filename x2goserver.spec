@@ -980,6 +980,7 @@ fi
 %{_datadir}/x2go/versions/VERSION.x2goserver-desktopsharing
 %{_datadir}/x2go/x2gofeature.d/x2goserver-desktopsharing.features
 %{_mandir}/man8/x2go*-desktopsharing.8*
+%dir %{_sysconfdir}/x2go/desktopsharing
 %config(noreplace) %{_sysconfdir}/x2go/desktopsharing/settings
 
 
