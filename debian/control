@@ -184,6 +184,7 @@ Description: X2Go Server (common files)
     - low bandwidth support
     - session brokerage support
     - client side mass storage mounting support
+    - client-side printing support
     - audio support
     - authentication by smartcard and USB stick
  .

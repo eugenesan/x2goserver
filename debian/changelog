@@ -21,6 +21,8 @@ x2goserver (4.1.0.3-0x2go1) UNRELEASED; urgency=medium
     + Move C (x2goserver) with versioned x2godesktopsharing, to B.
     + Don't depend on essential package without version. Drop bash from D.
     + Bump Standards-Version: to 4.2.1. No changes needed.
+    + Mention "client side printing support" also in descr of bin:pkg
+      x2goserver-common.
   * debian/*.postinst:
     + Avoid recursive chmod/chown. Recursive chown/chmod is susceptible to
       hardlink attacks on mainline, non-Debian kernels.
