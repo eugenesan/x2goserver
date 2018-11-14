@@ -22,7 +22,6 @@ Vcs-Browser: https://code.x2go.org/gitweb?p=x2goserver.git;a=summary
 Package: x2goserver
 Architecture: any
 Depends:
- bash,
  bc,
  libfile-basedir-perl,
  libfile-which-perl,
