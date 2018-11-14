@@ -415,7 +415,7 @@ Group:          Applications/Communications
 Group:          Productivity/Networking/Remote Desktop
 %endif
 
-%description extensions
+%description desktopsharing
 X2Go is a server based computing environment with
     - session resuming
     - low bandwidth support
