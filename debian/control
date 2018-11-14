@@ -14,7 +14,7 @@ Build-Depends:
  man2html-base,
 # Needed for /etc/X11/Xsession.d
  x11-common,
-Standards-Version: 4.1.4
+Standards-Version: 4.2.1
 Homepage: https://code.x2go.org/releases/source/x2goserver
 Vcs-Git: git://code.x2go.org/x2goserver.git
 Vcs-Browser: https://code.x2go.org/gitweb?p=x2goserver.git;a=summary
