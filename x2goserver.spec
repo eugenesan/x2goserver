@@ -892,7 +892,7 @@ fi
 %exclude %{_mandir}/man8/x2gofm.8*
 %exclude %{_mandir}/man8/x2goprint.8*
 %exclude %{_mandir}/man8/x2goserver-run-extensions.8*
-%exclude ${_mandir}/man8/x2go*-desktopsharing.8*
+%exclude %{_mandir}/man8/x2go*-desktopsharing.8*
 %dir %{_datadir}/x2go/
 %dir %{_datadir}/x2go/x2gofeature.d/
 %{_datadir}/x2go/x2gofeature.d/x2goserver.features
