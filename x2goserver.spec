@@ -398,6 +398,34 @@ this package on the X2Go server(s) (and the cups-x2go package on the CUPS
 server).
 
 
+%package desktopsharing
+Summary:        X2Go Server (Desktop Sharing support)
+Requires:       %{name} = %{version}-%{release}
+Requires:       x2godesktopsharing >= 3.2.0.0
+%if 0%{?fedora} || 0%{?rhel}
+Group:          Applications/Communications
+%else
+Group:          Productivity/Networking/Remote Desktop
+%endif
+
+%description extensions
+X2Go is a server based computing environment with
+    - session resuming
+    - low bandwidth support
+    - session brokerage support
+    - client side mass storage mounting support
+    - audio support
+    - authentication by smartcard and USB stick
+
+X2Go Desktop Sharing is an X2Go add-on feature that allows a user to
+grant other X2Go users access to the current session (shadow session
+support). The user's current session may be an X2Go session itself or
+simply a local X11 session.
+
+This package contains all the integration and configuration logics
+of a system-wide manageable desktop sharing setup.
+
+
 %package extensions
 Summary:        X2Go Server (extension support)
 Requires:       %{name} = %{version}-%{release}
@@ -931,6 +959,17 @@ fi
 %{_mandir}/man5/x2goserver.conf.5.gz
 %dir %{_datadir}/x2go/versions
 %{_datadir}/x2go/versions/VERSION.x2goserver-common
+
+
+%files desktopsharing
+%defattr(-,root,root)
+%doc debian/copyright
+%doc debian/changelog
+%{_bindir}/x2go*-desktopsharing
+%{_datadir}/x2go/versions/VERSION.x2goserver-desktopsharing
+%{_datadir}/x2go/x2gofeature.d/x2goserver-desktopsharing.features
+%{_mandir}/man8/x2go*-desktopsharing.8*
+%config(noreplace) %{_sysconfdir}/x2go/desktopsharing/settings
 
 
 %files extensions

@@ -1,0 +1,37 @@
+'\" -*- coding: utf-8 -*-
+.if \n(.g .ds T< \\FC
+.if \n(.g .ds T> \\F[\n[.fam]]
+.de URL
+\\$2 \(la\\$1\(ra\\$3
+..
+.if \n(.g .mso www.tmac
+.TH x2gosuspend-desktopsharing 8 "Aug 2018" "Version 4.1.0.3" "X2Go Server Script"
+.SH NAME
+x2gosuspend-desktopsharing \- Suspend Desktop Sharing for a given X2Go Session
+.SH SYNOPSIS
+'nh
+.fi
+.ad l
+\fBx2gosuspend\-desktopsharing\fR \fI<session_id>\fR
+
+.SH DESCRIPTION
+\fBx2gosuspend\-desktopsharing\fR executes \fBx2goterminate\-desktopsharing\fR and places a reminder file
+.PP
+    ,,resume\-desktopsharing''
+.PP
+into
+.PP
+    $HOME/.x2go/C\-<session_id>/
+.PP
+so that \fBx2godesktopsharing\fR can be resumed
+on session resume.
+.PP
+\fBx2gosuspend\-desktopsharing\fR is run with normal user privileges and it is used from within X2Go Server.
+There normally is no need to execute this command manually.
+.SH RETURN VALUES
+As exitcode \fBx2gosuspend\-desktopsharing\fR always returns 0.
+.SH SEE ALSO
+x2godesktopsharing(1), x2gosuspend\-session(8), x2goterminate\-desktopsharing(8), x2goresume\-desktopsharing(8)
+.SH AUTHOR
+This manual has been written by Mike Gabriel <mike.gabriel@das\-netzwerkteam.de> for the X2Go project
+(http://www.x2go.org).

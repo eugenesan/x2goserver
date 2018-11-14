@@ -333,3 +333,31 @@ Description: X2Go Server (Xsession runner)
  Amongst others the parsing of Xsession scripts will enable
  desktop-profiles, ssh-agent startups, gpgagent startups and many more
  Xsession related features on X2Go session login automagically.
+
+Package: x2goserver-desktopsharing
+Architecture: any
+Depends:
+ ${misc:Depends},
+ ${shlibs:Depends},
+ x2goserver (>= 4.0.0.0-0~),
+ x2godesktopsharing (>= 3.2.0.0~),
+Breaks: x2godesktopsharing (<< 3.2.0.0~),
+Replaces: x2godesktopsharing (<< 3.2.0.0~),
+Description: Share X11 desktops with other users via X2Go
+ X2Go is a server based computing environment with
+    - session resuming
+    - low bandwidth support
+    - session brokerage support
+    - client side mass storage mounting support
+    - client-side printing support
+    - audio support
+    - authentication by smartcard and USB stick
+ .
+ X2Go Desktop Sharing is an X2Go add-on feature that allows a user to
+ grant other X2Go users access to the current session (shadow session
+ support). The user's current session may be an X2Go session itself or
+ simply a local X11 session.
+ .
+ This package contains all the integration and configuration logics
+ of a system-wide manageable desktop sharing setup.
+

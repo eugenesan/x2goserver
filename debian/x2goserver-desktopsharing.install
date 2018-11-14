@@ -1,0 +1,4 @@
+usr/bin/x2go*-desktopsharing
+etc/x2go/desktopsharing/
+usr/share/x2go/versions/VERSION.x2goserver-desktopsharing
+usr/share/x2go/x2gofeature.d/x2goserver-desktopsharing.features

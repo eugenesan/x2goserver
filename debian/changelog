@@ -4,6 +4,8 @@ x2goserver (4.1.0.3-0x2go1) UNRELEASED; urgency=medium
   * New upstream version (4.1.0.3)
     - x2goserver.service: Add Documentation= key.
     - x2goserver/lib/x2gocheckport: chmod a+x.
+    - New bin:pkg: x2goserver-desktopsharing. Move all desktop sharing
+      integration logic from x2godesktopsharing to x2goserver src:pkg.
   * debian/x2goserver*.dirs:
     + Let dirs have a trailing slash in their path (for the human eye merely).
   * debian/copyright:

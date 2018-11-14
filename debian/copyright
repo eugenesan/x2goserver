@@ -12,6 +12,7 @@ Files: X2Go/Config.pm
  X2Go_in_progress_do_not_use/Server/DB/MySQL.pm
  X2Go/Server/DB/SQLite3.pm
  libx2go-server-db-perl/lib/libx2go-server-db-sqlite3-wrapper.pl
+ x2goserver-desktopsharing/share/x2gofeature.d/x2goserver-desktopsharing.features
  x2goserver-extensions/share/x2gofeature.d/x2goserver-extensions.features
  x2goserver-fmbindings/share/x2go/x2gofeature.d/x2goserver-fmbindings.features
  x2goserver-printing/bin/x2goprint
@@ -141,6 +142,15 @@ Copyright: 2007-2015, X2Go Project - http://wiki.x2go.org
   2012-2015, Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
 License: GPL-2+
 
+Files: x2goserver-desktopsharing/bin/x2goresume-desktopsharing
+ x2goserver-desktopsharing/bin/x2gosuspend-desktopsharing
+ x2goserver-desktopsharing/bin/x2goterminate-desktopsharing
+Copyright: 2007-2015, X2Go Project - http:wiki.x2go.org
+  2011-2015, Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
+  2011-2015, Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
+  2011-2015, Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
+License: GPL-2+
+
 Files: ChangeLog
  INSTALL
  Makefile
@@ -157,6 +167,12 @@ Files: ChangeLog
  x2goserver-common/etc/x2goserver.conf
  x2goserver-common/etc/x2gosql/sql
  x2goserver-common/man/man5/x2goserver.conf.5
+ x2goserver-desktopsharing/etc/desktopsharing/settings
+ x2goserver-desktopsharing/Makefile
+ x2goserver-desktopsharing/VERSION.x2goserver-desktopsharing
+ x2goserver-desktopsharing/man/man8/x2goresume-desktopsharing.8
+ x2goserver-desktopsharing/man/man8/x2gosuspend-desktopsharing.8
+ x2goserver-desktopsharing/man/man8/x2goterminate-desktopsharing.8
  x2goserver-extensions/Makefile
  x2goserver-extensions/README.md
  x2goserver-extensions/VERSION.x2goserver-extensions

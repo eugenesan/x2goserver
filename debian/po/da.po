@@ -15,10 +15,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: x2goserver@packages.debian.org\n"
-"POT-Creation-Date: 2012-09-20 23:46+0200\n"
+"POT-Creation-Date: 2018-11-14 10:31+0100\n"
 "PO-Revision-Date: 2014-11-03 11:50+0100\n"
 "Last-Translator: Mark Pedersen-Cook <mark@fleten.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -48,12 +49,12 @@ msgstr ""
 #: ../templates:1001
 msgid ""
 "Please follow these PostgreSQL DB upgrade instructions before you continue "
-"using your X2Go Server: "
-"/usr/share/doc/x2goserver/README.upgrade-pgsql-database.gz"
+"using your X2Go Server: /usr/share/doc/x2goserver/README.upgrade-pgsql-"
+"database.gz"
 msgstr ""
 "Venligst følg disse PostgreSQL DB opgraderings instruktioner før du "
-"fortsætter med at bruge din X2Go Server: "
-"/usr/share/doc/x2goserver/README.upgrade-pgsql-database.gz"
+"fortsætter med at bruge din X2Go Server: /usr/share/doc/x2goserver/README."
+"upgrade-pgsql-database.gz"
 
 #. Type: text
 #. Description
@@ -68,8 +69,8 @@ msgid ""
 "You are upgrading from an X2Go Server version (< 4.1.0.0). Between 4.1.0.0 "
 "and 4.0.0.x the package structure has undergone a major change."
 msgstr ""
-"Du opgradere fra en X2Go Server Version (<4.1.0.0). Imellem 4.1.0.0 og "
-"4.0.0.x har pakke strukturen fået store ændringer."
+"Du opgradere fra en X2Go Server Version (<4.1.0.0). Imellem 4.1.0.0 og 4.0.0."
+"x har pakke strukturen fået store ændringer."
 
 #. Type: text
 #. Description
@@ -80,3 +81,169 @@ msgid ""
 msgstr ""
 "Bemærk, at det meste af Perl coden i X2Go Server er blevet flyttet ind i sin "
 "egen Perl API X2Go::Server."
+
+#. Type: boolean
+#. Description
+#: ../templates:4001
+msgid "Create group for X2Go Desktop Sharing now?"
+msgstr ""
+
+#. Type: boolean
+#. Description
+#: ../templates:4001
+msgid ""
+"In X2Go Desktop Sharing users gain the privilege to share one another's X2Go/"
+"X11 desktop session by being members of a common POSIX group. The POSIX "
+"group being used for this can be configured system-wide and on a per user "
+"basis."
+msgstr ""
+
+#. Type: boolean
+#. Description
+#: ../templates:4001
+msgid ""
+"In X2Go Desktop Sharing's user configuration you can adjust what group to "
+"use for this later on. Here, you are asked for the system-wide default."
+msgstr ""
+
+#. Type: boolean
+#. Description
+#: ../templates:4001
+msgid ""
+"If this group is not created now, you should assign this desktop sharing "
+"privilege to an already existing group on the next screen."
+msgstr ""
+
+#. Type: boolean
+#. Description
+#: ../templates:4001
+msgid ""
+"If this group is not created / not assigned, users will not be able to share "
+"X2Go/X11 desktop sessions with each other."
+msgstr ""
+
+#. Type: boolean
+#. Description
+#: ../templates:5001
+msgid "Use already existing groups for X2Go Desktop Sharing?"
+msgstr ""
+
+#. Type: boolean
+#. Description
+#: ../templates:5001
+msgid ""
+"If a group appropriate for being assigned the desktop sharing privilege has "
+"already been created (e.g. in an LDAP user/group database) then you can "
+"specify this group name on the next screen."
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../templates:6001
+msgid "Assign X2Go Desktop Sharing privilege to POSIX group:"
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../templates:6001
+msgid ""
+"Please specify the name of the POSIX group that you want to assign the X2Go "
+"Desktop Sharing privilege to."
+msgstr ""
+
+#. Type: string
+#. Description
+#: ../templates:6001
+msgid "If you leave this empty, the \"root\" group will be used."
+msgstr ""
+
+#. Type: boolean
+#. Description
+#: ../templates:7001
+msgid "Delete the group that was formerly used for this?"
+msgstr ""
+
+#. Type: boolean
+#. Description
+#: ../templates:7001
+msgid "The group for the X2Go Desktop Sharing privilege has been modified."
+msgstr ""
+
+#. Type: boolean
+#. Description
+#: ../templates:7001
+msgid ""
+"Please specify whether the old group should be deleted. If unsure, keep the "
+"formerly used group and manually investigate later."
+msgstr ""
+
+#. Type: error
+#. Description
+#: ../templates:8001
+msgid "Non-existing group"
+msgstr ""
+
+#. Type: error
+#. Description
+#: ../templates:8001
+msgid ""
+"The given group does not exist on this system. You should specify an already "
+"existing group."
+msgstr ""
+
+#. Type: boolean
+#. Description
+#: ../templates:9001
+msgid "Auto-start X2Go Desktop Sharing applet on desktop session startup?"
+msgstr ""
+
+#. Type: boolean
+#. Description
+#: ../templates:9001
+msgid ""
+"For an X2Go/X11 desktop session to be accessible via X2Go Desktop Sharing, "
+"the X2Go Desktop Sharing applet needs to be running. It advertises the users "
+"X2Go/X11 session through an access controlled socket to X2Go client "
+"applications."
+msgstr ""
+
+#. Type: boolean
+#. Description
+#: ../templates:9001
+msgid ""
+"The applet can be configured to start automatically on desktop session "
+"startup, but for security reasons this is not the default."
+msgstr ""
+
+#. Type: boolean
+#. Description
+#: ../templates:10001
+msgid "Auto-activate X2Go Desktop Sharing on desktop session startup?"
+msgstr ""
+
+#. Type: boolean
+#. Description
+#: ../templates:10001
+msgid ""
+"The X2Go Desktop Sharing applet normally starts in non-sharing mode (users "
+"that request to share the running desktop session get auto-rejected). The "
+"user normally has to actively activate the sharing mode in the applet's GUI."
+msgstr ""
+
+#. Type: boolean
+#. Description
+#: ../templates:10001
+msgid ""
+"If you enabled the auto-start option in the previous screen, you can "
+"additionally choose here, if desktop sharing shall be activated when the "
+"X2Go Desktop Sharing applet is auto-started at session logon."
+msgstr ""
+
+#. Type: boolean
+#. Description
+#: ../templates:10001
+msgid ""
+"For security and data protection reasons, this is not the default. Use this "
+"auto-activation feature only in appropriate environments (e.g. on class room "
+"computers)."
+msgstr ""

@@ -1,0 +1,28 @@
+'\" -*- coding: utf-8 -*-
+.if \n(.g .ds T< \\FC
+.if \n(.g .ds T> \\F[\n[.fam]]
+.de URL
+\\$2 \(la\\$1\(ra\\$3
+..
+.if \n(.g .mso www.tmac
+.TH x2goresume\-desktopsharing 8 "Aug 2018" "Version 4.1.0.3" "X2Go Server Script"
+.SH NAME
+x2goresume\-desktopsharing \- Resume Desktop Sharing Applet for a given X2Go Session
+.SH SYNOPSIS
+'nh
+.fi
+.ad l
+\fBx2goresume\-desktopsharing\fR \fI<session_id>\fR
+
+.SH DESCRIPTION
+\fBx2goresume\-desktopsharing\fR launches the \fBx2godesktopsharing\fR applet for X2Go session \fI<session_id>\fR.
+.PP
+\fBx2goresume\-desktopsharing\fR is run with normal user privileges and it is used from within X2Go Server.
+There normally is no need to execute this command manually.
+.SH RETURN VALUES
+As exitcode \fBx2goresume\-desktopsharing\fR always returns 0.
+.SH SEE ALSO
+x2godesktopsharing(1), x2goresume\-session(8), x2gosuspend\-desktopsharing(8), x2goterminate\-desktopsharing(8)
+.SH AUTHOR
+This manual has been written by Mike Gabriel <mike.gabriel@das\-netzwerkteam.de> for the X2Go project
+(http://www.x2go.org).

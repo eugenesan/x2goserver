@@ -1,0 +1,60 @@
+#!/bin/bash
+
+# Copyright (C) 2007-2015 X2Go Project - http://wiki.x2go.org
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the
+# Free Software Foundation, Inc.,
+# 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
+#
+# Copyright (C) 2011-2015 Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
+# Copyright (C) 2011-2015 Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
+# Copyright (C) 2011-2015 Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
+
+if [ $# -eq 1   ]; then
+	SESSION_NAME=$1
+else
+	SESSION_NAME=$X2GO_SESSION
+fi
+
+X2GO_LIB_PATH=`x2gopath libexec`
+
+if type -p pidof 1>/dev/null 2>/dev/null; then
+    PIDOF=pidof
+elif [ -x /usr/local/sbin/pidof ]; then
+    PIDOF=/usr/local/sbin/pidof
+elif [ -x /usr/sbin/pidof ]; then
+    PIDOF=/usr/sbin/pidof
+elif [ -x /sbin/pidof ]; then
+    PIDOF=/sbin/pidof
+else
+	# no pidof utility found, get out the big hammer!!!
+	killall x2godesktopsharing
+	exit 0
+fi
+
+$X2GO_LIB_PATH/x2gosyslog "$0" "info" "$(basename $0) called with options: $@"
+
+
+X2GO_DISPLAY=$(echo $SESSION_NAME | cut -d"-" -f2)
+for process_id in `$PIDOF x2godesktopsharing`; do
+	env_of_process=$(cat -A /proc/$process_id/environ)
+	env_of_process=${env_of_process//^@/\\n}
+	display=$(echo -e $env_of_process | egrep "^DISPLAY=.*$" | cut -d"=" -f2)
+	if echo $display | grep ":$X2GO_DISPLAY" &>/dev/null; then
+		kill -SIGTERM $process_id
+		exit 0
+	fi
+done
+
+exit -1
