@@ -29,30 +29,18 @@ case "$1" in
 	db_get x2goserver-desktopsharing/create-group-for-sharing && x2godesktopsharing_create_group_for_sharing=$RET
 	db_get x2goserver-desktopsharing/use-existing-group-for-sharing && x2godesktopsharing_use_existing_group_for_sharing=$RET
 
-	# remove previously used sharing group
-
-	db_get x2goserver-desktopsharing/del-last-group-sharing
-	del_last_group="$RET"
-
-	if [ "$del_last_group" = "true" ]; then
-		db_get x2goserver-desktopsharing/last-group-sharing
-		last_group=$(echo $RET | cut -d" " -f1)
-
-		# try to remove the formerly used sharing group; on failure, ignore it
-		getent group $last_group 1>/dev/null && delgroup "$last_group" || \
-			echo "Removing Posix previous X2Go Desktop Sharing group »$last_group« failed."
-	fi
-
 	# create debconf-configured sharing group
 
-	db_get x2goserver-desktopsharing/group-sharing
-	# for sanity: we take everything as a group name until we find a blank...
-	group=$(echo $RET | cut -d" " -f1)
+	group=""
+	if [ "$x2godesktopsharing_create_group_for_sharing" = "true" ] || [ "$x2godesktopsharing_use_existing_group_for_sharing" = "true" ]; then
+		db_get x2goserver-desktopsharing/group-sharing
+		# for sanity: we take everything as a group name until we find a blank...
+		group=$(echo $RET | cut -d" " -f1)
+	fi
 
 	if [ "$x2godesktopsharing_create_group_for_sharing" = "true" ] && [ "x$group" != "x" ]; then
-		if echo "$group" | egrep '^[[:digit:]]{1,5}$' 1>/dev/null; then
-			echo "Specified sharing group is a gidNumber, not creating any group." 1>&2
-		elif ! getent group $group >/dev/null; then
+		# this should create the hard-coded "x2godesktopsharing" group
+		if ! getent group $group >/dev/null; then
 			echo "Creating $group group." 1>&2
 			addgroup --system $group
 		else
@@ -60,10 +48,19 @@ case "$1" in
 		fi
 	fi
 
-	# finally tweak X2Go Desktop Sharing's configuration file and adapt the group parameter
-	if [ -n "$group" ]; then
-		sed -i /etc/x2go/desktopsharing/settings -e "s/group=.*/group=$group/"
+	if [ "$x2godesktopsharing_use_existing_group_for_sharing" = "true" ] && [ "x$group" != "x" ]; then
+		if echo "$group" | egrep '^[[:digit:]]{1,5}$' 1>/dev/null; then
+			echo "Specified sharing group is a gidNumber." 1>&2
+			group=$(getent group $group | cut -d":" -f1)
+		fi
 	fi
+
+	if [ -z "$group" ]; then
+		group="root"
+	fi
+
+	# finally tweak X2Go Desktop Sharing's configuration file and adapt the group parameter
+	sed -i /etc/x2go/desktopsharing/settings -e "s/group=.*/group=$group/"
 
 	db_get x2goserver-desktopsharing/auto-start-on-logon
 	if [ "$RET" = "true" ] && [ ! -e /etc/xdg/autostart/x2godesktopsharing.desktop ]; then
