@@ -43,6 +43,7 @@ x2goserver (4.1.0.3-0x2go1) UNRELEASED; urgency=medium
       not copy+pasted "extensions".
     + Regression fix: Make /etc/x2go/desktopsharing be owned by x2goserver-
       desktopsharing.
+    + Exclude x2go*-desktopsharing scripts and man page in %files x2goserver.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 14 Aug 2018 16:41:40 +0200
 
