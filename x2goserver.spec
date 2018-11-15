@@ -622,7 +622,7 @@ sed -i -e 's,/lib/,/%{_lib}/,' x2goserver/bin/x2gopath
 sed -i -e 's/-o root -g root//' */Makefile
 
 %build
-make CFLAGS="%{optflags} -fPIC" %{?_smp_mflags} PERL_INSTALLDIRS=vendor PREFIX=%{_prefix} NXLIBDIR=%{_libdir}/nx
+make %{?_smp_mflags} CFLAGS="%{?__global_cppflags} %{?__global_cflags} %{optflags}" LDFLAGS="%{?__global_ldflags}" PERL_INSTALLDIRS=vendor PREFIX=%{_prefix} NXLIBDIR=%{_libdir}/nx
 
 
 %install

@@ -54,6 +54,7 @@ x2goserver (4.1.0.3-0x2go1) UNRELEASED; urgency=medium
   * x2goserver.spec:
     + Pull in openSUSE-release manually on OpenSuSE Tumbleweed to work around
       a bug.
+    + Also pass %{__global_{c{,pp},ld}flags} down via {C,LD}FLAGS.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 14 Aug 2018 16:41:40 +0200
 
