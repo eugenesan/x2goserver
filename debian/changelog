@@ -49,6 +49,8 @@ x2goserver (4.1.0.3-0x2go1) UNRELEASED; urgency=medium
   * New upstream version (4.1.0.3):
     - x2goserver/lib/x2gocheckport: remove executable flag. This file is STILL
       not meant to be executed directly.
+    - libx2go-server-db-perl/Makefile: make sure our {C,LD}FLAGS are always
+      appended to the user-provided ones.
   * x2goserver.spec:
     + Pull in openSUSE-release manually on OpenSuSE Tumbleweed to work around
       a bug.

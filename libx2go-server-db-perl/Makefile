@@ -4,8 +4,8 @@ SRC_DIR=$(CURDIR)
 SHELL=/bin/bash
 
 CC      ?= gcc
-CFLAGS  += -fPIE
-LDFLAGS += -pie
+override CFLAGS  += -fPIE
+override LDFLAGS += -pie
 
 INSTALL_DIR=install -d -o root -g root -m 755
 INSTALL_FILE=install -o root -g root -m 644
