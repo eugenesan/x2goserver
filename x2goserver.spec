@@ -203,6 +203,14 @@ Requires(pre):  shadow-utils
 %endif
 %endif
 
+%if 0%{?suse_version} > 1500
+# OpenSuSE Tumbleweed currently has a bug and doesn't pull in
+# openSUSE-release automatically, leaving /etc/os-release a dangling
+# symlink.
+# Why? No idea.
+BuildRequires:  openSUSE-release
+%endif
+
 %if 0%{?fedora} || 0%{?rhel}
 Group:          Applications/Communications
 %else
