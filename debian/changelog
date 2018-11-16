@@ -65,6 +65,7 @@ x2goserver (4.1.0.3-0x2go1) UNRELEASED; urgency=medium
     + Replace historical "egrep" with "grep -E".
   * debian/x2goserver.config:
     + Replace historical "egrep" with "grep -E".
+    + More curly braces, quotes etc.
 
  -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 14 Aug 2018 16:41:40 +0200
 
