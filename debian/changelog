@@ -55,6 +55,8 @@ x2goserver (4.1.0.3-0x2go1) UNRELEASED; urgency=medium
       historical "egrep" with "grep -E".
     - x2goserver-desktopsharing/bin/x2goterminate-desktopsharing: don't use
       negative exit codes.
+    - x2goserver-desktopsharing/bin/x2goterminate-desktopsharing: more curly
+      braces, quotes etc.
   * x2goserver.spec:
     + Pull in openSUSE-release manually on OpenSuSE Tumbleweed to work around
       a bug.
