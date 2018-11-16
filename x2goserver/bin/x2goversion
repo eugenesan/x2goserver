@@ -26,7 +26,7 @@ $X2GO_LIB_PATH/x2gosyslog "$0" "info" "$(basename $0) called with options: $@"
 X2GO_VERSIONS_BASEPATH="$(dirname $0)/../share/x2go/versions"
 
 get_version() {
-	cat "$1" | egrep -v "^#.*" | head -n1 | cut -d" " -f1
+	cat "$1" | grep -Ev "^#.*" | head -n1 | cut -d" " -f1
 }
 
 if [ -n "$1" ]; then
