@@ -194,7 +194,7 @@ if [ "$cmd" == "GNOME" ] || [ "$cmd" == "gnome-session" ]; then
 		args=" --session=$DESKTOP_SESSION"
 	elif [ "$DISTRIB_ID" == "Ubuntu" ] && [ "$(echo "$DISTRIB_RELEASE <= 10.10" | bc)" == "1" ]; then
 		export DESKTOP_SESSION="gnome"
-	elif cat /etc/debian_version | egrep "^(squeeze|6\.).*" >/dev/null; then
+	elif grep -E '^(squeeze|6\.).*' '/etc/debian_version' >'/dev/null'; then
 		export DESKTOP_SESSION="gnome"
 	fi
 
