@@ -26,6 +26,6 @@ X2GO_SHARE_PATH="$(x2gopath share)";
 # run x2gofeature scripts of X2Go extensions
 test -d "$X2GO_SHARE_PATH/x2gofeature.d" && {
     for subscript in "$X2GO_SHARE_PATH/x2gofeature.d/"*.features; do
-        cat "$subscript" | egrep ".*\).*ok.*exit 0.*" | cut -d"\"" -f2 | cut -d"\"" -f1
+        cat "$subscript" | grep -E ".*\).*ok.*exit 0.*" | cut -d"\"" -f2 | cut -d"\"" -f1
     done
 }
