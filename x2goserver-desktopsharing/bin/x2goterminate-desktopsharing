@@ -50,7 +50,7 @@ X2GO_DISPLAY=$(echo $SESSION_NAME | cut -d"-" -f2)
 for process_id in `$PIDOF x2godesktopsharing`; do
 	env_of_process=$(cat -A /proc/$process_id/environ)
 	env_of_process=${env_of_process//^@/\\n}
-	display=$(echo -e $env_of_process | egrep "^DISPLAY=.*$" | cut -d"=" -f2)
+	display=$(echo -e $env_of_process | grep -E "^DISPLAY=.*$" | cut -d"=" -f2)
 	if echo $display | grep ":$X2GO_DISPLAY" &>/dev/null; then
 		kill -SIGTERM $process_id
 		exit 0
