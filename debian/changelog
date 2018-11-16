@@ -69,6 +69,7 @@ x2goserver (4.1.0.3-0x2go1) UNRELEASED; urgency=medium
     - x2goserver/bin/x2goruncommand: replace historical "egrep" with "grep
       -E".
     - x2goserver/bin/x2goversion: replace historical "egrep" with "grep -E".
+    - x2goserver/bin/x2goversion: more curly braces, quotes etc.
   * x2goserver.spec:
     + Pull in openSUSE-release manually on OpenSuSE Tumbleweed to work around
       a bug.
