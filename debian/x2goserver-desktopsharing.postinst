@@ -1,11 +1,9 @@
 #!/bin/sh
-
-set -e
-
 # postinst script for x2godesktopsharing
 #
 # see: dh_installdeb(1)
 
+set -e
 
 # summary of how this script can be called:
 #        * <postinst> `configure' <most-recently-configured-version>
@@ -20,74 +18,71 @@ set -e
 # the debian-policy package
 
 # Source debconf library.
-. /usr/share/debconf/confmodule
+. '/usr/share/debconf/confmodule'
 
-case "$1" in
-	configure)
+case "${1}" in
+	'configure')
+		# fetch debconf-variables for x2godesktopsharing
+		db_get 'x2goserver-desktopsharing/create-group-for-sharing' && x2godesktopsharing_create_group_for_sharing="${RET}"
+		db_get 'x2goserver-desktopsharing/use-existing-group-for-sharing' && x2godesktopsharing_use_existing_group_for_sharing="${RET}"
 
-	# fetch debconf-variables for x2godesktopsharing
-	db_get x2goserver-desktopsharing/create-group-for-sharing && x2godesktopsharing_create_group_for_sharing=$RET
-	db_get x2goserver-desktopsharing/use-existing-group-for-sharing && x2godesktopsharing_use_existing_group_for_sharing=$RET
+		# create debconf-configured sharing group
 
-	# create debconf-configured sharing group
-
-	group=""
-	if [ "$x2godesktopsharing_create_group_for_sharing" = "true" ] || [ "$x2godesktopsharing_use_existing_group_for_sharing" = "true" ]; then
-		db_get x2goserver-desktopsharing/group-sharing
-		# for sanity: we take everything as a group name until we find a blank...
-		group=$(echo $RET | cut -d" " -f1)
-	fi
-
-	if [ "$x2godesktopsharing_create_group_for_sharing" = "true" ] && [ "x$group" != "x" ]; then
-		# this should create the hard-coded "x2godesktopsharing" group
-		if ! getent group $group >/dev/null; then
-			echo "Creating $group group." 1>&2
-			addgroup --system $group
-		else
-			echo "Group »$group« already exists." 1>&2
+		group=''
+		if [ "${x2godesktopsharing_create_group_for_sharing}" = 'true' ] || [ "${x2godesktopsharing_use_existing_group_for_sharing}" = 'true' ]; then
+			db_get 'x2goserver-desktopsharing/group-sharing'
+			# for sanity: we take everything as a group name until we find a blank...
+			group="$(echo "${RET}" | cut -d ' ' -f '1')"
 		fi
-	fi
 
-	if [ "$x2godesktopsharing_use_existing_group_for_sharing" = "true" ] && [ "x$group" != "x" ]; then
-		if echo "$group" | egrep '^[[:digit:]]{1,5}$' 1>/dev/null; then
-			echo "Specified sharing group is a gidNumber." 1>&2
-			group=$(getent group $group | cut -d":" -f1)
+		if [ "${x2godesktopsharing_create_group_for_sharing}" = 'true' ] && [ -n "${group}" ]; then
+			# this should create the hard-coded "x2godesktopsharing" group
+			if ! getent 'group' "${group}" >'/dev/null'; then
+				echo "Creating »${group}« group." 1>&2
+				addgroup --system "${group}"
+			else
+				echo "Group »${group}« already exists." 1>&2
+			fi
 		fi
-	fi
 
-	if [ -z "$group" ]; then
-		group="root"
-	fi
+		if [ "${x2godesktopsharing_use_existing_group_for_sharing}" = 'true' ] && [ -n "${group}" ]; then
+			if echo "${group}" | grep -Eq '^[[:digit:]]{1,5}$' 1>'/dev/null'; then
+				echo 'Specified sharing group is a group ID.' 1>&2
+				group="$(getent 'group' "${group}" | cut -d ':' -f '1')"
+			fi
+		fi
 
-	# finally tweak X2Go Desktop Sharing's configuration file and adapt the group parameter
-	sed -i /etc/x2go/desktopsharing/settings -e "s/group=.*/group=$group/"
+		if [ -z "${group}" ]; then
+			group='root'
+		fi
 
-	db_get x2goserver-desktopsharing/auto-start-on-logon
-	if [ "$RET" = "true" ] && [ ! -e /etc/xdg/autostart/x2godesktopsharing.desktop ]; then
-		echo "Setting up system-wide XDG autostart for X2Go Desktop Sharing."
-		cp /usr/share/applications/x2godesktopsharing.desktop /etc/xdg/autostart/x2godesktopsharing.desktop
-	elif [ "$RET" = "false" ] && [ -f /etc/xdg/autostart/x2godesktopsharing.desktop ]; then
-		echo "Disabling system-wide XDG autostart for X2Go Desktop Sharing."
-		rm -f /etc/xdg/autostart/x2godesktopsharing.desktop
-	fi
+		# finally tweak X2Go Desktop Sharing's configuration file and adapt the group parameter
+		sed -i '/etc/x2go/desktopsharing/settings' -e "s/group=.*/group=${group}/"
 
-	db_get x2goserver-desktopsharing/auto-activate-on-logon
-	if [ "$RET" = "true" ] && [ -e /etc/xdg/autostart/x2godesktopsharing.desktop ]; then
-		echo "Setting up system-wide auto-activation of X2Go Desktop Sharing."
-		sed -i /etc/xdg/autostart/x2godesktopsharing.desktop -e 's@^Exec=.*@Exec=/usr/bin/x2godesktopsharing --activate-desktop-sharing@'
-	elif [ "$RET" = "false" ] && [ -e /etc/xdg/autostart/x2godesktopsharing.desktop ]; then
-		echo "Disabling system-wide auto-activation of X2Go Desktop Sharing."
-		sed -i /etc/xdg/autostart/x2godesktopsharing.desktop -e 's@^Exec=.*@Exec=/usr/bin/x2godesktopsharing@'
-	fi
-	;;
+		db_get 'x2goserver-desktopsharing/auto-start-on-logon'
+		if [ "${RET}" = 'true' ] && [ ! -e '/etc/xdg/autostart/x2godesktopsharing.desktop' ]; then
+			echo 'Setting up system-wide XDG autostart for X2Go Desktop Sharing.'
+			cp '/usr/share/applications/x2godesktopsharing.desktop' '/etc/xdg/autostart/x2godesktopsharing.desktop'
+		elif [ "${RET}" = 'false' ] && [ -f '/etc/xdg/autostart/x2godesktopsharing.desktop' ]; then
+			echo 'Disabling system-wide XDG autostart for X2Go Desktop Sharing.'
+			rm -f '/etc/xdg/autostart/x2godesktopsharing.desktop'
+		fi
 
-	abort-upgrade|abort-remove|abort-deconfigure)
-	;;
-
+		db_get 'x2goserver-desktopsharing/auto-activate-on-logon'
+		if [ "${RET}" = 'true' ] && [ -e '/etc/xdg/autostart/x2godesktopsharing.desktop' ]; then
+			echo 'Setting up system-wide auto-activation of X2Go Desktop Sharing.'
+			sed -i '/etc/xdg/autostart/x2godesktopsharing.desktop' -e 's@^Exec=.*@Exec=/usr/bin/x2godesktopsharing --activate-desktop-sharing@'
+		elif [ "${RET}" = 'false' ] && [ -e '/etc/xdg/autostart/x2godesktopsharing.desktop' ]; then
+			echo 'Disabling system-wide auto-activation of X2Go Desktop Sharing.'
+			sed -i '/etc/xdg/autostart/x2godesktopsharing.desktop' -e 's@^Exec=.*@Exec=/usr/bin/x2godesktopsharing@'
+		fi
+		;;
+	'abort-upgrade'|'abort-remove'|'abort-deconfigure')
+		;;
 	*)
-		echo "postinst called with unknown argument \`$1'" >&2
-		exit 1
-	;;
+		echo "postinst called with unknown argument '${1}'" >&2
+		exit '1'
+		;;
 esac
 
 # dh_installdeb will replace this with shell code automatically
@@ -95,4 +90,4 @@ esac
 
 #DEBHELPER#
 
-exit 0
+exit '0'
