@@ -404,7 +404,7 @@ typeset xinerama_option='1'
 
 typeset kbtype_option="${X2GO_KBD_TYPE}"
 if [[ "${X2GO_SET_KBD}" = '0' ]] || [[ "${X2GO_KBD_TYPE}" = 'auto' ]]; then
-	kbtype_option="null/null"
+	kbtype_option='null/null'
 fi
 
 # Ensure X2GO_NXOPTIONS ends with a , if needed
