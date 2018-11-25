@@ -79,6 +79,7 @@ x2goserver (4.1.0.3-0x2go1) UNRELEASED; urgency=medium
     + Pull in openSUSE-release manually on OpenSuSE Tumbleweed to work around
       a bug.
     + Also pass %{__global_{c{,pp},ld}flags} down via {C,LD}FLAGS.
+    + Bump nxagent dependency up to 3.5.99.17+.
   * debian/x2goserver-desktopsharing.postinst:
     + More curly braces, quotes etc.
   * debian/x2goserver-desktopsharing.config:
