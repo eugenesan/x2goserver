@@ -90,6 +90,8 @@ x2goserver (4.1.0.3-0x2go1) UNRELEASED; urgency=medium
   * debian/x2goserver.config:
     + Replace historical "egrep" with "grep -E".
     + More curly braces, quotes etc.
+  * debian/control:
+    + Bump nxagent dependency up to 3.5.99.17+.
 
   [ Orion Poplawski ]
   * New upstream version (4.1.0.3):
