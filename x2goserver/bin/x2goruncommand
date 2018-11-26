@@ -242,6 +242,8 @@ elif [ "$cmd" == "LXDE" ]; then
 	cmd="/usr/bin/startlxde"
 elif [ "$cmd" == "LXQt" ]; then
 	cmd="/usr/bin/startlxqt"
+elif [ "$dmd" == "IceWM" ]; then
+	cmd="/usr/bin/icewm"
 elif [ "$cmd" == "TRINITY" ]; then
 	# If we are on Q4OS, we needs to set env and run some tasks before
 	# launching trinity.

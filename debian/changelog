@@ -10,6 +10,7 @@ x2goserver (4.1.0.3-0x2go1) UNRELEASED; urgency=medium
       target is non-writable, this may fail (observed on a Debian stretch
       system). Thus, removing the symlink file first and then recreating it.
     - Massive white-space cleanup (at EOLs).
+    - x2goserver/bin/x2goruncommand: Support IceWM as desktop session type.
   * debian/x2goserver*.dirs:
     + Let dirs have a trailing slash in their path (for the human eye merely).
   * debian/copyright:
