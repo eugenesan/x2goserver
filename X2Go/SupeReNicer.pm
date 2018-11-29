@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-# Copyright (C) 2013-2015 X2Go Project - http://wiki.x2go.org
+# Copyright (C) 2013-2018 X2Go Project - http://wiki.x2go.org
 # Copyright (C) 2013-2015 Guangzhou Nianguan Electronics Technology Co.Ltd. <opensource@gznianguan.com>
 # Copyright (C) 2013-2015 Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
 #

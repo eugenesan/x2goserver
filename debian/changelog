@@ -76,6 +76,8 @@ x2goserver (4.1.0.3-0x2go1) UNRELEASED; urgency=medium
     - x2goserver-x2goagent/etc/x2goagent.options: re-enable BIG-REQUESTS;
       newer nx-libs versions (3.5.99.17+) should handle this much better.
       Fixes: #1325. Fixes: #1321.
+    - misc: copyright updates, but for contributors who haven't been active or
+      requested not to be bumped.
   * x2goserver.spec:
     + Pull in openSUSE-release manually on OpenSuSE Tumbleweed to work around
       a bug.
