@@ -68,7 +68,6 @@ install_data:
 install_config:
 	$(INSTALL_DIR) $(DESTDIR)$(ETCDIR)/
 	$(INSTALL_FILE) etc/x2goagent.options $(DESTDIR)$(ETCDIR)/
-	$(INSTALL_FILE) etc/x2goagent.keyboard $(DESTDIR)$(ETCDIR)/
 	$(INSTALL_FILE) etc/keystrokes.cfg $(DESTDIR)$(ETCDIR)/
 
 install_man:

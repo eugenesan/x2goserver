@@ -1,5 +1,4 @@
 etc/x2go/keystrokes.cfg
-etc/x2go/x2goagent.keyboard
 etc/x2go/x2goagent.options
 usr/bin/x2goagent
 usr/lib/*/nx/bin/x2goagent

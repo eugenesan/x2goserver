@@ -1028,7 +1028,6 @@ fi
 %{_datadir}/pixmaps/x2goagent.xpm
 %{_datadir}/x2go/x2gofeature.d/x2goserver-x2goagent.features
 %{_mandir}/man1/x2goagent.1*
-%config(noreplace) %{_sysconfdir}/x2go/x2goagent.keyboard
 %config(noreplace) %{_sysconfdir}/x2go/x2goagent.options
 %config(noreplace) %{_sysconfdir}/x2go/keystrokes.cfg
 
