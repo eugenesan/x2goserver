@@ -1,5 +1,5 @@
 # Copyright (C) 2007-2018 X2Go Project - https://wiki.x2go.org
-# Copyright (C) 2007-2018 Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
+# Copyright (C) 2007-2018 Oleksandr Shneyder <o.shneyder@phoca-gmbh.de>
 # Copyright (C) 2007-2018 Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
 # Copyright (C) 2017-2018 Walid Moghrabi <w.moghrabi@servicemagic.eu>
 # Copyright (C) 2018      Mihai Moldovan <ionic@ionic.de>

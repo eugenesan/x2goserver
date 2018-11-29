@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: X2Go Developers <x2go-dev@lists.x2go.org>
 Uploaders:
  Mike Gabriel <mike.gabriel@das-netzwerkteam.de>,
- Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>,
+ Oleksandr Shneyder <o.shneyder@phoca-gmbh.de>,
  Reinhard Tartler <siretart@tauware.de>,
  Mihai Moldovan <ionic@ionic.de>,
 Build-Depends:
