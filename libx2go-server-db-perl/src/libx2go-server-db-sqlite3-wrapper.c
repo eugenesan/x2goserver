@@ -21,13 +21,28 @@
  */
 
 #include <unistd.h>
+#include <stdlib.h>
+#include <errno.h>
+#include <stdio.h>
+#include <string.h>
 
-int main( int argc, char *argv[] ) {
-
-	char x2gosqlitewrapper[] = TRUSTED_BINARY;
+int main(int argc, char **argv) {
+	const char *x2gosqlitewrapper = TRUSTED_BINARY;
 
 	argv[0] = "libx2go-server-db-sqlite3-wrapper.pl";
 	// execute the script, running with user-rights of this binary
-	return execv(x2gosqlitewrapper, argv);
+	int ret = execv(x2gosqlitewrapper, argv);
+	int saved_errno = errno;
 
+	if (ret) {
+		fprintf (stderr, "unable to execute script '");
+		fprintf (stderr, "%s", TRUSTED_BINARY);
+		fprintf (stderr, "': ");
+		fprintf (stderr, "%s", strerror (saved_errno));
+
+		return (EXIT_FAILURE);
+	}
+
+	/* Should not be reached. */
+	return (EXIT_SUCCESS);
 }

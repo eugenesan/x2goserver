@@ -81,6 +81,8 @@ x2goserver (4.1.0.3-0x2go1) UNRELEASED; urgency=medium
     - misc: switch to HTTPS-based URLs where appropriate.
     - misc: update Oleksandr's email address.
     - misc manpages: pre-release date update.
+    - libx2go-server-db-perl/src/libx2go-server-db-sqlite3-wrapper.c: revamp
+      wrapper, alike to what was done in x2gobroker.
   * x2goserver.spec:
     + Pull in openSUSE-release manually on OpenSuSE Tumbleweed to work around
       a bug.
