@@ -1,4 +1,4 @@
-x2goserver (4.1.0.3-0x2go1) UNRELEASED; urgency=medium
+x2goserver (4.1.0.3-0x2go1) unstable; urgency=medium
 
   [ Mike Gabriel ]
   * New upstream version (4.1.0.3)
@@ -111,7 +111,7 @@ x2goserver (4.1.0.3-0x2go1) UNRELEASED; urgency=medium
       setting nxagent nx/nx options on the server via x2goagent.options.
       Fixes: #1322.
 
- -- Mike Gabriel <mike.gabriel@das-netzwerkteam.de>  Tue, 14 Aug 2018 16:41:40 +0200
+ -- X2Go Release Manager <git-admin@x2go.org>  Thu, 29 Nov 2018 05:55:21 +0100
 
 x2goserver (4.1.0.2-0x2go1) unstable; urgency=medium
 
