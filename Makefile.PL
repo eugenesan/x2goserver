@@ -5,5 +5,5 @@ use ExtUtils::MakeMaker;
 WriteMakefile(FIRST_MAKEFILE => 'Makefile.perl',
 	      PMLIBDIRS => ['X2Go'],
 	      NAME => '',
-	      VERSION => '4.1.0.3',
+	      VERSION => '4.1.0.4',
 	     );
