@@ -80,6 +80,7 @@ x2goserver (4.1.0.3-0x2go1) UNRELEASED; urgency=medium
       requested not to be bumped.
     - misc: switch to HTTPS-based URLs where appropriate.
     - misc: update Oleksandr's email address.
+    - misc manpages: pre-release date update.
   * x2goserver.spec:
     + Pull in openSUSE-release manually on OpenSuSE Tumbleweed to work around
       a bug.
