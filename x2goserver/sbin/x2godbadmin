@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-# Copyright (C) 2007-2018 X2Go Project - http://wiki.x2go.org
+# Copyright (C) 2007-2018 X2Go Project - https://wiki.x2go.org
 # Copyright (C) 2007-2018 Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
 # Copyright (C) 2007-2018 Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
 # Copyright (C) 2017-2018 Walid Moghrabi <w.moghrabi@servicemagic.eu>
@@ -221,7 +221,7 @@ if ($Config->param("backend") eq 'sqlite')
 		$sth->finish();
 
 		# undef $dbh should be preferred to $dbh->disconnect(), see
-		# http://www.perlmonks.org/?node_id=665714
+		# https://www.perlmonks.org/?node_id=665714
 		undef $dbh;
 		chmod(0770, "$dir");
 		chown('root',$pgid,"$dir");

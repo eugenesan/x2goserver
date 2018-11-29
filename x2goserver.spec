@@ -11,8 +11,8 @@ Group:          Productivity/Networking/Remote Desktop
 License:        GPL-2.0+
 %endif
 
-URL:            http://www.x2go.org
-Source0:        http://code.x2go.org/releases/source/%{name}/%{name}-%{version}.tar.gz
+URL:            https://www.x2go.org
+Source0:        https://code.x2go.org/releases/source/%{name}/%{name}-%{version}.tar.gz
 Source1:        %{name}.service
 Source2:        %{name}.init
 Source3:        %{name}-rpmlintrc

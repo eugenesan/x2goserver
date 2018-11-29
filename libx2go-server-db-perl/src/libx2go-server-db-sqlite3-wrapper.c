@@ -1,5 +1,5 @@
 /*
- * This file is part of the  X2Go Project - http://www.x2go.org
+ * This file is part of the  X2Go Project - https://www.x2go.org
  * Copyright (C) 2011-2015 Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
  * Copyright (C) 2011-2015 Moritz 'Morty' Strübe <morty@gmx.net>
  *

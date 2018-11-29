@@ -46,11 +46,11 @@ interact.
 
  * Makefile
 
-   This file is used by [http://www.gnu.org/software/make/manual/make.html](make) to build and install the code with the appropriate compiler.
+   This file is used by [https://www.gnu.org/software/make/manual/make.html](make) to build and install the code with the appropriate compiler.
 
  * Makefile.docupload
 
-   This file is used by [http://www.gnu.org/software/make/manual/make.html](make) to build and upload the x2goserver documentation.
+   This file is used by [https://www.gnu.org/software/make/manual/make.html](make) to build and upload the x2goserver documentation.
 
  * UNINSTALL
 

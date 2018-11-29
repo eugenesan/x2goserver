@@ -69,8 +69,8 @@ members of the server-side ,,fuse'' group (see above).
 
 As X2Go printing setups can be rather versatile, details on X2Go printing are explained in
 the project's wiki:
-http://www.x2go.org/doku.php/wiki:components:printing
-http://www.x2go.org/doku.php/wiki:advanced:multi-node:x2goserver-printing
+https://www.x2go.org/doku.php/wiki:components:printing
+https://www.x2go.org/doku.php/wiki:advanced:multi-node:x2goserver-printing
 
 
 7.) DATABASE SETUP (SQLite3 only)
@@ -94,5 +94,5 @@ are already resent for this setup. If not, please report it as a bug.
 This variant is for a setup of x2goserver that uses a PostgreSQL database backend...
 
 The exact installation of x2goserver with PostgreSQL support is described here:
-http://www.x2go.org/doku.php/wiki:advanced:multi-node:x2goserver-pgsql
+https://www.x2go.org/doku.php/wiki:advanced:multi-node:x2goserver-pgsql
 
