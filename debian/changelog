@@ -96,6 +96,8 @@ x2goserver (4.1.0.3-0x2go1) UNRELEASED; urgency=medium
     + More curly braces, quotes etc.
   * debian/control:
     + Bump nxagent dependency up to 3.5.99.17+.
+  * debian/copyright{,.in}:
+    + Merge copyright entries.
 
   [ Orion Poplawski ]
   * New upstream version (4.1.0.3):

@@ -185,11 +185,6 @@ Files: X2Go/Config.pm
 Copyright: 2007-2018, Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
   2007-2018, Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
   2007-2018, X2Go Project - http:wiki.x2go.org
-  2007-2018, Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
-  2007-2018, Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
-  2007-2018, X2Go Project - http:wiki.x2go.org
-  2011-2018, Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
-  2011-2018, Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
 License: GPL (v2 or later)
  FIXME
 
@@ -222,9 +217,6 @@ Files: X2Go/Server/DB.pm
 Copyright: 2007-2018, Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
   2007-2018, Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
   2007-2018, X2Go Project - http:wiki.x2go.org
-  2007-2018, Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
-  2007-2018, Oleksandr Shneyder <oleksandr.shneyder@obviously-nice.de>
-  2007-2018, X2Go Project - http:wiki.x2go.org
   2017-2018, Walid Moghrabi <w.moghrabi@servicemagic.eu>
   2018, Mihai Moldovan <ionic@ionic.de>
 License: GPL (v2 or later)
@@ -237,7 +229,6 @@ Copyright: 2007-2018, Heinz-Markus Graesing <heinz-m.graesing@obviously-nice.de>
   2007-2018, X2Go Project - http:wiki.x2go.org
   2010-2015, Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
   2013-2015, Guangzhou Nianguan Electronics Technology Co.Ltd. <opensource@gznianguan.com>
-  2013-2015, Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
 License: GPL (v2 or later)
  FIXME
 
@@ -253,7 +244,6 @@ License: GPL (v2 or later)
 Files: Makefile.docupload
  x2goserver-x2goagent/share/x2go/x2gofeature.d/x2goserver-x2goagent.features
 Copyright: 2010-2015, Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
-  2015, Mike Gabriel <mike.gabriel@das-netzwerkteam.de>
 License: GPL (v2 or later)
  FIXME
 
